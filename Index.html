@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Lunch Wheel</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f4f4;
+text-align:center;
+padding:40px;
+}
+
+h1{
+margin-bottom:10px;
+}
+
+#canvas{
+margin-top:20px;
+}
+
+button{
+padding:12px 25px;
+font-size:18px;
+margin-top:20px;
+cursor:pointer;
+}
+
+select{
+padding:8px;
+font-size:16px;
+}
+
+#result{
+font-size:28px;
+margin-top:20px;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Lunch Wheel 🍔</h1>
+
+<select id="typeFilter">
+<option value="all">All Food Types</option>
+</select>
+
+<br>
+
+<canvas id="canvas" width="500" height="500"></canvas>
+
+<br>
+
+<button onclick="spin()">SPIN</button>
+
+<div id="result"></div>
+
+<script>
+
+const sheetURL = "PASTE_CSV_URL_HERE";
+
+let restaurants = [];
+let filtered = [];
+let startAngle = 0;
+let arc = 0;
+let spinTimeout = null;
+let spinAngleStart;
+let spinTime = 0;
+let spinTimeTotal = 0;
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function fetchData(){
+
+fetch(sheetURL)
+.then(res=>res.text())
+.then(data=>{
+
+const rows = data.trim().split("\n").map(r=>r.split(","));
+
+rows.shift();
+
+restaurants = rows;
+
+buildTypeFilter();
+
+filter();
+
+});
+
+}
+
+function buildTypeFilter(){
+
+const types = new Set();
+
+restaurants.forEach(r=>{
+types.add(r[1]);
+});
+
+const dropdown = document.getElementById("typeFilter");
+
+types.forEach(type=>{
+
+const opt=document.createElement("option");
+opt.value=type;
+opt.text=type;
+dropdown.appendChild(opt);
+
+});
+
+}
+
+document.getElementById("typeFilter").addEventListener("change",filter);
+
+function filter(){
+
+const type=document.getElementById("typeFilter").value;
+
+if(type==="all"){
+filtered=[...restaurants];
+}else{
+filtered=restaurants.filter(r=>r[1]===type);
+}
+
+drawWheel();
+
+}
+
+function drawWheel(){
+
+ctx.clearRect(0,0,500,500);
+
+arc = Math.PI / (filtered.length/2);
+
+for(let i=0;i<filtered.length;i++){
+
+const angle=startAngle+i*arc;
+
+ctx.fillStyle = i%2===0 ? "#ffcc00" : "#ff6600";
+
+ctx.beginPath();
+ctx.arc(250,250,200,angle,angle+arc,false);
+ctx.arc(250,250,0,angle+arc,angle,true);
+ctx.fill();
+
+ctx.save();
+
+ctx.fillStyle="black";
+
+ctx.translate(
+250+Math.cos(angle+arc/2)*140,
+250+Math.sin(angle+arc/2)*140
+);
+
+ctx.rotate(angle+arc/2+Math.PI/2);
+
+ctx.fillText(filtered[i][0],-ctx.measureText(filtered[i][0]).width/2,0);
+
+ctx.restore();
+
+}
+
+drawArrow();
+
+}
+
+function drawArrow(){
+
+ctx.fillStyle="black";
+
+ctx.beginPath();
+
+ctx.moveTo(250-10,20);
+ctx.lineTo(250+10,20);
+ctx.lineTo(250+10,40);
+ctx.lineTo(250+20,40);
+ctx.lineTo(250,60);
+ctx.lineTo(250-20,40);
+ctx.lineTo(250-10,40);
+
+ctx.fill();
+
+}
+
+function spin(){
+
+spinAngleStart=Math.random()*10+10;
+
+spinTime=0;
+
+spinTimeTotal=Math.random()*3000+4000;
+
+rotateWheel();
+
+}
+
+function rotateWheel(){
+
+spinTime+=30;
+
+if(spinTime>=spinTimeTotal){
+
+stopRotateWheel();
+
+return;
+
+}
+
+const spinAngle=spinAngleStart-easeOut(spinTime,0,spinAngleStart,spinTimeTotal);
+
+startAngle+=spinAngle*Math.PI/180;
+
+drawWheel();
+
+spinTimeout=setTimeout(rotateWheel,30);
+
+}
+
+function stopRotateWheel(){
+
+clearTimeout(spinTimeout);
+
+const degrees=startAngle*180/Math.PI+90;
+
+const arcd=arc*180/Math.PI;
+
+const index=Math.floor((360-degrees%360)/arcd);
+
+document.getElementById("result").innerText="Lunch: "+filtered[index][0];
+
+}
+
+function easeOut(t,b,c,d){
+
+const ts=(t/=d)*t;
+const tc=ts*t;
+
+return b+c*(tc+-3*ts+3*t);
+
+}
+
+fetchData();
+
+</script>
+
+</body>
+</html>
