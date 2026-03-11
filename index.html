@@ -1,336 +1,885 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Lunch Wheel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lunch Wheel</title>
+  <style>
+    :root{
+      --bg1:#1f1c2c;
+      --bg2:#928dab;
+      --panel:rgba(255,255,255,.12);
+      --panelBorder:rgba(255,255,255,.18);
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.75);
+      --accent:#ffd166;
+      --accent2:#06d6a0;
+      --danger:#ef476f;
+      --shadow:0 10px 30px rgba(0,0,0,.25);
+    }
 
-<style>
+    * { box-sizing: border-box; }
 
-body{
-font-family:Arial;
-background:linear-gradient(135deg,#ff9966,#ff5e62);
-color:white;
-text-align:center;
-padding:20px;
-}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.15), transparent 25%),
+        radial-gradient(circle at top right, rgba(255,255,255,.10), transparent 20%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      padding:18px;
+    }
 
-h1{
-font-size:40px;
-margin-bottom:10px;
-}
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+    }
 
-.controls{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:15px;
-margin-bottom:20px;
-}
+    .title{
+      text-align:center;
+      margin-bottom:18px;
+    }
 
-.player{
-background:rgba(255,255,255,.15);
-padding:10px;
-border-radius:10px;
-}
+    .title h1{
+      margin:0;
+      font-size:clamp(2rem, 5vw, 3.4rem);
+      line-height:1.05;
+      letter-spacing:.5px;
+      text-shadow:0 4px 14px rgba(0,0,0,.25);
+    }
 
-select{
-padding:6px;
-border-radius:5px;
-border:none;
-}
+    .title p{
+      margin:.5rem 0 0;
+      color:var(--muted);
+      font-size:1rem;
+    }
 
-canvas{
-margin-top:20px;
-}
+    .layout{
+      display:grid;
+      grid-template-columns: 320px minmax(280px, 1fr) 280px;
+      gap:18px;
+      align-items:start;
+    }
 
-button{
-padding:15px 35px;
-font-size:20px;
-margin-top:20px;
-border:none;
-border-radius:10px;
-background:#fff;
-color:#ff5e62;
-font-weight:bold;
-cursor:pointer;
-}
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--panelBorder);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(8px);
+      padding:16px;
+    }
 
-button:hover{
-transform:scale(1.05);
-}
+    .panel h2{
+      margin:0 0 12px;
+      font-size:1.15rem;
+    }
 
-#winner{
-font-size:40px;
-margin-top:20px;
-font-weight:bold;
-}
+    .players{
+      display:grid;
+      gap:12px;
+    }
 
-</style>
+    .playerCard{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;
+      padding:10px;
+    }
+
+    .playerCard label{
+      display:block;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    select{
+      width:100%;
+      border:none;
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:16px;
+      outline:none;
+      background:#fff;
+      color:#111;
+    }
+
+    .wheelArea{
+      text-align:center;
+      position:relative;
+    }
+
+    .wheelShell{
+      position:relative;
+      width:min(92vw, 680px);
+      margin:0 auto;
+      aspect-ratio:1/1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    canvas{
+      width:100%;
+      height:100%;
+      max-width:680px;
+      max-height:680px;
+      display:block;
+      filter: drop-shadow(0 20px 25px rgba(0,0,0,.35));
+    }
+
+    .pointer{
+      position:absolute;
+      top:6px;
+      left:50%;
+      transform:translateX(-50%);
+      width:0;
+      height:0;
+      border-left:18px solid transparent;
+      border-right:18px solid transparent;
+      border-top:34px solid var(--accent);
+      z-index:5;
+      filter:drop-shadow(0 4px 8px rgba(0,0,0,.35));
+    }
+
+    .controls{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    button{
+      border:none;
+      border-radius:999px;
+      padding:14px 22px;
+      font-size:1rem;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:var(--shadow);
+      transition:transform .15s ease, opacity .15s ease;
+    }
+
+    button:hover{ transform:translateY(-1px) scale(1.01); }
+    button:active{ transform:translateY(1px) scale(.99); }
+    button:disabled{ opacity:.6; cursor:not-allowed; }
+
+    .spinBtn{
+      background:linear-gradient(135deg, var(--accent), #ffb703);
+      color:#1a1a1a;
+    }
+
+    .resetBtn{
+      background:linear-gradient(135deg, #ffffff, #dfe7fd);
+      color:#1a1a1a;
+    }
+
+    .winner{
+      margin-top:16px;
+      min-height:56px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font-size:clamp(1.25rem, 3vw, 2rem);
+      font-weight:800;
+      text-shadow:0 3px 12px rgba(0,0,0,.25);
+      padding:8px 12px;
+    }
+
+    .winner.glow{
+      animation:winnerGlow .9s ease-in-out infinite alternate;
+    }
+
+    @keyframes winnerGlow{
+      from{ transform:scale(1); text-shadow:0 0 0 rgba(255,209,102,.0); }
+      to{ transform:scale(1.03); text-shadow:0 0 18px rgba(255,209,102,.7); }
+    }
+
+    .scoreList, .historyList{
+      display:grid;
+      gap:8px;
+    }
+
+    .scoreRow, .historyRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:12px;
+    }
+
+    .badge{
+      min-width:34px;
+      height:34px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      color:#111;
+      background:var(--accent);
+    }
+
+    .empty{
+      color:var(--muted);
+      text-align:center;
+      padding:16px 8px;
+    }
+
+    .footerNote{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:.92rem;
+      text-align:center;
+    }
+
+    .pill{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.12);
+      font-size:.9rem;
+    }
+
+    .topBar{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    @media (max-width: 980px){
+      .layout{
+        grid-template-columns: 1fr;
+      }
+      .wheelShell{
+        width:min(94vw, 560px);
+      }
+    }
+  </style>
 </head>
-
 <body>
-
-<h1>🍔 Lunch Wheel 🎡</h1>
-
-<div class="controls">
-
-<div class="player">
-Beau<br>
-<select id="Beau"></select>
-</div>
-
-<div class="player">
-Cody<br>
-<select id="Cody"></select>
-</div>
-
-<div class="player">
-Sean<br>
-<select id="Sean"></select>
-</div>
-
-<div class="player">
-Levi<br>
-<select id="Levi"></select>
-</div>
-
-</div>
-
-<canvas id="wheel" width="500" height="500"></canvas>
-
-<br>
-
-<button onclick="spin()">SPIN</button>
-
-<div id="winner"></div>
-
-<script>
-
-const sheetURL =
-"https://docs.google.com/spreadsheets/d/1UDT0FL5IAqVySJ2fPyaiX2xUgHz4jE-WAuX6U6sFU5I/gviz/tq?tqx=out:csv&sheet=Sheet1";
-
-let restaurants=[];
-let filtered=[];
-let startAngle=0;
-let arc;
-
-const canvas=document.getElementById("wheel");
-const ctx=canvas.getContext("2d");
-
-function fetchData(){
-
-fetch(sheetURL)
-.then(r=>r.text())
-.then(data=>{
-
-const rows=data.trim().split("\n").map(r=>r.split(","));
-
-rows.shift();
-
-restaurants=rows.map(r=>r[0]);
-
-buildSelectors();
-filterWheel();
-
-});
-
-}
-
-function buildSelectors(){
-
-const players=["Beau","Cody","Sean","Levi"];
-
-players.forEach(p=>{
-
-const select=document.getElementById(p);
-
-select.innerHTML="<option value='any'>Any</option>";
-
-restaurants.forEach(r=>{
-const o=document.createElement("option");
-o.value=r;
-o.text=r;
-select.appendChild(o);
-});
-
-select.addEventListener("change",filterWheel);
-
-});
-
-}
-
-function filterWheel(){
-
-const players=["Beau","Cody","Sean","Levi"];
-
-const picks=players.map(p=>document.getElementById(p).value)
-.filter(v=>v!="any");
-
-if(picks.length===0){
-
-filtered=[...restaurants];
-
-}else{
-
-filtered=restaurants.filter(r=>picks.includes(r));
-
-}
-
-drawWheel();
-
-}
-
-function drawWheel(){
-
-ctx.clearRect(0,0,500,500);
-
-arc=Math.PI/(filtered.length/2);
-
-for(let i=0;i<filtered.length;i++){
-
-let angle=startAngle+i*arc;
-
-ctx.fillStyle=`hsl(${i*60},80%,60%)`;
-
-ctx.beginPath();
-
-ctx.arc(250,250,200,angle,angle+arc,false);
-ctx.arc(250,250,0,angle+arc,angle,true);
-
-ctx.fill();
-
-ctx.save();
-
-ctx.fillStyle="black";
-
-ctx.translate(
-250+Math.cos(angle+arc/2)*140,
-250+Math.sin(angle+arc/2)*140
-);
-
-ctx.rotate(angle+arc/2+Math.PI/2);
-
-ctx.fillText(filtered[i],-ctx.measureText(filtered[i]).width/2,0);
-
-ctx.restore();
-
-}
-
-drawArrow();
-
-}
-
-function drawArrow(){
-
-ctx.fillStyle="white";
-
-ctx.beginPath();
-
-ctx.moveTo(250,20);
-ctx.lineTo(270,60);
-ctx.lineTo(230,60);
-
-ctx.fill();
-
-}
-
-let spinAngleStart;
-let spinTime=0;
-let spinTimeTotal=0;
-
-function spin(){
-
-spinAngleStart=Math.random()*10+10;
-spinTime=0;
-spinTimeTotal=4000;
-
-rotateWheel();
-
-}
-
-function rotateWheel(){
-
-spinTime+=30;
-
-if(spinTime>=spinTimeTotal){
-
-stopWheel();
-return;
-
-}
-
-let spinAngle=spinAngleStart-easeOut(spinTime,0,spinAngleStart,spinTimeTotal);
-
-startAngle+=spinAngle*Math.PI/180;
-
-drawWheel();
-
-setTimeout(rotateWheel,30);
-
-}
-
-function stopWheel(){
-
-const degrees=startAngle*180/Math.PI+90;
-
-const arcd=arc*180/Math.PI;
-
-const index=Math.floor((360-degrees%360)/arcd);
-
-const winner=filtered[index];
-
-document.getElementById("winner").innerHTML=
-"🎉 "+winner+" 🎉";
-
-confetti();
-
-}
-
-function easeOut(t,b,c,d){
-
-let ts=(t/=d)*t;
-let tc=ts*t;
-
-return b+c*(tc+-3*ts+3*t);
-
-}
-
-function confetti(){
-
-for(let i=0;i<40;i++){
-
-const div=document.createElement("div");
-
-div.style.position="fixed";
-div.style.left=Math.random()*100+"%";
-div.style.top="-10px";
-div.style.width="8px";
-div.style.height="8px";
-div.style.background=`hsl(${Math.random()*360},100%,50%)`;
-
-div.style.animation="fall 2s linear";
-
-document.body.appendChild(div);
-
-setTimeout(()=>div.remove(),2000);
-
-}
-
-}
-
-fetchData();
-
-</script>
-
-<style>
-
-@keyframes fall{
-to{
-transform:translateY(800px) rotate(720deg);
-}
-}
-
-</style>
-
+  <div class="wrap">
+    <div class="title">
+      <h1>🍔 Lunch Wheel 🎡</h1>
+      <p>Pick any or choose favorites, then let the wheel decide.</p>
+    </div>
+
+    <div class="topBar">
+      <span class="pill" id="countPill">Loading restaurants...</span>
+      <span class="pill">Sheet-powered</span>
+      <span class="pill">Score saved on this device</span>
+    </div>
+
+    <div class="layout">
+      <div class="panel">
+        <h2>Team Picks</h2>
+        <div class="players">
+          <div class="playerCard">
+            <label for="Beau">Beau</label>
+            <select id="Beau"></select>
+          </div>
+          <div class="playerCard">
+            <label for="Cody">Cody</label>
+            <select id="Cody"></select>
+          </div>
+          <div class="playerCard">
+            <label for="Sean">Sean</label>
+            <select id="Sean"></select>
+          </div>
+          <div class="playerCard">
+            <label for="Levi">Levi</label>
+            <select id="Levi"></select>
+          </div>
+        </div>
+        <div class="footerNote">
+          If everyone picks <strong>Any</strong>, the full wheel is used.<br>
+          If one or more people pick restaurants, the wheel only uses those picks.
+        </div>
+      </div>
+
+      <div class="wheelArea">
+        <div class="wheelShell">
+          <div class="pointer"></div>
+          <canvas id="wheel" width="700" height="700"></canvas>
+        </div>
+        <div class="controls">
+          <button class="spinBtn" id="spinBtn">SPIN</button>
+          <button class="resetBtn" id="resetScoreBtn">Reset Score</button>
+        </div>
+        <div class="winner" id="winner"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Scoreboard</h2>
+        <div id="scoreList" class="scoreList"></div>
+
+        <h2 style="margin-top:18px;">Recent Winners</h2>
+        <div id="historyList" class="historyList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sheetURL = "https://docs.google.com/spreadsheets/d/1UDT0FL5IAqVySJ2fPyaiX2xUgHz4jE-WAuX6U6sFU5I/gviz/tq?tqx=out:csv&sheet=Sheet1";
+
+    const playerIds = ["Beau", "Cody", "Sean", "Levi"];
+    const wheelCanvas = document.getElementById("wheel");
+    const ctx = wheelCanvas.getContext("2d");
+    const winnerEl = document.getElementById("winner");
+    const spinBtn = document.getElementById("spinBtn");
+    const resetScoreBtn = document.getElementById("resetScoreBtn");
+    const scoreListEl = document.getElementById("scoreList");
+    const historyListEl = document.getElementById("historyList");
+    const countPill = document.getElementById("countPill");
+
+    let restaurants = [];
+    let filtered = [];
+    let scores = {};
+    let history = [];
+
+    let startAngle = 0;
+    let arc = 0;
+    let spinning = false;
+    let winningIndex = null;
+    let lastTickIndex = -1;
+
+    const STORAGE_SCORES = "lunchWheelScores";
+    const STORAGE_HISTORY = "lunchWheelHistory";
+
+    const palette = [
+      "#ff6b6b", "#ffd166", "#06d6a0", "#4cc9f0",
+      "#f72585", "#bde0fe", "#90be6d", "#f9844a",
+      "#577590", "#c77dff", "#43aa8b", "#ff9f1c"
+    ];
+
+    function parseCSVLine(line) {
+      const result = [];
+      let current = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const next = line[i + 1];
+
+        if (char === '"') {
+          if (inQuotes && next === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === "," && !inQuotes) {
+          result.push(current.trim());
+          current = "";
+        } else {
+          current += char;
+        }
+      }
+
+      result.push(current.trim());
+      return result.map(v => v.replace(/^"|"$/g, "").trim());
+    }
+
+    async function fetchData() {
+      try {
+        const res = await fetch(sheetURL);
+        const text = await res.text();
+
+        const rows = text
+          .split(/\r?\n/)
+          .filter(r => r.trim().length > 0)
+          .map(parseCSVLine);
+
+        if (rows.length < 2) {
+          countPill.textContent = "No restaurant rows found";
+          filtered = [];
+          drawWheel();
+          return;
+        }
+
+        const bodyRows = rows.slice(1);
+
+        restaurants = bodyRows
+          .map(r => ({
+            name: (r[0] || "").trim(),
+            type: (r[1] || "").trim()
+          }))
+          .filter(r => r.name);
+
+        const uniqueByName = [];
+        const seen = new Set();
+        for (const item of restaurants) {
+          const key = item.name.toLowerCase();
+          if (!seen.has(key)) {
+            seen.add(key);
+            uniqueByName.push(item);
+          }
+        }
+        restaurants = uniqueByName.sort((a, b) => a.name.localeCompare(b.name));
+
+        loadSavedState();
+        initializeScores();
+        buildSelectors();
+        updateFiltered();
+        updateScoreboard();
+        updateHistory();
+        countPill.textContent = `${restaurants.length} restaurants loaded`;
+      } catch (err) {
+        countPill.textContent = "Could not load sheet";
+        console.error(err);
+        winnerEl.textContent = "Could not load restaurants from the sheet.";
+      }
+    }
+
+    function loadSavedState() {
+      try {
+        scores = JSON.parse(localStorage.getItem(STORAGE_SCORES) || "{}");
+      } catch {
+        scores = {};
+      }
+
+      try {
+        history = JSON.parse(localStorage.getItem(STORAGE_HISTORY) || "[]");
+      } catch {
+        history = [];
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_SCORES, JSON.stringify(scores));
+      localStorage.setItem(STORAGE_HISTORY, JSON.stringify(history));
+    }
+
+    function initializeScores() {
+      for (const r of restaurants) {
+        if (typeof scores[r.name] !== "number") {
+          scores[r.name] = 0;
+        }
+      }
+
+      for (const key of Object.keys(scores)) {
+        if (!restaurants.some(r => r.name === key)) {
+          delete scores[key];
+        }
+      }
+
+      saveState();
+    }
+
+    function buildSelectors() {
+      for (const playerId of playerIds) {
+        const select = document.getElementById(playerId);
+        select.innerHTML = "";
+
+        const anyOption = document.createElement("option");
+        anyOption.value = "any";
+        anyOption.textContent = "Any";
+        select.appendChild(anyOption);
+
+        for (const r of restaurants) {
+          const option = document.createElement("option");
+          option.value = r.name;
+          option.textContent = `${r.name}${r.type ? " — " + r.type : ""}`;
+          select.appendChild(option);
+        }
+
+        select.onchange = () => {
+          if (spinning) return;
+          winnerEl.textContent = "";
+          winnerEl.classList.remove("glow");
+          winningIndex = null;
+          updateFiltered();
+        };
+      }
+    }
+
+    function updateFiltered() {
+      const picks = playerIds
+        .map(id => document.getElementById(id).value)
+        .filter(v => v && v !== "any");
+
+      if (picks.length === 0) {
+        filtered = [...restaurants];
+      } else {
+        const uniquePicks = [...new Set(picks)];
+        filtered = restaurants.filter(r => uniquePicks.includes(r.name));
+      }
+
+      winningIndex = null;
+      drawWheel();
+    }
+
+    function drawWheel() {
+      const w = wheelCanvas.width;
+      const h = wheelCanvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+      const radius = 290;
+
+      ctx.clearRect(0, 0, w, h);
+
+      if (filtered.length === 0) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,255,255,.08)";
+        ctx.fill();
+
+        ctx.fillStyle = "white";
+        ctx.font = "bold 30px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("No choices", cx, cy - 10);
+
+        ctx.font = "20px Arial";
+        ctx.fillText("Pick Any or select restaurants", cx, cy + 26);
+        return;
+      }
+
+      arc = (Math.PI * 2) / filtered.length;
+
+      for (let i = 0; i < filtered.length; i++) {
+        const start = startAngle + i * arc;
+        const end = start + arc;
+        const mid = start + arc / 2;
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, radius, start, end);
+        ctx.closePath();
+
+        const isWinner = i === winningIndex;
+        ctx.fillStyle = isWinner ? "#ffe066" : palette[i % palette.length];
+        ctx.fill();
+
+        if (isWinner) {
+          ctx.lineWidth = 8;
+          ctx.strokeStyle = "#ffffff";
+          ctx.stroke();
+        } else {
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = "rgba(255,255,255,.35)";
+          ctx.stroke();
+        }
+
+        ctx.save();
+        ctx.translate(
+          cx + Math.cos(mid) * 180,
+          cy + Math.sin(mid) * 180
+        );
+        ctx.rotate(mid + Math.PI / 2);
+
+        ctx.fillStyle = isWinner ? "#111" : "#111";
+        ctx.font = filtered.length > 10 ? "bold 18px Arial" : "bold 22px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        const label = filtered[i].name;
+        const maxWidth = 190;
+        wrapText(label, 0, 0, maxWidth, filtered.length > 10 ? 18 : 22);
+
+        ctx.restore();
+      }
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, 52, 0, Math.PI * 2);
+      ctx.fillStyle = "#ffffff";
+      ctx.fill();
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = "rgba(0,0,0,.18)";
+      ctx.stroke();
+
+      ctx.fillStyle = "#111";
+      ctx.font = "bold 20px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("LUNCH", cx, cy);
+    }
+
+    function wrapText(text, x, y, maxWidth, lineHeight) {
+      const words = text.split(" ");
+      const lines = [];
+      let line = "";
+
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line ? line + " " + words[n] : words[n];
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && line) {
+          lines.push(line);
+          line = words[n];
+        } else {
+          line = testLine;
+        }
+      }
+      lines.push(line);
+
+      const totalHeight = (lines.length - 1) * lineHeight;
+      lines.forEach((l, i) => {
+        ctx.fillText(l, x, y - totalHeight / 2 + i * lineHeight);
+      });
+    }
+
+    function getWinnerIndex() {
+      const pointerAngle = -Math.PI / 2;
+      let normalized = (pointerAngle - startAngle) % (Math.PI * 2);
+      if (normalized < 0) normalized += Math.PI * 2;
+      return Math.floor(normalized / arc) % filtered.length;
+    }
+
+    function playTick() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioCtx();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = "square";
+        osc.frequency.value = 1100;
+        gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.04);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.04);
+      } catch (e) {
+        console.log("Audio unavailable");
+      }
+    }
+
+    function updateTicks() {
+      if (!filtered.length) return;
+      const currentIndex = getWinnerIndex();
+      if (currentIndex !== lastTickIndex) {
+        lastTickIndex = currentIndex;
+        playTick();
+      }
+    }
+
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function spin() {
+      if (spinning || filtered.length === 0) return;
+
+      spinning = true;
+      spinBtn.disabled = true;
+      winnerEl.textContent = "";
+      winnerEl.classList.remove("glow");
+      winningIndex = null;
+      lastTickIndex = -1;
+
+      const extraSpins = 6 + Math.random() * 2;
+      const targetIndex = Math.floor(Math.random() * filtered.length);
+
+      const sliceCenterOffset = targetIndex * arc + arc / 2;
+      const pointerAngle = -Math.PI / 2;
+      let targetAngle = pointerAngle - sliceCenterOffset;
+
+      while (targetAngle <= startAngle) {
+        targetAngle += Math.PI * 2;
+      }
+
+      const finalAngle = targetAngle + extraSpins * Math.PI * 2;
+      const initialAngle = startAngle;
+      const duration = 5200;
+      const startTime = performance.now();
+
+      function animate(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(elapsed / duration, 1);
+        const eased = easeOutCubic(t);
+
+        startAngle = initialAngle + (finalAngle - initialAngle) * eased;
+        drawWheel();
+        updateTicks();
+
+        if (t < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          bounceFinish(targetIndex);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function bounceFinish(targetIndex) {
+      const bounceAmount = 0.08;
+      const baseAngle = startAngle;
+      const frames = [
+        { offset: -bounceAmount, duration: 90 },
+        { offset:  bounceAmount * 0.65, duration: 85 },
+        { offset: -bounceAmount * 0.35, duration: 80 },
+        { offset:  bounceAmount * 0.15, duration: 70 },
+        { offset: 0, duration: 60 }
+      ];
+
+      let step = 0;
+
+      function runStep() {
+        if (step >= frames.length) {
+          finishSpin(targetIndex);
+          return;
+        }
+
+        const from = startAngle;
+        const to = baseAngle + frames[step].offset;
+        const dur = frames[step].duration;
+        const begin = performance.now();
+
+        function anim(now) {
+          const t = Math.min((now - begin) / dur, 1);
+          const eased = 1 - Math.pow(1 - t, 2);
+          startAngle = from + (to - from) * eased;
+          drawWheel();
+          if (t < 1) {
+            requestAnimationFrame(anim);
+          } else {
+            step++;
+            runStep();
+          }
+        }
+
+        requestAnimationFrame(anim);
+      }
+
+      runStep();
+    }
+
+    function finishSpin(targetIndex) {
+      winningIndex = targetIndex;
+      drawWheel();
+
+      const winner = filtered[targetIndex].name;
+      scores[winner] = (scores[winner] || 0) + 1;
+
+      history.unshift({
+        name: winner,
+        time: new Date().toLocaleString()
+      });
+      history = history.slice(0, 10);
+
+      saveState();
+      updateScoreboard();
+      updateHistory();
+
+      winnerEl.innerHTML = `🎉 ${winner} wins! 🎉`;
+      winnerEl.classList.add("glow");
+
+      launchConfetti();
+
+      spinning = false;
+      spinBtn.disabled = false;
+    }
+
+    function updateScoreboard() {
+      const sorted = Object.entries(scores)
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+      if (!sorted.length) {
+        scoreListEl.innerHTML = `<div class="empty">No scores yet</div>`;
+        return;
+      }
+
+      scoreListEl.innerHTML = sorted
+        .map(([name, count], index) => `
+          <div class="scoreRow">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="badge">${index + 1}</span>
+              <span>${name}</span>
+            </div>
+            <strong>${count}</strong>
+          </div>
+        `)
+        .join("");
+    }
+
+    function updateHistory() {
+      if (!history.length) {
+        historyListEl.innerHTML = `<div class="empty">No winners yet</div>`;
+        return;
+      }
+
+      historyListEl.innerHTML = history
+        .map(item => `
+          <div class="historyRow">
+            <span>${item.name}</span>
+            <span style="color:rgba(255,255,255,.75);font-size:.85rem;">${item.time}</span>
+          </div>
+        `)
+        .join("");
+    }
+
+    function resetScores() {
+      if (!confirm("Reset the scoreboard and recent winners?")) return;
+
+      scores = {};
+      for (const r of restaurants) scores[r.name] = 0;
+      history = [];
+      saveState();
+      updateScoreboard();
+      updateHistory();
+      winnerEl.textContent = "";
+      winnerEl.classList.remove("glow");
+    }
+
+    function launchConfetti() {
+      const count = 120;
+
+      for (let i = 0; i < count; i++) {
+        const piece = document.createElement("div");
+        const size = 6 + Math.random() * 8;
+
+        piece.style.position = "fixed";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.top = "-20px";
+        piece.style.width = size + "px";
+        piece.style.height = size * 1.4 + "px";
+        piece.style.background = palette[Math.floor(Math.random() * palette.length)];
+        piece.style.opacity = "1";
+        piece.style.borderRadius = Math.random() > 0.5 ? "2px" : "50%";
+        piece.style.pointerEvents = "none";
+        piece.style.zIndex = "9999";
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+        document.body.appendChild(piece);
+
+        const drift = (Math.random() - 0.5) * 220;
+        const fall = window.innerHeight + 120;
+        const rotate = 500 + Math.random() * 700;
+        const duration = 1800 + Math.random() * 1400;
+
+        piece.animate(
+          [
+            { transform: `translate(0,0) rotate(0deg)`, opacity: 1 },
+            { transform: `translate(${drift}px, ${fall}px) rotate(${rotate}deg)`, opacity: 0.95 }
+          ],
+          {
+            duration,
+            easing: "cubic-bezier(.2,.8,.2,1)"
+          }
+        );
+
+        setTimeout(() => piece.remove(), duration + 50);
+      }
+    }
+
+    spinBtn.addEventListener("click", spin);
+    resetScoreBtn.addEventListener("click", resetScores);
+
+    fetchData();
+  </script>
 </body>
 </html>
