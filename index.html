@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="UTF-8">
 <title>Lunch Wheel</title>
 
@@ -9,33 +8,59 @@
 
 body{
 font-family:Arial;
-background:#f4f4f4;
+background:linear-gradient(135deg,#ff9966,#ff5e62);
+color:white;
 text-align:center;
-padding:40px;
+padding:20px;
 }
 
 h1{
+font-size:40px;
 margin-bottom:10px;
 }
 
-#canvas{
+.controls{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:15px;
+margin-bottom:20px;
+}
+
+.player{
+background:rgba(255,255,255,.15);
+padding:10px;
+border-radius:10px;
+}
+
+select{
+padding:6px;
+border-radius:5px;
+border:none;
+}
+
+canvas{
 margin-top:20px;
 }
 
 button{
-padding:12px 25px;
-font-size:18px;
+padding:15px 35px;
+font-size:20px;
 margin-top:20px;
+border:none;
+border-radius:10px;
+background:#fff;
+color:#ff5e62;
+font-weight:bold;
 cursor:pointer;
 }
 
-select{
-padding:8px;
-font-size:16px;
+button:hover{
+transform:scale(1.05);
 }
 
-#result{
-font-size:28px;
+#winner{
+font-size:40px;
 margin-top:20px;
 font-weight:bold;
 }
@@ -45,88 +70,110 @@ font-weight:bold;
 
 <body>
 
-<h1>Lunch Wheel 🍔</h1>
+<h1>🍔 Lunch Wheel 🎡</h1>
 
-<select id="typeFilter">
-<option value="all">All Food Types</option>
-</select>
+<div class="controls">
 
-<br>
+<div class="player">
+Beau<br>
+<select id="Beau"></select>
+</div>
 
-<canvas id="canvas" width="500" height="500"></canvas>
+<div class="player">
+Cody<br>
+<select id="Cody"></select>
+</div>
+
+<div class="player">
+Sean<br>
+<select id="Sean"></select>
+</div>
+
+<div class="player">
+Levi<br>
+<select id="Levi"></select>
+</div>
+
+</div>
+
+<canvas id="wheel" width="500" height="500"></canvas>
 
 <br>
 
 <button onclick="spin()">SPIN</button>
 
-<div id="result"></div>
+<div id="winner"></div>
 
 <script>
 
-const sheetURL = "https://docs.google.com/spreadsheets/d/1UDT0FL5IAqVySJ2fPyaiX2xUgHz4jE-WAuX6U6sFU5I/gviz/tq?tqx=out:csv&sheet=Sheet1";
-let restaurants = [];
-let filtered = [];
-let startAngle = 0;
-let arc = 0;
-let spinTimeout = null;
-let spinAngleStart;
-let spinTime = 0;
-let spinTimeTotal = 0;
+const sheetURL =
+"https://docs.google.com/spreadsheets/d/1UDT0FL5IAqVySJ2fPyaiX2xUgHz4jE-WAuX6U6sFU5I/gviz/tq?tqx=out:csv&sheet=Sheet1";
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+let restaurants=[];
+let filtered=[];
+let startAngle=0;
+let arc;
+
+const canvas=document.getElementById("wheel");
+const ctx=canvas.getContext("2d");
 
 function fetchData(){
 
 fetch(sheetURL)
-.then(res=>res.text())
+.then(r=>r.text())
 .then(data=>{
 
-const rows = data.trim().split("\n").map(r=>r.split(","));
+const rows=data.trim().split("\n").map(r=>r.split(","));
 
 rows.shift();
 
-restaurants = rows;
+restaurants=rows.map(r=>r[0]);
 
-buildTypeFilter();
-
-filter();
+buildSelectors();
+filterWheel();
 
 });
 
 }
 
-function buildTypeFilter(){
+function buildSelectors(){
 
-const types = new Set();
+const players=["Beau","Cody","Sean","Levi"];
+
+players.forEach(p=>{
+
+const select=document.getElementById(p);
+
+select.innerHTML="<option value='any'>Any</option>";
 
 restaurants.forEach(r=>{
-types.add(r[1]);
+const o=document.createElement("option");
+o.value=r;
+o.text=r;
+select.appendChild(o);
 });
 
-const dropdown = document.getElementById("typeFilter");
-
-types.forEach(type=>{
-
-const opt=document.createElement("option");
-opt.value=type;
-opt.text=type;
-dropdown.appendChild(opt);
+select.addEventListener("change",filterWheel);
 
 });
 
 }
 
-document.getElementById("typeFilter").addEventListener("change",filter);
+function filterWheel(){
 
-function filter(){
+const players=["Beau","Cody","Sean","Levi"];
 
-const type=document.getElementById("typeFilter").value;
+const picks=players.map(p=>document.getElementById(p).value)
+.filter(v=>v!="any");
 
-if(type==="all"){
+if(picks.length===0){
+
 filtered=[...restaurants];
+
 }else{
-filtered=restaurants.filter(r=>r[1]===type);
+
+filtered=restaurants.filter(r=>picks.includes(r));
+
 }
 
 drawWheel();
@@ -137,17 +184,19 @@ function drawWheel(){
 
 ctx.clearRect(0,0,500,500);
 
-arc = Math.PI / (filtered.length/2);
+arc=Math.PI/(filtered.length/2);
 
 for(let i=0;i<filtered.length;i++){
 
-const angle=startAngle+i*arc;
+let angle=startAngle+i*arc;
 
-ctx.fillStyle = i%2===0 ? "#ffcc00" : "#ff6600";
+ctx.fillStyle=`hsl(${i*60},80%,60%)`;
 
 ctx.beginPath();
+
 ctx.arc(250,250,200,angle,angle+arc,false);
 ctx.arc(250,250,0,angle+arc,angle,true);
+
 ctx.fill();
 
 ctx.save();
@@ -161,7 +210,7 @@ ctx.translate(
 
 ctx.rotate(angle+arc/2+Math.PI/2);
 
-ctx.fillText(filtered[i][0],-ctx.measureText(filtered[i][0]).width/2,0);
+ctx.fillText(filtered[i],-ctx.measureText(filtered[i]).width/2,0);
 
 ctx.restore();
 
@@ -173,29 +222,27 @@ drawArrow();
 
 function drawArrow(){
 
-ctx.fillStyle="black";
+ctx.fillStyle="white";
 
 ctx.beginPath();
 
-ctx.moveTo(250-10,20);
-ctx.lineTo(250+10,20);
-ctx.lineTo(250+10,40);
-ctx.lineTo(250+20,40);
-ctx.lineTo(250,60);
-ctx.lineTo(250-20,40);
-ctx.lineTo(250-10,40);
+ctx.moveTo(250,20);
+ctx.lineTo(270,60);
+ctx.lineTo(230,60);
 
 ctx.fill();
 
 }
 
+let spinAngleStart;
+let spinTime=0;
+let spinTimeTotal=0;
+
 function spin(){
 
 spinAngleStart=Math.random()*10+10;
-
 spinTime=0;
-
-spinTimeTotal=Math.random()*3000+4000;
+spinTimeTotal=4000;
 
 rotateWheel();
 
@@ -207,25 +254,22 @@ spinTime+=30;
 
 if(spinTime>=spinTimeTotal){
 
-stopRotateWheel();
-
+stopWheel();
 return;
 
 }
 
-const spinAngle=spinAngleStart-easeOut(spinTime,0,spinAngleStart,spinTimeTotal);
+let spinAngle=spinAngleStart-easeOut(spinTime,0,spinAngleStart,spinTimeTotal);
 
 startAngle+=spinAngle*Math.PI/180;
 
 drawWheel();
 
-spinTimeout=setTimeout(rotateWheel,30);
+setTimeout(rotateWheel,30);
 
 }
 
-function stopRotateWheel(){
-
-clearTimeout(spinTimeout);
+function stopWheel(){
 
 const degrees=startAngle*180/Math.PI+90;
 
@@ -233,22 +277,60 @@ const arcd=arc*180/Math.PI;
 
 const index=Math.floor((360-degrees%360)/arcd);
 
-document.getElementById("result").innerText="Lunch: "+filtered[index][0];
+const winner=filtered[index];
+
+document.getElementById("winner").innerHTML=
+"🎉 "+winner+" 🎉";
+
+confetti();
 
 }
 
 function easeOut(t,b,c,d){
 
-const ts=(t/=d)*t;
-const tc=ts*t;
+let ts=(t/=d)*t;
+let tc=ts*t;
 
 return b+c*(tc+-3*ts+3*t);
+
+}
+
+function confetti(){
+
+for(let i=0;i<40;i++){
+
+const div=document.createElement("div");
+
+div.style.position="fixed";
+div.style.left=Math.random()*100+"%";
+div.style.top="-10px";
+div.style.width="8px";
+div.style.height="8px";
+div.style.background=`hsl(${Math.random()*360},100%,50%)`;
+
+div.style.animation="fall 2s linear";
+
+document.body.appendChild(div);
+
+setTimeout(()=>div.remove(),2000);
+
+}
 
 }
 
 fetchData();
 
 </script>
+
+<style>
+
+@keyframes fall{
+to{
+transform:translateY(800px) rotate(720deg);
+}
+}
+
+</style>
 
 </body>
 </html>
