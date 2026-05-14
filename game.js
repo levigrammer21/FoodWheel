@@ -168,7 +168,7 @@ const ITEMS = [
   {name:"Copper Amulet",     type:"Amulet",stat:"def",base:2,  rarity:"common",   emoji:"📿",image:"",dropRate:14,shopPrice:50},
   // UNCOMMON — also in shop
   {name:"Iron Chestplate",   type:"Armour",stat:"def",base:12, rarity:"uncommon", emoji:"🦺",image:"",dropRate:12,shopPrice:350},
-  {name:"Silver Blade",      type:"Weapon",stat:"str",base:20, rarity:"uncommon", emoji:"🗡️",image:"img/items/silver_blade.png",dropRate:12,shopPrice:400},
+  {name:"Silver Blade",      type:"Weapon",stat:"str",base:20, rarity:"uncommon", image:"img/items/silver_blade.png",dropRate:12,shopPrice:400},
   {name:"Mithril Ring",      type:"Amulet",stat:"def",base:9,  rarity:"uncommon", emoji:"💍",image:"",dropRate:10,shopPrice:280},
   {name:"Knight's Shield",   type:"Shield",stat:"def",base:14, rarity:"uncommon", emoji:"🛡️",image:"",dropRate:10,shopPrice:320},
   {name:"Chain Greaves",     type:"Greaves",stat:"def",base:8, rarity:"uncommon", emoji:"🦵",image:"",dropRate:10,shopPrice:260},
