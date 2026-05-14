@@ -1927,4 +1927,74 @@ function openItemModal(source,idx){
 }
 function equipItem(idx){
   const item=(P.inventory||[])[idx];if(!item)return;
-  const eq={...(P.equipped||{})},inv=[
+  const eq={...(P.equipped||{})},inv=[...(P.inventory||[])];
+  if(eq[item.type])inv.push(eq[item.type]);
+  inv.splice(inv.findIndex(i=>i.id===item.id),1);
+  eq[item.type]=item;P.equipped=eq;P.inventory=inv;
+  const{def:eDef}=equipStats(eq);
+  P.maxHp=maxHpCalc(P.level,(P.baseDef||5)+eDef,P.bonusHp||0);
+  P.hp=clamp(P.hp,1,P.maxHp);
+  saveP();closeModal();toast(`✅ Equipped ${item.name}!`);renderGear();
+}
+function unequipItem(slot){
+  const item=P.equipped[slot];if(!item)return;
+  P.inventory=[...(P.inventory||[]),item];delete P.equipped[slot];
+  const{def:eDef}=equipStats(P.equipped);
+  P.maxHp=maxHpCalc(P.level,(P.baseDef||5)+eDef,P.bonusHp||0);
+  P.hp=clamp(P.hp,1,P.maxHp);
+  saveP();closeModal();toast(`📦 Unequipped ${item.name}`);renderGear();
+}
+function dropInventory(idx){
+  const item=(P.inventory||[])[idx];if(!item)return;
+  P.inventory=P.inventory.filter((_,i)=>i!==idx);
+  saveP();closeModal();toast(`🗑️ Dropped ${item.name}`);renderGear();
+}
+function dropEquipped(slot){
+  const item=P.equipped[slot];if(!item)return;
+  delete P.equipped[slot];
+  const{def:eDef}=equipStats(P.equipped);
+  P.maxHp=maxHpCalc(P.level,(P.baseDef||5)+eDef,P.bonusHp||0);
+  P.hp=clamp(P.hp,1,P.maxHp);
+  saveP();closeModal();toast(`🗑️ Dropped ${item.name}`);renderGear();
+}
+function closeModal(){
+  document.getElementById("modal-overlay").style.display="none";
+  if(combatState&&combatState.done){combatState=null;P.activeCombat=null;saveP();}
+  else if(combatState&&!combatState.done){
+    clearInterval(combatInterval);combatInterval=null;
+    P.activeCombat=serializeCombat(combatState);saveP();
+    if(TAB==="home")renderHome();
+  }
+}
+
+// ── TOAST ─────────────────────────────────────────────────────
+function toast(msg){
+  const el=document.createElement("div");
+  el.className="toast";el.textContent=msg;
+  document.getElementById("toast-container").appendChild(el);
+  setTimeout(()=>{el.classList.add("dying");setTimeout(()=>el.remove(),300);},2800);
+}
+
+// ── EXPOSE ────────────────────────────────────────────────────
+window.G={
+  switchAuthTab,handleEmailAuth,handleGoogleAuth,handleSetUsername,
+  showTab,takeStep,closeModal,
+  selectArea,
+  openItemModal,equipItem,unequipItem,dropInventory,dropEquipped,
+  promptSell,confirmSell,buyListing,cancelListing,buyShopItem,buyConsumable,
+  sellToNpc,
+  mTab,
+  claimQuest,
+  startArenaBattle,
+  doDeposit,doWithdraw,
+  handleSignOut,
+  equipAvatar,openAvatarCollection,
+  lbTab,
+  fleeCombat,healInCombat,resumeCombat,abandonCombat,
+  // Properties
+  buyProperty,setHome,unsetHome,sellProperty,confirmSellProperty,claimRent,
+  // Stat points
+  openStatModal,spendStat,
+  // Choice events
+  resolveChoice,
+};
