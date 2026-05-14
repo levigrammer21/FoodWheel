@@ -44,6 +44,42 @@ const FIREBASE_CONFIG={
 const PLAYER_AVATAR = { emoji:"🧙", image:"" };
 const WALK_BUTTON   = { emoji:"⚔️", image:"" };
 
+// ── AVATAR DROPS ─────────────────────────────────────────────
+// Avatars are rare collectible GIFs that drop while exploring.
+// Players collect them and can equip any they've found.
+// They show in combat, leaderboard, profile, and header.
+//
+// HOW TO ADD AVATARS:
+// 1. Upload your GIF to img/avatars/ in your GitHub repo
+// 2. Copy a block below and fill in the details
+// 3. Set image: "img/avatars/yourfile.gif"
+// 4. Leave image:"" to use emoji as placeholder until you have art
+//
+// rarity: "rare" | "epic" | "legendary"
+// dropRate: weight relative to others (higher = drops more)
+
+const AVATARS = [
+  // ── RARE ──────────────────────────────────────────────────
+  {id:"av_wolf",      name:"Shadow Wolf",    emoji:"🐺", image:"", rarity:"rare",      dropRate:8,  desc:"Runs alone through the dark."},
+  {id:"av_knight",    name:"Iron Knight",    emoji:"⚔️", image:"", rarity:"rare",      dropRate:8,  desc:"Steel and honour."},
+  {id:"av_rogue",     name:"Night Rogue",    emoji:"🗡️", image:"", rarity:"rare",      dropRate:8,  desc:"Silent. Deadly. Gone."},
+  {id:"av_ranger",    name:"Forest Ranger",  emoji:"🏹", image:"", rarity:"rare",      dropRate:7,  desc:"One with the wild."},
+  {id:"av_mage",      name:"Storm Mage",     emoji:"🧙", image:"", rarity:"rare",      dropRate:7,  desc:"Commands lightning and thunder."},
+  // ── EPIC ──────────────────────────────────────────────────
+  {id:"av_dragon",    name:"Dragonborn",     emoji:"🐉", image:"", rarity:"epic",      dropRate:3,  desc:"Blessed by ancient fire."},
+  {id:"av_lich",      name:"Lich Ascendant", emoji:"💀", image:"", rarity:"epic",      dropRate:3,  desc:"Death is just the beginning."},
+  {id:"av_phoenix",   name:"Phoenix Risen",  emoji:"🔥", image:"", rarity:"epic",      dropRate:3,  desc:"Born from the ashes, again."},
+  {id:"av_void",      name:"Void Walker",    emoji:"🌌", image:"", rarity:"epic",      dropRate:2,  desc:"Steps between worlds."},
+  // ── LEGENDARY ─────────────────────────────────────────────
+  {id:"av_celestial", name:"Celestial Lord", emoji:"✨", image:"", rarity:"legendary", dropRate:0.5,desc:"Touched by the gods themselves."},
+  {id:"av_chaos",     name:"Chaos Herald",   emoji:"🌀", image:"", rarity:"legendary", dropRate:0.5,desc:"Order fears this one."},
+  {id:"av_champion",  name:"Eternal Champion",emoji:"👑",image:"", rarity:"legendary", dropRate:0.4,desc:"The last one standing, always."},
+  // ── ADD NEW AVATARS HERE ───────────────────────────────────
+  // {id:"av_yourname", name:"Your Avatar", emoji:"🔥",
+  //  image:"img/avatars/your_avatar.gif",
+  //  rarity:"epic", dropRate:2, desc:"Your flavour text here."},
+];
+
 // ── GAME SETTINGS ────────────────────────────────────────────
 const CFG = {
   MAX_ENERGY:       5,
@@ -58,6 +94,7 @@ const CFG = {
   DAILY_QUEST_RESET_HOUR: 0,         // UTC hour quests reset (0 = midnight)
   POTION_HEAL_SMALL: 0.3,            // heals 30% of max HP
   POTION_HEAL_BIG:   0.7,            // heals 70% of max HP
+  AVATAR_DROP_CHANCE:0.04,           // 4% chance per item drop to also roll an avatar
 };
 
 // ── ARENA TIERS ──────────────────────────────────────────────
@@ -162,6 +199,36 @@ const ITEMS = [
   //  emoji:"🔥", image:"img/items/fire_amulet.png", dropRate:5},
 ];
 
+// ── PETS ─────────────────────────────────────────────────────
+// Pets are equippable companions. They work exactly like gear
+// but go in the Pet slot. They can give STR or DEF bonuses.
+// Use GIFs for animated pets! e.g. image:"img/pets/cat.gif"
+//
+// Fields are the same as ITEMS but type must be "Pet".
+// dropRate: how often they drop (recommend keeping low — pets are special!)
+
+const PETS = [
+  // UNCOMMON PETS
+  {name:"Baby Slime",    type:"Pet",stat:"def",base:6,  rarity:"uncommon",emoji:"🟢",image:"",dropRate:8,  desc:"Wobbly but loyal."},
+  {name:"Forest Sprite", type:"Pet",stat:"str",base:7,  rarity:"uncommon",emoji:"🧚",image:"",dropRate:7,  desc:"Zips around your shoulder."},
+  {name:"Tamed Rat",     type:"Pet",stat:"def",base:5,  rarity:"uncommon",emoji:"🐀",image:"",dropRate:8,  desc:"Surprisingly useful."},
+  // RARE PETS
+  {name:"Shadow Cat",    type:"Pet",stat:"str",base:14, rarity:"rare",    emoji:"🐈",image:"",dropRate:4,  desc:"Vanishes in dim light."},
+  {name:"Storm Hawk",    type:"Pet",stat:"str",base:16, rarity:"rare",    emoji:"🦅",image:"",dropRate:3,  desc:"Dives at your enemies."},
+  {name:"Crystal Turtle",type:"Pet",stat:"def",base:18, rarity:"rare",    emoji:"🐢",image:"",dropRate:3,  desc:"A walking shield."},
+  {name:"Baby Dragon",   type:"Pet",stat:"str",base:20, rarity:"rare",    emoji:"🐉",image:"",dropRate:2,  desc:"Breathes tiny flames."},
+  // EPIC PETS
+  {name:"Void Familiar", type:"Pet",stat:"str",base:30, rarity:"epic",    emoji:"👁️",image:"",dropRate:1,  desc:"Sees through walls. And lies."},
+  {name:"Lava Pup",      type:"Pet",stat:"str",base:28, rarity:"epic",    emoji:"🔥",image:"",dropRate:1,  desc:"Always warm. Always angry."},
+  {name:"Frost Wolf",    type:"Pet",stat:"def",base:32, rarity:"epic",    emoji:"🐺",image:"",dropRate:1,  desc:"Howls before every battle."},
+  // LEGENDARY PETS
+  {name:"Ancient Phoenix",type:"Pet",stat:"str",base:50,rarity:"legendary",emoji:"🦅",image:"",dropRate:0.2,desc:"Reborn every battle."},
+  {name:"Celestial Crab", type:"Pet",stat:"def",base:55,rarity:"legendary",emoji:"🦀",image:"",dropRate:0.2,desc:"Claws from another dimension."},
+  // ── ADD NEW PETS HERE ─────────────────────────────────────
+  // {name:"My Pet", type:"Pet", stat:"str", base:25, rarity:"rare",
+  //  emoji:"🦊", image:"img/pets/fox.gif", dropRate:2, desc:"A cool pet."},
+];
+
 // ── NPC SHOP: CONSUMABLES ────────────────────────────────────
 // These are always available to buy in the shop tab.
 // You can add new ones here.
@@ -174,12 +241,98 @@ const SHOP_CONSUMABLES = [
   // {id:"luck_charm", name:"Luck Charm", emoji:"🍀", desc:"Next step always finds an item", price:400, effect:"next_item"},
 ];
 
+// ── WALK FLAVOR TEXT ─────────────────────────────────────────
+// These appear in the feed when a step finds nothing special.
+// Each entry: { emoji, text }
+// Add as many as you want — one is picked randomly each time.
+// Keep them short — they show in a single feed row.
+
+const WALK_EVENTS = [
+  // Nature / environment
+  {emoji:"🌿", text:"You walk through the quiet forest."},
+  {emoji:"🍃", text:"Leaves rustle overhead. Nothing stirs."},
+  {emoji:"🌧️", text:"A light rain begins to fall."},
+  {emoji:"☀️", text:"The sun breaks through the canopy."},
+  {emoji:"🌫️", text:"Fog rolls in from the valley below."},
+  {emoji:"🍂", text:"Autumn leaves crunch under your boots."},
+  {emoji:"❄️", text:"Your breath mists in the cold air."},
+  {emoji:"🌊", text:"You hear distant waves. No coast in sight."},
+  {emoji:"⛅", text:"Clouds drift lazily overhead."},
+  {emoji:"🌙", text:"The moon watches from between the trees."},
+  {emoji:"🌄", text:"The horizon glows with fading light."},
+  {emoji:"🌸", text:"Cherry blossoms drift across the path."},
+  {emoji:"🍄", text:"Strange mushrooms line the trail. You leave them alone."},
+  {emoji:"🪨", text:"Ancient stones mark the old road."},
+  {emoji:"🌺", text:"A strange flower blooms out of season."},
+  {emoji:"🦋", text:"A butterfly lands on your shoulder, then vanishes."},
+  {emoji:"🐦", text:"A bird sings from somewhere unseen."},
+  {emoji:"🦎", text:"A lizard watches you from a warm rock."},
+  {emoji:"🐌", text:"A snail crosses the path. You wait. Respect."},
+  {emoji:"🦔", text:"A hedgehog trundles past without acknowledging you."},
+  {emoji:"🌾", text:"Tall grass sways on either side of the path."},
+  {emoji:"🏔️", text:"Mountains loom in the distance."},
+  {emoji:"🌵", text:"A lone cactus stands defiantly in your path."},
+  {emoji:"🕸️", text:"An elaborate spiderweb catches the morning dew."},
+
+  // Eerie / mysterious
+  {emoji:"👁️", text:"You feel like something is watching. Nothing there."},
+  {emoji:"🪦", text:"An unmarked grave sits beside the road. Fresh flowers on it."},
+  {emoji:"🔮", text:"You find a glass bead on the ground. Warm to the touch."},
+  {emoji:"🗝️", text:"A rusted key lies in the dirt. No lock in sight."},
+  {emoji:"📜", text:"Tattered parchment blows past. The writing fades as you read."},
+  {emoji:"🕯️", text:"A lit candle sits on a stump. Who left it here?"},
+  {emoji:"🔔", text:"A distant bell rings once. Then silence."},
+  {emoji:"🌀", text:"The air shimmers for a moment. Magic residue, maybe."},
+  {emoji:"💀", text:"Bones of something large litter the clearing. Old."},
+  {emoji:"🪤", text:"You spot a trap in the path. You step around it."},
+  {emoji:"🗿", text:"A face carved in stone stares from the undergrowth."},
+  {emoji:"🧿", text:"Someone left an amulet hanging from a branch."},
+  {emoji:"🌑", text:"A shadow moves against the wind. Gone when you look."},
+  {emoji:"🦉", text:"An owl watches you in broad daylight. Unusual."},
+
+  // Humorous / casual
+  {emoji:"💨", text:"A tumbleweed rolls by. Where did that even come from?"},
+  {emoji:"🥾", text:"Your boots are getting muddy. Worth it."},
+  {emoji:"😤", text:"You trip on a root. No one saw that. Probably."},
+  {emoji:"🎵", text:"You catch yourself humming. Not sure what song."},
+  {emoji:"🤔", text:"You ponder the mysteries of the realm. Nothing conclusive."},
+  {emoji:"😴", text:"A monster naps under a tree. You tiptoe past."},
+  {emoji:"🧱", text:"A wall. Just a wall. In the middle of nowhere."},
+  {emoji:"🎲", text:"You find a loaded die on the ground. Keep it? You keep it."},
+  {emoji:"📦", text:"An empty chest sits open by the path. Already looted."},
+  {emoji:"🪑", text:"Someone left a chair out here. Comfy-looking. You don't sit."},
+  {emoji:"🏳️", text:"A white flag waves from a tree. Whoever was here, they lost."},
+  {emoji:"🍖", text:"A half-eaten leg of something sits on a rock. Still warm."},
+  {emoji:"🧦", text:"One boot. Just the one. No explanation."},
+  {emoji:"💬", text:"You talk to yourself. No one talks back. Normal."},
+  {emoji:"🎯", text:"An arrow is embedded in a tree. It missed. Badly."},
+
+  // World-building / lore
+  {emoji:"⚔️", text:"Scorch marks scar the earth. A battle happened here."},
+  {emoji:"🏰", text:"Ruins of something old crumble in the distance."},
+  {emoji:"🚩", text:"A faded banner from a forgotten kingdom hangs from a branch."},
+  {emoji:"🛖", text:"An abandoned camp. The fire went cold days ago."},
+  {emoji:"📿", text:"Prayer beads hang from a low branch. Left as an offering."},
+  {emoji:"🪙", text:"A coin from a realm you don't recognize. No value here."},
+  {emoji:"🌉", text:"You cross an old bridge. The river below runs black."},
+  {emoji:"⛺", text:"Traveller tracks in the mud. They went the other way."},
+  {emoji:"🧭", text:"Your compass spins once, then settles. Odd."},
+  {emoji:"📯", text:"A distant horn sounds. Far away. Maybe a warning."},
+  {emoji:"🗺️", text:"A torn map flutters past. It's not of anywhere you know."},
+  {emoji:"🔥", text:"Smoke rises somewhere to the east. Not your problem. Probably."},
+  {emoji:"🪬", text:"Ritual markings on the rocks. Recent."},
+
+  // ── ADD YOUR OWN WALK EVENTS HERE ─────────────────────────
+  // {emoji:"🦊", text:"A fox crosses your path and gives you a look."},
+  // {emoji:"🌈", text:"A rainbow appears. It points nowhere useful."},
+];
+
 // ============================================================
 //  ENGINE — no need to edit below this line
 // ============================================================
 
-const EQUIP_SLOTS  = ["Helmet","Armour","Weapon","Shield","Greaves","Boots","Amulet"];
-const SLOT_EMOJI   = {Helmet:"🪖",Armour:"🦺",Weapon:"⚔️",Shield:"🛡️",Greaves:"🦵",Boots:"👢",Amulet:"💍"};
+const EQUIP_SLOTS  = ["Helmet","Armour","Weapon","Shield","Greaves","Boots","Amulet","Pet"];
+const SLOT_EMOJI   = {Helmet:"🪖",Armour:"🦺",Weapon:"⚔️",Shield:"🛡️",Greaves:"🦵",Boots:"👢",Amulet:"💍",Pet:"🐾"};
 const RARITY_COLOR = {common:"#9ca3af",uncommon:"#34d399",rare:"#60a5fa",epic:"#c084fc",legendary:"#fbbf24"};
 const RARITY_VAR   = {common:3,uncommon:5,rare:8,epic:12,legendary:20};
 const TIER_EMOJIS  = ["🪙","🥉","🥈","🥇","💠","💎","👑"];
@@ -236,6 +389,117 @@ function equipStats(eq){
 function gfx(image,emoji,size=32){
   if(image) return `<img src="${image}" alt="${emoji}" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.replaceWith(document.createTextNode('${emoji}'))">`;
   return emoji;
+}
+
+// ── AVATAR HELPERS ────────────────────────────────────────────
+function getActiveAvatar(){
+  const id=P.activeAvatar;
+  if(!id)return null;
+  return AVATARS.find(a=>a.id===id)||null;
+}
+
+function avatarGfx(size=32){
+  const av=getActiveAvatar();
+  if(av&&av.image) return `<img src="${av.image}" alt="${av.emoji}" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:4px">`;
+  if(av) return av.emoji;
+  if(PLAYER_AVATAR.image) return `<img src="${PLAYER_AVATAR.image}" alt="${PLAYER_AVATAR.emoji}" style="width:${size}px;height:${size}px;object-fit:contain">`;
+  return PLAYER_AVATAR.emoji;
+}
+
+function avatarGfxFor(plyr,size=24){
+  const id=plyr.activeAvatar;
+  const av=id?AVATARS.find(a=>a.id===id):null;
+  if(av&&av.image) return `<img src="${av.image}" alt="${av.emoji}" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:3px">`;
+  if(av) return `<span style="font-size:${Math.round(size*0.7)}px">${av.emoji}</span>`;
+  if(PLAYER_AVATAR.image) return `<img src="${PLAYER_AVATAR.image}" alt="${PLAYER_AVATAR.emoji}" style="width:${size}px;height:${size}px;object-fit:contain">`;
+  return `<span style="font-size:${Math.round(size*0.7)}px">${PLAYER_AVATAR.emoji}</span>`;
+}
+
+function rollAvatar(){
+  const total=AVATARS.reduce((s,a)=>s+(a.dropRate||1),0);
+  let r=Math.random()*total;
+  for(const av of AVATARS){ r-=(av.dropRate||1); if(r<=0)return av; }
+  return AVATARS[0];
+}
+
+function tryAvatarDrop(){
+  if(Math.random()>CFG.AVATAR_DROP_CHANCE)return;
+  const av=rollAvatar();
+  const collected=P.avatars||[];
+  if(collected.includes(av.id)){
+    const bonus=rand(50,200);
+    P.gold=(P.gold||0)+bonus;
+    toast(`✨ Duplicate avatar converted to 🪙${bonus} gold!`);
+    saveP();
+    return;
+  }
+  P.avatars=[...collected,av.id];
+  saveP();
+  openAvatarDropModal(av);
+}
+
+function openAvatarDropModal(av){
+  const color=RARITY_COLOR[av.rarity]||"#9ca3af";
+  const imgHtml=av.image
+    ?`<img src="${av.image}" alt="${av.emoji}" style="width:80px;height:80px;object-fit:contain;border-radius:8px">`
+    :`<span style="font-size:3.5rem">${av.emoji}</span>`;
+  document.getElementById("modal-content").innerHTML=`
+    <div style="text-align:center;margin-bottom:0.75rem">
+      <div style="font-size:0.72rem;color:var(--gold2);font-family:'Cinzel',serif;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">✨ Avatar Unlocked!</div>
+      <div style="width:80px;height:80px;margin:0 auto 0.5rem;display:flex;align-items:center;justify-content:center">${imgHtml}</div>
+      <div style="font-family:'Cinzel',serif;font-size:1.05rem;color:${color};margin-bottom:0.2rem">${av.name}</div>
+      <div style="font-size:0.7rem;color:${color};text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem">${av.rarity}</div>
+      <div style="font-size:0.82rem;color:var(--text3);font-style:italic;margin-bottom:1rem">"${av.desc}"</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-gold" onclick="G.equipAvatar('${av.id}')">Equip This Avatar</button>
+      <button class="btn btn-ghost" onclick="G.closeModal()">Save for Later</button>
+    </div>`;
+  document.getElementById("modal-overlay").style.display="flex";
+}
+
+function equipAvatar(id){
+  P.activeAvatar=id;
+  saveP(); updateWalkBtn(); closeModal();
+  toast("✨ Avatar equipped!");
+  if(TAB==="you") renderYou();
+}
+
+function openAvatarCollection(){
+  const collected=P.avatars||[];
+  if(collected.length===0){
+    document.getElementById("modal-content").innerHTML=`
+      <div class="modal-title">🎭 Avatars</div>
+      <div style="text-align:center;color:var(--text3);padding:1.5rem;font-style:italic">
+        No avatars collected yet!<br><br>They drop rarely while exploring.<br>
+        <span style="font-size:0.75rem">Chance: ${Math.round(CFG.AVATAR_DROP_CHANCE*100)}% per item found</span>
+      </div>
+      <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`;
+    document.getElementById("modal-overlay").style.display="flex";
+    return;
+  }
+  const rows=AVATARS.filter(a=>collected.includes(a.id)).map(av=>{
+    const color=RARITY_COLOR[av.rarity];
+    const isActive=P.activeAvatar===av.id;
+    const imgHtml=av.image
+      ?`<img src="${av.image}" alt="${av.emoji}" style="width:44px;height:44px;object-fit:contain;border-radius:6px">`
+      :`<span style="font-size:2rem">${av.emoji}</span>`;
+    return`<div style="display:flex;align-items:center;gap:0.75rem;padding:0.65rem 0;border-bottom:1px solid var(--border)">
+      <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${imgHtml}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'Cinzel',serif;font-size:0.82rem;color:${color}">${av.name}</div>
+        <div style="font-size:0.68rem;color:var(--text3);margin-top:0.1rem">${av.rarity} · "${av.desc}"</div>
+      </div>
+      ${isActive
+        ?`<span style="font-size:0.7rem;color:var(--green2);font-family:'Cinzel',serif;flex-shrink:0">Active ✓</span>`
+        :`<button class="btn btn-gold btn-sm" onclick="G.equipAvatar('${av.id}')">Equip</button>`}
+    </div>`;
+  }).join("");
+  document.getElementById("modal-content").innerHTML=`
+    <div class="modal-title">🎭 Avatars (${collected.length}/${AVATARS.length})</div>
+    <div style="max-height:60vh;overflow-y:auto;margin-bottom:0.75rem">${rows}</div>
+    <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`;
+  document.getElementById("modal-overlay").style.display="flex";
 }
 
 function arenaT(wins){
@@ -381,6 +645,10 @@ function startGame(){
   updateWalkBtn();
   regenCheck();
   energyInterval=setInterval(regenCheck,15000);
+  // Restore any fight that was active when app was closed
+  if(P.activeCombat && !combatState){
+    combatState={...P.activeCombat, done:false};
+  }
   showTab("home");
 }
 
@@ -401,7 +669,7 @@ function updateWalkBtn(){
   btn.classList.toggle("no-energy",!P||P.energy<1);
   btn.innerHTML=WALK_BUTTON.image?`<img src="${WALK_BUTTON.image}" alt="⚔️">`:WALK_BUTTON.emoji;
   const ha=document.getElementById("hdr-avatar-el");
-  if(ha) ha.innerHTML=PLAYER_AVATAR.image?`<img src="${PLAYER_AVATAR.image}" alt="🧙">`:PLAYER_AVATAR.emoji;
+  if(ha) ha.innerHTML=avatarGfx(30);
   const hh=document.getElementById("hdr-hp");
   if(hh) hh.textContent=`❤️ ${P?P.hp:0}`;
   const hl=document.getElementById("hdr-level");
@@ -451,7 +719,7 @@ function renderHome(){
 
   document.getElementById("content").innerHTML=`
     <div class="player-banner">
-      <div class="p-avatar">${gfx(PLAYER_AVATAR.image,PLAYER_AVATAR.emoji,58)}</div>
+      <div class="p-avatar">${avatarGfx(58)}</div>
       <div class="p-info">
         <div class="p-name">${P.username}</div>
         <div class="p-class">Level ${P.level} Adventurer &nbsp;·&nbsp; <span style="color:${tier.color}">${tier.name} Arena</span></div>
@@ -492,6 +760,22 @@ function renderHome(){
         <div class="stat-badge"><em>👣 Steps</em><strong>${fmt(P.steps||0)}</strong></div>
       </div>
     </div>
+
+    ${(combatState&&!combatState.done)||P.activeCombat ? `
+    <div style="background:rgba(176,48,48,0.15);border:1px solid var(--crimson);border-radius:12px;
+      padding:0.85rem;margin-bottom:0.7rem;display:flex;align-items:center;gap:0.75rem">
+      <div style="font-size:1.5rem">⚔️</div>
+      <div style="flex:1">
+        <div style="font-family:'Cinzel',serif;font-size:0.82rem;color:var(--crimson2)">Battle in Progress!</div>
+        <div style="font-size:0.75rem;color:var(--text3);margin-top:0.15rem">
+          vs ${(combatState?.monster||P.activeCombat?.monster)?.name||"Unknown"}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.3rem">
+        <button class="btn btn-danger btn-sm" onclick="G.resumeCombat()">Resume</button>
+        <button class="btn btn-ghost btn-sm" style="font-size:0.62rem" onclick="G.abandonCombat()">Abandon</button>
+      </div>
+    </div>` : ""}
 
     <div class="two-col" style="margin-bottom:0.7rem">
       <button class="btn btn-steel btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('quests')">
@@ -831,8 +1115,10 @@ function renderMarketShop(){
   const body=document.getElementById("market-body");
   if(!body)return;
 
-  // NPC equipment (common + uncommon items with shopPrice)
   const shopItems=ITEMS.filter(i=>i.shopPrice>0);
+  // Common pets available in shop (uncommon rarity and below)
+  const shopPets=PETS.filter(p=>p.rarity==="common"||p.rarity==="uncommon");
+
   const equipHtml=shopItems.map((item,i)=>`
     <div class="shop-item">
       <div class="shop-icon">${gfx(item.image,item.emoji,40)}</div>
@@ -842,9 +1128,25 @@ function renderMarketShop(){
       </div>
       <div>
         <div class="shop-price">🪙${fmt(item.shopPrice)}</div>
-        <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem(${i})">Buy</button>
+        <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem('item',${i})">Buy</button>
       </div>
     </div>`).join("");
+
+  const petBasePrice=300;
+  const petHtml=shopPets.map((pet,i)=>{
+    const price=Math.round(petBasePrice*(pet.base/5));
+    return`<div class="shop-item">
+      <div class="shop-icon">${gfx(pet.image,pet.emoji,40)}</div>
+      <div class="shop-info">
+        <div class="shop-name" style="color:${RARITY_COLOR[pet.rarity]}">${pet.name}</div>
+        <div class="shop-desc">+~${pet.base} ${pet.stat==="str"?"STR":"DEF"} · Pet · "${pet.desc}"</div>
+      </div>
+      <div>
+        <div class="shop-price">🪙${fmt(price)}</div>
+        <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem('pet',${i})">Buy</button>
+      </div>
+    </div>`;
+  }).join("");
 
   const consumeHtml=SHOP_CONSUMABLES.map(c=>`
     <div class="shop-item">
@@ -863,6 +1165,8 @@ function renderMarketShop(){
     <div style="font-size:0.78rem;color:var(--text3);margin-bottom:0.6rem">Your gold: 🪙${fmt(P.gold)}</div>
     <div class="section-hdr">Consumables</div>
     ${consumeHtml}
+    <div class="section-hdr">🐾 Pets</div>
+    ${petHtml||`<div style="color:var(--text3);font-style:italic;font-size:0.85rem;padding:0.5rem">No pets in stock.</div>`}
     <div class="section-hdr">Equipment</div>
     ${equipHtml}`;
 }
@@ -946,16 +1250,25 @@ async function confirmSell(idx){
   renderMarket();
 }
 
-function buyShopItem(shopIdx){
-  const shopItems=ITEMS.filter(i=>i.shopPrice>0);
-  const template=shopItems[shopIdx];
+function buyShopItem(kind, idx){
+  let template, price;
+  if(kind==="pet"){
+    const shopPets=PETS.filter(p=>p.rarity==="common"||p.rarity==="uncommon");
+    template=shopPets[idx];
+    price=Math.round(300*(template.base/5));
+  } else {
+    const shopItems=ITEMS.filter(i=>i.shopPrice>0);
+    template=shopItems[idx];
+    price=template.shopPrice;
+  }
   if(!template)return;
-  if((P.gold||0)<template.shopPrice){toast("💰 Not enough gold!");return;}
+  if((P.gold||0)<price){toast("💰 Not enough gold!");return;}
   const val=rollItemStat(template);
-  const item={...template,val,id:`item_${Date.now()}_${rand(0,9999)}`};
+  const item={...template,val,base:template.base,id:`item_${Date.now()}_${rand(0,9999)}`};
   delete item.shopPrice; delete item.dropRate;
-  P.gold-=template.shopPrice;
+  P.gold-=price;
   P.inventory=[...(P.inventory||[]),item];
+  P.itemsFound=(P.itemsFound||0)+1;
   saveP();
   updateQuestProgress("items");
   toast(`🛒 Bought ${item.name} (+${val} ${item.stat==="str"?"STR":"DEF"})!`);
@@ -982,44 +1295,86 @@ function applyConsumable(effect){
 }
 
 // ── SOCIAL / LEADERBOARD ─────────────────────────────────────
+let _lbCache=null;
+
 async function renderSocial(){
   document.getElementById("content").innerHTML=`<div class="card"><div style="text-align:center;color:var(--text3);padding:1rem">Loading...</div></div>`;
-  const all=await loadLeaderboard();
-  const byLv=[...all].sort((a,b)=>b.level-a.level||(b.exp||0)-(a.exp||0)).slice(0,10);
-  const byKi=[...all].sort((a,b)=>(b.npcKills||0)-(a.npcKills||0)).slice(0,10);
-  const byAr=[...all].sort((a,b)=>(b.arenaWins||0)-(a.arenaWins||0)).slice(0,10);
-
-  const row=(p,i,val)=>{
-    const rc=i===0?"r1":i===1?"r2":i===2?"r3":"";
-    const you=p.username===P.username?`<span class="lb-you">(you)</span>`:"";
-    return`<div class="lb-row">
-      <div class="lb-rank ${rc}">${i===0?"👑":i+1}</div>
-      <div class="lb-name">${p.username} ${you}</div>
-      <div class="lb-val">${val}</div>
-    </div>`;
-  };
-
+  _lbCache=await loadLeaderboard();
   document.getElementById("content").innerHTML=`
-    <div class="card">
-      <div class="card-title">🏆 Level Rankings</div>
-      ${byLv.length===0?`<div style="text-align:center;color:var(--text3);font-style:italic;padding:0.5rem">No heroes yet!</div>`:byLv.map((p,i)=>row(p,i,`Lv.${p.level}`)).join("")}
+    <div class="tab-row" style="margin-bottom:0.75rem;flex-wrap:wrap;gap:3px" id="lb-tabs">
+      <button class="tab-btn active" onclick="G.lbTab('level')">🏆 Level</button>
+      <button class="tab-btn" onclick="G.lbTab('kills')">💀 Kills</button>
+      <button class="tab-btn" onclick="G.lbTab('arena')">⚔️ Arena</button>
+      <button class="tab-btn" onclick="G.lbTab('steps')">👣 Steps</button>
+      <button class="tab-btn" onclick="G.lbTab('gold')">🪙 Gold</button>
+      <button class="tab-btn" onclick="G.lbTab('items')">🎁 Items</button>
     </div>
-    <div class="card">
-      <div class="card-title">💀 Kill Rankings</div>
-      ${byKi.length===0?`<div style="text-align:center;color:var(--text3);font-style:italic;padding:0.5rem">No kills yet!</div>`:byKi.map((p,i)=>row(p,i,`${p.npcKills||0} kills`)).join("")}
-    </div>
-    <div class="card">
-      <div class="card-title">⚔️ Arena Rankings</div>
-      ${byAr.length===0?`<div style="text-align:center;color:var(--text3);font-style:italic;padding:0.5rem">No arena battles yet!</div>`:byAr.map((p,i)=>{
-        const ti=arenaT(p.arenaWins||0);
-        return row(p,i,`${TIER_EMOJIS[ti]} ${ARENA_TIERS[ti].name}`);
-      }).join("")}
-    </div>
-    <div class="card">
+    <div id="lb-body"></div>
+    <div class="card" style="margin-top:0.5rem">
       <div class="card-title">⚙️ Account</div>
       <button class="btn btn-ghost" onclick="G.showTab('you')">👤 My Profile</button>
       <button class="btn btn-ghost" onclick="G.handleSignOut()">Sign Out</button>
     </div>`;
+  lbTab("level");
+}
+
+function lbTab(type){
+  // Update active tab button
+  document.querySelectorAll("#lb-tabs .tab-btn").forEach((b,i)=>{
+    const types=["level","kills","arena","steps","gold","items"];
+    b.classList.toggle("active",types[i]===type);
+  });
+
+  const all=_lbCache||[];
+  let sorted, valFn, title;
+
+  if(type==="level"){
+    sorted=[...all].sort((a,b)=>b.level-a.level||(b.exp||0)-(a.exp||0));
+    valFn=p=>`Lv.${p.level}`;
+    title="🏆 Level Rankings";
+  } else if(type==="kills"){
+    sorted=[...all].sort((a,b)=>(b.npcKills||0)-(a.npcKills||0));
+    valFn=p=>`${fmt(p.npcKills||0)} kills`;
+    title="💀 Monster Kill Rankings";
+  } else if(type==="arena"){
+    sorted=[...all].sort((a,b)=>(b.arenaWins||0)-(a.arenaWins||0));
+    valFn=p=>{ const ti=arenaT(p.arenaWins||0); return `${TIER_EMOJIS[ti]} ${ARENA_TIERS[ti].name}`; };
+    title="⚔️ Arena Rankings";
+  } else if(type==="steps"){
+    sorted=[...all].sort((a,b)=>(b.steps||0)-(a.steps||0));
+    valFn=p=>`${fmt(p.steps||0)} steps`;
+    title="👣 Step Rankings";
+  } else if(type==="gold"){
+    sorted=[...all].sort((a,b)=>((b.gold||0)+(b.bank||0))-((a.gold||0)+(a.bank||0)));
+    valFn=p=>`🪙${fmt((p.gold||0)+(p.bank||0))}`;
+    title="🪙 Wealth Rankings";
+  } else {
+    sorted=[...all].sort((a,b)=>(b.itemsFound||0)-(a.itemsFound||0));
+    valFn=p=>`${p.itemsFound||0} items`;
+    title="🎁 Items Found Rankings";
+  }
+
+  const top=sorted.slice(0,10);
+  const body=document.getElementById("lb-body");
+  if(!body)return;
+
+  if(top.length===0){
+    body.innerHTML=`<div class="card"><div style="text-align:center;color:var(--text3);font-style:italic;padding:1rem">No data yet!</div></div>`;
+    return;
+  }
+
+  const rows=top.map((p,i)=>{
+    const rc=i===0?"r1":i===1?"r2":i===2?"r3":"";
+    const you=p.username===P.username?`<span class="lb-you">(you)</span>`:"";
+    return`<div class="lb-row">
+      <div class="lb-rank ${rc}">${i===0?"👑":i+1}</div>
+      <div style="width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${avatarGfxFor(p,24)}</div>
+      <div class="lb-name">${p.username} ${you}</div>
+      <div class="lb-val">${valFn(p)}</div>
+    </div>`;
+  }).join("");
+
+  body.innerHTML=`<div class="card"><div class="card-title">${title}</div>${rows}</div>`;
 }
 
 // ── PROFILE ──────────────────────────────────────────────────
@@ -1029,7 +1384,7 @@ function renderYou(){
   const tier=ARENA_TIERS[tierIdx];
   document.getElementById("content").innerHTML=`
     <div class="profile-hero">
-      <div class="profile-ava">${gfx(PLAYER_AVATAR.image,PLAYER_AVATAR.emoji,80)}</div>
+      <div class="profile-ava">${avatarGfx(80)}</div>
       <div class="profile-name">${P.username}</div>
       <div class="profile-level">Level ${P.level} · <span style="color:${tier.color}">${TIER_EMOJIS[tierIdx]} ${tier.name} League</span></div>
       <div class="profile-stats">
@@ -1042,8 +1397,10 @@ function renderYou(){
         <div class="ps-item"><div class="ps-val">${fmt(P.gold||0)}</div><div class="ps-key">🪙 Gold</div></div>
         <div class="ps-item"><div class="ps-val">${fmt(P.bank||0)}</div><div class="ps-key">🏦 Bank</div></div>
         <div class="ps-item"><div class="ps-val">${(P.inventory||[]).length}</div><div class="ps-key">🎒 Items</div></div>
+        <div class="ps-item"><div class="ps-val">${(P.avatars||[]).length}/${AVATARS.length}</div><div class="ps-key">🎭 Avatars</div></div>
       </div>
     </div>
+    <button class="btn btn-purple" onclick="G.openAvatarCollection()" style="margin-bottom:0.7rem">🎭 My Avatar Collection</button>
     <div class="card">
       <div class="card-title">⚙️ Account</div>
       <button class="btn btn-ghost" onclick="G.handleSignOut()">Sign Out</button>
@@ -1076,13 +1433,16 @@ function takeStep(){
   } else if(roll<CFG.MONSTER_CHANCE+CFG.GOLD_CHANCE+CFG.ITEM_CHANCE){
     const item=spawnItem();
     P.inventory=[...(P.inventory||[]),item];
+    P.itemsFound=(P.itemsFound||0)+1;
     const q=qualityLabel(item.val,item.base||item.val);
     addFeed(item.emoji,item.image,`Found a <strong>${item.name}</strong>! <span style="color:${q.color}">${q.label}</span>`,item.rarity,RARITY_COLOR[item.rarity]);
     toast(`${item.emoji} Found ${item.name} (+${item.val}) — ${q.label}!`);
     updateQuestProgress("items");
+    tryAvatarDrop();
     saveP(); showWalkFeed();
   } else {
-    addFeed("🌿","","You walk through the quiet forest.","Nothing","var(--text3)");
+    const w=pick(WALK_EVENTS);
+    addFeed(w.emoji,"",w.text,"Nothing","var(--text3)");
     saveP(); showWalkFeed();
   }
 }
@@ -1111,9 +1471,11 @@ function spawnMonster(){
 }
 
 function spawnItem(){
-  const total=ITEMS.reduce((s,i)=>s+(i.dropRate||10),0);
+  // Combine items and pets into one drop pool
+  const pool=[...ITEMS,...PETS];
+  const total=pool.reduce((s,i)=>s+(i.dropRate||10),0);
   let r=Math.random()*total;
-  for(const t of ITEMS){
+  for(const t of pool){
     r-=(t.dropRate||10);
     if(r<=0){
       const val=rollItemStat(t);
@@ -1131,10 +1493,93 @@ function openCombatModal(monster){
     playerHp:P.hp, playerMaxHp:P.maxHp,
     monsterHp:monster.hp,
     pStr:(P.baseStr||10)+eStr, pDef:(P.baseDef||5)+eDef,
-    log:[], done:false};
+    log:[], done:false, paused:false};
+  // Save combat state to player so backing out doesn't lose it
+  P.activeCombat=serializeCombat(combatState);
+  saveP();
   renderCombatModal();
   document.getElementById("modal-overlay").style.display="flex";
   combatInterval=setInterval(combatTick,900);
+}
+
+function serializeCombat(cs){
+  // Store the active fight so it can be resumed
+  return{
+    monster:cs.monster,
+    playerHp:cs.playerHp, playerMaxHp:cs.playerMaxHp,
+    monsterHp:cs.monsterHp,
+    pStr:cs.pStr, pDef:cs.pDef,
+    log:cs.log.slice(-20) // keep last 20 log lines
+  };
+}
+
+function resumeCombat(){
+  if(!P.activeCombat)return;
+  const saved=P.activeCombat;
+  combatState={...saved, done:false, paused:false};
+  renderCombatModal();
+  document.getElementById("modal-overlay").style.display="flex";
+  combatInterval=setInterval(combatTick,900);
+}
+
+function abandonCombat(){
+  // Abandoning = treated like a defeat, lose some HP and gold
+  clearInterval(combatInterval);
+  const penalty=rand(10,30);
+  P.gold=Math.max(0,(P.gold||0)-penalty);
+  P.hp=Math.max(1,Math.floor(P.maxHp*0.4));
+  P.activeCombat=null;
+  combatState=null;
+  saveP(); updateWalkBtn(); closeModal();
+  toast(`🏃 You fled! Lost ${penalty}🪙 and arrived injured.`);
+}
+
+function fleeCombat(){
+  // Flee mid-battle — costs gold, ends fight
+  if(!combatState||combatState.done)return;
+  clearInterval(combatInterval);
+  combatState.done=true;
+  const goldLost=rand(15,Math.min(80, Math.floor((P.gold||0)*0.1)+15));
+  P.gold=Math.max(0,(P.gold||0)-goldLost);
+  P.hp=combatState.playerHp;
+  P.activeCombat=null;
+  combatState.log.push(`<span class="log-sys">🏃 You fled the battle! Lost ${goldLost}🪙</span>`);
+  renderCombatModal();
+  saveP(); updateWalkBtn();
+  toast(`🏃 Escaped! But dropped ${goldLost}🪙 running away.`);
+}
+
+function healInCombat(){
+  // Use a healing potion mid-fight (pauses 1 tick)
+  if(!combatState||combatState.done)return;
+  const smallP=SHOP_CONSUMABLES.find(c=>c.id==="potion_small");
+  const bigP=SHOP_CONSUMABLES.find(c=>c.id==="potion_big");
+
+  // Check what player has gold for
+  const canAffordBig=(P.gold||0)>=bigP.price;
+  const canAffordSmall=(P.gold||0)>=smallP.price;
+  if(!canAffordSmall){
+    toast("💰 Can't afford any potions! Check the shop.");
+    return;
+  }
+
+  // Pick best affordable potion
+  if(canAffordBig && P.hp < P.maxHp*0.5){
+    // Low HP — use big potion
+    P.gold-=bigP.price;
+    const heal=Math.floor(combatState.playerMaxHp*CFG.POTION_HEAL_BIG);
+    combatState.playerHp=Math.min(combatState.playerMaxHp,combatState.playerHp+heal);
+    P.hp=combatState.playerHp;
+    combatState.log.push(`<span class="log-win">💊 You chug a Major Potion! +${heal} HP</span>`);
+  } else if(canAffordSmall){
+    P.gold-=smallP.price;
+    const heal=Math.floor(combatState.playerMaxHp*CFG.POTION_HEAL_SMALL);
+    combatState.playerHp=Math.min(combatState.playerMaxHp,combatState.playerHp+heal);
+    P.hp=combatState.playerHp;
+    combatState.log.push(`<span class="log-win">🧪 You drink a Minor Potion! +${heal} HP</span>`);
+  }
+  saveP();
+  renderCombatModal();
 }
 
 function renderCombatModal(){
@@ -1142,11 +1587,17 @@ function renderCombatModal(){
   const cs=combatState, m=cs.monster;
   const pPct=clamp((cs.playerHp/cs.playerMaxHp)*100,0,100);
   const mPct=clamp((cs.monsterHp/m.maxHp)*100,0,100);
+
+  // Check if player has potions they can afford
+  const smallPrice=SHOP_CONSUMABLES.find(c=>c.id==="potion_small")?.price||120;
+  const canHeal=(P.gold||0)>=smallPrice;
+  const hpLow=cs.playerHp<cs.playerMaxHp;
+
   document.getElementById("modal-content").innerHTML=`
     <div class="combat-scene">
       <div class="fighters">
         <div class="fighter">
-          <div class="f-img">${gfx(PLAYER_AVATAR.image,PLAYER_AVATAR.emoji,56)}</div>
+          <div class="f-img">${avatarGfx(56)}</div>
           <div class="f-name">${P.username}</div>
           <div class="f-hp">${cs.playerHp}/${cs.playerMaxHp}</div>
           <div class="f-bar"><div class="f-bar-fill" style="width:${pPct}%"></div></div>
@@ -1163,7 +1614,19 @@ function renderCombatModal(){
     <div class="combat-log" id="combat-log">${cs.log.join("<br>")||`<span class="log-sys">${m.desc||"Battle commences..."}</span>`}</div>
     ${cs.done
       ?`<button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`
-      :`<div style="text-align:center;color:var(--text3);font-size:0.8rem;font-style:italic">⚔️ Auto-battling...</div>`}`;
+      :`<div style="display:flex;gap:0.5rem;margin-top:0.1rem">
+          ${hpLow&&canHeal
+            ?`<button class="btn btn-green btn-sm" style="flex:1;padding:0.55rem" onclick="G.healInCombat()">
+                🧪 Heal (🪙${smallPrice})
+              </button>`
+            :`<button class="btn btn-ghost btn-sm" style="flex:1;padding:0.55rem;opacity:0.4" disabled>
+                🧪 Heal
+              </button>`}
+          <button class="btn btn-danger btn-sm" style="flex:1;padding:0.55rem" onclick="G.fleeCombat()">
+            🏃 Flee
+          </button>
+        </div>
+        <div style="text-align:center;color:var(--text3);font-size:0.75rem;margin-top:0.4rem;font-style:italic">⚔️ Auto-battling... Flee costs random gold.</div>`}`;
   const log=document.getElementById("combat-log");
   if(log)log.scrollTop=log.scrollHeight;
 }
@@ -1226,6 +1689,7 @@ function handleVictory(cs){
     :`⚔️ Victory! +${expGain} EXP · +${goldGain}🪙`);
   P.hp=clamp(P.hp,1,P.maxHp);
   combatState=null;
+  P.activeCombat=null;
   saveP();
   updateWalkBtn();
 }
@@ -1235,6 +1699,7 @@ function handleDefeat(cs){
   P.hp=Math.max(1,Math.floor(P.maxHp*0.25));
   toast("💀 Defeated! You rest and recover some HP. Buy potions in the shop!");
   combatState=null;
+  P.activeCombat=null;
   saveP();
   updateWalkBtn();
 }
@@ -1329,7 +1794,20 @@ function dropEquipped(slot){
 
 function closeModal(){
   document.getElementById("modal-overlay").style.display="none";
-  if(combatState&&combatState.done) combatState=null;
+  // If combat is done, clear it. If still going, pause it but keep state.
+  if(combatState&&combatState.done){
+    combatState=null;
+    P.activeCombat=null;
+    saveP();
+  } else if(combatState&&!combatState.done){
+    // Paused — stop the interval, keep combatState alive
+    clearInterval(combatInterval);
+    combatInterval=null;
+    P.activeCombat=serializeCombat(combatState);
+    saveP();
+    // Show resume banner on home
+    if(TAB==="home") renderHome();
+  }
 }
 
 // ── TOAST ─────────────────────────────────────────────────────
@@ -1352,4 +1830,7 @@ window.G={
   startArenaBattle,
   doDeposit, doWithdraw,
   handleSignOut,
+  equipAvatar, openAvatarCollection,
+  lbTab,
+  fleeCombat, healInCombat, resumeCombat, abandonCombat,
 };
