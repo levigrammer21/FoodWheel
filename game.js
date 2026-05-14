@@ -905,9 +905,23 @@ async function buyListing(id,price){
 }
 
 async function cancelListing(id,item){
+  async function cancelListing(id){
+  const snap=await getDoc(doc(db,"market",id));
+
+  if(!snap.exists()){
+    toast("Listing no longer exists.");
+    renderMarket();
+    return;
+  }
+
+  const listing=snap.data();
+
   await removeListing(id);
-  P.inventory=[...(P.inventory||[]),item];
+
+  P.inventory=[...(P.inventory||[]),listing.item];
+
   saveP();
+
   toast("📦 Listing cancelled, item returned.");
   renderMarket();
 }
