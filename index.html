@@ -131,7 +131,6 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
   text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.7rem;
   display:flex;align-items:center;gap:0.4rem}
 .card-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.card-title span{color:var(--text3)}
 
 /* ── PLAYER BANNER ── */
 .player-banner{background:linear-gradient(135deg,var(--surface),var(--surface2));
@@ -211,10 +210,15 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
 .inv-item-name{font-size:0.68rem;font-weight:600;line-height:1.2;margin-bottom:0.1rem}
 .inv-item-stat{font-size:0.62rem;color:var(--text3)}
 .inv-empty{text-align:center;padding:2rem;color:var(--text3);font-style:italic;font-size:0.88rem}
-
-/* roll quality badge */
 .quality-badge{position:absolute;top:3px;right:3px;font-size:0.55rem;font-family:'Cinzel',serif;
   padding:1px 4px;border-radius:4px;font-weight:700}
+
+/* ── WALK AREA SELECT ── */
+.area-card{border-radius:12px;padding:0.9rem;margin-bottom:0.5rem;cursor:pointer;
+  transition:border-color 0.2s,transform 0.15s;border:2px solid var(--border)}
+.area-card:active{transform:scale(0.98)}
+.area-card.selected{border-color:var(--gold2)}
+.area-card.locked{opacity:0.5;cursor:not-allowed;background:var(--bg3);border-color:var(--border)}
 
 /* ── QUESTS ── */
 .quest-item{background:var(--bg3);border:1px solid var(--border);border-radius:10px;
@@ -346,6 +350,20 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
 .info-box-key{font-size:0.65rem;color:var(--text3);margin-top:0.1rem}
 .pill{display:inline-block;padding:0.15rem 0.5rem;border-radius:20px;font-size:0.7rem;
   font-family:'Cinzel',serif;font-weight:600;letter-spacing:0.04em}
+
+/* ── STAT POINT MODAL ── */
+.stat-option{display:flex;align-items:center;justify-content:space-between;
+  padding:0.75rem;background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;margin-bottom:0.5rem;cursor:pointer;transition:border-color 0.18s}
+.stat-option:hover{border-color:var(--border2)}
+.stat-option-label{font-family:'Cinzel',serif;font-size:0.82rem}
+.stat-option-val{font-size:0.78rem;color:var(--text3)}
+
+/* ── PROPERTY CARD ── */
+.prop-card{background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:0.9rem;margin-bottom:0.5rem;transition:border-color 0.2s}
+.prop-card.owned-home{border-color:var(--gold2)}
+.prop-card.owned-rent{border-color:var(--green)}
 </style>
 </head>
 <body>
@@ -409,7 +427,7 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
         <span class="nav-icon">🎒</span>Gear
       </button>
       <div class="nav-center">
-        <div class="nav-walk" id="nav-walk" onclick="G.takeStep()">⚔️</div>
+        <div class="nav-walk" id="nav-walk" onclick="G.showTab('walk')">⚔️</div>
       </div>
       <button class="nav-btn" id="nav-market" onclick="G.showTab('market')">
         <span class="nav-icon">🏪</span>Market
@@ -421,9 +439,12 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
   </div>
 
 </div>
+
+<!-- MODAL -->
 <div id="modal-overlay" class="modal-overlay" style="display:none" onclick="G.closeModal()">
   <div class="modal" onclick="event.stopPropagation()" id="modal-content"></div>
 </div>
+
 <script src="game.js" type="module"></script>
 </body>
 </html>
