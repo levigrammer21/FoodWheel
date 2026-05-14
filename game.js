@@ -1000,6 +1000,7 @@ function renderWalkAreaSelect(){
       <div class="card-title">⚡ Energy ${P.energy}/${maxE}</div>
       <div class="bar bar-energy"><div class="bar-fill" style="width:${enPct}%"></div></div>
       <div style="font-size:0.78rem;color:var(--text3);margin-top:0.4rem">Each step costs 1 energy · Regen: 1 per 3 min</div>
+<button class="btn btn-steel" onclick="G.takeStep()" style="margin-top:0.6rem">⚔️ Take Step (${P.energy} EP)</button>
     </div>
     <div class="section-hdr">Choose Your Area</div>
     ${areaCards}${lockedCards}
