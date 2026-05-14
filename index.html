@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -12,62 +12,57 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0a0c10;--bg2:#0f1218;--bg3:#151a22;--surface:#1a2030;--surface2:#1f2838;
-  --border:#2a3448;--border2:#3d4f6e;
-  --gold:#c9943a;--gold2:#e8b84d;
-  --steel:#4a9eda;--steel2:#6ab8f0;
+  --bg:#0a0c10;--bg2:#0f1218;--bg3:#151a22;
+  --surface:#1a2030;--surface2:#1f2838;--surface3:#253040;
+  --border:#2a3448;--border2:#3d4f6e;--border3:#5a70a0;
+  --gold:#c9943a;--gold2:#e8b84d;--gold3:#fff0b3;
+  --steel:#4a9eda;--steel2:#6ab8f0;--steel3:#a0d4ff;
   --crimson:#b03030;--crimson2:#e04040;
-  --green:#2ecc71;
+  --green:#27ae60;--green2:#2ecc71;
+  --purple:#7c4dff;--purple2:#9c6dff;
   --text:#dce8f5;--text2:#8fa8c8;--text3:#4a6080;
   --common:#9ca3af;--uncommon:#34d399;--rare:#60a5fa;--epic:#c084fc;--legendary:#fbbf24;
+  --nav-h:62px;--hdr-h:52px;
 }
 html{height:100%;background:var(--bg)}
 body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
-  height:100%;display:flex;justify-content:center;background:var(--bg)}
+  height:100%;display:flex;justify-content:center;background:var(--bg);overflow:hidden}
+#app{width:100%;max-width:480px;height:100vh;height:100dvh;
+  display:flex;flex-direction:column;background:var(--bg2);overflow:hidden}
 
-#app{
-  width:100%;max-width:480px;
-  height:100vh;height:100dvh;
-  display:flex;flex-direction:column;
-  background:var(--bg2);overflow:hidden;
-}
-
+/* ── SCREENS ── */
 .screen{display:none;flex-direction:column;height:100%;overflow:hidden}
 .screen.active{display:flex}
 
-/* AUTH */
-#auth-screen{align-items:center;justify-content:center;padding:1.5rem;gap:1.5rem;
+/* ── AUTH ── */
+#auth-screen,#username-screen{
+  align-items:center;justify-content:center;padding:1.5rem;gap:1.2rem;
   background:linear-gradient(160deg,#080c14 0%,#0f1a2e 50%,#080e14 100%);overflow-y:auto}
 .auth-logo-text{font-family:'Cinzel',serif;font-size:2.8rem;font-weight:900;text-align:center;
   background:linear-gradient(135deg,var(--steel),var(--gold2),var(--steel2));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.08em}
-.auth-logo-sub{color:var(--text3);font-style:italic;font-size:0.9rem;letter-spacing:0.15em;
-  text-transform:uppercase;text-align:center}
+.auth-logo-sub{color:var(--text3);font-style:italic;font-size:0.88rem;
+  letter-spacing:0.15em;text-transform:uppercase;text-align:center}
 .auth-card{background:var(--surface);border:1px solid var(--border2);border-radius:16px;
   padding:1.5rem;width:100%;max-width:340px;box-shadow:0 30px 80px rgba(0,0,0,0.6)}
-
-#username-screen{align-items:center;justify-content:center;padding:2rem;
-  background:linear-gradient(160deg,#080c14,#0f1a2e,#080e14);overflow-y:auto}
-
 .tab-row{display:flex;background:var(--bg3);border-radius:8px;padding:3px;margin-bottom:1.2rem;gap:3px}
 .tab-btn{flex:1;padding:0.5rem;border:none;border-radius:6px;background:transparent;
   color:var(--text3);font-family:'Cinzel',serif;font-size:0.75rem;cursor:pointer;
   transition:all 0.2s;letter-spacing:0.05em}
 .tab-btn.active{background:var(--steel);color:white}
-
 .form-group{margin-bottom:0.85rem}
 .form-label{display:block;font-size:0.7rem;color:var(--text3);margin-bottom:0.3rem;
   font-family:'Cinzel',serif;letter-spacing:0.08em;text-transform:uppercase}
-.form-input{width:100%;padding:0.7rem 0.9rem;background:var(--bg3);
-  border:1px solid var(--border);border-radius:8px;color:var(--text);
-  font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.2s}
+.form-input{width:100%;padding:0.7rem 0.9rem;background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);font-family:'Crimson Pro',serif;font-size:1rem;
+  outline:none;transition:border-color 0.2s}
 .form-input:focus{border-color:var(--steel)}
-.error-box{background:rgba(176,48,48,0.2);border:1px solid var(--crimson);
-  border-radius:8px;padding:0.6rem;font-size:0.82rem;color:var(--crimson2);
-  text-align:center;margin-bottom:0.75rem}
+.error-box{background:rgba(176,48,48,0.2);border:1px solid var(--crimson);border-radius:8px;
+  padding:0.6rem;font-size:0.82rem;color:var(--crimson2);text-align:center;margin-bottom:0.75rem}
 .divider{display:flex;align-items:center;gap:0.75rem;margin:0.6rem 0;color:var(--text3);font-size:0.78rem}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
 
+/* ── BUTTONS ── */
 .btn{display:flex;align-items:center;justify-content:center;gap:0.5rem;
   width:100%;padding:0.8rem;border:none;border-radius:10px;
   font-family:'Cinzel',serif;font-size:0.82rem;font-weight:600;
@@ -76,68 +71,69 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
 .btn:active{transform:scale(0.96)}
 .btn:disabled{opacity:0.45;cursor:not-allowed;transform:none!important}
 .btn-steel{background:linear-gradient(135deg,#2a6090,var(--steel));color:white;box-shadow:0 4px 16px rgba(74,158,218,0.3)}
-.btn-gold{background:linear-gradient(135deg,#6b4a10,var(--gold));color:#1a0f00}
+.btn-steel:hover:not(:disabled){box-shadow:0 6px 22px rgba(74,158,218,0.5);transform:translateY(-1px)}
+.btn-gold{background:linear-gradient(135deg,#6b4a10,var(--gold));color:#1a0f00;box-shadow:0 4px 16px rgba(201,148,58,0.25)}
+.btn-gold:hover:not(:disabled){transform:translateY(-1px)}
+.btn-green{background:linear-gradient(135deg,#1a5a30,var(--green2));color:white}
+.btn-purple{background:linear-gradient(135deg,#3a1a80,var(--purple2));color:white}
 .btn-ghost{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--border2);color:var(--text)}
 .btn-danger{background:linear-gradient(135deg,#5a1010,var(--crimson));color:white}
+.btn-sm{padding:0.45rem 0.75rem;font-size:0.72rem;border-radius:7px;width:auto;margin-bottom:0}
 
-/* GAME LAYOUT */
-#header{height:52px;background:var(--bg3);border-bottom:1px solid var(--border);
-  padding:0 1rem;display:flex;align-items:center;gap:0.75rem;flex-shrink:0;z-index:10}
-.hdr-logo{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;
+/* ── HEADER ── */
+#header{height:var(--hdr-h);background:var(--bg3);border-bottom:1px solid var(--border);
+  padding:0 0.85rem;display:flex;align-items:center;gap:0.6rem;flex-shrink:0;z-index:10}
+.hdr-logo{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;
   background:linear-gradient(135deg,var(--steel),var(--gold2));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;flex:1}
-.hdr-level{font-family:'Cinzel',serif;font-size:0.78rem;color:var(--gold2);
-  background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:0.2rem 0.5rem}
-.hdr-avatar{width:34px;height:34px;background:var(--surface2);border:2px solid var(--border2);
+.hdr-level{font-family:'Cinzel',serif;font-size:0.75rem;color:var(--gold2);
+  background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:0.18rem 0.45rem}
+.hdr-hp{font-size:0.72rem;color:var(--crimson2);font-family:'Cinzel',serif}
+.hdr-avatar{width:32px;height:32px;background:var(--surface2);border:2px solid var(--border2);
   border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;cursor:pointer;overflow:hidden}
+  font-size:1rem;cursor:pointer;overflow:hidden;flex-shrink:0}
 .hdr-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 
+/* ── CONTENT ── */
 #content{flex:1;overflow-y:auto;overflow-x:hidden;padding:0.85rem;
   -webkit-overflow-scrolling:touch}
 #content::-webkit-scrollbar{width:3px}
 #content::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
-/* NAV */
-#nav{
-  height:62px;
-  background:var(--bg3);border-top:1px solid var(--border);
-  display:flex;align-items:center;flex-shrink:0;z-index:10;
-}
+/* ── NAV ── */
+#nav{height:var(--nav-h);background:var(--bg3);border-top:1px solid var(--border);
+  display:flex;align-items:center;flex-shrink:0;z-index:10}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
   height:100%;border:none;background:transparent;color:var(--text3);
-  font-family:'Cinzel',serif;font-size:0.55rem;cursor:pointer;gap:0.15rem;
+  font-family:'Cinzel',serif;font-size:0.52rem;cursor:pointer;gap:0.12rem;
   transition:color 0.2s;letter-spacing:0.04em;padding:0}
 .nav-btn.active{color:var(--gold2)}
-.nav-icon{font-size:1.25rem;line-height:1;display:block}
+.nav-icon{font-size:1.2rem;line-height:1;display:block}
 .nav-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
-.nav-walk{
-  width:52px;height:52px;
-  background:linear-gradient(135deg,#1a4a70,var(--steel));
-  border-radius:50%;border:3px solid var(--bg3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.4rem;cursor:pointer;
-  margin-top:-20px;
-  box-shadow:0 4px 20px rgba(74,158,218,0.5);
-  transition:all 0.18s;color:white;overflow:hidden;flex-shrink:0;
-}
+.nav-walk{width:52px;height:52px;background:linear-gradient(135deg,#1a4a70,var(--steel));
+  border-radius:50%;border:3px solid var(--bg3);display:flex;align-items:center;
+  justify-content:center;font-size:1.4rem;cursor:pointer;margin-top:-20px;
+  box-shadow:0 4px 20px rgba(74,158,218,0.5);transition:all 0.18s;
+  color:white;overflow:hidden;flex-shrink:0}
 .nav-walk img{width:55%;height:55%;object-fit:contain}
 .nav-walk:active{transform:scale(0.88)}
 .nav-walk.no-energy{background:linear-gradient(135deg,#1a1a2e,#2a2a40);
   box-shadow:0 2px 8px rgba(0,0,0,0.4);cursor:not-allowed}
 @keyframes walkPulse{
   0%,100%{box-shadow:0 4px 20px rgba(74,158,218,0.5)}
-  50%{box-shadow:0 4px 32px rgba(74,158,218,0.9),0 0 48px rgba(74,158,218,0.2)}
-}
+  50%{box-shadow:0 4px 32px rgba(74,158,218,0.9),0 0 48px rgba(74,158,218,0.2)}}
 .nav-walk:not(.no-energy){animation:walkPulse 2.5s ease-in-out infinite}
 
-/* CARDS */
+/* ── CARDS ── */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.9rem;margin-bottom:0.7rem}
 .card-title{font-family:'Cinzel',serif;font-size:0.68rem;color:var(--text3);
   text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.7rem;
   display:flex;align-items:center;gap:0.4rem}
 .card-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.card-title span{color:var(--text3)}
 
+/* ── PLAYER BANNER ── */
 .player-banner{background:linear-gradient(135deg,var(--surface),var(--surface2));
   border:1px solid var(--border2);border-radius:12px;padding:0.9rem;
   margin-bottom:0.7rem;display:flex;gap:0.9rem;align-items:center}
@@ -150,6 +146,7 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .p-class{font-size:0.78rem;color:var(--text3);margin-bottom:0.4rem}
 
+/* ── BARS ── */
 .bar-wrap{margin-bottom:0.35rem}
 .bar-labels{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--text3);margin-bottom:0.18rem}
 .bar{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden}
@@ -157,40 +154,48 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
 .bar-hp .bar-fill{background:linear-gradient(90deg,#7a1515,var(--crimson2))}
 .bar-exp .bar-fill{background:linear-gradient(90deg,#1a5a90,var(--steel2))}
 .bar-energy .bar-fill{background:linear-gradient(90deg,#7a4a10,var(--gold))}
+.bar-quest .bar-fill{background:linear-gradient(90deg,#1a5a30,var(--green2))}
+.bar-arena .bar-fill{background:linear-gradient(90deg,#4a1a80,var(--purple2))}
 
+/* ── STAT BADGES ── */
 .stat-row{display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.5rem}
 .stat-badge{background:var(--bg3);border:1px solid var(--border);border-radius:7px;
   padding:0.35rem 0.6rem;font-size:0.78rem;display:flex;align-items:center;gap:0.25rem}
 .stat-badge em{color:var(--text3);font-style:normal}
 .stat-badge strong{color:var(--gold2)}
 
+/* ── CURRENCY ── */
 .curr-row{display:flex;gap:0.5rem}
 .curr-item{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:0.55rem;text-align:center}
 .curr-amount{font-family:'Cinzel',serif;font-size:0.95rem;color:var(--gold2);font-weight:600}
 .curr-label{font-size:0.65rem;color:var(--text3);margin-top:0.1rem}
 
-/* FEED */
+/* ── FEED ── */
 .feed-empty{text-align:center;padding:3rem 1rem;color:var(--text3);font-style:italic;font-size:0.9rem}
 .feed-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  padding:0.7rem 0.9rem;display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem}
+  padding:0.65rem 0.85rem;display:flex;align-items:center;gap:0.7rem;margin-bottom:0.45rem}
 @keyframes feedIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 .feed-item{animation:feedIn 0.25s ease}
-.feed-icon{width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;
-  justify-content:center;font-size:1.4rem}
+.feed-icon{width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
 .feed-icon img{width:32px;height:32px;object-fit:contain;border-radius:4px}
-.feed-text{flex:1;font-size:0.88rem;color:var(--text2);line-height:1.3}
+.feed-text{flex:1;font-size:0.85rem;color:var(--text2);line-height:1.3}
 .feed-text strong{color:var(--text)}
-.feed-badge{font-size:0.75rem;font-family:'Cinzel',serif;padding:0.2rem 0.5rem;
+.feed-badge{font-size:0.72rem;font-family:'Cinzel',serif;padding:0.18rem 0.45rem;
   border-radius:5px;background:var(--surface2);white-space:nowrap}
 
-/* GEAR */
+/* ── SECTION HEADER ── */
+.section-hdr{font-family:'Cinzel',serif;font-size:0.65rem;text-transform:uppercase;
+  letter-spacing:0.15em;color:var(--text3);margin:0.85rem 0 0.5rem;
+  display:flex;align-items:center;gap:0.5rem}
+.section-hdr::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── GEAR / INVENTORY ── */
 .equip-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.45rem;margin-bottom:0.7rem}
 .equip-slot{background:var(--bg3);border:1px solid var(--border);border-radius:9px;
   padding:0.6rem;display:flex;align-items:center;gap:0.5rem;cursor:pointer;
   transition:border-color 0.2s;min-height:52px}
 .equip-slot:hover,.equip-slot.filled{border-color:var(--border2)}
-.es-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;flex-shrink:0}
+.es-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
 .es-icon img{width:28px;height:28px;object-fit:contain}
 .es-info{flex:1;min-width:0}
 .es-name{font-size:0.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -199,20 +204,63 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
 .es-type{font-size:0.6rem;color:var(--text3);flex-shrink:0}
 .inv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.45rem}
 .inv-item{background:var(--bg3);border:1px solid var(--border);border-radius:9px;
-  padding:0.6rem;text-align:center;cursor:pointer;transition:all 0.18s}
+  padding:0.6rem;text-align:center;cursor:pointer;transition:all 0.18s;position:relative}
 .inv-item:hover{border-color:var(--border2);transform:translateY(-1px)}
-.inv-icon{width:40px;height:40px;margin:0 auto 0.25rem;display:flex;align-items:center;
-  justify-content:center;font-size:1.6rem}
+.inv-icon{width:40px;height:40px;margin:0 auto 0.25rem;display:flex;align-items:center;justify-content:center;font-size:1.6rem}
 .inv-icon img{width:40px;height:40px;object-fit:contain}
 .inv-item-name{font-size:0.68rem;font-weight:600;line-height:1.2;margin-bottom:0.1rem}
 .inv-item-stat{font-size:0.62rem;color:var(--text3)}
 .inv-empty{text-align:center;padding:2rem;color:var(--text3);font-style:italic;font-size:0.88rem}
-.section-hdr{font-family:'Cinzel',serif;font-size:0.65rem;text-transform:uppercase;
-  letter-spacing:0.15em;color:var(--text3);margin:0.85rem 0 0.5rem;
-  display:flex;align-items:center;gap:0.5rem}
-.section-hdr::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* LEADERBOARD */
+/* roll quality badge */
+.quality-badge{position:absolute;top:3px;right:3px;font-size:0.55rem;font-family:'Cinzel',serif;
+  padding:1px 4px;border-radius:4px;font-weight:700}
+
+/* ── QUESTS ── */
+.quest-item{background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+  padding:0.75rem;margin-bottom:0.5rem}
+.quest-top{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem}
+.quest-icon{font-size:1.3rem;flex-shrink:0}
+.quest-info{flex:1}
+.quest-name{font-family:'Cinzel',serif;font-size:0.82rem;color:var(--text)}
+.quest-desc{font-size:0.75rem;color:var(--text3);margin-top:0.1rem}
+.quest-reward{font-size:0.72rem;color:var(--gold2);font-family:'Cinzel',serif}
+.quest-done{color:var(--green2)!important}
+
+/* ── ARENA ── */
+.arena-tier{text-align:center;padding:1rem 0;margin-bottom:0.5rem}
+.arena-tier-name{font-family:'Cinzel',serif;font-size:1.2rem;font-weight:700;margin-bottom:0.2rem}
+.arena-tier-sub{font-size:0.8rem;color:var(--text3);margin-bottom:0.75rem}
+
+/* ── MARKET ── */
+.market-item{background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+  padding:0.75rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.75rem}
+.market-icon{font-size:1.4rem;flex-shrink:0;width:36px;text-align:center}
+.market-info{flex:1;min-width:0}
+.market-name{font-size:0.85rem;font-weight:600}
+.market-seller{font-size:0.7rem;color:var(--text3);margin-top:0.1rem}
+.market-stat{font-size:0.72rem;color:var(--text2);margin-top:0.1rem}
+.market-price{font-family:'Cinzel',serif;font-size:0.9rem;color:var(--gold2);white-space:nowrap}
+
+/* ── SHOP ── */
+.shop-item{background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+  padding:0.75rem;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.75rem}
+.shop-icon{font-size:1.6rem;flex-shrink:0;width:40px;text-align:center}
+.shop-info{flex:1;min-width:0}
+.shop-name{font-size:0.88rem;font-weight:600;margin-bottom:0.1rem}
+.shop-desc{font-size:0.72rem;color:var(--text3)}
+.shop-price{font-family:'Cinzel',serif;font-size:0.88rem;color:var(--gold2);white-space:nowrap;text-align:right}
+
+/* ── BANK ── */
+.bank-display{text-align:center;padding:1rem;background:var(--bg3);border-radius:10px;margin-bottom:0.75rem}
+.bank-amount{font-family:'Cinzel',serif;font-size:2rem;color:var(--gold2);font-weight:700}
+.bank-label{font-size:0.78rem;color:var(--text3);margin-top:0.2rem}
+.bank-input-row{display:flex;gap:0.5rem;margin-bottom:0.5rem}
+.bank-input{flex:1;padding:0.65rem 0.8rem;background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);font-family:'Crimson Pro',serif;font-size:1rem;outline:none}
+.bank-input:focus{border-color:var(--gold)}
+
+/* ── LEADERBOARD ── */
 .lb-row{display:flex;align-items:center;gap:0.7rem;padding:0.55rem 0;border-bottom:1px solid var(--border)}
 .lb-row:last-child{border-bottom:none}
 .lb-rank{font-family:'Cinzel',serif;font-size:0.82rem;font-weight:700;width:22px;text-align:center;color:var(--text3)}
@@ -221,10 +269,9 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
 .lb-val{font-family:'Cinzel',serif;font-size:0.82rem;color:var(--gold2)}
 .lb-you{font-size:0.65rem;color:var(--text3)}
 
-/* PROFILE */
+/* ── PROFILE ── */
 .profile-hero{background:linear-gradient(135deg,var(--surface),var(--surface2));
-  border:1px solid var(--border2);border-radius:12px;padding:1.2rem;
-  text-align:center;margin-bottom:0.7rem}
+  border:1px solid var(--border2);border-radius:12px;padding:1.2rem;text-align:center;margin-bottom:0.7rem}
 .profile-ava{width:80px;height:80px;margin:0 auto 0.5rem;font-size:4rem;
   display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:12px}
 .profile-ava img{width:80px;height:80px;object-fit:cover;border-radius:12px}
@@ -235,28 +282,32 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
 .ps-val{font-family:'Cinzel',serif;font-size:1rem;color:var(--steel2);font-weight:600}
 .ps-key{font-size:0.65rem;color:var(--text3);margin-top:0.1rem}
 
-/* MODAL */
+/* ── MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);
   display:flex;align-items:center;justify-content:center;z-index:500;
   padding:1rem;backdrop-filter:blur(6px)}
 .modal{background:var(--surface);border:1px solid var(--border2);border-radius:16px;
-  padding:1.4rem;width:100%;max-width:340px;box-shadow:0 30px 80px rgba(0,0,0,0.7)}
+  padding:1.4rem;width:100%;max-width:340px;box-shadow:0 30px 80px rgba(0,0,0,0.7);
+  max-height:90vh;overflow-y:auto}
 @keyframes modalIn{from{opacity:0;transform:scale(0.88) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .modal{animation:modalIn 0.22s ease}
 .modal-title{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;
   color:var(--gold2);text-align:center;margin-bottom:0.5rem}
-.modal-icon{width:72px;height:72px;margin:0 auto 0.4rem;display:flex;
-  align-items:center;justify-content:center;font-size:3.5rem}
+.modal-icon{width:72px;height:72px;margin:0 auto 0.4rem;display:flex;align-items:center;justify-content:center;font-size:3.5rem}
 .modal-icon img{width:72px;height:72px;object-fit:contain}
 .modal-rarity{font-family:'Cinzel',serif;font-size:0.72rem;text-transform:uppercase;
   letter-spacing:0.1em;text-align:center;margin-bottom:1rem}
-.modal-row{display:flex;justify-content:space-between;padding:0.4rem 0;
-  border-bottom:1px solid var(--border);font-size:0.88rem}
+.modal-row{display:flex;justify-content:space-between;align-items:center;
+  padding:0.4rem 0;border-bottom:1px solid var(--border);font-size:0.88rem}
 .modal-row:last-of-type{border-bottom:none}
 .modal-row em{color:var(--text3);font-style:normal}
 .modal-actions{margin-top:1rem;display:flex;flex-direction:column;gap:0}
+.modal-input{width:100%;padding:0.65rem 0.8rem;background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;color:var(--text);font-family:'Crimson Pro',serif;font-size:1rem;
+  outline:none;margin-bottom:0.6rem}
+.modal-input:focus{border-color:var(--gold)}
 
-/* COMBAT */
+/* ── COMBAT ── */
 .combat-scene{background:linear-gradient(180deg,#0a1a2e,#0f2040 40%,var(--bg3) 100%);
   border:1px solid var(--border2);border-radius:12px;padding:1rem;margin-bottom:0.7rem;text-align:center}
 .fighters{display:flex;align-items:flex-end;justify-content:space-around;margin-bottom:0.75rem}
@@ -274,10 +325,10 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
   overflow-y:auto;line-height:1.7;margin-bottom:0.7rem;text-align:left}
 .combat-log::-webkit-scrollbar{width:2px}
 .log-hit{color:var(--crimson2)}.log-crit{color:var(--gold2);font-weight:600}
-.log-you{color:var(--steel2)}.log-win{color:var(--green);font-weight:600}
+.log-you{color:var(--steel2)}.log-win{color:var(--green2);font-weight:600}
 .log-lose{color:var(--crimson2);font-weight:600}.log-sys{color:var(--text3)}
 
-/* TOAST */
+/* ── TOAST ── */
 #toast-container{position:fixed;top:60px;left:50%;transform:translateX(-50%);
   z-index:600;display:flex;flex-direction:column;gap:0.4rem;
   pointer-events:none;width:88%;max-width:400px}
@@ -287,19 +338,28 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
 @keyframes toastOut{to{opacity:0;transform:translateY(-8px)}}
 .toast{animation:toastIn 0.25s ease}
 .toast.dying{animation:toastOut 0.25s ease forwards}
+
+/* ── MISC ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.info-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.6rem;text-align:center}
+.info-box-val{font-family:'Cinzel',serif;font-size:1rem;color:var(--gold2);font-weight:600}
+.info-box-key{font-size:0.65rem;color:var(--text3);margin-top:0.1rem}
+.pill{display:inline-block;padding:0.15rem 0.5rem;border-radius:20px;font-size:0.7rem;
+  font-family:'Cinzel',serif;font-weight:600;letter-spacing:0.04em}
 </style>
 </head>
 <body>
 <div id="toast-container"></div>
 <div id="app">
 
+  <!-- AUTH -->
   <div id="auth-screen" class="screen active">
     <div class="auth-logo-text">⚔ MicroMMO</div>
     <div class="auth-logo-sub">Battle · Explore · Conquer</div>
     <div class="auth-card">
       <div class="tab-row">
-        <button class="tab-btn active" id="tab-login" onclick="switchAuthTab('login')">Login</button>
-        <button class="tab-btn" id="tab-register" onclick="switchAuthTab('register')">Register</button>
+        <button class="tab-btn active" id="tab-login" onclick="G.switchAuthTab('login')">Login</button>
+        <button class="tab-btn" id="tab-register" onclick="G.switchAuthTab('register')">Register</button>
       </div>
       <div id="auth-error" class="error-box" style="display:none"></div>
       <div id="reg-username-group" class="form-group" style="display:none">
@@ -314,12 +374,13 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
         <label class="form-label">Password</label>
         <input class="form-input" id="auth-password" type="password" placeholder="••••••••"/>
       </div>
-      <button class="btn btn-steel" onclick="handleEmailAuth()">Enter the Realm</button>
+      <button class="btn btn-steel" onclick="G.handleEmailAuth()">Enter the Realm</button>
       <div class="divider">or</div>
-      <button class="btn btn-gold" onclick="handleGoogleAuth()">🔵 Continue with Google</button>
+      <button class="btn btn-gold" onclick="G.handleGoogleAuth()">🔵 Continue with Google</button>
     </div>
   </div>
 
+  <!-- USERNAME -->
   <div id="username-screen" class="screen">
     <div class="auth-card">
       <div class="modal-title">⚔️ Name Your Hero</div>
@@ -327,672 +388,42 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
       <div class="form-group">
         <input class="form-input" id="new-username" placeholder="Your legend name" maxlength="20"/>
       </div>
-      <button class="btn btn-steel" onclick="handleSetUsername()">Begin Journey</button>
+      <button class="btn btn-steel" onclick="G.handleSetUsername()">Begin Journey</button>
     </div>
   </div>
 
+  <!-- GAME -->
   <div id="game-screen" class="screen">
     <div id="header">
       <div class="hdr-logo">⚔ MicroMMO</div>
       <div class="hdr-level" id="hdr-level">Lv.1</div>
-      <div class="hdr-avatar" onclick="showTab('you')" id="hdr-avatar-el">🧙</div>
+      <div class="hdr-hp" id="hdr-hp">❤️ 110</div>
+      <div class="hdr-avatar" onclick="G.showTab('you')" id="hdr-avatar-el">🧙</div>
     </div>
     <div id="content"></div>
     <div id="nav">
-      <button class="nav-btn active" id="nav-home" onclick="showTab('home')">
+      <button class="nav-btn active" id="nav-home" onclick="G.showTab('home')">
         <span class="nav-icon">🏠</span>Home
       </button>
-      <button class="nav-btn" id="nav-gear" onclick="showTab('gear')">
+      <button class="nav-btn" id="nav-gear" onclick="G.showTab('gear')">
         <span class="nav-icon">🎒</span>Gear
       </button>
       <div class="nav-center">
-        <div class="nav-walk" id="nav-walk" onclick="takeStep()">⚔️</div>
+        <div class="nav-walk" id="nav-walk" onclick="G.takeStep()">⚔️</div>
       </div>
-      <button class="nav-btn" id="nav-walk-tab" onclick="showTab('walk')">
-        <span class="nav-icon">👣</span>Walk
+      <button class="nav-btn" id="nav-market" onclick="G.showTab('market')">
+        <span class="nav-icon">🏪</span>Market
       </button>
-      <button class="nav-btn" id="nav-social" onclick="showTab('social')">
+      <button class="nav-btn" id="nav-social" onclick="G.showTab('social')">
         <span class="nav-icon">👥</span>Social
       </button>
     </div>
   </div>
 
 </div>
-
-<div id="modal-overlay" class="modal-overlay" style="display:none" onclick="closeModal()">
+<div id="modal-overlay" class="modal-overlay" style="display:none" onclick="G.closeModal()">
   <div class="modal" onclick="event.stopPropagation()" id="modal-content"></div>
 </div>
-
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signOut
-}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import{getFirestore,doc,getDoc,setDoc,collection,getDocs
-}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-// ════════════════════════════════════════════════════════════
-// FIREBASE CONFIG
-// ════════════════════════════════════════════════════════════
-const firebaseConfig={
-  apiKey:"AIzaSyA4-X-N-wAFnmPwZcJ-SnWJKMI-mNa2kQs",
-  authDomain:"micrommo-77c6e.firebaseapp.com",
-  projectId:"micrommo-77c6e",
-  storageBucket:"micrommo-77c6e.firebasestorage.app",
-  messagingSenderId:"639233695341",
-  appId:"1:639233695341:web:d0df1515a79c9df6afa964"
-};
-
-// ════════════════════════════════════════════════════════════
-//
-//   CUSTOMIZE YOUR GAME HERE
-//   ─────────────────────────────────────────────────────────
-//   HOW TO USE IMAGES:
-//   1. Create an "img" folder in your GitHub repo
-//   2. Upload your image files there
-//   3. Set image: "img/yourfile.png"  (or "" to use emoji instead)
-//   Images automatically fall back to emoji if they fail to load.
-//
-// ════════════════════════════════════════════════════════════
-
-// ── PLAYER AVATAR ─────────────────────────────────────────────
-// Shows in header, home card, combat, and profile
-const PLAYER_AVATAR = {
-  emoji: "🧙",
-  image: ""        // e.g. "img/hero.png"
-};
-
-// ── WALK BUTTON ───────────────────────────────────────────────
-// The big glowing center button
-const WALK_BUTTON = {
-  emoji: "⚔️",
-  image: ""        // e.g. "img/sword.png"
-};
-
-// ════════════════════════════════════════════════════════════
-// MONSTERS — add/edit freely, just copy a block
-// ════════════════════════════════════════════════════════════
-//  name      display name
-//  emoji     shown if no image
-//  image     e.g. "img/monsters/goblin.png"  (or "")
-//  desc      flavour text in combat
-//  str       [min, max] attack
-//  def       [min, max] defence
-//  hp        [min, max] hit points
-//  exp       [min, max] EXP on kill
-//  gold      [min, max] gold on kill
-//  minLevel  minimum player level to encounter (0 = always)
-// ════════════════════════════════════════════════════════════
-const MONSTERS=[
-  {name:"Goblin Scout",  emoji:"👺",image:"",desc:"A sneaky little menace.",              str:[4,12], def:[2,7],  hp:[25,55],  exp:[15,40],  gold:[4,20],  minLevel:0},
-  {name:"Forest Wolf",   emoji:"🐺",image:"",desc:"Runs in packs. Hungry.",               str:[9,18], def:[4,10], hp:[45,80],  exp:[35,70],  gold:[12,35], minLevel:0},
-  {name:"Stone Golem",   emoji:"🗿",image:"",desc:"Ancient. Slow. Devastating.",          str:[7,15], def:[18,30],hp:[70,120], exp:[55,100], gold:[20,55], minLevel:3},
-  {name:"Shadow Wraith", emoji:"👻",image:"",desc:"A spirit hungry for life.",            str:[22,38],def:[6,15], hp:[60,110], exp:[75,130], gold:[28,65], minLevel:5},
-  {name:"Venomfang Spider",emoji:"🕷️",image:"",desc:"Its bite carries a slow curse.",    str:[14,24],def:[8,16], hp:[50,90],  exp:[50,90],  gold:[18,45], minLevel:4},
-  {name:"Dragon Whelp",  emoji:"🐉",image:"",desc:"Young dragon. Still deadly.",          str:[28,46],def:[13,25],hp:[110,185],exp:[110,185],gold:[45,110],minLevel:8},
-  {name:"Skeleton Knight",emoji:"💀",image:"",desc:"Fought a hundred wars. Still fights.",str:[18,32],def:[22,38],hp:[90,150], exp:[90,160], gold:[38,85], minLevel:6},
-  {name:"Lich Lord",     emoji:"🧙",image:"",desc:"Mastered death. Now he is it.",        str:[45,70],def:[18,32],hp:[180,300],exp:[180,320],gold:[90,190],minLevel:12},
-  // ADD NEW MONSTERS HERE — copy/paste a line above and edit it:
-  // {name:"Fire Demon", emoji:"🔥", image:"img/monsters/demon.png", desc:"Burns everything it touches.",
-  //  str:[35,55], def:[12,22], hp:[140,220], exp:[140,220], gold:[60,130], minLevel:10},
-];
-
-// ════════════════════════════════════════════════════════════
-// ITEMS — add/edit freely, just copy a block
-// ════════════════════════════════════════════════════════════
-//  name      display name
-//  type      must be one of: Helmet Armour Weapon Shield Greaves Boots Amulet
-//  stat      "str" (attack) or "def" (defence)
-//  val       stat bonus amount
-//  rarity    common | uncommon | rare | epic | legendary
-//  emoji     shown if no image
-//  image     e.g. "img/items/sword.png"  (or "")
-//  dropRate  drop weight — higher = drops more often (common=20, legendary=0.3)
-// ════════════════════════════════════════════════════════════
-const ITEMS=[
-  // COMMON
-  {name:"Rusty Sword",      type:"Weapon",stat:"str",val:5, rarity:"common",   emoji:"⚔️",image:"",dropRate:20},
-  {name:"Wooden Club",      type:"Weapon",stat:"str",val:4, rarity:"common",   emoji:"🪵",image:"",dropRate:20},
-  {name:"Worn Shield",      type:"Shield",stat:"def",val:4, rarity:"common",   emoji:"🛡️",image:"",dropRate:18},
-  {name:"Leather Cap",      type:"Helmet",stat:"def",val:3, rarity:"common",   emoji:"🪖",image:"",dropRate:18},
-  // UNCOMMON
-  {name:"Iron Chestplate",  type:"Armour",stat:"def",val:10,rarity:"uncommon", emoji:"🦺",image:"",dropRate:12},
-  {name:"Silver Blade",     type:"Weapon",stat:"str",val:18,rarity:"uncommon", emoji:"🗡️",image:"",dropRate:12},
-  {name:"Mithril Ring",     type:"Amulet",stat:"def",val:8, rarity:"uncommon", emoji:"💍",image:"",dropRate:10},
-  // RARE
-  {name:"Enchanted Greaves",type:"Greaves",stat:"def",val:12,rarity:"rare",    emoji:"🦵",image:"",dropRate:6},
-  {name:"Dragonfang Blade", type:"Weapon",stat:"str",val:35,rarity:"rare",     emoji:"🔱",image:"",dropRate:5},
-  {name:"Stormshard Boots", type:"Boots", stat:"def",val:15,rarity:"rare",     emoji:"👢",image:"",dropRate:6},
-  // EPIC
-  {name:"Phoenix Armour",   type:"Armour",stat:"def",val:30,rarity:"epic",     emoji:"✨",image:"",dropRate:2},
-  {name:"Voidcaller Staff", type:"Weapon",stat:"str",val:45,rarity:"epic",     emoji:"🪄",image:"",dropRate:2},
-  // LEGENDARY
-  {name:"Excalibur",        type:"Weapon",stat:"str",val:65,rarity:"legendary",emoji:"⚡",image:"",dropRate:0.3},
-  {name:"Crown of the Fallen",type:"Helmet",stat:"def",val:40,rarity:"legendary",emoji:"👑",image:"",dropRate:0.3},
-  // ADD NEW ITEMS HERE:
-  // {name:"Fire Amulet", type:"Amulet", stat:"str", val:20, rarity:"rare", emoji:"🔥", image:"img/items/fire_amulet.png", dropRate:5},
-];
-
-// ════════════════════════════════════════════════════════════
-// GAME SETTINGS
-// ════════════════════════════════════════════════════════════
-const MAX_ENERGY      = 5;
-const ENERGY_REGEN_MS = 3 * 60 * 1000; // 3 min per energy point
-const MONSTER_CHANCE  = 0.38;           // 38% per step
-const GOLD_CHANCE     = 0.27;           // 27% per step
-const ITEM_CHANCE     = 0.15;           // 15% per step
-// rest = nothing happens
-
-// ════════════════════════════════════════════════════════════
-// ENGINE — no need to edit below here
-// ════════════════════════════════════════════════════════════
-const EQUIP_SLOTS=["Helmet","Armour","Weapon","Shield","Greaves","Boots","Amulet"];
-const SLOT_EMOJI={Helmet:"🪖",Armour:"🦺",Weapon:"⚔️",Shield:"🛡️",Greaves:"🦵",Boots:"👢",Amulet:"💍"};
-const RARITY_COLOR={common:"#9ca3af",uncommon:"#34d399",rare:"#60a5fa",epic:"#c084fc",legendary:"#fbbf24"};
-
-const fbApp=initializeApp(firebaseConfig);
-const auth=getAuth(fbApp);
-const db=getFirestore(fbApp);
-const gp=new GoogleAuthProvider();
-
-let currentUser=null,player=null,currentTab="home";
-let feed=[],combatState=null,combatInterval=null,energyInterval=null;
-
-const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
-const pick=a=>a[Math.floor(Math.random()*a.length)];
-const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
-const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+"M":n>=1000?(n/1000).toFixed(1)+"K":String(Math.floor(n||0));
-const expForLevel=lv=>Math.floor(100*Math.pow(1.5,lv-1));
-const calcMaxHp=(lv,def)=>100+lv*10+def*2;
-
-function equipStats(eq){
-  let str=0,def=0;
-  Object.values(eq||{}).forEach(it=>{if(!it)return;if(it.stat==="str")str+=it.val;else def+=it.val;});
-  return{str,def};
-}
-
-// Returns either an <img> tag or the raw emoji string
-function gfx(image,emoji,size=32){
-  if(image) return `<img src="${image}" alt="${emoji}" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.replaceWith(document.createTextNode('${emoji}'))">`;
-  return emoji;
-}
-
-function newPlayer(username){
-  return{username,level:1,exp:0,gold:100,bank:0,diamonds:10,
-    hp:110,maxHp:110,baseStr:10,baseDef:5,
-    energy:5,lastEnergyTime:Date.now(),
-    steps:0,npcKills:0,pvpKills:0,
-    inventory:[],equipped:{},createdAt:Date.now()};
-}
-
-async function loadPlayer(uid){const s=await getDoc(doc(db,"players",uid));return s.exists()?s.data():null;}
-async function savePlayer(){if(!currentUser||!player)return;await setDoc(doc(db,"players",currentUser.uid),player);}
-async function loadLeaderboard(){const s=await getDocs(collection(db,"players"));return s.docs.map(d=>d.data()).filter(p=>p&&p.username);}
-
-// AUTH
-onAuthStateChanged(auth,async u=>{
-  currentUser=u;
-  if(u){player=await loadPlayer(u.uid);player?startGame():showScreen("username-screen");}
-  else showScreen("auth-screen");
-});
-
-window.switchAuthTab=t=>{
-  document.getElementById("tab-login").classList.toggle("active",t==="login");
-  document.getElementById("tab-register").classList.toggle("active",t==="register");
-  document.getElementById("reg-username-group").style.display=t==="register"?"block":"none";
-  hideErr();
-};
-window.handleEmailAuth=async()=>{
-  const email=document.getElementById("auth-email").value.trim();
-  const pw=document.getElementById("auth-password").value;
-  const isLogin=document.getElementById("tab-login").classList.contains("active");
-  hideErr();
-  if(!email||!pw){showErr("Please fill all fields");return;}
-  try{
-    if(isLogin){await signInWithEmailAndPassword(auth,email,pw);}
-    else{
-      const un=document.getElementById("reg-username").value.trim();
-      if(!un){showErr("Hero name required");return;}
-      const c=await createUserWithEmailAndPassword(auth,email,pw);
-      player=newPlayer(un);
-      await setDoc(doc(db,"players",c.user.uid),player);
-      startGame();
-    }
-  }catch(e){showErr(e.message||"Auth failed");}
-};
-window.handleGoogleAuth=async()=>{
-  try{
-    const c=await signInWithPopup(auth,gp);
-    const ex=await loadPlayer(c.user.uid);
-    if(!ex)showScreen("username-screen");else{player=ex;startGame();}
-  }catch(e){showErr("Google sign-in failed");}
-};
-window.handleSetUsername=async()=>{
-  const n=document.getElementById("new-username").value.trim();
-  if(!n||!currentUser)return;
-  player=newPlayer(n);
-  await setDoc(doc(db,"players",currentUser.uid),player);
-  startGame();
-};
-const showErr=m=>{const e=document.getElementById("auth-error");e.textContent=m;e.style.display="block";};
-const hideErr=()=>{document.getElementById("auth-error").style.display="none";};
-
-// GAME BOOT
-function startGame(){
-  showScreen("game-screen");
-  updateWalkBtn();regenCheck();
-  energyInterval=setInterval(regenCheck,15000);
-  showTab("home");
-}
-
-function regenCheck(){
-  if(!player||player.energy>=MAX_ENERGY)return;
-  const pts=Math.floor((Date.now()-(player.lastEnergyTime||Date.now()))/ENERGY_REGEN_MS);
-  if(pts>0){
-    player.energy=clamp(player.energy+pts,0,MAX_ENERGY);
-    player.lastEnergyTime=Date.now();
-    savePlayer();if(currentTab==="home")renderHome();updateWalkBtn();
-  }
-}
-
-function updateWalkBtn(){
-  const btn=document.getElementById("nav-walk");if(!btn)return;
-  btn.classList.toggle("no-energy",!player||player.energy<1);
-  btn.innerHTML=WALK_BUTTON.image?`<img src="${WALK_BUTTON.image}" alt="⚔️">`:WALK_BUTTON.emoji;
-  const ha=document.getElementById("hdr-avatar-el");
-  if(ha)ha.innerHTML=PLAYER_AVATAR.image?`<img src="${PLAYER_AVATAR.image}" alt="🧙">`:PLAYER_AVATAR.emoji;
-}
-
-function showScreen(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-window.showTab=tab=>{
-  currentTab=tab;
-  ["home","gear","walk","social"].forEach(t=>{
-    const b=document.getElementById("nav-"+t)||document.getElementById("nav-"+t+"-tab");
-    if(b)b.classList.remove("active");
-  });
-  const a=document.getElementById("nav-"+tab)||document.getElementById("nav-"+tab+"-tab");
-  if(a)a.classList.add("active");
-  if(tab==="home")renderHome();
-  else if(tab==="gear")renderGear();
-  else if(tab==="walk")renderWalk();
-  else if(tab==="social")renderSocial();
-  else if(tab==="you")renderYou();
-};
-
-// RENDER HOME
-function renderHome(){
-  if(!player)return;
-  const{str:eStr,def:eDef}=equipStats(player.equipped);
-  const tStr=(player.baseStr||10)+eStr,tDef=(player.baseDef||5)+eDef;
-  const expNeed=expForLevel(player.level);
-  const hpPct=clamp(Math.round((player.hp/player.maxHp)*100),0,100);
-  const expPct=clamp(Math.round((player.exp/expNeed)*100),0,100);
-  const enPct=Math.round((player.energy/MAX_ENERGY)*100);
-  const elapsed=Date.now()-(player.lastEnergyTime||Date.now());
-  const tl=Math.max(0,ENERGY_REGEN_MS-(elapsed%ENERGY_REGEN_MS));
-  const timerStr=player.energy>=MAX_ENERGY?"Full":`${Math.floor(tl/60000)}:${String(Math.floor((tl%60000)/1000)).padStart(2,"0")}`;
-  document.getElementById("hdr-level").textContent=`Lv.${player.level}`;
-  updateWalkBtn();
-  document.getElementById("content").innerHTML=`
-    <div class="player-banner">
-      <div class="p-avatar">${gfx(PLAYER_AVATAR.image,PLAYER_AVATAR.emoji,58)}</div>
-      <div class="p-info">
-        <div class="p-name">${player.username}</div>
-        <div class="p-class">Level ${player.level} Adventurer</div>
-        <div class="bar-wrap">
-          <div class="bar-labels"><span>❤️ HP</span><span>${player.hp}/${player.maxHp}</span></div>
-          <div class="bar bar-hp"><div class="bar-fill" style="width:${hpPct}%"></div></div>
-        </div>
-        <div class="bar-wrap">
-          <div class="bar-labels"><span>✨ EXP</span><span>${fmt(player.exp)}/${fmt(expNeed)}</span></div>
-          <div class="bar bar-exp"><div class="bar-fill" style="width:${expPct}%"></div></div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">⚡ Energy</div>
-      <div class="bar-wrap">
-        <div class="bar-labels"><span>${player.energy}/${MAX_ENERGY} EP</span><span>${timerStr}</span></div>
-        <div class="bar bar-energy"><div class="bar-fill" style="width:${enPct}%"></div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">💰 Currencies</div>
-      <div class="curr-row">
-        <div class="curr-item"><div class="curr-amount">🪙 ${fmt(player.gold)}</div><div class="curr-label">Gold</div></div>
-        <div class="curr-item"><div class="curr-amount">🏦 ${fmt(player.bank)}</div><div class="curr-label">Bank</div></div>
-        <div class="curr-item"><div class="curr-amount">💎 ${player.diamonds}</div><div class="curr-label">Gems</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">📊 Combat Stats</div>
-      <div class="stat-row">
-        <div class="stat-badge"><em>⚔️ STR</em> <strong>${tStr}</strong></div>
-        <div class="stat-badge"><em>🛡️ DEF</em> <strong>${tDef}</strong></div>
-        <div class="stat-badge"><em>💀 Kills</em> <strong>${player.npcKills||0}</strong></div>
-        <div class="stat-badge"><em>👣 Steps</em> <strong>${fmt(player.steps||0)}</strong></div>
-      </div>
-    </div>`;
-}
-
-// RENDER WALK
-function renderWalk(){
-  const enPct=Math.round((player.energy/MAX_ENERGY)*100);
-  const feedHtml=feed.length===0
-    ?`<div class="feed-empty">Tap the ⚔️ button below to begin your adventure...</div>`
-    :feed.map(f=>`<div class="feed-item">
-        <div class="feed-icon">${f.image?`<img src="${f.image}" alt="${f.emoji}">`:(f.emoji||"🌿")}</div>
-        <div class="feed-text">${f.text}</div>
-        <div class="feed-badge" style="color:${f.color}">${f.badge}</div>
-      </div>`).join("");
-  document.getElementById("content").innerHTML=`
-    <div class="card">
-      <div class="card-title">⚡ Energy ${player.energy}/${MAX_ENERGY}</div>
-      <div class="bar bar-energy"><div class="bar-fill" style="width:${enPct}%"></div></div>
-      <div style="font-size:0.78rem;color:var(--text3);margin-top:0.4rem">Tap ⚔️ to explore · each step costs 1 energy</div>
-    </div>${feedHtml}`;
-}
-
-// RENDER GEAR
-function renderGear(){
-  const inv=player.inventory||[],eq=player.equipped||{};
-  const slotsHtml=EQUIP_SLOTS.map(slot=>{
-    const item=eq[slot];
-    const iconHtml=item?gfx(item.image,item.emoji,26):SLOT_EMOJI[slot];
-    return`<div class="equip-slot ${item?"filled":""}" ${item?`onclick="openItemModal('equipped','${slot}')"`:"" }>
-      <div class="es-icon">${iconHtml}</div>
-      <div class="es-info">${item
-        ?`<div class="es-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}</div><div class="es-stat">+${item.val} ${item.stat==="str"?"STR":"DEF"}</div>`
-        :`<div class="es-empty">Empty</div>`}
-      </div>
-      <div class="es-type">${slot}</div>
-    </div>`;
-  }).join("");
-  const invHtml=inv.length===0
-    ?`<div class="inv-empty">No items yet — go explore!</div>`
-    :inv.map((item,i)=>`<div class="inv-item" onclick="openItemModal('inv',${i})">
-        <div class="inv-icon">${gfx(item.image,item.emoji,40)}</div>
-        <div class="inv-item-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}</div>
-        <div class="inv-item-stat">+${item.val} ${item.stat==="str"?"STR":"DEF"}</div>
-      </div>`).join("");
-  document.getElementById("content").innerHTML=`
-    <div class="section-hdr">Equipped</div>
-    <div class="equip-grid">${slotsHtml}</div>
-    <div class="section-hdr">Inventory (${inv.length})</div>
-    <div class="inv-grid">${invHtml}</div>`;
-}
-
-// RENDER SOCIAL
-async function renderSocial(){
-  document.getElementById("content").innerHTML=`<div class="card"><div style="text-align:center;color:var(--text3);padding:1rem">Loading heroes...</div></div>`;
-  const all=await loadLeaderboard();
-  const byLv=[...all].sort((a,b)=>b.level-a.level||(b.exp||0)-(a.exp||0)).slice(0,10);
-  const byKi=[...all].sort((a,b)=>(b.npcKills||0)-(a.npcKills||0)).slice(0,10);
-  const row=(p,i,val)=>{
-    const rc=i===0?"r1":i===1?"r2":i===2?"r3":"";
-    const you=p.username===player.username?`<span class="lb-you">(you)</span>`:"";
-    return`<div class="lb-row"><div class="lb-rank ${rc}">${i===0?"👑":i+1}</div><div class="lb-name">${p.username} ${you}</div><div class="lb-val">${val}</div></div>`;
-  };
-  document.getElementById("content").innerHTML=`
-    <div class="card">
-      <div class="card-title">🏆 Level Rankings</div>
-      ${byLv.length===0?`<div style="text-align:center;color:var(--text3);font-style:italic;padding:0.5rem">No other heroes yet!</div>`:byLv.map((p,i)=>row(p,i,`Lv.${p.level}`)).join("")}
-    </div>
-    <div class="card">
-      <div class="card-title">💀 Kill Rankings</div>
-      ${byKi.length===0?`<div style="text-align:center;color:var(--text3);font-style:italic;padding:0.5rem">No kills yet!</div>`:byKi.map((p,i)=>row(p,i,`${p.npcKills||0} kills`)).join("")}
-    </div>
-    <div class="card">
-      <div class="card-title">⚙️ Account</div>
-      <button class="btn btn-ghost" onclick="handleSignOut()">Sign Out</button>
-    </div>`;
-}
-
-// RENDER YOU
-function renderYou(){
-  const{str:eStr,def:eDef}=equipStats(player.equipped);
-  document.getElementById("content").innerHTML=`
-    <div class="profile-hero">
-      <div class="profile-ava">${gfx(PLAYER_AVATAR.image,PLAYER_AVATAR.emoji,80)}</div>
-      <div class="profile-name">${player.username}</div>
-      <div class="profile-level">Level ${player.level} Adventurer</div>
-      <div class="profile-stats">
-        <div class="ps-item"><div class="ps-val">${(player.baseStr||10)+eStr}</div><div class="ps-key">⚔️ STR</div></div>
-        <div class="ps-item"><div class="ps-val">${(player.baseDef||5)+eDef}</div><div class="ps-key">🛡️ DEF</div></div>
-        <div class="ps-item"><div class="ps-val">${player.maxHp}</div><div class="ps-key">❤️ Max HP</div></div>
-        <div class="ps-item"><div class="ps-val">${fmt(player.steps||0)}</div><div class="ps-key">👣 Steps</div></div>
-        <div class="ps-item"><div class="ps-val">${player.npcKills||0}</div><div class="ps-key">💀 Kills</div></div>
-        <div class="ps-item"><div class="ps-val">${fmt(player.gold||0)}</div><div class="ps-key">🪙 Gold</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">⚙️ Account</div>
-      <button class="btn btn-ghost" onclick="handleSignOut()">Sign Out</button>
-    </div>`;
-}
-
-window.handleSignOut=async()=>{clearInterval(energyInterval);await signOut(auth);};
-
-// STEP / WALK
-window.takeStep=()=>{
-  if(!player||player.energy<1){toast("⚡ No energy! Wait for regen.");return;}
-  if(combatState){toast("⚔️ Finish your battle first!");return;}
-  player.energy--;
-  player.steps=(player.steps||0)+1;
-  if(player.energy<MAX_ENERGY&&!player.lastEnergyTime)player.lastEnergyTime=Date.now();
-  updateWalkBtn();
-  const roll=Math.random();
-  if(roll<MONSTER_CHANCE){
-    const m=spawnMonster();
-    addFeed(m.emoji,m.image,`Encountered <strong>${m.name}</strong>!`,"Fight!","var(--crimson2)");
-    savePlayer();showTab("walk");setTimeout(()=>openCombatModal(m),350);
-  } else if(roll<MONSTER_CHANCE+GOLD_CHANCE){
-    const g=rand(5,25+player.level*2);
-    player.gold=(player.gold||0)+g;
-    addFeed("🪙","",`Found gold on the path!`,`+${g} gold`,"var(--gold2)");
-    savePlayer();showTab("walk");
-  } else if(roll<MONSTER_CHANCE+GOLD_CHANCE+ITEM_CHANCE){
-    const item=spawnItem();
-    player.inventory=[...(player.inventory||[]),item];
-    addFeed(item.emoji,item.image,`Found a <strong>${item.name}</strong>!`,item.rarity,RARITY_COLOR[item.rarity]);
-    toast(`${item.emoji} Found ${item.name}! (${item.rarity})`);
-    savePlayer();showTab("walk");
-  } else {
-    addFeed("🌿","","You walk through the quiet forest.","Nothing","var(--text3)");
-    savePlayer();showTab("walk");
-  }
-};
-
-function addFeed(emoji,image,text,badge,color){
-  feed.unshift({emoji,image,text,badge,color});
-  if(feed.length>20)feed.pop();
-}
-
-function spawnMonster(){
-  const eligible=MONSTERS.filter(m=>player.level>=(m.minLevel||0));
-  const base=pick(eligible.length?eligible:MONSTERS);
-  return{...base,str:rand(...base.str),def:rand(...base.def),
-    hp:rand(...base.hp),maxHp:base.hp[1],
-    expReward:rand(...base.exp),goldReward:rand(...base.gold)};
-}
-
-function spawnItem(){
-  const total=ITEMS.reduce((s,i)=>s+(i.dropRate||10),0);
-  let r=Math.random()*total;
-  for(const item of ITEMS){r-=(item.dropRate||10);if(r<=0)return{...item,id:`item_${Date.now()}_${rand(0,9999)}`};}
-  return{...ITEMS[0],id:`item_${Date.now()}`};
-}
-
-// COMBAT
-function openCombatModal(monster){
-  const{str:eStr,def:eDef}=equipStats(player.equipped);
-  combatState={monster,playerHp:player.hp,playerMaxHp:player.maxHp,
-    monsterHp:monster.hp,pStr:(player.baseStr||10)+eStr,pDef:(player.baseDef||5)+eDef,
-    log:[],done:false};
-  renderCombatModal();
-  document.getElementById("modal-overlay").style.display="flex";
-  combatInterval=setInterval(combatTick,950);
-}
-
-function renderCombatModal(){
-  if(!combatState)return;
-  const cs=combatState,m=cs.monster;
-  const pPct=clamp((cs.playerHp/cs.playerMaxHp)*100,0,100);
-  const mPct=clamp((cs.monsterHp/m.maxHp)*100,0,100);
-  document.getElementById("modal-content").innerHTML=`
-    <div class="combat-scene">
-      <div class="fighters">
-        <div class="fighter">
-          <div class="f-img">${gfx(PLAYER_AVATAR.image,PLAYER_AVATAR.emoji,56)}</div>
-          <div class="f-name">${player.username}</div>
-          <div class="f-hp">${cs.playerHp}/${cs.playerMaxHp}</div>
-          <div class="f-bar"><div class="f-bar-fill" style="width:${pPct}%"></div></div>
-        </div>
-        <div class="vs">VS</div>
-        <div class="fighter">
-          <div class="f-img">${gfx(m.image,m.emoji,56)}</div>
-          <div class="f-name">${m.name}</div>
-          <div class="f-hp">${cs.monsterHp}/${m.maxHp}</div>
-          <div class="f-bar"><div class="f-bar-fill" style="width:${mPct}%"></div></div>
-        </div>
-      </div>
-    </div>
-    <div class="combat-log" id="combat-log">${cs.log.join("<br>")||`<span class="log-sys">${m.desc||"Battle commences..."}</span>`}</div>
-    ${cs.done
-      ?`<button class="btn btn-ghost" onclick="closeModal()">Close</button>`
-      :`<div style="text-align:center;color:var(--text3);font-size:0.8rem;font-style:italic">⚔️ Auto-battling...</div>`}`;
-  const log=document.getElementById("combat-log");
-  if(log)log.scrollTop=log.scrollHeight;
-}
-
-function combatTick(){
-  if(!combatState||combatState.done){clearInterval(combatInterval);return;}
-  const cs=combatState,m=cs.monster;
-  let pDmg=Math.max(1,cs.pStr-m.def+rand(-3,5));
-  const pCrit=Math.random()<0.12;
-  if(pCrit)pDmg=Math.floor(pDmg*1.75);
-  cs.monsterHp=Math.max(0,cs.monsterHp-pDmg);
-  cs.log.push(pCrit
-    ?`<span class="log-crit">⚡ CRIT! You smash ${m.name} for ${pDmg}!</span>`
-    :`<span class="log-you">You hit ${m.name} for ${pDmg}</span>`);
-  if(cs.monsterHp<=0){
-    cs.done=true;clearInterval(combatInterval);
-    cs.log.push(`<span class="log-win">🏆 ${m.name} defeated! +${m.expReward} EXP +${m.goldReward}🪙</span>`);
-    handleVictory(cs);renderCombatModal();return;
-  }
-  let mDmg=Math.max(1,m.str-cs.pDef+rand(-3,5));
-  const mCrit=Math.random()<0.08;
-  if(mCrit)mDmg=Math.floor(mDmg*1.75);
-  cs.playerHp=Math.max(0,cs.playerHp-mDmg);
-  cs.log.push(mCrit
-    ?`<span class="log-crit">💥 ${m.name} CRITS you for ${mDmg}!</span>`
-    :`<span class="log-hit">${m.name} hits you for ${mDmg}</span>`);
-  if(cs.playerHp<=0){
-    cs.done=true;clearInterval(combatInterval);
-    cs.log.push(`<span class="log-lose">💀 You were defeated by ${m.name}...</span>`);
-    handleDefeat(cs);renderCombatModal();return;
-  }
-  renderCombatModal();
-}
-
-function handleVictory(cs){
-  const m=cs.monster;
-  player.npcKills=(player.npcKills||0)+1;
-  player.gold=(player.gold||0)+m.goldReward;
-  player.exp=(player.exp||0)+m.expReward;
-  player.hp=cs.playerHp;
-  let leveled=false;
-  while(player.exp>=expForLevel(player.level)){
-    player.exp-=expForLevel(player.level);player.level++;
-    const{def:eDef}=equipStats(player.equipped);
-    player.maxHp=calcMaxHp(player.level,(player.baseDef||5)+eDef);
-    leveled=true;
-  }
-  if(leveled)toast(`🎉 LEVEL UP! You are now Level ${player.level}!`);
-  else toast(`⚔️ Victory! +${m.expReward} EXP  +${m.goldReward}🪙`);
-  player.hp=clamp(player.hp,1,player.maxHp);
-  combatState=null;savePlayer();
-}
-function handleDefeat(cs){
-  player.hp=Math.max(1,Math.floor(player.maxHp*0.25));
-  toast("💀 Defeated! You rest and recover some HP.");
-  combatState=null;savePlayer();
-}
-
-// ITEM MODALS
-window.openItemModal=(source,idx)=>{
-  let item,isEquipped=false,slot=null;
-  if(source==="equipped"){slot=idx;item=player.equipped[slot];isEquipped=true;}
-  else item=(player.inventory||[])[idx];
-  if(!item)return;
-  const color=RARITY_COLOR[item.rarity]||"#9ca3af";
-  document.getElementById("modal-content").innerHTML=`
-    <div class="modal-icon">${gfx(item.image,item.emoji,72)}</div>
-    <div class="modal-title" style="color:${color}">${item.name}</div>
-    <div class="modal-rarity" style="color:${color}">${item.rarity}</div>
-    <div class="modal-row"><em>Type</em><span>${item.type}</span></div>
-    <div class="modal-row"><em>Bonus</em><span style="color:${item.stat==="str"?"var(--crimson2)":"var(--steel2)"}">+${item.val} ${item.stat==="str"?"STR":"DEF"}</span></div>
-    <div class="modal-actions">
-      ${isEquipped
-        ?`<button class="btn btn-ghost" onclick="unequipItem('${slot}')">Unequip</button>`
-        :`<button class="btn btn-gold" onclick="equipItem(${idx})">Equip</button>`}
-      <button class="btn btn-danger" onclick="${isEquipped?`dropEquipped('${slot}')`:`dropInventory(${idx})`}">Drop Item</button>
-      <button class="btn btn-ghost" onclick="closeModal()">Close</button>
-    </div>`;
-  document.getElementById("modal-overlay").style.display="flex";
-};
-
-window.equipItem=idx=>{
-  const item=(player.inventory||[])[idx];if(!item)return;
-  const eq={...(player.equipped||{})},inv=[...(player.inventory||[])];
-  if(eq[item.type])inv.push(eq[item.type]);
-  inv.splice(inv.findIndex(i=>i.id===item.id),1);
-  eq[item.type]=item;player.equipped=eq;player.inventory=inv;
-  const{def:eDef}=equipStats(eq);
-  player.maxHp=calcMaxHp(player.level,(player.baseDef||5)+eDef);
-  player.hp=clamp(player.hp,1,player.maxHp);
-  savePlayer();closeModal();toast(`✅ Equipped ${item.name}!`);renderGear();
-};
-window.unequipItem=slot=>{
-  const item=player.equipped[slot];if(!item)return;
-  player.inventory=[...(player.inventory||[]),item];
-  delete player.equipped[slot];
-  const{def:eDef}=equipStats(player.equipped);
-  player.maxHp=calcMaxHp(player.level,(player.baseDef||5)+eDef);
-  player.hp=clamp(player.hp,1,player.maxHp);
-  savePlayer();closeModal();toast(`📦 Unequipped ${item.name}`);renderGear();
-};
-window.dropInventory=idx=>{
-  const item=(player.inventory||[])[idx];if(!item)return;
-  player.inventory=player.inventory.filter((_,i)=>i!==idx);
-  savePlayer();closeModal();toast(`🗑️ Dropped ${item.name}`);renderGear();
-};
-window.dropEquipped=slot=>{
-  const item=player.equipped[slot];if(!item)return;
-  delete player.equipped[slot];
-  const{def:eDef}=equipStats(player.equipped);
-  player.maxHp=calcMaxHp(player.level,(player.baseDef||5)+eDef);
-  player.hp=clamp(player.hp,1,player.maxHp);
-  savePlayer();closeModal();toast(`🗑️ Dropped ${item.name}`);renderGear();
-};
-
-window.closeModal=()=>{
-  document.getElementById("modal-overlay").style.display="none";
-  if(combatState&&combatState.done)combatState=null;
-};
-
-// TOAST
-function toast(msg){
-  const el=document.createElement("div");
-  el.className="toast";el.textContent=msg;
-  document.getElementById("toast-container").appendChild(el);
-  setTimeout(()=>{el.classList.add("dying");setTimeout(()=>el.remove(),300);},2800);
-}
-window.toast=toast;
-</script>
+<script src="game.js" type="module"></script>
 </body>
 </html>
