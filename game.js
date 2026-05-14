@@ -884,7 +884,7 @@ function renderMyListings(listings){
       </div>
       <div>
         <div class="market-price">🪙${fmt(l.price)}</div>
-        <button class="btn btn-danger btn-sm" style="margin-top:0.3rem" onclick="G.cancelListing('${l.id}',${JSON.stringify(l.item).split("'").join("&#39;")})">Cancel</button>
+   <button class="btn btn-danger btn-sm" style="margin-top:0.3rem" onclick="G.cancelListing('${l.id}')">Cancel</button>
       </div>
     </div>`).join("");
 }
