@@ -89,79 +89,17 @@ const SFX={
 };
 
 // ── WALK ZONES ────────────────────────────────────────────────
-// Each zone has a unique CSS animation atmosphere.
-// Edit minLevel and monsterLevelBonus to tune difficulty.
 const WALK_AREAS=[
-  {
-    id:"greenwood", name:"Greenwood Vale", emoji:"🌲",
-    desc:"A peaceful forest. Beware the shadows.",
-    minLevel:1, monsterLevelBonus:0, expMult:1.0, goldMult:1.0, lootBonus:0,
-    bgCSS:`background:linear-gradient(180deg,#0d2b1a 0%,#1a4a2a 50%,#0f2a18 100%);`,
-    particles:"leaves",
-  },
-  {
-    id:"stonecrypt", name:"Stone Crypt", emoji:"💀",
-    desc:"Ancient burial grounds. The dead don't rest.",
-    minLevel:5, monsterLevelBonus:3, expMult:1.3, goldMult:1.2, lootBonus:0.05,
-    bgCSS:`background:linear-gradient(180deg,#0e0e1a 0%,#1a1a2e 50%,#0a0a14 100%);`,
-    particles:"spirits",
-  },
-  {
-    id:"shadowpeaks", name:"Shadow Peaks", emoji:"⛰️",
-    desc:"Treacherous mountains. Monsters roam freely.",
-    minLevel:10, monsterLevelBonus:6, expMult:1.7, goldMult:1.5, lootBonus:0.08,
-    bgCSS:`background:linear-gradient(180deg,#0a0814 0%,#1a1030 50%,#080612 100%);`,
-    particles:"snow",
-  },
-  {
-    id:"voidrift", name:"The Void Rift", emoji:"🌀",
-    desc:"Reality tears here. Only legends survive.",
-    minLevel:18, monsterLevelBonus:12, expMult:2.2, goldMult:2.0, lootBonus:0.12,
-    bgCSS:`background:linear-gradient(180deg,#050514 0%,#0a0520 50%,#020208 100%);`,
-    particles:"void",
-  },
-  {
-    id:"ashvolcano", name:"Ashveil Volcano", emoji:"🌋",
-    desc:"Rivers of lava. The air burns your lungs.",
-    minLevel:25, monsterLevelBonus:16, expMult:2.6, goldMult:2.4, lootBonus:0.15,
-    bgCSS:`background:linear-gradient(180deg,#1a0500 0%,#3a0f00 50%,#0f0200 100%);`,
-    particles:"embers",
-  },
-  {
-    id:"frostspire", name:"Frostspire Wastes", emoji:"🧊",
-    desc:"Eternal blizzard. Only the cold survives.",
-    minLevel:32, monsterLevelBonus:20, expMult:3.0, goldMult:2.8, lootBonus:0.18,
-    bgCSS:`background:linear-gradient(180deg,#050a14 0%,#0a1428 50%,#050a1a 100%);`,
-    particles:"blizzard",
-  },
-  {
-    id:"shadowrealm", name:"Shadow Realm", emoji:"👁️",
-    desc:"A dimension of pure darkness and terror.",
-    minLevel:40, monsterLevelBonus:25, expMult:3.5, goldMult:3.2, lootBonus:0.22,
-    bgCSS:`background:linear-gradient(180deg,#080008 0%,#150015 50%,#050005 100%);`,
-    particles:"shadow",
-  },
-  {
-    id:"celestialplane", name:"Celestial Plane", emoji:"✨",
-    desc:"The realm of gods. Few mortals see this and live.",
-    minLevel:50, monsterLevelBonus:32, expMult:4.0, goldMult:3.8, lootBonus:0.28,
-    bgCSS:`background:linear-gradient(180deg,#0a0820 0%,#181030 50%,#080618 100%);`,
-    particles:"stars",
-  },
-  {
-    id:"abyssaldepths", name:"Abyssal Depths", emoji:"🌊",
-    desc:"The ocean floor. Ancient horrors dwell here.",
-    minLevel:60, monsterLevelBonus:40, expMult:4.8, goldMult:4.5, lootBonus:0.35,
-    bgCSS:`background:linear-gradient(180deg,#000814 0%,#001428 50%,#000510 100%);`,
-    particles:"bubbles",
-  },
-  {
-    id:"chaoscore", name:"The Chaos Core", emoji:"☄️",
-    desc:"The end of all things. Pure destruction incarnate.",
-    minLevel:75, monsterLevelBonus:50, expMult:6.0, goldMult:5.5, lootBonus:0.45,
-    bgCSS:`background:linear-gradient(180deg,#0f0000 0%,#1f0505 50%,#0a0000 100%);`,
-    particles:"chaos",
-  },
+  {id:"greenwood", name:"Greenwood Vale", emoji:"🌲",desc:"A peaceful forest. Beware the shadows.",minLevel:1, monsterLevelBonus:0, expMult:1.0, goldMult:1.0, lootBonus:0,bgCSS:`background:linear-gradient(180deg,#0d2b1a 0%,#1a4a2a 50%,#0f2a18 100%);`,particles:"leaves"},
+  {id:"stonecrypt", name:"Stone Crypt", emoji:"💀",desc:"Ancient burial grounds. The dead don't rest.",minLevel:5, monsterLevelBonus:3, expMult:1.3, goldMult:1.2, lootBonus:0.05,bgCSS:`background:linear-gradient(180deg,#0e0e1a 0%,#1a1a2e 50%,#0a0a14 100%);`,particles:"spirits"},
+  {id:"shadowpeaks", name:"Shadow Peaks", emoji:"⛰️",desc:"Treacherous mountains. Monsters roam freely.",minLevel:10, monsterLevelBonus:6, expMult:1.7, goldMult:1.5, lootBonus:0.08,bgCSS:`background:linear-gradient(180deg,#0a0814 0%,#1a1030 50%,#080612 100%);`,particles:"snow"},
+  {id:"voidrift", name:"The Void Rift", emoji:"🌀",desc:"Reality tears here. Only legends survive.",minLevel:18, monsterLevelBonus:12, expMult:2.2, goldMult:2.0, lootBonus:0.12,bgCSS:`background:linear-gradient(180deg,#050514 0%,#0a0520 50%,#020208 100%);`,particles:"void"},
+  {id:"ashvolcano", name:"Ashveil Volcano", emoji:"🌋",desc:"Rivers of lava. The air burns your lungs.",minLevel:25, monsterLevelBonus:16, expMult:2.6, goldMult:2.4, lootBonus:0.15,bgCSS:`background:linear-gradient(180deg,#1a0500 0%,#3a0f00 50%,#0f0200 100%);`,particles:"embers"},
+  {id:"frostspire", name:"Frostspire Wastes", emoji:"🧊",desc:"Eternal blizzard. Only the cold survives.",minLevel:32, monsterLevelBonus:20, expMult:3.0, goldMult:2.8, lootBonus:0.18,bgCSS:`background:linear-gradient(180deg,#050a14 0%,#0a1428 50%,#050a1a 100%);`,particles:"blizzard"},
+  {id:"shadowrealm", name:"Shadow Realm", emoji:"👁️",desc:"A dimension of pure darkness and terror.",minLevel:40, monsterLevelBonus:25, expMult:3.5, goldMult:3.2, lootBonus:0.22,bgCSS:`background:linear-gradient(180deg,#080008 0%,#150015 50%,#050005 100%);`,particles:"shadow"},
+  {id:"celestialplane", name:"Celestial Plane", emoji:"✨",desc:"The realm of gods. Few mortals see this and live.",minLevel:50, monsterLevelBonus:32, expMult:4.0, goldMult:3.8, lootBonus:0.28,bgCSS:`background:linear-gradient(180deg,#0a0820 0%,#181030 50%,#080618 100%);`,particles:"stars"},
+  {id:"abyssaldepths", name:"Abyssal Depths", emoji:"🌊",desc:"The ocean floor. Ancient horrors dwell here.",minLevel:60, monsterLevelBonus:40, expMult:4.8, goldMult:4.5, lootBonus:0.35,bgCSS:`background:linear-gradient(180deg,#000814 0%,#001428 50%,#000510 100%);`,particles:"bubbles"},
+  {id:"chaoscore", name:"The Chaos Core", emoji:"☄️",desc:"The end of all things. Pure destruction incarnate.",minLevel:75, monsterLevelBonus:50, expMult:6.0, goldMult:5.5, lootBonus:0.45,bgCSS:`background:linear-gradient(180deg,#0f0000 0%,#1f0505 50%,#0a0000 100%);`,particles:"chaos"},
 ];
 
 // ── PROPERTIES ───────────────────────────────────────────────
@@ -177,230 +115,24 @@ const PROPERTIES=[
 
 // ── CHOICE EVENTS ─────────────────────────────────────────────
 const CHOICE_EVENTS=[
-  // ── NEW CHOICE EVENTS — paste these into your CHOICE_EVENTS array ──
-// Just add them before the closing ]; of your existing array
-
-  {id:"wounded_knight",emoji:"⚔️",title:"A Wounded Knight",
-   desc:"A knight slumped against a tree. Badly hurt. He reaches out a hand.",
-   choices:[
-     {label:"Help him",outcome:()=>{
-       const r=Math.random();
-       return r<0.5
-         ?{msg:"He thanks you and presses a coin pouch into your hand.",gold:()=>rand(40,100),hp:0}
-         :{msg:"He thanks you weakly. That's all he has to give.",gold:0,hp:0};
-     }},
-     {label:"Leave him",outcome:()=>({msg:"You walk past. Some things aren't your problem.",gold:0,hp:0})},
-   ]},
-
-  {id:"cursed_coin",emoji:"🪙",title:"A Glowing Coin",
-   desc:"A single gold coin sits in the middle of the path, glowing faintly. Pick it up?",
-   choices:[
-     {label:"Pick it up",outcome:()=>{
-       const r=Math.random();
-       return r<0.4
-         ?{msg:"Just a coin. Lucky you!",gold:()=>rand(20,80),hp:0}
-         :r<0.7
-         ?{msg:"It burns your hand! Cursed gold.",gold:0,hp:()=>-rand(10,30)}
-         :{msg:"It vanishes the moment you touch it. Illusion.",gold:0,hp:0};
-     }},
-     {label:"Leave it",outcome:()=>({msg:"Some things are too good to be true.",gold:0,hp:0})},
-   ]},
-
-  {id:"ancient_well",emoji:"🪣",title:"An Ancient Well",
-   desc:"A stone well covered in moss. The bucket still works. Drink?",
-   choices:[
-     {label:"Drink from it",outcome:()=>{
-       const r=Math.random();
-       return r<0.5
-         ?{msg:"Cool and sweet. You feel refreshed.",gold:0,hp:()=>rand(20,50)}
-         :r<0.75
-         ?{msg:"Tastes foul. Your stomach protests.",gold:0,hp:()=>-rand(10,25)}
-         :{msg:"Nothing happens. Just water.",gold:0,hp:0};
-     }},
-     {label:"Move on",outcome:()=>({msg:"Probably wise. Ancient wells are risky.",gold:0,hp:0})},
-   ]},
-
-  {id:"travelling_merchant",emoji:"🛒",title:"A Travelling Merchant",
-   desc:"A cheerful merchant offers you a mystery item for 75 gold. No refunds.",
-   choices:[
-     {label:"Buy it (75 gold)",outcome:(p)=>{
-       if((p.gold||0)<75)return{msg:"Not enough gold. He shrugs and moves on.",gold:0,hp:0};
-       const r=Math.random();
-       return r<0.4
-         ?{msg:"A health tonic! You drink it immediately.",gold:-75,hp:()=>rand(30,60)}
-         :r<0.7
-         ?{msg:"A bag of gold! Net gain.",gold:()=>rand(-75+80,150),hp:0}
-         :{msg:"A rock. A painted rock. He's already gone.",gold:-75,hp:0};
-     }},
-     {label:"Decline",outcome:()=>({msg:"He tips his hat and disappears around the bend.",gold:0,hp:0})},
-   ]},
-
-  {id:"haunted_tree",emoji:"🌳",title:"A Whispering Tree",
-   desc:"An ancient tree with a face carved into it. It seems to whisper your name.",
-   choices:[
-     {label:"Listen closely",outcome:()=>{
-       const r=Math.random();
-       return r<0.33
-         ?{msg:"It reveals where something is buried nearby. Gold!",gold:()=>rand(50,150),hp:0}
-         :r<0.66
-         ?{msg:"The whispers grow to screams. You flee, shaken.",gold:0,hp:()=>-rand(15,35)}
-         :{msg:"It says: 'keep walking'. You keep walking.",gold:0,hp:0};
-     }},
-     {label:"Back away slowly",outcome:()=>({msg:"Smart. Whispering trees are never a good sign.",gold:0,hp:0})},
-   ]},
-
-  {id:"wounded_creature",emoji:"🐺",title:"A Wounded Animal",
-   desc:"A small creature caught in a trap whimpers at you. Free it?",
-   choices:[
-     {label:"Free it",outcome:()=>{
-       const r=Math.random();
-       return r<0.5
-         ?{msg:"It licks your hand before bounding off. You feel good about that.",gold:0,hp:()=>rand(10,25)}
-         :r<0.75
-         ?{msg:"It bites you for your trouble then runs. Ungrateful.",gold:0,hp:()=>-rand(5,15)}
-         :{msg:"It drops something shiny as it flees.",gold:()=>rand(20,60),hp:0};
-     }},
-     {label:"Leave it",outcome:()=>({msg:"Nature is cruel. So are you, apparently.",gold:0,hp:0})},
-   ]},
-
-  {id:"fortune_teller",emoji:"🔮",title:"A Fortune Teller",
-   desc:"A veiled figure offers to read your future for 30 gold.",
-   choices:[
-     {label:"Pay 30 gold",outcome:(p)=>{
-       if((p.gold||0)<30)return{msg:"She looks at your empty pockets and sighs.",gold:0,hp:0};
-       const fortunes=[
-         "Gold finds those who walk far.",
-         "Your next battle will test you. Be ready.",
-         "A great item awaits around the next corner.",
-         "Trust no one who offers you something for free.",
-         "You will live. Probably.",
-       ];
-       const f=fortunes[Math.floor(Math.random()*fortunes.length)];
-       return{msg:`She stares into the crystal and says: "${f}"`,gold:-30,hp:0};
-     }},
-     {label:"Keep walking",outcome:()=>({msg:"Your future remains unread. Probably fine.",gold:0,hp:0})},
-   ]},
-
-  {id:"rope_bridge",emoji:"🌉",title:"A Rope Bridge",
-   desc:"A rickety rope bridge over a deep gorge. Cross it or go the long way around?",
-   choices:[
-     {label:"Cross it",outcome:()=>{
-       const r=Math.random();
-       return r<0.6
-         ?{msg:"It holds! And you spot something glinting on the other side.",gold:()=>rand(30,80),hp:0}
-         :r<0.85
-         ?{msg:"A rope snaps! You make it but not without bruises.",gold:0,hp:()=>-rand(15,30)}
-         :{msg:"You cross safely. Nothing on the other side. Oh well.",gold:0,hp:0};
-     }},
-     {label:"Go around",outcome:()=>({msg:"Takes longer but your bones are intact.",gold:0,hp:0})},
-   ]},
-
-  {id:"alchemist_fire",emoji:"🧪",title:"Bubbling Vials",
-   desc:"An abandoned alchemist's pack. Several vials bubble ominously. Drink one?",
-   choices:[
-     {label:"Drink a vial",outcome:()=>{
-       const r=Math.random();
-       return r<0.35
-         ?{msg:"A healing elixir! Excellent find.",gold:0,hp:()=>rand(30,70)}
-         :r<0.6
-         ?{msg:"Tastes like burning. Is burning.",gold:0,hp:()=>-rand(20,40)}
-         :r<0.8
-         ?{msg:"Nothing. Probably just coloured water.",gold:0,hp:0}
-         :{msg:"You find a coin hidden in the pack too!",gold:()=>rand(40,100),hp:()=>rand(10,30)};
-     }},
-     {label:"Leave them",outcome:()=>({msg:"Wise. Unlabelled potions are never a good idea.",gold:0,hp:0})},
-   ]},
-
-  {id:"sleeping_giant",emoji:"👹",title:"A Sleeping Giant",
-   desc:"A massive creature sleeps against a boulder. Its pockets look full. Rob it?",
-   choices:[
-     {label:"Pick its pocket",outcome:()=>{
-       const r=Math.random();
-       return r<0.5
-         ?{msg:"Success! Heavy coin pouch secured. You sprint away.",gold:()=>rand(80,200),hp:0}
-         :{msg:"It wakes up! You run. It throws a rock. Ouch.",gold:0,hp:()=>-rand(20,45)};
-     }},
-     {label:"Sneak past",outcome:()=>({msg:"You tiptoe past. Living to fight another day.",gold:0,hp:0})},
-   ]},
-
-  {id:"wishing_fountain",emoji:"⛲",title:"A Wishing Fountain",
-   desc:"A pristine fountain in the middle of nowhere. Make a wish?",
-   choices:[
-     {label:"Toss in 10 gold",outcome:(p)=>{
-       if((p.gold||0)<10)return{msg:"Not even 10 gold to spare. The fountain judges you.",gold:0,hp:0};
-       const r=Math.random();
-       return r<0.3
-         ?{msg:"The water glows! Your wish is granted.",gold:()=>rand(50,200),hp:0}
-         :r<0.6
-         ?{msg:"The fountain bubbles warmly. You feel healthier.",gold:-10,hp:()=>rand(20,50)}
-         :{msg:"Nothing happens. The gold sinks. The fountain doesn't care.",gold:-10,hp:0};
-     }},
-     {label:"Just look at it",outcome:()=>({msg:"Pretty fountain. You move on.",gold:0,hp:0})},
-   ]},
-
-  {id:"dark_pact",emoji:"😈",title:"A Voice in the Dark",
-   desc:"A voice offers you power in exchange for something. You can't quite make out what.",
-   choices:[
-     {label:"Accept",outcome:()=>{
-       const r=Math.random();
-       return r<0.4
-         ?{msg:"Power surges through you! (And something feels slightly wrong.)",gold:()=>rand(100,250),hp:0}
-         :{msg:"You feel something leave you. Was that worth it?",gold:0,hp:()=>-rand(30,60)};
-     }},
-     {label:"Refuse",outcome:()=>({msg:"The voice sighs. Smart choice. Probably.",gold:0,hp:0})},
-   ]},
-
-  {id:"chest",emoji:"📦",title:"A Weathered Chest",
-   desc:"You stumble across an old chest half-buried in the dirt. Investigate?",
-   choices:[
-     {label:"Open it", outcome:()=>({msg:"The chest springs open! Gold inside!",gold:()=>rand(30,120),hp:0})},
-     {label:"Leave it",outcome:()=>({msg:"You walk away. Better safe than sorry.",gold:0,hp:0})},
-   ]},
-  {id:"stranger",emoji:"🧙",title:"A Hooded Stranger",
-   desc:"A cloaked figure offers you something wrapped in cloth. Accept?",
-   choices:[
-     {label:"Accept", outcome:()=>({msg:"A strange potion. You drink it.",gold:0,hp:()=>rand(-20,40)})},
-     {label:"Decline",outcome:()=>({msg:"The stranger vanishes in smoke.",gold:0,hp:0})},
-   ]},
-  {id:"shrine",emoji:"⛩️",title:"Ancient Shrine",
-   desc:"A crumbling shrine. Leave an offering of 50 gold?",
-   choices:[
-     {label:"Offer 50 gold",outcome:(p)=>{
-       if((p.gold||0)<50)return{msg:"Not enough gold.",gold:0,hp:0};
-       return{msg:"The shrine glows. You feel restored!",gold:-50,hp:()=>rand(20,60)};
-     }},
-     {label:"Ignore it",outcome:()=>({msg:"You pass by.",gold:0,hp:0})},
-   ]},
-  {id:"gambler",emoji:"🎲",title:"Roadside Gambler",
-   desc:"A shady figure offers to double 100 gold. Bet?",
-   choices:[
-     {label:"Bet 100 gold",outcome:(p)=>{
-       if((p.gold||0)<100)return{msg:"Too broke to gamble.",gold:0,hp:0};
-       const win=Math.random()<0.45;
-       return{msg:win?"You won!":"The dice were loaded.",gold:win?100:-100,hp:0};
-     }},
-     {label:"Walk away",outcome:()=>({msg:"Some risks aren't worth it.",gold:0,hp:0})},
-   ]},
-  {id:"mushroom",emoji:"🍄",title:"Glowing Mushroom",
-   desc:"A bioluminescent mushroom pulses with strange light. Eat it?",
-   choices:[
-     {label:"Eat it",outcome:()=>{
-       const r=Math.random();
-       return{msg:r<0.4?"Delicious! You feel energised.":r<0.7?"Tastes awful.":"Nothing happens.",
-              gold:0,hp:()=>Math.random()<0.4?rand(15,40):Math.random()<0.5?-rand(10,25):0};
-     }},
-     {label:"Leave it",outcome:()=>({msg:"You resist the glow.",gold:0,hp:0})},
-   ]},
-  {id:"cave",emoji:"🕳️",title:"Dark Cave Entrance",
-   desc:"A cave mouth yawns in the hillside. Enter?",
-   choices:[
-     {label:"Go in",outcome:()=>{
-       const win=Math.random()<0.5;
-       return{msg:win?"A cache of gold!":"A bat colony erupts! You flee.",
-              gold:win?rand(40,100):-10,hp:win?0:-rand(5,15)};
-     }},
-     {label:"Move on",outcome:()=>({msg:"Some things are best left alone.",gold:0,hp:0})},
-   ]},
+  {id:"wounded_knight",emoji:"⚔️",title:"A Wounded Knight",desc:"A knight slumped against a tree. Badly hurt. He reaches out a hand.",choices:[{label:"Help him",outcome:()=>{const r=Math.random();return r<0.5?{msg:"He thanks you and presses a coin pouch into your hand.",gold:()=>rand(40,100),hp:0}:{msg:"He thanks you weakly. That's all he has to give.",gold:0,hp:0};}},{label:"Leave him",outcome:()=>({msg:"You walk past. Some things aren't your problem.",gold:0,hp:0})}]},
+  {id:"cursed_coin",emoji:"🪙",title:"A Glowing Coin",desc:"A single gold coin sits in the middle of the path, glowing faintly. Pick it up?",choices:[{label:"Pick it up",outcome:()=>{const r=Math.random();return r<0.4?{msg:"Just a coin. Lucky you!",gold:()=>rand(20,80),hp:0}:r<0.7?{msg:"It burns your hand! Cursed gold.",gold:0,hp:()=>-rand(10,30)}:{msg:"It vanishes the moment you touch it. Illusion.",gold:0,hp:0};}},{label:"Leave it",outcome:()=>({msg:"Some things are too good to be true.",gold:0,hp:0})}]},
+  {id:"ancient_well",emoji:"🪣",title:"An Ancient Well",desc:"A stone well covered in moss. The bucket still works. Drink?",choices:[{label:"Drink from it",outcome:()=>{const r=Math.random();return r<0.5?{msg:"Cool and sweet. You feel refreshed.",gold:0,hp:()=>rand(20,50)}:r<0.75?{msg:"Tastes foul. Your stomach protests.",gold:0,hp:()=>-rand(10,25)}:{msg:"Nothing happens. Just water.",gold:0,hp:0};}},{label:"Move on",outcome:()=>({msg:"Probably wise. Ancient wells are risky.",gold:0,hp:0})}]},
+  {id:"travelling_merchant",emoji:"🛒",title:"A Travelling Merchant",desc:"A cheerful merchant offers you a mystery item for 75 gold. No refunds.",choices:[{label:"Buy it (75 gold)",outcome:(p)=>{if((p.gold||0)<75)return{msg:"Not enough gold. He shrugs and moves on.",gold:0,hp:0};const r=Math.random();return r<0.4?{msg:"A health tonic! You drink it immediately.",gold:-75,hp:()=>rand(30,60)}:r<0.7?{msg:"A bag of gold! Net gain.",gold:()=>rand(5,75),hp:0}:{msg:"A rock. A painted rock. He's already gone.",gold:-75,hp:0};}},{label:"Decline",outcome:()=>({msg:"He tips his hat and disappears around the bend.",gold:0,hp:0})}]},
+  {id:"haunted_tree",emoji:"🌳",title:"A Whispering Tree",desc:"An ancient tree with a face carved into it. It seems to whisper your name.",choices:[{label:"Listen closely",outcome:()=>{const r=Math.random();return r<0.33?{msg:"It reveals where something is buried nearby. Gold!",gold:()=>rand(50,150),hp:0}:r<0.66?{msg:"The whispers grow to screams. You flee, shaken.",gold:0,hp:()=>-rand(15,35)}:{msg:"It says: keep walking. You keep walking.",gold:0,hp:0};}},{label:"Back away slowly",outcome:()=>({msg:"Smart. Whispering trees are never a good sign.",gold:0,hp:0})}]},
+  {id:"wounded_creature",emoji:"🐺",title:"A Wounded Animal",desc:"A small creature caught in a trap whimpers at you. Free it?",choices:[{label:"Free it",outcome:()=>{const r=Math.random();return r<0.5?{msg:"It licks your hand before bounding off. You feel good about that.",gold:0,hp:()=>rand(10,25)}:r<0.75?{msg:"It bites you for your trouble then runs. Ungrateful.",gold:0,hp:()=>-rand(5,15)}:{msg:"It drops something shiny as it flees.",gold:()=>rand(20,60),hp:0};}},{label:"Leave it",outcome:()=>({msg:"Nature is cruel. So are you, apparently.",gold:0,hp:0})}]},
+  {id:"fortune_teller",emoji:"🔮",title:"A Fortune Teller",desc:"A veiled figure offers to read your future for 30 gold.",choices:[{label:"Pay 30 gold",outcome:(p)=>{if((p.gold||0)<30)return{msg:"She looks at your empty pockets and sighs.",gold:0,hp:0};const fortunes=["Gold finds those who walk far.","Your next battle will test you. Be ready.","A great item awaits around the next corner.","Trust no one who offers you something for free.","You will live. Probably."];const f=fortunes[Math.floor(Math.random()*fortunes.length)];return{msg:`She stares into the crystal and says: "${f}"`,gold:-30,hp:0};}},{label:"Keep walking",outcome:()=>({msg:"Your future remains unread. Probably fine.",gold:0,hp:0})}]},
+  {id:"rope_bridge",emoji:"🌉",title:"A Rope Bridge",desc:"A rickety rope bridge over a deep gorge. Cross it or go the long way around?",choices:[{label:"Cross it",outcome:()=>{const r=Math.random();return r<0.6?{msg:"It holds! And you spot something glinting on the other side.",gold:()=>rand(30,80),hp:0}:r<0.85?{msg:"A rope snaps! You make it but not without bruises.",gold:0,hp:()=>-rand(15,30)}:{msg:"You cross safely. Nothing on the other side. Oh well.",gold:0,hp:0};}},{label:"Go around",outcome:()=>({msg:"Takes longer but your bones are intact.",gold:0,hp:0})}]},
+  {id:"alchemist_fire",emoji:"🧪",title:"Bubbling Vials",desc:"An abandoned alchemist's pack. Several vials bubble ominously. Drink one?",choices:[{label:"Drink a vial",outcome:()=>{const r=Math.random();return r<0.35?{msg:"A healing elixir! Excellent find.",gold:0,hp:()=>rand(30,70)}:r<0.6?{msg:"Tastes like burning. Is burning.",gold:0,hp:()=>-rand(20,40)}:r<0.8?{msg:"Nothing. Probably just coloured water.",gold:0,hp:0}:{msg:"You find a coin hidden in the pack too!",gold:()=>rand(40,100),hp:()=>rand(10,30)};}},{label:"Leave them",outcome:()=>({msg:"Wise. Unlabelled potions are never a good idea.",gold:0,hp:0})}]},
+  {id:"sleeping_giant",emoji:"👹",title:"A Sleeping Giant",desc:"A massive creature sleeps against a boulder. Its pockets look full. Rob it?",choices:[{label:"Pick its pocket",outcome:()=>{const r=Math.random();return r<0.5?{msg:"Success! Heavy coin pouch secured. You sprint away.",gold:()=>rand(80,200),hp:0}:{msg:"It wakes up! You run. It throws a rock. Ouch.",gold:0,hp:()=>-rand(20,45)};}},{label:"Sneak past",outcome:()=>({msg:"You tiptoe past. Living to fight another day.",gold:0,hp:0})}]},
+  {id:"wishing_fountain",emoji:"⛲",title:"A Wishing Fountain",desc:"A pristine fountain in the middle of nowhere. Make a wish?",choices:[{label:"Toss in 10 gold",outcome:(p)=>{if((p.gold||0)<10)return{msg:"Not even 10 gold to spare. The fountain judges you.",gold:0,hp:0};const r=Math.random();return r<0.3?{msg:"The water glows! Your wish is granted.",gold:()=>rand(50,200),hp:0}:r<0.6?{msg:"The fountain bubbles warmly. You feel healthier.",gold:-10,hp:()=>rand(20,50)}:{msg:"Nothing happens. The gold sinks. The fountain doesn't care.",gold:-10,hp:0};}},{label:"Just look at it",outcome:()=>({msg:"Pretty fountain. You move on.",gold:0,hp:0})}]},
+  {id:"dark_pact",emoji:"😈",title:"A Voice in the Dark",desc:"A voice offers you power in exchange for something. You can't quite make out what.",choices:[{label:"Accept",outcome:()=>{const r=Math.random();return r<0.4?{msg:"Power surges through you! (And something feels slightly wrong.)",gold:()=>rand(100,250),hp:0}:{msg:"You feel something leave you. Was that worth it?",gold:0,hp:()=>-rand(30,60)};}},{label:"Refuse",outcome:()=>({msg:"The voice sighs. Smart choice. Probably.",gold:0,hp:0})}]},
+  {id:"chest",emoji:"📦",title:"A Weathered Chest",desc:"You stumble across an old chest half-buried in the dirt. Investigate?",choices:[{label:"Open it",outcome:()=>({msg:"The chest springs open! Gold inside!",gold:()=>rand(30,120),hp:0})},{label:"Leave it",outcome:()=>({msg:"You walk away. Better safe than sorry.",gold:0,hp:0})}]},
+  {id:"stranger",emoji:"🧙",title:"A Hooded Stranger",desc:"A cloaked figure offers you something wrapped in cloth. Accept?",choices:[{label:"Accept",outcome:()=>({msg:"A strange potion. You drink it.",gold:0,hp:()=>rand(-20,40)})},{label:"Decline",outcome:()=>({msg:"The stranger vanishes in smoke.",gold:0,hp:0})}]},
+  {id:"shrine",emoji:"⛩️",title:"Ancient Shrine",desc:"A crumbling shrine. Leave an offering of 50 gold?",choices:[{label:"Offer 50 gold",outcome:(p)=>{if((p.gold||0)<50)return{msg:"Not enough gold.",gold:0,hp:0};return{msg:"The shrine glows. You feel restored!",gold:-50,hp:()=>rand(20,60)};}},{label:"Ignore it",outcome:()=>({msg:"You pass by.",gold:0,hp:0})}]},
+  {id:"gambler",emoji:"🎲",title:"Roadside Gambler",desc:"A shady figure offers to double 100 gold. Bet?",choices:[{label:"Bet 100 gold",outcome:(p)=>{if((p.gold||0)<100)return{msg:"Too broke to gamble.",gold:0,hp:0};const win=Math.random()<0.45;return{msg:win?"You won!":"The dice were loaded.",gold:win?100:-100,hp:0};}},{label:"Walk away",outcome:()=>({msg:"Some risks aren't worth it.",gold:0,hp:0})}]},
+  {id:"mushroom",emoji:"🍄",title:"Glowing Mushroom",desc:"A bioluminescent mushroom pulses with strange light. Eat it?",choices:[{label:"Eat it",outcome:()=>{const r=Math.random();return{msg:r<0.4?"Delicious! You feel energised.":r<0.7?"Tastes awful.":"Nothing happens.",gold:0,hp:()=>Math.random()<0.4?rand(15,40):Math.random()<0.5?-rand(10,25):0};}},{label:"Leave it",outcome:()=>({msg:"You resist the glow.",gold:0,hp:0})}]},
+  {id:"cave",emoji:"🕳️",title:"Dark Cave Entrance",desc:"A cave mouth yawns in the hillside. Enter?",choices:[{label:"Go in",outcome:()=>{const win=Math.random()<0.5;return{msg:win?"A cache of gold!":"A bat colony erupts! You flee.",gold:win?rand(40,100):-10,hp:win?0:-rand(5,15)};}},{label:"Move on",outcome:()=>({msg:"Some things are best left alone.",gold:0,hp:0})}]},
 ];
 
 // ── GAME SETTINGS ────────────────────────────────────────────
@@ -424,7 +156,7 @@ const CFG={
   BOUNTY_MIN:500,
 };
 
-// ── ARENA TIERS (kept for profile history) ───────────────────
+// ── ARENA TIERS ───────────────────────────────────────────────
 const ARENA_TIERS=[
   {name:"Copper",  color:"#cd7f32",wins:0,  expBonus:1.0, goldBonus:1.0},
   {name:"Bronze",  color:"#c9943a",wins:10, expBonus:1.1, goldBonus:1.1},
@@ -437,25 +169,25 @@ const ARENA_TIERS=[
 
 // ── MONSTERS ─────────────────────────────────────────────────
 const MONSTERS=[
-  {name:"Goblin Scout",    emoji:"👺",desc:"A sneaky little menace.",                  str:[4,12], def:[2,7],  hp:[25,55],  exp:[15,40],  gold:[4,20],  minLevel:0},
-  {name:"Forest Wolf",     emoji:"🐺",desc:"Runs in packs. Alone now. Very hungry.",   str:[9,18], def:[4,10], hp:[45,80],  exp:[35,70],  gold:[12,35], minLevel:0},
-  {name:"Cave Bat",        emoji:"🦇",desc:"Dives from the dark. Hard to track.",      str:[6,14], def:[2,8],  hp:[20,45],  exp:[20,45],  gold:[5,18],  minLevel:0},
-  {name:"Stone Golem",     emoji:"🗿",desc:"Ancient guardian. Slow but devastating.",  str:[7,15], def:[18,30],hp:[70,120], exp:[55,100], gold:[20,55], minLevel:3},
-  {name:"Shadow Wraith",   emoji:"👻",desc:"A spirit that feeds on life force.",       str:[22,38],def:[6,15], hp:[60,110], exp:[75,130], gold:[28,65], minLevel:5},
-  {name:"Venomfang Spider",emoji:"🕷️",desc:"Its bite carries a slow, rotting curse.", str:[14,24],def:[8,16], hp:[50,90],  exp:[50,90],  gold:[18,45], minLevel:4},
-  {name:"Troll Brute",     emoji:"👹",desc:"Regenerates. Hit it fast.",                str:[20,35],def:[14,24],hp:[100,160],exp:[80,140], gold:[35,80], minLevel:6},
+  {name:"Goblin Scout",    emoji:"👺",desc:"A sneaky little menace.",                    str:[4,12], def:[2,7],  hp:[25,55],  exp:[15,40],  gold:[4,20],  minLevel:0},
+  {name:"Forest Wolf",     emoji:"🐺",desc:"Runs in packs. Alone now. Very hungry.",     str:[9,18], def:[4,10], hp:[45,80],  exp:[35,70],  gold:[12,35], minLevel:0},
+  {name:"Cave Bat",        emoji:"🦇",desc:"Dives from the dark. Hard to track.",        str:[6,14], def:[2,8],  hp:[20,45],  exp:[20,45],  gold:[5,18],  minLevel:0},
+  {name:"Stone Golem",     emoji:"🗿",desc:"Ancient guardian. Slow but devastating.",    str:[7,15], def:[18,30],hp:[70,120], exp:[55,100], gold:[20,55], minLevel:3},
+  {name:"Shadow Wraith",   emoji:"👻",desc:"A spirit that feeds on life force.",         str:[22,38],def:[6,15], hp:[60,110], exp:[75,130], gold:[28,65], minLevel:5},
+  {name:"Venomfang Spider",emoji:"🕷️",desc:"Its bite carries a slow, rotting curse.",   str:[14,24],def:[8,16], hp:[50,90],  exp:[50,90],  gold:[18,45], minLevel:4},
+  {name:"Troll Brute",     emoji:"👹",desc:"Regenerates. Hit it fast.",                  str:[20,35],def:[14,24],hp:[100,160],exp:[80,140], gold:[35,80], minLevel:6},
   {name:"Dragon Whelp",    emoji:"🐉",desc:"Young dragon. Not fully grown. Still lethal.",str:[28,46],def:[13,25],hp:[110,185],exp:[110,185],gold:[45,110],minLevel:8},
-  {name:"Skeleton Knight", emoji:"💀",desc:"Fought a hundred wars. Still here.",       str:[18,32],def:[22,38],hp:[90,150], exp:[90,160], gold:[38,85], minLevel:6},
-  {name:"Dark Sorcerer",   emoji:"🧙",desc:"Commands ancient spells.",                 str:[40,60],def:[5,12], hp:[80,130], exp:[120,200],gold:[60,130],minLevel:10},
-  {name:"Banshee Queen",   emoji:"👸",desc:"Her scream alone can end you.",            str:[35,55],def:[8,18], hp:[130,210],exp:[140,230],gold:[65,140],minLevel:11},
-  {name:"Lich Lord",       emoji:"💀",desc:"Mastered death itself.",                   str:[45,70],def:[18,32],hp:[180,300],exp:[180,320],gold:[90,190],minLevel:14},
-  {name:"Elder Dragon",    emoji:"🐲",desc:"A living catastrophe.",                    str:[60,90],def:[25,45],hp:[300,500],exp:[300,500],gold:[150,300],minLevel:18},
-  {name:"Void Titan",      emoji:"🌀",desc:"Born from the rift between worlds.",       str:[75,110],def:[30,50],hp:[400,650],exp:[400,650],gold:[200,400],minLevel:25},
+  {name:"Skeleton Knight", emoji:"💀",desc:"Fought a hundred wars. Still here.",         str:[18,32],def:[22,38],hp:[90,150], exp:[90,160], gold:[38,85], minLevel:6},
+  {name:"Dark Sorcerer",   emoji:"🧙",desc:"Commands ancient spells.",                   str:[40,60],def:[5,12], hp:[80,130], exp:[120,200],gold:[60,130],minLevel:10},
+  {name:"Banshee Queen",   emoji:"👸",desc:"Her scream alone can end you.",              str:[35,55],def:[8,18], hp:[130,210],exp:[140,230],gold:[65,140],minLevel:11},
+  {name:"Lich Lord",       emoji:"💀",desc:"Mastered death itself.",                     str:[45,70],def:[18,32],hp:[180,300],exp:[180,320],gold:[90,190],minLevel:14},
+  {name:"Elder Dragon",    emoji:"🐲",desc:"A living catastrophe.",                      str:[60,90],def:[25,45],hp:[300,500],exp:[300,500],gold:[150,300],minLevel:18},
+  {name:"Void Titan",      emoji:"🌀",desc:"Born from the rift between worlds.",         str:[75,110],def:[30,50],hp:[400,650],exp:[400,650],gold:[200,400],minLevel:25},
   {name:"Frost Wyrm",      emoji:"🧊",desc:"Ancient ice dragon. Freezes all it touches.",str:[80,120],def:[35,55],hp:[450,700],exp:[450,700],gold:[220,440],minLevel:32},
-  {name:"Shadow Demon",    emoji:"😈",desc:"Pure malice given form.",                  str:[90,130],def:[40,60],hp:[500,800],exp:[500,800],gold:[250,500],minLevel:40},
-  {name:"Celestial Titan", emoji:"✨",desc:"A god that fell from grace.",              str:[100,150],def:[50,70],hp:[700,1100],exp:[700,1100],gold:[350,700],minLevel:50},
-  {name:"Abyssal Horror",  emoji:"🌊",desc:"Something that should not exist.",         str:[120,170],def:[60,85],hp:[900,1400],exp:[900,1400],gold:[450,900],minLevel:60},
-  {name:"Chaos Incarnate", emoji:"☄️",desc:"The end. The beginning. Everything.",     str:[150,220],def:[80,110],hp:[1200,2000],exp:[1200,2000],gold:[600,1200],minLevel:75},
+  {name:"Shadow Demon",    emoji:"😈",desc:"Pure malice given form.",                    str:[90,130],def:[40,60],hp:[500,800],exp:[500,800],gold:[250,500],minLevel:40},
+  {name:"Celestial Titan", emoji:"✨",desc:"A god that fell from grace.",                str:[100,150],def:[50,70],hp:[700,1100],exp:[700,1100],gold:[350,700],minLevel:50},
+  {name:"Abyssal Horror",  emoji:"🌊",desc:"Something that should not exist.",           str:[120,170],def:[60,85],hp:[900,1400],exp:[900,1400],gold:[450,900],minLevel:60},
+  {name:"Chaos Incarnate", emoji:"☄️",desc:"The end. The beginning. Everything.",       str:[150,220],def:[80,110],hp:[1200,2000],exp:[1200,2000],gold:[600,1200],minLevel:75},
 ].map(m=>({...m,image:`img/monsters/${slug(m.name)}.svg`}));
 
 // ── AVATARS ──────────────────────────────────────────────────
@@ -474,38 +206,134 @@ const AVATARS=[
   {id:"av_champion", name:"Eternal Champion",emoji:"👑",rarity:"legendary", dropRate:0.4,desc:"The last one standing."},
 ].map(av=>({...av,image:`img/avatars/${av.id}.svg`}));
 
+// ── ITEM LEVEL SCALING ────────────────────────────────────────
+// val = base + round(itemLevel * RARITY_SCALE[rarity]) + variance
+const RARITY_SCALE={common:0.8,uncommon:1.2,rare:1.8,epic:2.5,legendary:3.5};
+
 // ── ITEMS ────────────────────────────────────────────────────
+// base     = stat value at level 0 (floor)
+// minLevel = earliest player level this item can drop
+// Actual stat when found = base + (playerLevel * scale) + small variance
 const ITEMS=[
-  {name:"Rusty Sword",        type:"Weapon",stat:"str",base:5,  rarity:"common",   emoji:"⚔️",dropRate:20,shopPrice:80},
-  {name:"Wooden Club",        type:"Weapon",stat:"str",base:4,  rarity:"common",   emoji:"🪵",dropRate:20,shopPrice:60},
-  {name:"Worn Shield",        type:"Shield",stat:"def",base:4,  rarity:"common",   emoji:"🛡️",dropRate:18,shopPrice:70},
-  {name:"Leather Cap",        type:"Helmet",stat:"def",base:3,  rarity:"common",   emoji:"🪖",dropRate:18,shopPrice:55},
-  {name:"Cloth Robe",         type:"Armour",stat:"def",base:4,  rarity:"common",   emoji:"👘",dropRate:16,shopPrice:65},
-  {name:"Simple Boots",       type:"Boots", stat:"def",base:2,  rarity:"common",   emoji:"👟",dropRate:16,shopPrice:45},
-  {name:"Copper Amulet",      type:"Amulet",stat:"def",base:2,  rarity:"common",   emoji:"📿",dropRate:14,shopPrice:50},
-  {name:"Iron Chestplate",    type:"Armour",stat:"def",base:12, rarity:"uncommon", emoji:"🦺",dropRate:12,shopPrice:350},
-  {name:"Silver Blade",       type:"Weapon",stat:"str",base:20, rarity:"uncommon", emoji:"🗡️",dropRate:12,shopPrice:400},
-  {name:"Mithril Ring",       type:"Amulet",stat:"def",base:9,  rarity:"uncommon", emoji:"💍",dropRate:10,shopPrice:280},
-  {name:"Knight's Shield",    type:"Shield",stat:"def",base:14, rarity:"uncommon", emoji:"🛡️",dropRate:10,shopPrice:320},
-  {name:"Chain Greaves",      type:"Greaves",stat:"def",base:8, rarity:"uncommon", emoji:"🦵",dropRate:10,shopPrice:260},
-  {name:"Ranger Boots",       type:"Boots", stat:"def",base:7,  rarity:"uncommon", emoji:"👢",dropRate:10,shopPrice:240},
-  {name:"Iron Helm",          type:"Helmet",stat:"def",base:10, rarity:"uncommon", emoji:"⛑️",dropRate:10,shopPrice:300},
-  {name:"Enchanted Greaves",  type:"Greaves",stat:"def",base:18,rarity:"rare",     emoji:"🦵",dropRate:6},
-  {name:"Dragonfang Blade",   type:"Weapon",stat:"str",base:38, rarity:"rare",     emoji:"🔱",dropRate:5},
-  {name:"Stormshard Boots",   type:"Boots", stat:"def",base:18, rarity:"rare",     emoji:"👢",dropRate:6},
-  {name:"Warden's Helm",      type:"Helmet",stat:"def",base:20, rarity:"rare",     emoji:"🪖",dropRate:5},
-  {name:"Soulbind Shield",    type:"Shield",stat:"def",base:25, rarity:"rare",     emoji:"🛡️",dropRate:5},
-  {name:"Stormweave Armour",  type:"Armour",stat:"def",base:28, rarity:"rare",     emoji:"🧥",dropRate:5},
-  {name:"Runic Amulet",       type:"Amulet",stat:"str",base:15, rarity:"rare",     emoji:"🔮",dropRate:5},
-  {name:"Phoenix Armour",     type:"Armour",stat:"def",base:42, rarity:"epic",     emoji:"✨",dropRate:2},
-  {name:"Voidcaller Staff",   type:"Weapon",stat:"str",base:55, rarity:"epic",     emoji:"🪄",dropRate:2},
-  {name:"Shadow Greaves",     type:"Greaves",stat:"def",base:35,rarity:"epic",     emoji:"🦵",dropRate:2},
-  {name:"Void Amulet",        type:"Amulet",stat:"str",base:28, rarity:"epic",     emoji:"💜",dropRate:2},
-  {name:"Dreadhelm",          type:"Helmet",stat:"def",base:38, rarity:"epic",     emoji:"😈",dropRate:2},
-  {name:"Excalibur",          type:"Weapon",stat:"str",base:80, rarity:"legendary",emoji:"⚡",dropRate:0.3},
-  {name:"Crown of the Fallen",type:"Helmet",stat:"def",base:55, rarity:"legendary",emoji:"👑",dropRate:0.3},
-  {name:"Aegis of Eternity",  type:"Shield",stat:"def",base:60, rarity:"legendary",emoji:"🌟",dropRate:0.3},
-  {name:"Dragonhide Armour",  type:"Armour",stat:"def",base:65, rarity:"legendary",emoji:"🐉",dropRate:0.3},
+  // ── WEAPONS ──────────────────────────────────────────────
+  {name:"Rusty Sword",          type:"Weapon", stat:"str", base:4,  minLevel:1,  rarity:"common",    emoji:"⚔️", dropRate:18, shopPrice:80},
+  {name:"Wooden Club",          type:"Weapon", stat:"str", base:3,  minLevel:1,  rarity:"common",    emoji:"🪵", dropRate:18, shopPrice:60},
+  {name:"Hunting Knife",        type:"Weapon", stat:"str", base:5,  minLevel:1,  rarity:"common",    emoji:"🔪", dropRate:16, shopPrice:90},
+  {name:"Stone Axe",            type:"Weapon", stat:"str", base:4,  minLevel:2,  rarity:"common",    emoji:"🪓", dropRate:16, shopPrice:75},
+  {name:"Shortbow",             type:"Weapon", stat:"str", base:5,  minLevel:3,  rarity:"common",    emoji:"🏹", dropRate:14, shopPrice:95},
+  {name:"Iron Sword",           type:"Weapon", stat:"str", base:8,  minLevel:5,  rarity:"uncommon",  emoji:"⚔️", dropRate:12, shopPrice:220},
+  {name:"Battle Axe",           type:"Weapon", stat:"str", base:9,  minLevel:5,  rarity:"uncommon",  emoji:"🪓", dropRate:12, shopPrice:240},
+  {name:"War Hammer",           type:"Weapon", stat:"str", base:10, minLevel:6,  rarity:"uncommon",  emoji:"🔨", dropRate:11, shopPrice:260},
+  {name:"Silver Blade",         type:"Weapon", stat:"str", base:12, minLevel:8,  rarity:"uncommon",  emoji:"🗡️", dropRate:10, shopPrice:400},
+  {name:"Longbow",              type:"Weapon", stat:"str", base:11, minLevel:7,  rarity:"uncommon",  emoji:"🏹", dropRate:11, shopPrice:350},
+  {name:"Crossbow",             type:"Weapon", stat:"str", base:13, minLevel:9,  rarity:"uncommon",  emoji:"🏹", dropRate:10, shopPrice:380},
+  {name:"Flamebrand",           type:"Weapon", stat:"str", base:16, minLevel:12, rarity:"rare",      emoji:"🔥", dropRate:6},
+  {name:"Shadowfang Dagger",    type:"Weapon", stat:"str", base:18, minLevel:14, rarity:"rare",      emoji:"🗡️", dropRate:5},
+  {name:"Stormcaller Staff",    type:"Weapon", stat:"str", base:20, minLevel:16, rarity:"rare",      emoji:"🪄", dropRate:5},
+  {name:"Dragonfang Blade",     type:"Weapon", stat:"str", base:22, minLevel:18, rarity:"rare",      emoji:"🔱", dropRate:5},
+  {name:"Venomstrike Bow",      type:"Weapon", stat:"str", base:20, minLevel:15, rarity:"rare",      emoji:"🏹", dropRate:5},
+  {name:"Runebreaker Axe",      type:"Weapon", stat:"str", base:24, minLevel:20, rarity:"rare",      emoji:"🪓", dropRate:4},
+  {name:"Soulrender",           type:"Weapon", stat:"str", base:30, minLevel:25, rarity:"epic",      emoji:"💀", dropRate:2},
+  {name:"Voidcaller Staff",     type:"Weapon", stat:"str", base:32, minLevel:28, rarity:"epic",      emoji:"🪄", dropRate:2},
+  {name:"Stormfury Blade",      type:"Weapon", stat:"str", base:35, minLevel:30, rarity:"epic",      emoji:"⚡", dropRate:2},
+  {name:"Abyssal Cleaver",      type:"Weapon", stat:"str", base:38, minLevel:35, rarity:"epic",      emoji:"🌀", dropRate:2},
+  {name:"Doomcaster Wand",      type:"Weapon", stat:"str", base:36, minLevel:32, rarity:"epic",      emoji:"🪄", dropRate:2},
+  {name:"Excalibur",            type:"Weapon", stat:"str", base:45, minLevel:10, rarity:"legendary", emoji:"⚡", dropRate:0.4},
+  {name:"Godslayer",            type:"Weapon", stat:"str", base:55, minLevel:50, rarity:"legendary", emoji:"⚔️", dropRate:0.3},
+  {name:"The Last Word",        type:"Weapon", stat:"str", base:60, minLevel:60, rarity:"legendary", emoji:"🔱", dropRate:0.3},
+  {name:"Ragnarok",             type:"Weapon", stat:"str", base:70, minLevel:75, rarity:"legendary", emoji:"💥", dropRate:0.2},
+  {name:"Eternal Flame",        type:"Weapon", stat:"str", base:50, minLevel:40, rarity:"legendary", emoji:"🔥", dropRate:0.3},
+  // ── HELMETS ──────────────────────────────────────────────
+  {name:"Leather Cap",          type:"Helmet", stat:"def", base:3,  minLevel:1,  rarity:"common",    emoji:"🪖", dropRate:18, shopPrice:55},
+  {name:"Cloth Hood",           type:"Helmet", stat:"def", base:3,  minLevel:1,  rarity:"common",    emoji:"🪖", dropRate:18, shopPrice:50},
+  {name:"Wooden Helm",          type:"Helmet", stat:"def", base:4,  minLevel:2,  rarity:"common",    emoji:"🪖", dropRate:16, shopPrice:65},
+  {name:"Iron Helm",            type:"Helmet", stat:"def", base:7,  minLevel:5,  rarity:"uncommon",  emoji:"⛑️", dropRate:11, shopPrice:300},
+  {name:"Chain Coif",           type:"Helmet", stat:"def", base:8,  minLevel:6,  rarity:"uncommon",  emoji:"🪖", dropRate:11, shopPrice:320},
+  {name:"Steel Helm",           type:"Helmet", stat:"def", base:9,  minLevel:8,  rarity:"uncommon",  emoji:"🪖", dropRate:10, shopPrice:360},
+  {name:"Warden's Helm",        type:"Helmet", stat:"def", base:12, minLevel:12, rarity:"rare",      emoji:"🪖", dropRate:5},
+  {name:"Shadowveil Hood",      type:"Helmet", stat:"def", base:14, minLevel:15, rarity:"rare",      emoji:"🪖", dropRate:5},
+  {name:"Stormcrest Helm",      type:"Helmet", stat:"def", base:16, minLevel:18, rarity:"rare",      emoji:"⛑️", dropRate:4},
+  {name:"Bonebreaker Skull",    type:"Helmet", stat:"def", base:18, minLevel:20, rarity:"rare",      emoji:"💀", dropRate:4},
+  {name:"Void Visor",           type:"Helmet", stat:"def", base:24, minLevel:28, rarity:"epic",      emoji:"🪖", dropRate:2},
+  {name:"Dreadhelm",            type:"Helmet", stat:"def", base:26, minLevel:30, rarity:"epic",      emoji:"😈", dropRate:2},
+  {name:"Celestial Crown",      type:"Helmet", stat:"def", base:30, minLevel:38, rarity:"epic",      emoji:"✨", dropRate:2},
+  {name:"Crown of the Fallen",  type:"Helmet", stat:"def", base:40, minLevel:20, rarity:"legendary", emoji:"👑", dropRate:0.3},
+  {name:"Helm of Eternity",     type:"Helmet", stat:"def", base:50, minLevel:55, rarity:"legendary", emoji:"🌟", dropRate:0.2},
+  {name:"Godking's Crown",      type:"Helmet", stat:"def", base:60, minLevel:70, rarity:"legendary", emoji:"👑", dropRate:0.2},
+  // ── ARMOUR ───────────────────────────────────────────────
+  {name:"Cloth Robe",           type:"Armour", stat:"def", base:3,  minLevel:1,  rarity:"common",    emoji:"👘", dropRate:18, shopPrice:65},
+  {name:"Padded Vest",          type:"Armour", stat:"def", base:4,  minLevel:1,  rarity:"common",    emoji:"🦺", dropRate:18, shopPrice:70},
+  {name:"Leather Armour",       type:"Armour", stat:"def", base:5,  minLevel:2,  rarity:"common",    emoji:"🦺", dropRate:16, shopPrice:85},
+  {name:"Hide Armour",          type:"Armour", stat:"def", base:6,  minLevel:3,  rarity:"common",    emoji:"🦺", dropRate:14, shopPrice:95},
+  {name:"Iron Chestplate",      type:"Armour", stat:"def", base:9,  minLevel:5,  rarity:"uncommon",  emoji:"🦺", dropRate:11, shopPrice:350},
+  {name:"Chain Mail",           type:"Armour", stat:"def", base:10, minLevel:6,  rarity:"uncommon",  emoji:"🦺", dropRate:11, shopPrice:370},
+  {name:"Steel Plate",          type:"Armour", stat:"def", base:12, minLevel:8,  rarity:"uncommon",  emoji:"🦺", dropRate:10, shopPrice:420},
+  {name:"Battlemage Robe",      type:"Armour", stat:"def", base:11, minLevel:7,  rarity:"uncommon",  emoji:"👘", dropRate:10, shopPrice:390},
+  {name:"Stormweave Armour",    type:"Armour", stat:"def", base:16, minLevel:14, rarity:"rare",      emoji:"🧥", dropRate:5},
+  {name:"Shadowstitch Coat",    type:"Armour", stat:"def", base:18, minLevel:16, rarity:"rare",      emoji:"🧥", dropRate:5},
+  {name:"Dragonscale Vest",     type:"Armour", stat:"def", base:20, minLevel:18, rarity:"rare",      emoji:"🦺", dropRate:4},
+  {name:"Runeplate Armour",     type:"Armour", stat:"def", base:22, minLevel:20, rarity:"rare",      emoji:"🦺", dropRate:4},
+  {name:"Voidweave Robe",       type:"Armour", stat:"def", base:28, minLevel:28, rarity:"epic",      emoji:"👘", dropRate:2},
+  {name:"Phoenix Armour",       type:"Armour", stat:"def", base:30, minLevel:30, rarity:"epic",      emoji:"✨", dropRate:2},
+  {name:"Abyssal Plate",        type:"Armour", stat:"def", base:35, minLevel:38, rarity:"epic",      emoji:"🌀", dropRate:2},
+  {name:"Chaos Mantle",         type:"Armour", stat:"def", base:32, minLevel:35, rarity:"epic",      emoji:"☄️", dropRate:2},
+  {name:"Dragonhide Armour",    type:"Armour", stat:"def", base:45, minLevel:25, rarity:"legendary", emoji:"🐉", dropRate:0.3},
+  {name:"Aegis Robes",          type:"Armour", stat:"def", base:50, minLevel:45, rarity:"legendary", emoji:"✨", dropRate:0.3},
+  {name:"Armour of the Gods",   type:"Armour", stat:"def", base:65, minLevel:70, rarity:"legendary", emoji:"⚡", dropRate:0.2},
+  // ── SHIELDS ──────────────────────────────────────────────
+  {name:"Wooden Shield",        type:"Shield", stat:"def", base:3,  minLevel:1,  rarity:"common",    emoji:"🛡️", dropRate:16, shopPrice:55},
+  {name:"Worn Shield",          type:"Shield", stat:"def", base:4,  minLevel:1,  rarity:"common",    emoji:"🛡️", dropRate:16, shopPrice:70},
+  {name:"Iron Shield",          type:"Shield", stat:"def", base:7,  minLevel:5,  rarity:"uncommon",  emoji:"🛡️", dropRate:11, shopPrice:280},
+  {name:"Knight's Shield",      type:"Shield", stat:"def", base:9,  minLevel:6,  rarity:"uncommon",  emoji:"🛡️", dropRate:10, shopPrice:320},
+  {name:"Tower Shield",         type:"Shield", stat:"def", base:11, minLevel:8,  rarity:"uncommon",  emoji:"🛡️", dropRate:10, shopPrice:380},
+  {name:"Soulbind Shield",      type:"Shield", stat:"def", base:15, minLevel:14, rarity:"rare",      emoji:"🛡️", dropRate:5},
+  {name:"Runeward Shield",      type:"Shield", stat:"def", base:18, minLevel:16, rarity:"rare",      emoji:"🛡️", dropRate:5},
+  {name:"Voidguard",            type:"Shield", stat:"def", base:22, minLevel:22, rarity:"rare",      emoji:"🛡️", dropRate:4},
+  {name:"Stormwall",            type:"Shield", stat:"def", base:28, minLevel:28, rarity:"epic",      emoji:"⚡", dropRate:2},
+  {name:"Dawnbreaker Shield",   type:"Shield", stat:"def", base:32, minLevel:34, rarity:"epic",      emoji:"🌟", dropRate:2},
+  {name:"Aegis of Eternity",    type:"Shield", stat:"def", base:42, minLevel:20, rarity:"legendary", emoji:"🌟", dropRate:0.3},
+  {name:"The Immovable",        type:"Shield", stat:"def", base:55, minLevel:60, rarity:"legendary", emoji:"🛡️", dropRate:0.2},
+  // ── GREAVES ──────────────────────────────────────────────
+  {name:"Cloth Leggings",       type:"Greaves",stat:"def", base:2,  minLevel:1,  rarity:"common",    emoji:"🦵", dropRate:16, shopPrice:45},
+  {name:"Leather Greaves",      type:"Greaves",stat:"def", base:4,  minLevel:2,  rarity:"common",    emoji:"🦵", dropRate:16, shopPrice:65},
+  {name:"Chain Greaves",        type:"Greaves",stat:"def", base:7,  minLevel:5,  rarity:"uncommon",  emoji:"🦵", dropRate:11, shopPrice:260},
+  {name:"Steel Greaves",        type:"Greaves",stat:"def", base:9,  minLevel:7,  rarity:"uncommon",  emoji:"🦵", dropRate:10, shopPrice:310},
+  {name:"Enchanted Greaves",    type:"Greaves",stat:"def", base:13, minLevel:12, rarity:"rare",      emoji:"🦵", dropRate:5},
+  {name:"Shadowstep Leggings",  type:"Greaves",stat:"def", base:16, minLevel:16, rarity:"rare",      emoji:"🦵", dropRate:5},
+  {name:"Voidwalker Greaves",   type:"Greaves",stat:"def", base:20, minLevel:22, rarity:"rare",      emoji:"🦵", dropRate:4},
+  {name:"Shadow Greaves",       type:"Greaves",stat:"def", base:26, minLevel:28, rarity:"epic",      emoji:"🦵", dropRate:2},
+  {name:"Celestial Greaves",    type:"Greaves",stat:"def", base:32, minLevel:36, rarity:"epic",      emoji:"✨", dropRate:2},
+  {name:"Greaves of the Fallen",type:"Greaves",stat:"def", base:45, minLevel:40, rarity:"legendary", emoji:"💀", dropRate:0.3},
+  // ── BOOTS ────────────────────────────────────────────────
+  {name:"Simple Boots",         type:"Boots",  stat:"def", base:2,  minLevel:1,  rarity:"common",    emoji:"👟", dropRate:16, shopPrice:45},
+  {name:"Leather Boots",        type:"Boots",  stat:"def", base:3,  minLevel:2,  rarity:"common",    emoji:"👢", dropRate:16, shopPrice:55},
+  {name:"Traveller's Boots",    type:"Boots",  stat:"def", base:4,  minLevel:3,  rarity:"common",    emoji:"👢", dropRate:14, shopPrice:70},
+  {name:"Iron Boots",           type:"Boots",  stat:"def", base:6,  minLevel:5,  rarity:"uncommon",  emoji:"👢", dropRate:11, shopPrice:220},
+  {name:"Ranger Boots",         type:"Boots",  stat:"def", base:7,  minLevel:6,  rarity:"uncommon",  emoji:"👢", dropRate:11, shopPrice:240},
+  {name:"Swiftfoot Boots",      type:"Boots",  stat:"def", base:9,  minLevel:8,  rarity:"uncommon",  emoji:"👢", dropRate:10, shopPrice:280},
+  {name:"Stormshard Boots",     type:"Boots",  stat:"def", base:12, minLevel:12, rarity:"rare",      emoji:"👢", dropRate:5},
+  {name:"Shadowstride Boots",   type:"Boots",  stat:"def", base:15, minLevel:16, rarity:"rare",      emoji:"👢", dropRate:5},
+  {name:"Voidstep Boots",       type:"Boots",  stat:"def", base:19, minLevel:22, rarity:"rare",      emoji:"👢", dropRate:4},
+  {name:"Celestial Walkers",    type:"Boots",  stat:"def", base:25, minLevel:30, rarity:"epic",      emoji:"✨", dropRate:2},
+  {name:"Boots of Eternity",    type:"Boots",  stat:"def", base:35, minLevel:45, rarity:"legendary", emoji:"🌟", dropRate:0.3},
+  {name:"Godwalkers",           type:"Boots",  stat:"def", base:50, minLevel:65, rarity:"legendary", emoji:"⚡", dropRate:0.2},
+  // ── AMULETS ──────────────────────────────────────────────
+  {name:"Copper Amulet",        type:"Amulet", stat:"def", base:2,  minLevel:1,  rarity:"common",    emoji:"📿", dropRate:14, shopPrice:50},
+  {name:"Bone Necklace",        type:"Amulet", stat:"str", base:3,  minLevel:1,  rarity:"common",    emoji:"💀", dropRate:14, shopPrice:55},
+  {name:"Wooden Charm",         type:"Amulet", stat:"def", base:3,  minLevel:2,  rarity:"common",    emoji:"🪵", dropRate:13, shopPrice:60},
+  {name:"Mithril Ring",         type:"Amulet", stat:"def", base:7,  minLevel:5,  rarity:"uncommon",  emoji:"💍", dropRate:10, shopPrice:280},
+  {name:"Warrior's Pendant",    type:"Amulet", stat:"str", base:8,  minLevel:5,  rarity:"uncommon",  emoji:"⚔️", dropRate:10, shopPrice:300},
+  {name:"Jade Amulet",          type:"Amulet", stat:"def", base:9,  minLevel:7,  rarity:"uncommon",  emoji:"💚", dropRate:10, shopPrice:320},
+  {name:"Runic Amulet",         type:"Amulet", stat:"str", base:12, minLevel:10, rarity:"rare",      emoji:"🔮", dropRate:5},
+  {name:"Voidstone Pendant",    type:"Amulet", stat:"str", base:15, minLevel:14, rarity:"rare",      emoji:"🌀", dropRate:5},
+  {name:"Soulfire Necklace",    type:"Amulet", stat:"str", base:18, minLevel:18, rarity:"rare",      emoji:"🔥", dropRate:4},
+  {name:"Crystalheart",         type:"Amulet", stat:"def", base:20, minLevel:20, rarity:"rare",      emoji:"💎", dropRate:4},
+  {name:"Void Amulet",          type:"Amulet", stat:"str", base:26, minLevel:28, rarity:"epic",      emoji:"💜", dropRate:2},
+  {name:"Stormcaller's Eye",    type:"Amulet", stat:"str", base:30, minLevel:32, rarity:"epic",      emoji:"⚡", dropRate:2},
+  {name:"Abyssal Heart",        type:"Amulet", stat:"def", base:28, minLevel:30, rarity:"epic",      emoji:"🌊", dropRate:2},
+  {name:"Amulet of the Fallen", type:"Amulet", stat:"str", base:40, minLevel:20, rarity:"legendary", emoji:"💀", dropRate:0.3},
+  {name:"Eye of the Void",      type:"Amulet", stat:"str", base:50, minLevel:50, rarity:"legendary", emoji:"👁️", dropRate:0.3},
+  {name:"Godchain",             type:"Amulet", stat:"def", base:55, minLevel:60, rarity:"legendary", emoji:"✨", dropRate:0.2},
 ].map(item=>({...item,image:`img/items/${slug(item.name)}.svg`}));
 
 // ── PETS ─────────────────────────────────────────────────────
@@ -543,11 +371,9 @@ const WALK_EVENTS=[
   {emoji:"❄️",text:"Your breath mists in the cold air."},
   {emoji:"🌙",text:"The moon watches from between the trees."},
   {emoji:"🦋",text:"A butterfly lands on your shoulder, then vanishes."},
-  {emoji:"😤",text:"You trip on a root. No one saw that. Probably."},
   {emoji:"💀",text:"Bones of something large litter the clearing. Old."},
   {emoji:"👁️",text:"You feel like something is watching. Nothing there."},
   {emoji:"🕯️",text:"A lit candle sits on a stump. Who left it here?"},
-  {emoji:"💨",text:"A tumbleweed rolls by. Where did that come from?"},
   {emoji:"📦",text:"An empty chest sits open. Already looted."},
   {emoji:"⚔️",text:"Scorch marks scar the earth. A battle happened here."},
   {emoji:"🏰",text:"Ruins of something old crumble in the distance."},
@@ -557,100 +383,69 @@ const WALK_EVENTS=[
   {emoji:"🌸",text:"Cherry blossoms drift across the path."},
   {emoji:"🎵",text:"You catch yourself humming. Not sure what song."},
   {emoji:"🔥",text:"Smoke rises to the east. Not your problem. Probably."},
-  // ── NEW WALK EVENTS — copy these into your WALK_EVENTS array ──
-// Just paste them before the closing ]; of your existing array
-
-  // ── Funny / Personality ──────────────────────────────────
-  {emoji:"😤", text:"You trip on a root. No one saw that. Probably."},
-  {emoji:"💨", text:"A tumbleweed rolls by. Where did that even come from?"},
-  {emoji:"🐦", text:"A bird lands nearby, stares at you, then leaves. Rude."},
-  {emoji:"🪨", text:"You kick a rock. It hits another rock. Very satisfying."},
-  {emoji:"🎵", text:"You catch yourself humming. Not sure what song."},
-  {emoji:"👟", text:"Your boot comes untied. Again."},
-  {emoji:"🌬️", text:"The wind blows your hair dramatically. Nobody saw it."},
-  {emoji:"😴", text:"You yawn so hard your jaw pops. Time to keep moving."},
-  {emoji:"🤔", text:"You could have sworn you've been here before."},
-  {emoji:"💭", text:"You think about what you'd do with a million gold. Nice thought."},
-  {emoji:"🦗", text:"Something bites you. Nothing there when you look."},
-  {emoji:"👁️", text:"You feel watched. You turn. Nothing. Classic."},
-  {emoji:"🧦", text:"A single sock hangs from a branch. The mystery deepens."},
-  {emoji:"📍", text:"Someone planted a flag here. For what? Unknown."},
-  {emoji:"🗑️", text:"An empty potion bottle. Someone had a rough time here."},
-
-  // ── Eerie / Mysterious ───────────────────────────────────
-  {emoji:"💀", text:"Bones of something large litter the clearing. Old bones. Very old."},
-  {emoji:"🕯️", text:"A lit candle sits on a stump. Still warm."},
-  {emoji:"🩸", text:"A trail of something dark leads off the path. You don't follow."},
-  {emoji:"🌀", text:"The air shimmers for a moment. Then nothing."},
-  {emoji:"🔔", text:"A bell rings in the distance. No church for miles."},
-  {emoji:"🪞", text:"A mirror propped against a tree. You don't look in it."},
-  {emoji:"🧿", text:"An evil eye amulet dangles from a branch. Someone left a warning."},
-  {emoji:"🕸️", text:"An enormous spiderweb blocks the trail. No spider in sight."},
-  {emoji:"🌑", text:"The shadows move the wrong way for a moment."},
-  {emoji:"📿", text:"Prayer beads scattered across the path. Recently dropped."},
-  {emoji:"🚪", text:"A door frame stands alone in the forest. No walls. Just the door."},
-  {emoji:"🪦", text:"A small grave marker. The name has worn away."},
-  {emoji:"🌡️", text:"The temperature drops ten degrees and then returns. Strange."},
-  {emoji:"👣", text:"Footprints in the mud. They stop suddenly. In the middle of nowhere."},
-  {emoji:"🔮", text:"A crystal ball half buried in the dirt. Cloudy inside."},
-
-  // ── Action / Discovery ───────────────────────────────────
-  {emoji:"⚔️", text:"Scorch marks scar the earth. A battle happened here recently."},
-  {emoji:"🏰", text:"Ruins of something old crumble in the distance."},
-  {emoji:"📦", text:"An empty chest sits open. Already looted. As usual."},
-  {emoji:"🗺️", text:"A torn map flutters past. Nowhere you recognize."},
-  {emoji:"🏹", text:"An arrow is lodged in a tree. Still quivering."},
-  {emoji:"🛡️", text:"A cracked shield leans against a rock. Its owner moved on."},
-  {emoji:"⛺", text:"An abandoned campsite. The fire is still warm."},
-  {emoji:"🔑", text:"A rusty key on the ground. No lock in sight."},
-  {emoji:"📜", text:"A torn piece of parchment. The writing is smudged beyond reading."},
-  {emoji:"🧲", text:"Your gear tugs slightly in one direction. Odd."},
-  {emoji:"💎", text:"Something glints in the dirt. Just a piece of glass. Still pretty."},
-  {emoji:"🪤", text:"You nearly step on a trap. Nearly."},
-  {emoji:"🎒", text:"Someone's pack lies abandoned by the road."},
-  {emoji:"🔭", text:"A spyglass hanging from a branch. Someone was watching something."},
-
-  // ── Creatures / Wildlife ─────────────────────────────────
-  {emoji:"🦊", text:"A fox crosses your path and gives you a judgemental look."},
-  {emoji:"🐺", text:"A distant howl echoes through the trees. Then silence."},
-  {emoji:"🦅", text:"A hawk circles overhead for a while, then moves on."},
-  {emoji:"🐍", text:"A snake slithers across the path and disappears into the brush."},
-  {emoji:"🦋", text:"A butterfly lands on your shoulder, then vanishes."},
-  {emoji:"🐗", text:"Sounds of something large crashing through the undergrowth. It moves away."},
-  {emoji:"🐾", text:"Large paw prints in the mud. Very large."},
-  {emoji:"🦉", text:"An owl watches you from a low branch. In the middle of the day."},
-  {emoji:"🐉", text:"Something huge flew over — very high up. Gone before you could be sure."},
-  {emoji:"🐜", text:"A column of ants marches across your boot. They have somewhere to be."},
-  {emoji:"🦎", text:"A lizard basks on a warm rock. It doesn't move as you pass."},
-  {emoji:"🐸", text:"Hundreds of frogs. Then none. All at once."},
-
-  // ── Weather / World ──────────────────────────────────────
-  {emoji:"🌈", text:"A rainbow appears. It points somewhere. Maybe useful."},
-  {emoji:"⚡", text:"Lightning strikes nearby. No clouds in sight."},
-  {emoji:"🌋", text:"The ground rumbles faintly. Nothing more."},
-  {emoji:"🌊", text:"A wave of cold air rolls across the path from nowhere."},
-  {emoji:"☄️", text:"Something streaks across the sky. Too fast to track."},
-  {emoji:"🌪️", text:"A tiny whirlwind of leaves spirals up and fades."},
-  {emoji:"🌤️", text:"Perfect weather today. You almost feel safe."},
-  {emoji:"🌧️", text:"Rain begins suddenly, then stops just as fast."},
-  {emoji:"❄️", text:"A single snowflake falls. Just one. In summer."},
-  {emoji:"🌫️", text:"Fog rolls in from nowhere and vanishes just as quickly."},
-
-  // ── NPC Encounters (no combat) ───────────────────────────
-  {emoji:"🧙", text:"A hooded figure walks in the opposite direction. Doesn't acknowledge you."},
-  {emoji:"👴", text:"An old man sits by the road. Asleep, or pretending."},
-  {emoji:"🧝", text:"Someone watches you from the treeline. Gone when you look directly."},
-  {emoji:"🧟", text:"Something shuffles in the bushes. It shuffles away."},
-  {emoji:"🎪", text:"Distant music carries on the wind. Happy music. Out here."},
-  {emoji:"📯", text:"A horn sounds far away. Not a warning. A celebration maybe."},
-  {emoji:"🏇", text:"Hoofbeats thunder past on a parallel road. Gone in seconds."},
-  {emoji:"🧝", text:"Someone whistles a tune nearby. You never see them."},
-
+  {emoji:"🐦",text:"A bird lands nearby, stares at you, then leaves. Rude."},
+  {emoji:"👟",text:"Your boot comes untied. Again."},
+  {emoji:"🌬️",text:"The wind blows your hair dramatically. Nobody saw it."},
+  {emoji:"😴",text:"You yawn so hard your jaw pops. Time to keep moving."},
+  {emoji:"🤔",text:"You could have sworn you've been here before."},
+  {emoji:"💭",text:"You think about what you'd do with a million gold. Nice thought."},
+  {emoji:"🦗",text:"Something bites you. Nothing there when you look."},
+  {emoji:"🧦",text:"A single sock hangs from a branch. The mystery deepens."},
+  {emoji:"📍",text:"Someone planted a flag here. For what? Unknown."},
+  {emoji:"🗑️",text:"An empty potion bottle. Someone had a rough time here."},
+  {emoji:"🩸",text:"A trail of something dark leads off the path. You don't follow."},
+  {emoji:"🌀",text:"The air shimmers for a moment. Then nothing."},
+  {emoji:"🔔",text:"A bell rings in the distance. No church for miles."},
+  {emoji:"🪞",text:"A mirror propped against a tree. You don't look in it."},
+  {emoji:"🧿",text:"An evil eye amulet dangles from a branch. Someone left a warning."},
+  {emoji:"🕸️",text:"An enormous spiderweb blocks the trail. No spider in sight."},
+  {emoji:"🌑",text:"The shadows move the wrong way for a moment."},
+  {emoji:"📿",text:"Prayer beads scattered across the path. Recently dropped."},
+  {emoji:"🚪",text:"A door frame stands alone in the forest. No walls. Just the door."},
+  {emoji:"🪦",text:"A small grave marker. The name has worn away."},
+  {emoji:"🌡️",text:"The temperature drops ten degrees and then returns. Strange."},
+  {emoji:"👣",text:"Footprints in the mud. They stop suddenly. In the middle of nowhere."},
+  {emoji:"🔮",text:"A crystal ball half buried in the dirt. Cloudy inside."},
+  {emoji:"🗺️",text:"A torn map flutters past. Nowhere you recognize."},
+  {emoji:"🏹",text:"An arrow is lodged in a tree. Still quivering."},
+  {emoji:"🛡️",text:"A cracked shield leans against a rock. Its owner moved on."},
+  {emoji:"⛺",text:"An abandoned campsite. The fire is still warm."},
+  {emoji:"🔑",text:"A rusty key on the ground. No lock in sight."},
+  {emoji:"📜",text:"A torn piece of parchment. The writing is smudged beyond reading."},
+  {emoji:"🧲",text:"Your gear tugs slightly in one direction. Odd."},
+  {emoji:"💎",text:"Something glints in the dirt. Just a piece of glass. Still pretty."},
+  {emoji:"🪤",text:"You nearly step on a trap. Nearly."},
+  {emoji:"🎒",text:"Someone's pack lies abandoned by the road."},
+  {emoji:"🔭",text:"A spyglass hanging from a branch. Someone was watching something."},
+  {emoji:"🦊",text:"A fox crosses your path and gives you a judgemental look."},
+  {emoji:"🐺",text:"A distant howl echoes through the trees. Then silence."},
+  {emoji:"🦅",text:"A hawk circles overhead for a while, then moves on."},
+  {emoji:"🐍",text:"A snake slithers across the path and disappears into the brush."},
+  {emoji:"🐗",text:"Sounds of something large crashing through the undergrowth. It moves away."},
+  {emoji:"🐾",text:"Large paw prints in the mud. Very large."},
+  {emoji:"🦉",text:"An owl watches you from a low branch. In the middle of the day."},
+  {emoji:"🐉",text:"Something huge flew over — very high up. Gone before you could be sure."},
+  {emoji:"🐜",text:"A column of ants marches across your boot. They have somewhere to be."},
+  {emoji:"🦎",text:"A lizard basks on a warm rock. It doesn't move as you pass."},
+  {emoji:"🐸",text:"Hundreds of frogs. Then none. All at once."},
+  {emoji:"🌈",text:"A rainbow appears. It points somewhere. Maybe useful."},
+  {emoji:"⚡",text:"Lightning strikes nearby. No clouds in sight."},
+  {emoji:"🌋",text:"The ground rumbles faintly. Nothing more."},
+  {emoji:"☄️",text:"Something streaks across the sky. Too fast to track."},
+  {emoji:"🌪️",text:"A tiny whirlwind of leaves spirals up and fades."},
+  {emoji:"🌤️",text:"Perfect weather today. You almost feel safe."},
+  {emoji:"🌧️",text:"Rain begins suddenly, then stops just as fast."},
+  {emoji:"❄️",text:"A single snowflake falls. Just one. In summer."},
+  {emoji:"🧙",text:"A hooded figure walks in the opposite direction. Doesn't acknowledge you."},
+  {emoji:"👴",text:"An old man sits by the road. Asleep, or pretending."},
+  {emoji:"🧟",text:"Something shuffles in the bushes. It shuffles away."},
+  {emoji:"🎪",text:"Distant music carries on the wind. Happy music. Out here."},
+  {emoji:"🏇",text:"Hoofbeats thunder past on a parallel road. Gone in seconds."},
+  {emoji:"😤",text:"You trip on a root. No one saw that. Probably."},
+  {emoji:"💨",text:"A tumbleweed rolls by. Where did that even come from?"},
 ];
 
-// ============================================================
-//  ENGINE CONSTANTS
-// ============================================================
+// ── ENGINE CONSTANTS ──────────────────────────────────────────
 const EQUIP_SLOTS =["Helmet","Armour","Weapon","Shield","Greaves","Boots","Amulet","Pet"];
 const SLOT_EMOJI  ={Helmet:"🪖",Armour:"🦺",Weapon:"⚔️",Shield:"🛡️",Greaves:"🦵",Boots:"👢",Amulet:"💍",Pet:"🐾"};
 const RARITY_COLOR={common:"#6b7280",uncommon:"#059669",rare:"#2563eb",epic:"#7c3aed",legendary:"#d97706"};
@@ -677,8 +472,7 @@ const expLv =lv=>Math.floor(100*Math.pow(1.5,lv-1));
 const maxHpCalc=(lv,def,bonusHp)=>100+lv*10+def*2+(bonusHp||0);
 
 function unlockAudio(){
-  if(_audioUnlocked)return;
-  _audioUnlocked=true;
+  if(_audioUnlocked)return;_audioUnlocked=true;
   try{const ctx=getAudio();const o=ctx.createOscillator();o.connect(ctx.destination);o.start();o.stop(ctx.currentTime+0.001);}catch(e){}
 }
 document.addEventListener("touchstart",unlockAudio,{once:true});
@@ -705,6 +499,21 @@ function equipStats(eq){
   let str=0,def=0;
   Object.values(eq||{}).forEach(it=>{if(!it)return;if(it.stat==="str")str+=it.val;else def+=it.val;});
   return{str,def};
+}
+
+// ── ITEM LEVEL SCALING FUNCTIONS ──────────────────────────────
+function rollItemAtLevel(template,itemLevel){
+  const scale=RARITY_SCALE[template.rarity]||1.0;
+  const base=Math.round(template.base+itemLevel*scale);
+  const variance=Math.max(2,Math.round(base*0.15));
+  return Math.max(1,bellRoll(base,variance));
+}
+function spawnItemScaled(template){
+  const playerLv=P?P.level||1:1;
+  const itemLevel=clamp(playerLv+rand(-3,3),template.minLevel||1,100);
+  const val=rollItemAtLevel(template,itemLevel);
+  const base=Math.round(template.base+itemLevel*(RARITY_SCALE[template.rarity]||1.0));
+  return{...template,val,base,itemLevel,id:`item_${Date.now()}_${rand(0,9999)}`};
 }
 
 // ── ENERGY ───────────────────────────────────────────────────
@@ -850,9 +659,7 @@ function newPlayer(username){
     inventory:[],equipped:{},quests:null,
     properties:[],homePropertyId:null,homePropertyInstanceId:null,
     avatars:[],activeAvatar:null,
-    guildId:null,
-    pvpAttackLog:{},
-    notifications:[],
+    guildId:null,pvpAttackLog:{},notifications:[],
     createdAt:Date.now()};
 }
 
@@ -866,14 +673,24 @@ async function removeListing(id){await deleteDoc(doc(db,"market",id));}
 async function getBounties(){const s=await getDocs(collection(db,"bounties"));return s.docs.map(d=>({id:d.id,...d.data()}));}
 async function getGuild(id){if(!id)return null;const s=await getDoc(doc(db,"guilds",id));return s.exists()?{id:s.id,...s.data()}:null;}
 
-// ── MODAL HELPER ─────────────────────────────────────────────
+// ── CIRCULATION TRACKING ──────────────────────────────────────
+async function trackCirculation(itemName){
+  try{
+    const ref=doc(db,"circulation",slug(itemName));
+    await setDoc(ref,{count:increment(1),name:itemName},{merge:true});
+  }catch(e){}
+}
+async function getCirculation(itemName){
+  try{const snap=await getDoc(doc(db,"circulation",slug(itemName)));return snap.exists()?snap.data().count:0;}
+  catch(e){return 0;}
+}
+
+// ── MODAL / TOAST ─────────────────────────────────────────────
 function showModal(html){
   document.getElementById("modal-content").innerHTML=html;
   const ov=document.getElementById("modal-overlay");
   ov.style.display="flex";ov.style.pointerEvents="auto";
 }
-
-// ── TOAST ─────────────────────────────────────────────────────
 function toast(msg,color=""){
   const el=document.createElement("div");
   el.className="toast";el.textContent=msg;
@@ -883,12 +700,28 @@ function toast(msg,color=""){
 }
 
 // ── SPAWN HELPERS ─────────────────────────────────────────────
+// NEW: level-gated item spawning with scaling stats
 function spawnItemFromPool(pool){
-  const total=pool.reduce((s,i)=>s+(i.dropRate||10),0);
+  const eligible=pool.filter(t=>{
+    if(t.type==="Pet")return true;
+    return(P?P.level||1:1)>=(t.minLevel||1)-10;
+  });
+  const src=eligible.length?eligible:pool;
+  const total=src.reduce((s,i)=>s+(i.dropRate||10),0);
   let r=Math.random()*total;
-  for(const t of pool){r-=(t.dropRate||10);if(r<=0){const val=rollItemStat(t);return{...t,val,base:t.base,id:`item_${Date.now()}_${rand(0,9999)}`};}}
-  const t=pool[0];return{...t,val:rollItemStat(t),base:t.base,id:`item_${Date.now()}`};
+  for(const t of src){
+    r-=(t.dropRate||10);
+    if(r<=0){
+      if(t.type==="Pet"){const val=rollItemStat(t);return{...t,val,base:t.base,id:`item_${Date.now()}_${rand(0,9999)}`};}
+      return spawnItemScaled(t);
+    }
+  }
+  const t=src[0];
+  return t.type==="Pet"
+    ?{...t,val:rollItemStat(t),base:t.base,id:`item_${Date.now()}`}
+    :spawnItemScaled(t);
 }
+
 function spawnMonster(area){
   const bonusLevel=area?area.monsterLevelBonus:0;
   const effectiveLevel=P.level+bonusLevel;
@@ -900,31 +733,24 @@ function spawnMonster(area){
     goldReward:Math.round(rand(...base.gold)*(area?area.goldMult:1))};
 }
 
-// ── COMBAT SIMULATION (used for PvP + bounties) ───────────────
+// ── COMBAT SIMULATION ─────────────────────────────────────────
 function simulateFight(attacker,defender){
-  // Returns {winner:"attacker"|"defender", log:[...]}
-  let aHp=attacker.maxHp, dHp=defender.maxHp;
+  let aHp=attacker.maxHp,dHp=defender.maxHp;
   const log=[];let round=0;
   while(aHp>0&&dHp>0&&round<50){
     round++;
-    // Attacker hits
     let aDmg=Math.max(1,attacker.str-defender.def+rand(-3,6));
     const aCrit=Math.random()<0.12;if(aCrit)aDmg=Math.floor(aDmg*1.75);
     dHp=Math.max(0,dHp-aDmg);
-    log.push(aCrit?`<span class="log-crit">⚡ CRIT! ${attacker.name} hits ${defender.name} for ${aDmg}!</span>`
-      :`<span class="log-you">${attacker.name} hits ${defender.name} for ${aDmg}</span>`);
+    log.push(aCrit?`<span class="log-crit">⚡ CRIT! ${attacker.name} hits ${defender.name} for ${aDmg}!</span>`:`<span class="log-you">${attacker.name} hits ${defender.name} for ${aDmg}</span>`);
     if(dHp<=0)break;
-    // Defender hits back
     let dDmg=Math.max(1,defender.str-attacker.def+rand(-3,6));
     const dCrit=Math.random()<0.08;if(dCrit)dDmg=Math.floor(dDmg*1.75);
     aHp=Math.max(0,aHp-dDmg);
-    log.push(dCrit?`<span class="log-crit">💥 CRIT! ${defender.name} hits ${attacker.name} for ${dDmg}!</span>`
-      :`<span class="log-hit">${defender.name} hits ${attacker.name} for ${dDmg}</span>`);
+    log.push(dCrit?`<span class="log-crit">💥 CRIT! ${defender.name} hits ${attacker.name} for ${dDmg}!</span>`:`<span class="log-hit">${defender.name} hits ${attacker.name} for ${dDmg}</span>`);
   }
   const winner=dHp<=0?"attacker":"defender";
-  log.push(winner==="attacker"
-    ?`<span class="log-win">🏆 ${attacker.name} wins!</span>`
-    :`<span class="log-lose">💀 ${defender.name} wins!</span>`);
+  log.push(winner==="attacker"?`<span class="log-win">🏆 ${attacker.name} wins!</span>`:`<span class="log-lose">💀 ${defender.name} wins!</span>`);
   return{winner,log,attackerHpLeft:aHp,defenderHpLeft:dHp};
 }
 
@@ -995,12 +821,8 @@ function startGame(){
   updateHdr();regenCheck();
   energyInterval=setInterval(regenCheck,15000);
   if(P.activeCombat&&!combatState)combatState={...P.activeCombat,done:false};
-  // Show pending notifications
   if(P.notifications&&P.notifications.length>0){
-    setTimeout(()=>{
-      P.notifications.forEach(n=>toast(n,"#f59e0b"));
-      P.notifications=[];saveP();
-    },1500);
+    setTimeout(()=>{P.notifications.forEach(n=>toast(n,"#f59e0b"));P.notifications=[];saveP();},1500);
   }
   showTab("home");
 }
@@ -1013,50 +835,39 @@ function regenCheck(){
 }
 function updateHdr(){
   const btn=document.getElementById("nav-walk");
-  if(btn){btn.classList.toggle("no-energy",!P||P.energy<1);
-    btn.innerHTML=UI.WALK_BTN.image?`<img src="${UI.WALK_BTN.image}" alt="">`:UI.WALK_BTN.emoji;}
+  if(btn){btn.classList.toggle("no-energy",!P||P.energy<1);btn.innerHTML=UI.WALK_BTN.image?`<img src="${UI.WALK_BTN.image}" alt="">`:UI.WALK_BTN.emoji;}
   const ha=document.getElementById("hdr-avatar-el");if(ha)ha.innerHTML=avatarGfx(30);
   const hh=document.getElementById("hdr-hp");if(hh)hh.textContent=`❤️ ${P?P.hp:0}`;
   const hl=document.getElementById("hdr-level");if(hl)hl.textContent=`Lv.${P?P.level:1}`;
-  // Update logo if image set
   const logo=document.getElementById("hdr-logo-el");
-  if(logo){
-    if(UI.LOGO.image)logo.innerHTML=`<img src="${UI.LOGO.image}" alt="MicroMMO" style="height:32px;object-fit:contain" onerror="this.outerHTML='⚔ MicroMMO'">`;
-  }
+  if(logo&&UI.LOGO.image)logo.innerHTML=`<img src="${UI.LOGO.image}" alt="MicroMMO" style="height:32px;object-fit:contain" onerror="this.outerHTML='⚔ MicroMMO'">`;
 }
 
 // ── TAB ROUTING ───────────────────────────────────────────────
 function showTab(tab){
   TAB=tab;
   const walkEl=document.getElementById("walk-screen");
-  if(tab==="walk"){
-    walkEl.classList.add("active");
-    updateWalkUI();startWalkRegenTimer();renderWalkFeed();return;
-  }
+  if(tab==="walk"){walkEl.classList.add("active");updateWalkUI();startWalkRegenTimer();renderWalkFeed();return;}
   walkEl.classList.remove("active");
   if(walkRegenInterval){clearInterval(walkRegenInterval);walkRegenInterval=null;}
-  ["home","gear","market","social","pvp"].forEach(t=>{
-    const b=document.getElementById("nav-"+t);if(b)b.classList.remove("active");
-  });
+  ["home","gear","market","social","pvp"].forEach(t=>{const b=document.getElementById("nav-"+t);if(b)b.classList.remove("active");});
   const a=document.getElementById("nav-"+tab);if(a)a.classList.add("active");
   SFX.click();
-  if(tab==="home")       renderHome();
-  else if(tab==="gear")  renderGear();
+  if(tab==="home")renderHome();
+  else if(tab==="gear")renderGear();
   else if(tab==="market")renderMarket();
   else if(tab==="social")renderSocial();
-  else if(tab==="you")   renderYou();
+  else if(tab==="you")renderYou();
   else if(tab==="quests")renderQuests();
-  else if(tab==="pvp")   renderPvP();
-  else if(tab==="bank")  renderBank();
+  else if(tab==="pvp")renderPvP();
+  else if(tab==="bank")renderBank();
   else if(tab==="properties")renderProperties();
-  else if(tab==="guild") renderGuild();
+  else if(tab==="guild")renderGuild();
 }
 function hideWalk(){
   document.getElementById("walk-screen").classList.remove("active");
   if(walkRegenInterval){clearInterval(walkRegenInterval);walkRegenInterval=null;}
-  TAB="home";
-  document.getElementById("nav-home").classList.add("active");
-  renderHome();
+  TAB="home";document.getElementById("nav-home").classList.add("active");renderHome();
 }
 
 // ── WALK SCREEN ───────────────────────────────────────────────
@@ -1075,16 +886,9 @@ function updateWalkUI(){
     if(CURRENT_AREA){areaDisplay.innerHTML=`${CURRENT_AREA.emoji} <strong>${CURRENT_AREA.name}</strong>`;areaDisplay.classList.add("selected");}
     else{areaDisplay.textContent="🌍 Choose Area";areaDisplay.classList.remove("selected");}
   }
-  // Zone background
   const zoneEl=document.getElementById("walk-zone-bg");
-  if(zoneEl&&CURRENT_AREA){
-    zoneEl.style.cssText=CURRENT_AREA.bgCSS;
-    zoneEl.className=`walk-zone-bg particles-${CURRENT_AREA.particles}`;
-  } else if(zoneEl){
-    zoneEl.style.cssText="background:#1a1a2a;";
-    zoneEl.className="walk-zone-bg";
-  }
-  // Resume banner
+  if(zoneEl&&CURRENT_AREA){zoneEl.style.cssText=CURRENT_AREA.bgCSS;zoneEl.className=`walk-zone-bg particles-${CURRENT_AREA.particles}`;}
+  else if(zoneEl){zoneEl.style.cssText="background:#1a1a2a;";zoneEl.className="walk-zone-bg";}
   const resumeBanner=document.getElementById("walk-resume-banner");
   const enemyName=document.getElementById("walk-enemy-name");
   if(resumeBanner){
@@ -1128,27 +932,18 @@ function openAreaSelect(){
     </div>`;
   }).join("");
   const lockedCards=locked.map(a=>`
-    <div class="area-card locked">
-      <div style="display:flex;align-items:center;gap:0.75rem">
-        <div style="font-size:2rem">🔒</div>
-        <div><div style="font-family:'Cinzel',serif;font-size:0.9rem">${a.name}</div>
-          <div style="font-size:0.75rem;color:var(--text3)">Unlocks at Level ${a.minLevel}</div>
-        </div>
-      </div>
-    </div>`).join("");
+    <div class="area-card locked"><div style="display:flex;align-items:center;gap:0.75rem">
+      <div style="font-size:2rem">🔒</div>
+      <div><div style="font-family:'Cinzel',serif;font-size:0.9rem">${a.name}</div>
+        <div style="font-size:0.75rem;color:var(--text3)">Unlocks at Level ${a.minLevel}</div>
+      </div></div></div>`).join("");
   showModal(`<div class="modal-title">🗺️ Choose Your Area</div>${cards}${lockedCards}
     <button class="btn btn-ghost" style="margin-top:0.5rem" onclick="G.closeModal()">Close</button>`);
 }
-function selectArea(id){
-  CURRENT_AREA=WALK_AREAS.find(a=>a.id===id)||null;
-  closeModal();updateWalkUI();SFX.click();
-}
+function selectArea(id){CURRENT_AREA=WALK_AREAS.find(a=>a.id===id)||null;closeModal();updateWalkUI();SFX.click();}
 function renderWalkFeed(){
   const feedEl=document.getElementById("walk-feed");if(!feedEl)return;
-  if(feed.length===0){
-    feedEl.innerHTML=`<div style="text-align:center;padding:2rem;color:rgba(255,255,255,0.5);font-style:italic;font-size:0.9rem">Choose an area and step into adventure...</div>`;
-    return;
-  }
+  if(feed.length===0){feedEl.innerHTML=`<div style="text-align:center;padding:2rem;color:rgba(255,255,255,0.5);font-style:italic;font-size:0.9rem">Choose an area and step into adventure...</div>`;return;}
   feedEl.innerHTML=feed.map(f=>`<div class="walk-feed-item">
     <div class="feed-icon">${f.image?`<img src="${f.image}" alt="" style="width:28px;height:28px;object-fit:contain">`:(f.emoji||"🌿")}</div>
     <div class="feed-text">${f.text}</div>
@@ -1183,9 +978,12 @@ function takeStep(){
     P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;
     const q=qualityLabel(item.val,item.base||item.val);
     SFX.itemFound();
-    addFeed(item.emoji,item.image,`Found <strong>${item.name}</strong>! <span style="color:${q.color};font-weight:700">${q.label}</span>`,item.rarity,RARITY_COLOR[item.rarity]);
-    toast(`${item.emoji} Found ${item.name} (+${item.val}) — ${q.label}!`);
-    updateQuestProgress("items");tryAvatarDrop();saveP();renderWalkFeed();
+    const lvlTag=item.itemLevel?` <span style="color:#94a3b8;font-size:0.8em">Lv.${item.itemLevel}</span>`:"";
+    addFeed(item.emoji,item.image,`Found <strong>${item.name}</strong>${lvlTag}! <span style="color:${q.color};font-weight:700">${q.label}</span>`,item.rarity,RARITY_COLOR[item.rarity]);
+    toast(`${item.emoji} Found ${item.name}${item.itemLevel?" (Lv."+item.itemLevel+")":""} (+${item.val}) — ${q.label}!`);
+    updateQuestProgress("items");tryAvatarDrop();
+    trackCirculation(item.name); // track worldwide circulation
+    saveP();renderWalkFeed();
   }else if(roll<CFG.MONSTER_CHANCE+CFG.GOLD_CHANCE+totalItemChance+CFG.CHOICE_EVENT_CHANCE){
     const evt=pick(CHOICE_EVENTS);saveP();renderWalkFeed();openChoiceEventModal(evt);
   }else{
@@ -1246,40 +1044,26 @@ function renderHome(){
       <div class="p-info">
         <div class="p-name">${P.username}${spBadge}</div>
         <div class="p-class">Level ${P.level} · <span style="color:${tier.color};font-weight:700">${tier.name}</span>${P.guildId?` · <span style="color:var(--purple2)">🛡️ Guild</span>`:""}</div>
-        <div class="bar-wrap">
-          <div class="bar-labels"><span>❤️ HP</span><span>${P.hp}/${P.maxHp}</span></div>
-          <div class="bar bar-hp"><div class="bar-fill" style="width:${hpPct}%"></div></div>
-        </div>
-        <div class="bar-wrap">
-          <div class="bar-labels"><span>✨ EXP</span><span>${fmt(P.exp)}/${fmt(expNeed)}</span></div>
-          <div class="bar bar-exp"><div class="bar-fill" style="width:${expPct}%"></div></div>
-        </div>
+        <div class="bar-wrap"><div class="bar-labels"><span>❤️ HP</span><span>${P.hp}/${P.maxHp}</span></div><div class="bar bar-hp"><div class="bar-fill" style="width:${hpPct}%"></div></div></div>
+        <div class="bar-wrap"><div class="bar-labels"><span>✨ EXP</span><span>${fmt(P.exp)}/${fmt(expNeed)}</span></div><div class="bar bar-exp"><div class="bar-fill" style="width:${expPct}%"></div></div></div>
       </div>
     </div>
-    ${P.statPoints>0?`
-    <div style="background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:0.85rem;margin-bottom:0.7rem;display:flex;align-items:center;gap:0.75rem">
+    ${P.statPoints>0?`<div style="background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:0.85rem;margin-bottom:0.7rem;display:flex;align-items:center;gap:0.75rem">
       <div style="font-size:1.5rem">⬆️</div>
       <div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.82rem;color:var(--gold3);font-weight:700">${P.statPoints} Stat Point${P.statPoints>1?"s":""} Available!</div></div>
-      <button class="btn btn-gold btn-sm" onclick="G.openStatModal()">Spend</button>
-    </div>`:""}
-    <div class="card">
-      <div class="card-title">⚡ Energy</div>
-      <div class="bar-wrap">
-        <div class="bar-labels"><span>${P.energy}/${maxE} EP</span><span>${timerStr} to next</span></div>
-        <div class="bar bar-energy"><div class="bar-fill" style="width:${enPct}%"></div></div>
-      </div>
+      <button class="btn btn-gold btn-sm" onclick="G.openStatModal()">Spend</button></div>`:""}
+    <div class="card"><div class="card-title">⚡ Energy</div>
+      <div class="bar-wrap"><div class="bar-labels"><span>${P.energy}/${maxE} EP</span><span>${timerStr} to next</span></div><div class="bar bar-energy"><div class="bar-fill" style="width:${enPct}%"></div></div></div>
       ${homeProp?`<div style="font-size:0.72rem;color:var(--text3);margin-top:0.3rem">🏠 ${homeProp.name} gives +${homeProp.energyBonus} energy</div>`:""}
     </div>
-    <div class="card">
-      <div class="card-title">💰 Currencies</div>
+    <div class="card"><div class="card-title">💰 Currencies</div>
       <div class="curr-row">
         <div class="curr-item"><div class="curr-amount">🪙 ${fmt(P.gold)}</div><div class="curr-label">Gold</div></div>
         <div class="curr-item" onclick="G.showTab('bank')" style="cursor:pointer"><div class="curr-amount">🏦 ${fmt(P.bank)}</div><div class="curr-label">Bank ›</div></div>
         <div class="curr-item"><div class="curr-amount">💎 ${P.diamonds}</div><div class="curr-label">Gems</div></div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">📊 Stats</div>
+    <div class="card"><div class="card-title">📊 Stats</div>
       <div class="stat-row">
         <div class="stat-badge"><em>⚔️ STR</em><strong>${tStr}</strong></div>
         <div class="stat-badge"><em>🛡️ DEF</em><strong>${tDef}</strong></div>
@@ -1288,13 +1072,10 @@ function renderHome(){
         <div class="stat-badge"><em>👣 Steps</em><strong>${fmt(P.steps||0)}</strong></div>
       </div>
     </div>
-    ${rentalPending>0?`
-    <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:0.85rem;margin-bottom:0.7rem;display:flex;align-items:center;gap:0.75rem">
+    ${rentalPending>0?`<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:0.85rem;margin-bottom:0.7rem;display:flex;align-items:center;gap:0.75rem">
       <div style="font-size:1.5rem">🏠</div>
-      <div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.82rem;color:var(--green);font-weight:700">Rental Income Ready!</div>
-        <div style="font-size:0.75rem;color:var(--text3)">🪙${fmt(rentalPending)}</div></div>
-      <button class="btn btn-green btn-sm" onclick="G.claimRent()">Collect</button>
-    </div>`:""}
+      <div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.82rem;color:var(--green);font-weight:700">Rental Income Ready!</div><div style="font-size:0.75rem;color:var(--text3)">🪙${fmt(rentalPending)}</div></div>
+      <button class="btn btn-green btn-sm" onclick="G.claimRent()">Collect</button></div>`:""}
     <div class="two-col" style="margin-bottom:0.5rem">
       <button class="btn btn-steel btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('quests')">📜 Quests <span style="color:${qDone===3?"var(--green2)":"var(--gold2)"}">${qDone}/3</span></button>
       <button class="btn btn-purple btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('pvp')">⚔️ PvP & Bounties</button>
@@ -1314,8 +1095,7 @@ function openStatModal(){
   if(!P.statPoints||P.statPoints<1){toast("No stat points available!");return;}
   showModal(`<div class="modal-title">⬆️ Spend Stat Points</div>
     <div style="text-align:center;color:var(--text3);font-size:0.85rem;margin-bottom:1rem">
-      You have <strong style="color:var(--gold3)">${P.statPoints}</strong> point${P.statPoints>1?"s":""} to spend.
-    </div>
+      You have <strong style="color:var(--gold3)">${P.statPoints}</strong> point${P.statPoints>1?"s":""} to spend.</div>
     <div class="modal-row"><em>⚔️ Strength</em><strong style="color:var(--crimson2)">${P.baseStr}</strong></div>
     <div class="modal-row"><em>🛡️ Defence</em><strong style="color:var(--steel)">${P.baseDef}</strong></div>
     <div class="modal-row"><em>❤️ Max HP</em><strong style="color:var(--crimson)">${P.maxHp}</strong></div>
@@ -1344,7 +1124,7 @@ function renderGear(){
     return`<div class="equip-slot ${item?"filled":""}" ${item?`onclick="G.openItemModal('equipped','${slot}')"`:""}> 
       <div class="es-icon">${iconHtml}</div>
       <div class="es-info">${item
-        ?`<div class="es-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}</div><div class="es-stat">+${item.val} ${item.stat==="str"?"STR":"DEF"}</div>`
+        ?`<div class="es-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}</div><div class="es-stat">+${item.val} ${item.stat==="str"?"STR":"DEF"}${item.itemLevel?" · Lv."+item.itemLevel:""}</div>`
         :`<div class="es-empty">Empty</div>`}
       </div>
       <div class="es-type">${slot}</div>
@@ -1357,7 +1137,7 @@ function renderGear(){
         <span class="quality-badge" style="background:${q.color}22;color:${q.color}">${q.label}</span>
         <div class="inv-icon">${gfx(item.image,item.emoji,40)}</div>
         <div class="inv-item-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}</div>
-        <div class="inv-item-stat">+${item.val} ${item.stat==="str"?"STR":"DEF"}</div>
+        <div class="inv-item-stat">+${item.val} ${item.stat==="str"?"STR":"DEF"}${item.itemLevel?" · Lv."+item.itemLevel:""}</div>
       </div>`;
     }).join("");
   document.getElementById("content").innerHTML=`
@@ -1370,19 +1150,16 @@ function renderGear(){
 // ── PvP & BOUNTIES ────────────────────────────────────────────
 async function renderPvP(){
   document.getElementById("content").innerHTML=`<div class="card"><div style="text-align:center;color:var(--text3);padding:1rem">Loading...</div></div>`;
-  const tab=`
-    <div class="tab-row" style="margin-bottom:0.75rem" id="pvp-tabs">
+  const tab=`<div class="tab-row" style="margin-bottom:0.75rem" id="pvp-tabs">
       <button class="tab-btn active" id="pvptab-fight" onclick="G.pvpTab('fight')">⚔️ PvP</button>
       <button class="tab-btn" id="pvptab-bounties" onclick="G.pvpTab('bounties')">💰 Bounties</button>
-    </div>
-    <div id="pvp-body"></div>`;
+    </div><div id="pvp-body"></div>`;
   document.getElementById("content").innerHTML=tab;
   pvpTab("fight");
 }
 async function pvpTab(t){
   ["fight","bounties"].forEach(x=>{const b=document.getElementById("pvptab-"+x);if(b)b.classList.toggle("active",x===t);});
-  if(t==="fight")await renderPvPFight();
-  else await renderBountyBoard();
+  if(t==="fight")await renderPvPFight();else await renderBountyBoard();
 }
 async function renderPvPFight(){
   const body=document.getElementById("pvp-body");if(!body)return;
@@ -1393,10 +1170,8 @@ async function renderPvPFight(){
   const{str:eStr,def:eDef}=equipStats(P.equipped);
   const myStr=(P.baseStr||10)+eStr,myDef=(P.baseDef||5)+eDef;
   const now=Date.now();
-  body.innerHTML=`
-    <div style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:12px;padding:0.75rem;margin-bottom:0.75rem;font-size:0.8rem;color:var(--text3)">
-      ⚔️ Win up to <strong>10%</strong> of their gold. Each target has a <strong>4-hour</strong> cooldown.
-    </div>
+  body.innerHTML=`<div style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:12px;padding:0.75rem;margin-bottom:0.75rem;font-size:0.8rem;color:var(--text3)">
+      ⚔️ Win up to <strong>10%</strong> of their gold. Each target has a <strong>4-hour</strong> cooldown.</div>
     ${others.map(op=>{
       const lastAttack=(P.pvpAttackLog||{})[op.id]||0;
       const cooldownLeft=Math.max(0,CFG.PVP_COOLDOWN_MS-(now-lastAttack));
@@ -1404,17 +1179,14 @@ async function renderPvPFight(){
       const cooldownStr=onCooldown?`${Math.floor(cooldownLeft/3600000)}h ${Math.floor((cooldownLeft%3600000)/60000)}m`:"";
       const opStr=(op.baseStr||10)+(equipStats(op.equipped||{}).str);
       const opDef=(op.baseDef||5)+(equipStats(op.equipped||{}).def);
-      const canWin=myStr>opDef;
       return`<div class="market-item">
         <div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${avatarGfxFor(op,38)}</div>
-        <div class="market-info">
-          <div class="market-name">${op.username}</div>
+        <div class="market-info"><div class="market-name">${op.username}</div>
           <div class="market-stat">Lv.${op.level||1} · ⚔️${opStr} 🛡️${opDef} · 🪙${fmt(op.gold||0)}</div>
           ${onCooldown?`<div style="font-size:0.68rem;color:var(--text3)">⏱ Cooldown: ${cooldownStr}</div>`:""}
         </div>
         <button class="btn btn-danger btn-sm" onclick="G.attackPlayer('${op.id}','${op.username}')" ${onCooldown?"disabled":""}>
-          ${onCooldown?"Cooldown":"Attack"}
-        </button>
+          ${onCooldown?"Cooldown":"Attack"}</button>
       </div>`;
     }).join("")}`;
 }
@@ -1423,59 +1195,34 @@ async function attackPlayer(targetId,targetName){
   const targetSnap=await getDoc(doc(db,"players",targetId));
   if(!targetSnap.exists()){toast("Player not found!");return;}
   const target={id:targetId,...targetSnap.data()};
-  // Check cooldown
   const lastAttack=(P.pvpAttackLog||{})[targetId]||0;
   if(Date.now()-lastAttack<CFG.PVP_COOLDOWN_MS){toast("⏱ Still on cooldown!");return;}
-  // Build fighter stats
   const{str:aStr,def:aDef}=equipStats(P.equipped);
   const{str:dStr,def:dDef}=equipStats(target.equipped||{});
   const attacker={name:P.username,str:(P.baseStr||10)+aStr,def:(P.baseDef||5)+aDef,maxHp:P.maxHp};
   const defender={name:target.username,str:(target.baseStr||10)+dStr,def:(target.baseDef||5)+dDef,maxHp:target.maxHp||110};
   const result=simulateFight(attacker,defender);
   const won=result.winner==="attacker";
-  // Apply results
   if(!P.pvpAttackLog)P.pvpAttackLog={};
   P.pvpAttackLog[targetId]=Date.now();
   let goldStolen=0;
   if(won){
     goldStolen=Math.floor((target.gold||0)*CFG.PVP_GOLD_STEAL);
-    P.gold=(P.gold||0)+goldStolen;
-    P.pvpKills=(P.pvpKills||0)+1;
-    SFX.pvpWin();
-    // Notify the defender on next login
-    const defNote=`⚔️ ${P.username} attacked you and won! You lost 🪙${fmt(goldStolen)}.`;
-    await updateDoc(doc(db,"players",targetId),{
-      gold:Math.max(0,(target.gold||0)-goldStolen),
-      notifications:arrayUnion(defNote)
-    });
+    P.gold=(P.gold||0)+goldStolen;P.pvpKills=(P.pvpKills||0)+1;SFX.pvpWin();
+    await updateDoc(doc(db,"players",targetId),{gold:Math.max(0,(target.gold||0)-goldStolen),notifications:arrayUnion(`⚔️ ${P.username} attacked you and won! You lost 🪙${fmt(goldStolen)}.`)});
   }else{
-    SFX.pvpLose();
-    P.pvpLosses=(P.pvpLosses||0)+1;
-    // HP penalty for losing
-    P.hp=Math.max(1,Math.floor(P.maxHp*0.3));
-    const defNote=`🛡️ ${P.username} attacked you and lost! Your gold is safe.`;
-    await updateDoc(doc(db,"players",targetId),{notifications:arrayUnion(defNote)});
+    SFX.pvpLose();P.pvpLosses=(P.pvpLosses||0)+1;P.hp=Math.max(1,Math.floor(P.maxHp*0.3));
+    await updateDoc(doc(db,"players",targetId),{notifications:arrayUnion(`🛡️ ${P.username} attacked you and lost! Your gold is safe.`)});
   }
   saveP();updateHdr();
-  // Show combat result
-  showModal(`
-    <div class="combat-scene" style="margin-bottom:0.75rem">
-      <div class="fighters">
-        <div class="fighter">
-          <div class="f-img">${avatarGfx(56)}</div>
-          <div class="f-name">${P.username}</div>
-        </div>
-        <div class="vs">VS</div>
-        <div class="fighter">
-          <div class="f-img">${avatarGfxFor(target,56)}</div>
-          <div class="f-name">${target.username}</div>
-        </div>
-      </div>
-    </div>
+  showModal(`<div class="combat-scene" style="margin-bottom:0.75rem"><div class="fighters">
+      <div class="fighter"><div class="f-img">${avatarGfx(56)}</div><div class="f-name">${P.username}</div></div>
+      <div class="vs">VS</div>
+      <div class="fighter"><div class="f-img">${avatarGfxFor(target,56)}</div><div class="f-name">${target.username}</div></div>
+    </div></div>
     <div class="combat-log" style="max-height:140px">${result.log.join("<br>")}</div>
     <div style="text-align:center;margin:0.75rem 0;font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:${won?"var(--green2)":"var(--crimson2)"}">
-      ${won?`🏆 Victory! +🪙${fmt(goldStolen)}`:"💀 Defeat! You fought bravely."}
-    </div>
+      ${won?`🏆 Victory! +🪙${fmt(goldStolen)}`:"💀 Defeat! You fought bravely."}</div>
     <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);
 }
 
@@ -1484,8 +1231,6 @@ async function renderBountyBoard(){
   const body=document.getElementById("pvp-body");if(!body)return;
   body.innerHTML=`<div style="text-align:center;color:var(--text3);padding:1rem">Loading...</div>`;
   const bounties=await getBounties();
-  const myBounties=bounties.filter(b=>b.posterId===CU.uid);
-  const others=bounties.filter(b=>b.targetId!==CU.uid&&b.posterId!==CU.uid);
   const onMe=bounties.filter(b=>b.targetId===CU.uid);
   body.innerHTML=`
     <button class="btn btn-gold" onclick="G.openPostBounty()" style="margin-bottom:0.75rem">💰 Post a Bounty</button>
@@ -1497,20 +1242,15 @@ async function renderBountyBoard(){
     ${bounties.filter(b=>b.targetId!==CU.uid).length===0
       ?`<div style="text-align:center;color:var(--text3);padding:1.5rem;font-style:italic">No bounties posted yet.</div>`
       :bounties.filter(b=>b.targetId!==CU.uid).map(b=>`
-        <div class="market-item">
-          <div style="font-size:1.8rem">🎯</div>
-          <div class="market-info">
-            <div class="market-name">${b.targetName}</div>
+        <div class="market-item"><div style="font-size:1.8rem">🎯</div>
+          <div class="market-info"><div class="market-name">${b.targetName}</div>
             <div class="market-stat">Lv.${b.targetLevel||"?"} · Posted by ${b.posterName}</div>
-            <div style="font-size:0.7rem;color:var(--text3)">${b.posterId===CU.uid?"(your bounty)":""}</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-family:'Cinzel',serif;color:var(--gold3);font-weight:700;font-size:0.9rem">🪙${fmt(b.totalAmount)}</div>
+            <div style="font-size:0.7rem;color:var(--text3)">${b.posterId===CU.uid?"(your bounty)":""}</div></div>
+          <div style="text-align:right"><div style="font-family:'Cinzel',serif;color:var(--gold3);font-weight:700;font-size:0.9rem">🪙${fmt(b.totalAmount)}</div>
             ${b.posterId===CU.uid
               ?`<button class="btn btn-ghost btn-sm" style="margin-top:0.3rem" onclick="G.cancelBounty('${b.id}')">Cancel</button>`
               :`<button class="btn btn-danger btn-sm" style="margin-top:0.3rem" onclick="G.claimBounty('${b.id}')">Claim</button>`}
-          </div>
-        </div>`).join("")}`;
+          </div></div>`).join("")}`;
 }
 async function openPostBounty(){
   SFX.click();
@@ -1519,21 +1259,13 @@ async function openPostBounty(){
   const optionsHtml=others.map(p=>`<option value="${p.id}" data-name="${p.username}" data-level="${p.level||1}">${p.username} (Lv.${p.level||1})</option>`).join("");
   showModal(`<div class="modal-title">🎯 Post a Bounty</div>
     <div style="font-size:0.82rem;color:var(--text3);margin-bottom:0.75rem">Minimum 🪙${fmt(CFG.BOUNTY_MIN)}. Gold is taken immediately and held in escrow.</div>
-    <div style="margin-bottom:0.6rem">
-      <label style="font-size:0.7rem;color:var(--text3);font-family:'Cinzel',serif;display:block;margin-bottom:0.3rem">TARGET</label>
-      <select id="bounty-target" class="modal-input" style="padding:0.65rem">
-        <option value="">Select a player...</option>${optionsHtml}
-      </select>
-    </div>
-    <div style="margin-bottom:0.75rem">
-      <label style="font-size:0.7rem;color:var(--text3);font-family:'Cinzel',serif;display:block;margin-bottom:0.3rem">BOUNTY AMOUNT</label>
-      <input class="modal-input" id="bounty-amount" type="number" placeholder="Min ${CFG.BOUNTY_MIN}" min="${CFG.BOUNTY_MIN}"/>
-    </div>
+    <div style="margin-bottom:0.6rem"><label style="font-size:0.7rem;color:var(--text3);font-family:'Cinzel',serif;display:block;margin-bottom:0.3rem">TARGET</label>
+      <select id="bounty-target" class="modal-input" style="padding:0.65rem"><option value="">Select a player...</option>${optionsHtml}</select></div>
+    <div style="margin-bottom:0.75rem"><label style="font-size:0.7rem;color:var(--text3);font-family:'Cinzel',serif;display:block;margin-bottom:0.3rem">BOUNTY AMOUNT</label>
+      <input class="modal-input" id="bounty-amount" type="number" placeholder="Min ${CFG.BOUNTY_MIN}" min="${CFG.BOUNTY_MIN}"/></div>
     <div style="font-size:0.75rem;color:var(--text3);margin-bottom:0.75rem">Your gold: 🪙${fmt(P.gold)}</div>
-    <div class="modal-actions">
-      <button class="btn btn-gold" onclick="G.confirmPostBounty()">Post Bounty</button>
-      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>
-    </div>`);
+    <div class="modal-actions"><button class="btn btn-gold" onclick="G.confirmPostBounty()">Post Bounty</button>
+      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button></div>`);
 }
 async function confirmPostBounty(){
   const targetEl=document.getElementById("bounty-target");
@@ -1545,33 +1277,21 @@ async function confirmPostBounty(){
   if(!targetId){toast("Select a target!");return;}
   if(!amount||amount<CFG.BOUNTY_MIN){SFX.error();toast(`Minimum bounty is 🪙${fmt(CFG.BOUNTY_MIN)}!`);return;}
   if(amount>(P.gold||0)){SFX.error();toast("Not enough gold!");return;}
-  // Check if bounty already exists for this target
   const existing=await getBounties();
   const existingBounty=existing.find(b=>b.targetId===targetId);
   if(existingBounty){
-    // Add to existing bounty
     await updateDoc(doc(db,"bounties",existingBounty.id),{totalAmount:existingBounty.totalAmount+amount});
-    P.gold-=amount;saveP();closeModal();SFX.bounty();
-    toast(`💰 Added 🪙${fmt(amount)} to existing bounty on ${targetName}!`);
+    P.gold-=amount;saveP();closeModal();SFX.bounty();toast(`💰 Added 🪙${fmt(amount)} to existing bounty on ${targetName}!`);
   }else{
-    await addDoc(collection(db,"bounties"),{
-      targetId,targetName,targetLevel,
-      posterId:CU.uid,posterName:P.username,
-      totalAmount:amount,postedAt:Date.now()
-    });
-    P.gold-=amount;saveP();closeModal();SFX.bounty();
-    toast(`🎯 Bounty of 🪙${fmt(amount)} posted on ${targetName}!`);
+    await addDoc(collection(db,"bounties"),{targetId,targetName,targetLevel,posterId:CU.uid,posterName:P.username,totalAmount:amount,postedAt:Date.now()});
+    P.gold-=amount;saveP();closeModal();SFX.bounty();toast(`🎯 Bounty of 🪙${fmt(amount)} posted on ${targetName}!`);
   }
 }
 async function cancelBounty(id){
-  const snap=await getDoc(doc(db,"bounties",id));
-  if(!snap.exists())return;
-  const b=snap.data();
-  if(b.posterId!==CU.uid){toast("Not your bounty!");return;}
-  P.gold=(P.gold||0)+b.totalAmount;
-  await deleteDoc(doc(db,"bounties",id));
-  saveP();toast(`🪙 Bounty cancelled, 🪙${fmt(b.totalAmount)} refunded!`);
-  renderBountyBoard();
+  const snap=await getDoc(doc(db,"bounties",id));if(!snap.exists())return;
+  const b=snap.data();if(b.posterId!==CU.uid){toast("Not your bounty!");return;}
+  P.gold=(P.gold||0)+b.totalAmount;await deleteDoc(doc(db,"bounties",id));
+  saveP();toast(`🪙 Bounty cancelled, 🪙${fmt(b.totalAmount)} refunded!`);renderBountyBoard();
 }
 async function claimBounty(bountyId){
   SFX.click();
@@ -1588,58 +1308,40 @@ async function claimBounty(bountyId){
   const result=simulateFight(attacker,defender);
   const won=result.winner==="attacker";
   if(won){
-    P.gold=(P.gold||0)+b.totalAmount;
-    P.pvpKills=(P.pvpKills||0)+1;
+    P.gold=(P.gold||0)+b.totalAmount;P.pvpKills=(P.pvpKills||0)+1;
     await deleteDoc(doc(db,"bounties",bountyId));
-    await updateDoc(doc(db,"players",b.targetId),{
-      notifications:arrayUnion(`🎯 A bounty on you was claimed by ${P.username}!`)
-    });
+    await updateDoc(doc(db,"players",b.targetId),{notifications:arrayUnion(`🎯 A bounty on you was claimed by ${P.username}!`)});
     SFX.pvpWin();saveP();updateHdr();
-    showModal(`<div class="combat-scene" style="margin-bottom:0.75rem">
-      <div class="fighters">
-        <div class="fighter"><div class="f-img">${avatarGfx(56)}</div><div class="f-name">${P.username}</div></div>
-        <div class="vs">VS</div>
-        <div class="fighter"><div class="f-img">${avatarGfxFor(target,56)}</div><div class="f-name">${target.username}</div></div>
-      </div></div>
-      <div class="combat-log" style="max-height:130px">${result.log.join("<br>")}</div>
-      <div style="text-align:center;margin:0.75rem 0;font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--green2)">
-        🏆 Bounty Claimed! +🪙${fmt(b.totalAmount)}
-      </div>
-      <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);
+    showModal(`<div class="combat-scene" style="margin-bottom:0.75rem"><div class="fighters">
+      <div class="fighter"><div class="f-img">${avatarGfx(56)}</div><div class="f-name">${P.username}</div></div>
+      <div class="vs">VS</div><div class="fighter"><div class="f-img">${avatarGfxFor(target,56)}</div><div class="f-name">${target.username}</div></div>
+    </div></div><div class="combat-log" style="max-height:130px">${result.log.join("<br>")}</div>
+    <div style="text-align:center;margin:0.75rem 0;font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--green2)">🏆 Bounty Claimed! +🪙${fmt(b.totalAmount)}</div>
+    <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);
   }else{
     SFX.pvpLose();P.hp=Math.max(1,Math.floor(P.maxHp*0.3));saveP();updateHdr();
-    showModal(`<div class="combat-scene" style="margin-bottom:0.75rem">
-      <div class="fighters">
-        <div class="fighter"><div class="f-img">${avatarGfx(56)}</div><div class="f-name">${P.username}</div></div>
-        <div class="vs">VS</div>
-        <div class="fighter"><div class="f-img">${avatarGfxFor(target,56)}</div><div class="f-name">${target.username}</div></div>
-      </div></div>
-      <div class="combat-log" style="max-height:130px">${result.log.join("<br>")}</div>
-      <div style="text-align:center;margin:0.75rem 0;font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--crimson2)">
-        💀 Defeat! The bounty remains active.
-      </div>
-      <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);
+    showModal(`<div class="combat-scene" style="margin-bottom:0.75rem"><div class="fighters">
+      <div class="fighter"><div class="f-img">${avatarGfx(56)}</div><div class="f-name">${P.username}</div></div>
+      <div class="vs">VS</div><div class="fighter"><div class="f-img">${avatarGfxFor(target,56)}</div><div class="f-name">${target.username}</div></div>
+    </div></div><div class="combat-log" style="max-height:130px">${result.log.join("<br>")}</div>
+    <div style="text-align:center;margin:0.75rem 0;font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--crimson2)">💀 Defeat! The bounty remains active.</div>
+    <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);
   }
 }
 
 // ── GUILDS ────────────────────────────────────────────────────
 async function renderGuild(){
   document.getElementById("content").innerHTML=`<div class="card"><div style="text-align:center;color:var(--text3);padding:1rem">Loading...</div></div>`;
-  if(P.guildId){
-    const guild=await getGuild(P.guildId);
-    if(guild)renderGuildView(guild);
-    else{P.guildId=null;saveP();renderGuildLobby();}
-  }else renderGuildLobby();
+  if(P.guildId){const guild=await getGuild(P.guildId);if(guild)renderGuildView(guild);else{P.guildId=null;saveP();renderGuildLobby();}}
+  else renderGuildLobby();
 }
 function renderGuildLobby(){
-  document.getElementById("content").innerHTML=`
-    <div class="card" style="text-align:center;padding:2rem">
-      <div style="font-size:3rem;margin-bottom:0.5rem">🛡️</div>
-      <div style="font-family:'Cinzel',serif;font-size:1.2rem;font-weight:700;color:var(--gold3);margin-bottom:0.5rem">Join a Guild</div>
-      <div style="font-size:0.85rem;color:var(--text3);margin-bottom:1.5rem">Fight together, share loot, conquer dungeons as one.</div>
-      <button class="btn btn-gold" onclick="G.openCreateGuild()">⚔️ Create Guild (🪙${fmt(CFG.GUILD_CREATE_COST)})</button>
-      <button class="btn btn-steel" onclick="G.openJoinGuild()">🛡️ Join a Guild</button>
-    </div>`;
+  document.getElementById("content").innerHTML=`<div class="card" style="text-align:center;padding:2rem">
+    <div style="font-size:3rem;margin-bottom:0.5rem">🛡️</div>
+    <div style="font-family:'Cinzel',serif;font-size:1.2rem;font-weight:700;color:var(--gold3);margin-bottom:0.5rem">Join a Guild</div>
+    <div style="font-size:0.85rem;color:var(--text3);margin-bottom:1.5rem">Fight together, share loot, conquer dungeons as one.</div>
+    <button class="btn btn-gold" onclick="G.openCreateGuild()">⚔️ Create Guild (🪙${fmt(CFG.GUILD_CREATE_COST)})</button>
+    <button class="btn btn-steel" onclick="G.openJoinGuild()">🛡️ Join a Guild</button></div>`;
 }
 async function openCreateGuild(){
   if((P.gold||0)<CFG.GUILD_CREATE_COST){SFX.error();toast(`Need 🪙${fmt(CFG.GUILD_CREATE_COST)} to create a guild!`);return;}
@@ -1647,10 +1349,8 @@ async function openCreateGuild(){
     <div style="font-size:0.82rem;color:var(--text3);margin-bottom:0.75rem">Costs 🪙${fmt(CFG.GUILD_CREATE_COST)}. You will be the Leader.</div>
     <input class="modal-input" id="guild-name" placeholder="Guild name..." maxlength="24"/>
     <input class="modal-input" id="guild-tag" placeholder="Tag [3 letters]..." maxlength="3" style="text-transform:uppercase"/>
-    <div class="modal-actions">
-      <button class="btn btn-gold" onclick="G.confirmCreateGuild()">Create Guild</button>
-      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>
-    </div>`);
+    <div class="modal-actions"><button class="btn btn-gold" onclick="G.confirmCreateGuild()">Create Guild</button>
+      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button></div>`);
 }
 async function confirmCreateGuild(){
   const name=document.getElementById("guild-name")?.value.trim();
@@ -1659,15 +1359,10 @@ async function confirmCreateGuild(){
   if(!tag||tag.length!==3){SFX.error();toast("Tag must be exactly 3 letters!");return;}
   if((P.gold||0)<CFG.GUILD_CREATE_COST){SFX.error();toast("Not enough gold!");return;}
   P.gold-=CFG.GUILD_CREATE_COST;
-  const guildRef=await addDoc(collection(db,"guilds"),{
-    name,tag,treasury:0,
+  const guildRef=await addDoc(collection(db,"guilds"),{name,tag,treasury:0,
     members:[{uid:CU.uid,username:P.username,role:"leader",joinedAt:Date.now()}],
-    vault:[],
-    raid:null,
-    createdAt:Date.now(),leaderId:CU.uid
-  });
-  P.guildId=guildRef.id;
-  saveP();closeModal();SFX.guild();toast(`🛡️ Guild "${name}" created!`);renderGuild();
+    vault:[],raid:null,createdAt:Date.now(),leaderId:CU.uid});
+  P.guildId=guildRef.id;saveP();closeModal();SFX.guild();toast(`🛡️ Guild "${name}" created!`);renderGuild();
 }
 async function openJoinGuild(){
   const snap=await getDocs(collection(db,"guilds"));
@@ -1677,24 +1372,16 @@ async function openJoinGuild(){
     <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);return;}
   showModal(`<div class="modal-title">🛡️ Join a Guild</div>
     <div style="max-height:60vh;overflow-y:auto;margin-bottom:0.75rem">
-      ${guilds.map(g=>`
-        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid var(--border)">
-          <div style="flex:1">
-            <div style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700">[${g.tag}] ${g.name}</div>
-            <div style="font-size:0.75rem;color:var(--text3)">${g.members?.length||0}/${CFG.GUILD_MAX_MEMBERS} members · 🏦${fmt(g.treasury||0)}</div>
-          </div>
-          <button class="btn btn-steel btn-sm" onclick="G.joinGuild('${g.id}')">Join</button>
-        </div>`).join("")}
-    </div>
-    <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>`);
+      ${guilds.map(g=>`<div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid var(--border)">
+        <div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700">[${g.tag}] ${g.name}</div>
+          <div style="font-size:0.75rem;color:var(--text3)">${g.members?.length||0}/${CFG.GUILD_MAX_MEMBERS} members · 🏦${fmt(g.treasury||0)}</div></div>
+        <button class="btn btn-steel btn-sm" onclick="G.joinGuild('${g.id}')">Join</button></div>`).join("")}
+    </div><button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>`);
 }
 async function joinGuild(guildId){
-  const guild=await getGuild(guildId);
-  if(!guild){toast("Guild not found!");return;}
+  const guild=await getGuild(guildId);if(!guild){toast("Guild not found!");return;}
   if(guild.members.length>=CFG.GUILD_MAX_MEMBERS){SFX.error();toast("Guild is full!");return;}
-  await updateDoc(doc(db,"guilds",guildId),{
-    members:arrayUnion({uid:CU.uid,username:P.username,role:"member",joinedAt:Date.now()})
-  });
+  await updateDoc(doc(db,"guilds",guildId),{members:arrayUnion({uid:CU.uid,username:P.username,role:"member",joinedAt:Date.now()})});
   P.guildId=guildId;saveP();closeModal();SFX.guild();toast(`🛡️ Joined ${guild.name}!`);renderGuild();
 }
 function renderGuildView(guild){
@@ -1704,28 +1391,17 @@ function renderGuildView(guild){
   const isAdmin=myRole==="admin"||isLeader;
   const membersHtml=guild.members?.map(m=>`
     <div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0;border-bottom:1px solid var(--border)">
-      <div style="flex:1">
-        <div style="font-family:'Cinzel',serif;font-size:0.82rem;font-weight:700">${m.username}
-          <span style="font-size:0.65rem;color:${m.role==="leader"?"var(--gold3)":m.role==="admin"?"var(--steel)":"var(--text3)"}"> ${m.role==="leader"?"👑":m.role==="admin"?"⭐":""}${m.role}</span>
-        </div>
-      </div>
-      ${isLeader&&m.uid!==CU.uid?`
-        <button class="btn btn-ghost btn-sm" onclick="G.promoteGuildMember('${guild.id}','${m.uid}','${m.role}')">
-          ${m.role==="member"?"→ Admin":"→ Leader"}
-        </button>`:``}
-      ${isAdmin&&m.uid!==CU.uid&&m.role!=="leader"?`
-        <button class="btn btn-danger btn-sm" onclick="G.kickGuildMember('${guild.id}','${m.uid}')">Kick</button>`:``}
+      <div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.82rem;font-weight:700">${m.username}
+        <span style="font-size:0.65rem;color:${m.role==="leader"?"var(--gold3)":m.role==="admin"?"var(--steel)":"var(--text3)"}"> ${m.role==="leader"?"👑":m.role==="admin"?"⭐":""}${m.role}</span></div></div>
+      ${isLeader&&m.uid!==CU.uid?`<button class="btn btn-ghost btn-sm" onclick="G.promoteGuildMember('${guild.id}','${m.uid}','${m.role}')">${m.role==="member"?"→ Admin":"→ Leader"}</button>`:``}
+      ${isAdmin&&m.uid!==CU.uid&&m.role!=="leader"?`<button class="btn btn-danger btn-sm" onclick="G.kickGuildMember('${guild.id}','${m.uid}')">Kick</button>`:``}
     </div>`).join("");
   const vaultHtml=guild.vault&&guild.vault.length>0
-    ?guild.vault.map((item,i)=>`
-      <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;border-bottom:1px solid var(--border)">
-        <div style="font-size:1.4rem">${gfx(item.image,item.emoji,28)}</div>
-        <div style="flex:1">
-          <div style="font-size:0.82rem;font-weight:700;color:${RARITY_COLOR[item.rarity]}">${item.name}</div>
-          <div style="font-size:0.68rem;color:var(--text3)">+${item.val} ${item.stat==="str"?"STR":"DEF"} · donated by ${item.donatedBy||"?"}</div>
-        </div>
-        ${isAdmin?`<button class="btn btn-steel btn-sm" onclick="G.giveVaultItem('${guild.id}',${i})">Give</button>`:""}
-      </div>`).join("")
+    ?guild.vault.map((item,i)=>`<div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:1.4rem">${gfx(item.image,item.emoji,28)}</div>
+      <div style="flex:1"><div style="font-size:0.82rem;font-weight:700;color:${RARITY_COLOR[item.rarity]}">${item.name}</div>
+        <div style="font-size:0.68rem;color:var(--text3)">+${item.val} ${item.stat==="str"?"STR":"DEF"} · donated by ${item.donatedBy||"?"}</div></div>
+      ${isAdmin?`<button class="btn btn-steel btn-sm" onclick="G.giveVaultItem('${guild.id}',${i})">Give</button>`:""}</div>`).join("")
     :`<div style="font-size:0.82rem;color:var(--text3);font-style:italic;padding:0.5rem 0">Vault is empty.</div>`;
   const raidHtml=guild.raid&&!guild.raid.completed?`
     <div style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:12px;padding:0.85rem;margin-bottom:0.75rem">
@@ -1734,46 +1410,32 @@ function renderGuildView(guild){
       ${guild.raid.contributors?.includes(CU.uid)
         ?`<div style="font-size:0.78rem;color:var(--green2);font-weight:700">✓ You've contributed!</div>`
         :`<button class="btn btn-danger btn-sm" onclick="G.contributeToRaid('${guild.id}')">⚔️ Attack (1 Energy)</button>`}
-    </div>`
-    :isAdmin?`<button class="btn btn-purple" onclick="G.startGuildRaid('${guild.id}')" style="margin-bottom:0.75rem">
-      ⚔️ Start Raid (🏦${fmt(CFG.GUILD_RAID_COST)} from treasury)</button>`:"";
+    </div>`:isAdmin?`<button class="btn btn-purple" onclick="G.startGuildRaid('${guild.id}')" style="margin-bottom:0.75rem">⚔️ Start Raid (🏦${fmt(CFG.GUILD_RAID_COST)} from treasury)</button>`:"";
   document.getElementById("content").innerHTML=`
     <div style="background:linear-gradient(135deg,#f8f4ee,#f0ebe2);border:1.5px solid var(--border2);border-radius:14px;padding:1rem;margin-bottom:0.7rem;text-align:center">
       <div style="font-family:'Cinzel',serif;font-size:1.4rem;font-weight:900;color:var(--gold3)">[${guild.tag}] ${guild.name}</div>
-      <div style="font-size:0.8rem;color:var(--text3);margin-top:0.2rem">${guild.members?.length||0}/${CFG.GUILD_MAX_MEMBERS} members · You are ${myRole}</div>
-    </div>
-    <div class="card">
-      <div class="card-title">🏦 Guild Treasury</div>
+      <div style="font-size:0.8rem;color:var(--text3);margin-top:0.2rem">${guild.members?.length||0}/${CFG.GUILD_MAX_MEMBERS} members · You are ${myRole}</div></div>
+    <div class="card"><div class="card-title">🏦 Guild Treasury</div>
       <div style="font-family:'Cinzel',serif;font-size:1.5rem;color:var(--gold3);font-weight:700;text-align:center;margin-bottom:0.5rem">🪙${fmt(guild.treasury||0)}</div>
       <button class="btn btn-gold btn-sm" onclick="G.donateToGuild('${guild.id}')">Donate Gold</button>
-      <button class="btn btn-ghost btn-sm" onclick="G.donateItemToGuild('${guild.id}')" style="margin-top:0.3rem">Donate Item</button>
-    </div>
+      <button class="btn btn-ghost btn-sm" onclick="G.donateItemToGuild('${guild.id}')" style="margin-top:0.3rem">Donate Item</button></div>
     ${raidHtml}
-    <div class="card">
-      <div class="card-title">👥 Members (${guild.members?.length||0})</div>
-      ${membersHtml}
-    </div>
-    <div class="card">
-      <div class="card-title">📦 Guild Vault</div>
-      ${vaultHtml}
-    </div>
+    <div class="card"><div class="card-title">👥 Members (${guild.members?.length||0})</div>${membersHtml}</div>
+    <div class="card"><div class="card-title">📦 Guild Vault</div>${vaultHtml}</div>
     <button class="btn btn-danger" onclick="G.leaveGuild('${guild.id}')" style="margin-top:0.5rem">Leave Guild</button>`;
 }
 async function donateToGuild(guildId){
   showModal(`<div class="modal-title">🏦 Donate to Guild</div>
     <div style="font-size:0.82rem;color:var(--text3);margin-bottom:0.75rem">Your gold: 🪙${fmt(P.gold)}</div>
     <input class="modal-input" id="guild-donate-amt" type="number" placeholder="Amount..." min="1"/>
-    <div class="modal-actions">
-      <button class="btn btn-gold" onclick="G.confirmDonateGold('${guildId}')">Donate</button>
-      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>
-    </div>`);
+    <div class="modal-actions"><button class="btn btn-gold" onclick="G.confirmDonateGold('${guildId}')">Donate</button>
+      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button></div>`);
 }
 async function confirmDonateGold(guildId){
   const amt=Math.floor(Number(document.getElementById("guild-donate-amt")?.value));
   if(!amt||amt<1){SFX.error();toast("Enter a valid amount");return;}
   if(amt>(P.gold||0)){SFX.error();toast("Not enough gold!");return;}
-  P.gold-=amt;
-  await updateDoc(doc(db,"guilds",guildId),{treasury:increment(amt)});
+  P.gold-=amt;await updateDoc(doc(db,"guilds",guildId),{treasury:increment(amt)});
   saveP();closeModal();SFX.donate();toast(`🏦 Donated 🪙${fmt(amt)} to the guild!`);renderGuild();
 }
 async function donateItemToGuild(guildId){
@@ -1781,23 +1443,17 @@ async function donateItemToGuild(guildId){
   if(inv.length===0){SFX.error();toast("No items to donate!");return;}
   showModal(`<div class="modal-title">📦 Donate Item to Vault</div>
     <div style="max-height:50vh;overflow-y:auto;margin-bottom:0.75rem">
-      ${inv.map((item,i)=>`
-        <div style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0;border-bottom:1px solid var(--border)">
-          <div style="font-size:1.4rem">${gfx(item.image,item.emoji,28)}</div>
-          <div style="flex:1">
-            <div style="font-size:0.82rem;font-weight:700;color:${RARITY_COLOR[item.rarity]}">${item.name}</div>
-            <div style="font-size:0.68rem;color:var(--text3)">+${item.val} ${item.stat==="str"?"STR":"DEF"}</div>
-          </div>
-          <button class="btn btn-steel btn-sm" onclick="G.confirmDonateItem('${guildId}',${i})">Donate</button>
-        </div>`).join("")}
-    </div>
-    <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>`);
+      ${inv.map((item,i)=>`<div style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0;border-bottom:1px solid var(--border)">
+        <div style="font-size:1.4rem">${gfx(item.image,item.emoji,28)}</div>
+        <div style="flex:1"><div style="font-size:0.82rem;font-weight:700;color:${RARITY_COLOR[item.rarity]}">${item.name}</div>
+          <div style="font-size:0.68rem;color:var(--text3)">+${item.val} ${item.stat==="str"?"STR":"DEF"}</div></div>
+        <button class="btn btn-steel btn-sm" onclick="G.confirmDonateItem('${guildId}',${i})">Donate</button></div>`).join("")}
+    </div><button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>`);
 }
 async function confirmDonateItem(guildId,idx){
   const item=(P.inventory||[])[idx];if(!item)return;
   P.inventory=P.inventory.filter((_,i)=>i!==idx);
-  const vaultItem={...item,donatedBy:P.username};
-  await updateDoc(doc(db,"guilds",guildId),{vault:arrayUnion(vaultItem)});
+  await updateDoc(doc(db,"guilds",guildId),{vault:arrayUnion({...item,donatedBy:P.username})});
   saveP();closeModal();SFX.donate();toast(`📦 Donated ${item.name} to the vault!`);renderGuild();
 }
 async function giveVaultItem(guildId,itemIdx){
@@ -1805,37 +1461,29 @@ async function giveVaultItem(guildId,itemIdx){
   const members=guild.members?.filter(m=>m.uid!==CU.uid)||[];
   showModal(`<div class="modal-title">🎁 Give Item To...</div>
     <div style="max-height:50vh;overflow-y:auto;margin-bottom:0.75rem">
-      ${members.map(m=>`
-        <div style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0;border-bottom:1px solid var(--border)">
-          <div style="flex:1;font-family:'Cinzel',serif;font-size:0.85rem">${m.username}</div>
-          <button class="btn btn-gold btn-sm" onclick="G.confirmGiveItem('${guildId}',${itemIdx},'${m.uid}','${m.username}')">Give</button>
-        </div>`).join("")}
-    </div>
-    <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>`);
+      ${members.map(m=>`<div style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0;border-bottom:1px solid var(--border)">
+        <div style="flex:1;font-family:'Cinzel',serif;font-size:0.85rem">${m.username}</div>
+        <button class="btn btn-gold btn-sm" onclick="G.confirmGiveItem('${guildId}',${itemIdx},'${m.uid}','${m.username}')">Give</button></div>`).join("")}
+    </div><button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>`);
 }
 async function confirmGiveItem(guildId,itemIdx,targetUid,targetName){
   const guild=await getGuild(guildId);if(!guild)return;
   const item=guild.vault[itemIdx];if(!item)return;
-  // Remove from vault
   const newVault=guild.vault.filter((_,i)=>i!==itemIdx);
   await updateDoc(doc(db,"guilds",guildId),{vault:newVault});
-  // Add to target player
   await updateDoc(doc(db,"players",targetUid),{
     inventory:arrayUnion({...item,id:`item_${Date.now()}_${rand(0,9999)}`}),
-    notifications:arrayUnion(`🎁 Your guild gave you ${item.name}!`)
-  });
+    notifications:arrayUnion(`🎁 Your guild gave you ${item.name}!`)});
   closeModal();SFX.donate();toast(`✅ Gave ${item.name} to ${targetName}!`);renderGuild();
 }
 async function startGuildRaid(guildId){
   const guild=await getGuild(guildId);if(!guild)return;
   if((guild.treasury||0)<CFG.GUILD_RAID_COST){SFX.error();toast(`Need 🏦${fmt(CFG.GUILD_RAID_COST)} in treasury!`);return;}
   if(guild.raid&&!guild.raid.completed){SFX.error();toast("Raid already active!");return;}
-  // Generate raid boss based on average member level
   const avgLevel=Math.round((guild.members||[]).reduce((s,m)=>s+1,0)*5+10);
   const raidHp=avgLevel*200+rand(500,2000);
-  const raid={name:"Guild Raid Boss",emoji:"🔥",hp:raidHp,maxHp:raidHp,
-    str:avgLevel*8,def:avgLevel*4,expReward:avgLevel*50,goldReward:avgLevel*80,
-    contributors:[],completed:false,startedBy:P.username,startedAt:Date.now()};
+  const raid={name:"Guild Raid Boss",emoji:"🔥",hp:raidHp,maxHp:raidHp,str:avgLevel*8,def:avgLevel*4,
+    expReward:avgLevel*50,goldReward:avgLevel*80,contributors:[],completed:false,startedBy:P.username,startedAt:Date.now()};
   await updateDoc(doc(db,"guilds",guildId),{raid,treasury:increment(-CFG.GUILD_RAID_COST)});
   SFX.raid();toast("⚔️ Raid started! All guild members can now attack!");renderGuild();
 }
@@ -1844,31 +1492,22 @@ async function contributeToRaid(guildId){
   const guild=await getGuild(guildId);if(!guild||!guild.raid||guild.raid.completed){toast("No active raid!");return;}
   if(guild.raid.contributors?.includes(CU.uid)){toast("You already contributed!");return;}
   P.energy--;updateHdr();updateWalkUI();SFX.raid();
-  const{str:eStr,def:eDef}=equipStats(P.equipped);
-  const myStr=(P.baseStr||10)+eStr,myDef=(P.baseDef||5)+eDef;
+  const{str:eStr}=equipStats(P.equipped);
+  const myStr=(P.baseStr||10)+eStr;
   const dmg=Math.max(1,myStr-guild.raid.def+rand(-5,15));
   const newHp=Math.max(0,guild.raid.hp-dmg);
   const newContributors=[...(guild.raid.contributors||[]),CU.uid];
   if(newHp<=0){
-    // Raid defeated!
-    const contributors=newContributors;
-    const goldEach=Math.floor(guild.raid.goldReward/contributors.length);
-    const expEach=Math.floor(guild.raid.expReward/contributors.length);
-    await updateDoc(doc(db,"guilds",guildId),{"raid.hp":0,"raid.completed":true,"raid.contributors":contributors});
-    // Give rewards to all contributors
-    for(const uid of contributors){
-      await updateDoc(doc(db,"players",uid),{
-        gold:increment(goldEach),exp:increment(expEach),
-        notifications:arrayUnion(`🏆 Guild Raid defeated! You earned 🪙${goldEach} and ${expEach} EXP!`)
-      });
+    const goldEach=Math.floor(guild.raid.goldReward/newContributors.length);
+    const expEach=Math.floor(guild.raid.expReward/newContributors.length);
+    await updateDoc(doc(db,"guilds",guildId),{"raid.hp":0,"raid.completed":true,"raid.contributors":newContributors});
+    for(const uid of newContributors){
+      await updateDoc(doc(db,"players",uid),{gold:increment(goldEach),exp:increment(expEach),notifications:arrayUnion(`🏆 Guild Raid defeated! You earned 🪙${goldEach} and ${expEach} EXP!`)});
     }
-    // Give self reward immediately
-    P.gold=(P.gold||0)+goldEach;P.exp=(P.exp||0)+expEach;
-    checkLevelUp();saveP();
+    P.gold=(P.gold||0)+goldEach;P.exp=(P.exp||0)+expEach;checkLevelUp();saveP();
     SFX.victory();toast(`🏆 Raid defeated! +🪙${goldEach} +${expEach} EXP!`);
   }else{
     await updateDoc(doc(db,"guilds",guildId),{"raid.hp":newHp,"raid.contributors":newContributors});
-    P.notifications=P.notifications||[];
     saveP();toast(`⚔️ Hit for ${dmg}! Raid HP: ${fmt(newHp)}/${fmt(guild.raid.maxHp)}`);
   }
   renderGuild();
@@ -1878,18 +1517,9 @@ async function promoteGuildMember(guildId,targetUid,currentRole){
   const myMember=guild.members?.find(m=>m.uid===CU.uid);
   if(myMember?.role!=="leader"){toast("Only the leader can promote!");return;}
   if(currentRole==="member"){
-    // Promote to admin
-    const newMembers=guild.members.map(m=>m.uid===targetUid?{...m,role:"admin"}:m);
-    await updateDoc(doc(db,"guilds",guildId),{members:newMembers});
-    toast("⭐ Promoted to Admin!");
+    await updateDoc(doc(db,"guilds",guildId),{members:guild.members.map(m=>m.uid===targetUid?{...m,role:"admin"}:m)});toast("⭐ Promoted to Admin!");
   }else if(currentRole==="admin"){
-    // Promote to leader, demote self to admin
-    const newMembers=guild.members.map(m=>{
-      if(m.uid===targetUid)return{...m,role:"leader"};
-      if(m.uid===CU.uid)return{...m,role:"admin"};
-      return m;
-    });
-    await updateDoc(doc(db,"guilds",guildId),{members:newMembers,leaderId:targetUid});
+    await updateDoc(doc(db,"guilds",guildId),{members:guild.members.map(m=>{if(m.uid===targetUid)return{...m,role:"leader"};if(m.uid===CU.uid)return{...m,role:"admin"};return m;}),leaderId:targetUid});
     toast("👑 Leadership transferred!");
   }
   SFX.guild();renderGuild();
@@ -1897,20 +1527,16 @@ async function promoteGuildMember(guildId,targetUid,currentRole){
 async function kickGuildMember(guildId,targetUid){
   const guild=await getGuild(guildId);if(!guild)return;
   const targetMember=guild.members?.find(m=>m.uid===targetUid);
-  if(!targetMember){return;}
-  if(targetMember.role==="leader"){toast("Cannot kick the leader!");return;}
-  const newMembers=guild.members.filter(m=>m.uid!==targetUid);
-  await updateDoc(doc(db,"guilds",guildId),{members:newMembers});
+  if(!targetMember||targetMember.role==="leader"){toast("Cannot kick the leader!");return;}
+  await updateDoc(doc(db,"guilds",guildId),{members:guild.members.filter(m=>m.uid!==targetUid)});
   await updateDoc(doc(db,"players",targetUid),{guildId:null,notifications:arrayUnion("You have been kicked from the guild.")});
   SFX.click();toast("Member kicked.");renderGuild();
 }
 async function leaveGuild(guildId){
   showModal(`<div class="modal-title">Leave Guild?</div>
     <div style="text-align:center;color:var(--text3);margin-bottom:1rem;font-size:0.88rem">Are you sure you want to leave?</div>
-    <div class="modal-actions">
-      <button class="btn btn-danger" onclick="G.confirmLeaveGuild('${guildId}')">Leave</button>
-      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>
-    </div>`);
+    <div class="modal-actions"><button class="btn btn-danger" onclick="G.confirmLeaveGuild('${guildId}')">Leave</button>
+      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button></div>`);
 }
 async function confirmLeaveGuild(guildId){
   const guild=await getGuild(guildId);if(!guild)return;
@@ -1935,8 +1561,7 @@ function openCombatModal(monster){
     pStr:(P.baseStr||10)+eStr,pDef:(P.baseDef||5)+eDef,pet,log:[],done:false};
   P.activeCombat=serializeCombat(combatState);saveP();
   showModal("");renderCombatModal();
-  combatInterval=setInterval(combatTick,900);
-  updateWalkUI();
+  combatInterval=setInterval(combatTick,900);updateWalkUI();
 }
 function serializeCombat(cs){
   return{monster:cs.monster,playerHp:cs.playerHp,playerMaxHp:cs.playerMaxHp,
@@ -1945,16 +1570,14 @@ function serializeCombat(cs){
 function resumeCombat(){
   if(!P.activeCombat)return;
   combatState={...P.activeCombat,done:false};
-  showModal("");renderCombatModal();
-  combatInterval=setInterval(combatTick,900);
+  showModal("");renderCombatModal();combatInterval=setInterval(combatTick,900);
 }
 function abandonCombat(){
   clearInterval(combatInterval);
   const penalty=rand(10,30);
   P.gold=Math.max(0,(P.gold||0)-penalty);P.hp=Math.max(1,Math.floor(P.maxHp*0.4));
   P.activeCombat=null;combatState=null;
-  saveP();updateHdr();closeModal();updateWalkUI();SFX.error();
-  toast(`🏃 You fled! Lost ${penalty}🪙.`);
+  saveP();updateHdr();closeModal();updateWalkUI();SFX.error();toast(`🏃 You fled! Lost ${penalty}🪙.`);
 }
 function fleeCombat(){
   if(!combatState||combatState.done)return;
@@ -1962,8 +1585,7 @@ function fleeCombat(){
   const goldLost=rand(15,Math.min(80,Math.floor((P.gold||0)*0.1)+15));
   P.gold=Math.max(0,(P.gold||0)-goldLost);P.hp=combatState.playerHp;P.activeCombat=null;
   combatState.log.push(`<span class="log-sys">🏃 You fled! Lost ${goldLost}🪙</span>`);
-  renderCombatModal();saveP();updateHdr();updateWalkUI();SFX.error();
-  toast(`🏃 Escaped! Dropped ${goldLost}🪙.`);
+  renderCombatModal();saveP();updateHdr();updateWalkUI();SFX.error();toast(`🏃 Escaped! Dropped ${goldLost}🪙.`);
 }
 function healInCombat(){
   if(!combatState||combatState.done)return;
@@ -1972,16 +1594,12 @@ function healInCombat(){
   const canAffordBig=(P.gold||0)>=bigP.price,canAffordSmall=(P.gold||0)>=smallP.price;
   if(!canAffordSmall){SFX.error();toast("💰 Can't afford potions!");return;}
   if(canAffordBig&&P.hp<P.maxHp*0.5){
-    P.gold-=bigP.price;
-    const heal=Math.floor(combatState.playerMaxHp*CFG.POTION_HEAL_BIG);
-    combatState.playerHp=Math.min(combatState.playerMaxHp,combatState.playerHp+heal);
-    P.hp=combatState.playerHp;
+    P.gold-=bigP.price;const heal=Math.floor(combatState.playerMaxHp*CFG.POTION_HEAL_BIG);
+    combatState.playerHp=Math.min(combatState.playerMaxHp,combatState.playerHp+heal);P.hp=combatState.playerHp;
     combatState.log.push(`<span class="log-win">💊 Major Potion! +${heal} HP</span>`);
   }else if(canAffordSmall){
-    P.gold-=smallP.price;
-    const heal=Math.floor(combatState.playerMaxHp*CFG.POTION_HEAL_SMALL);
-    combatState.playerHp=Math.min(combatState.playerMaxHp,combatState.playerHp+heal);
-    P.hp=combatState.playerHp;
+    P.gold-=smallP.price;const heal=Math.floor(combatState.playerMaxHp*CFG.POTION_HEAL_SMALL);
+    combatState.playerHp=Math.min(combatState.playerMaxHp,combatState.playerHp+heal);P.hp=combatState.playerHp;
     combatState.log.push(`<span class="log-win">🧪 Minor Potion! +${heal} HP</span>`);
   }
   saveP();renderCombatModal();
@@ -1994,32 +1612,20 @@ function renderCombatModal(){
   const smallPrice=SHOP_CONSUMABLES.find(c=>c.id==="potion_small")?.price||120;
   const canHeal=(P.gold||0)>=smallPrice,hpLow=cs.playerHp<cs.playerMaxHp;
   document.getElementById("modal-content").innerHTML=`
-    <div class="combat-scene">
-      <div class="fighters">
-        <div class="fighter">
-          <div class="f-img">${avatarGfx(56)}</div>
-          <div class="f-name">${P.username}${cs.pet?" + "+cs.pet.name:""}</div>
-          <div class="f-hp">${cs.playerHp}/${cs.playerMaxHp}</div>
-          <div class="f-bar"><div class="f-bar-fill" style="width:${pPct}%"></div></div>
-        </div>
-        <div class="vs">VS</div>
-        <div class="fighter">
-          <div class="f-img">${gfx(m.image,m.emoji,56)}</div>
-          <div class="f-name">${m.name}</div>
-          <div class="f-hp">${cs.monsterHp}/${m.maxHp}</div>
-          <div class="f-bar"><div class="f-bar-fill" style="width:${mPct}%"></div></div>
-        </div>
-      </div>
-    </div>
+    <div class="combat-scene"><div class="fighters">
+      <div class="fighter"><div class="f-img">${avatarGfx(56)}</div><div class="f-name">${P.username}${cs.pet?" + "+cs.pet.name:""}</div>
+        <div class="f-hp">${cs.playerHp}/${cs.playerMaxHp}</div><div class="f-bar"><div class="f-bar-fill" style="width:${pPct}%"></div></div></div>
+      <div class="vs">VS</div>
+      <div class="fighter"><div class="f-img">${gfx(m.image,m.emoji,56)}</div><div class="f-name">${m.name}</div>
+        <div class="f-hp">${cs.monsterHp}/${m.maxHp}</div><div class="f-bar"><div class="f-bar-fill" style="width:${mPct}%"></div></div></div>
+    </div></div>
     <div class="combat-log" id="combat-log">${cs.log.join("<br>")||`<span class="log-sys">${m.desc||"Battle commences..."}</span>`}</div>
-    ${cs.done
-      ?`<button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`
+    ${cs.done?`<button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`
       :`<div style="display:flex;gap:0.5rem;margin-top:0.1rem">
           ${hpLow&&canHeal?`<button class="btn btn-green btn-sm" style="flex:1;padding:0.55rem" onclick="G.healInCombat()">🧪 Heal (🪙${smallPrice})</button>`
             :`<button class="btn btn-ghost btn-sm" style="flex:1;padding:0.55rem;opacity:0.4" disabled>🧪 Heal</button>`}
           <button class="btn btn-danger btn-sm" style="flex:1;padding:0.55rem" onclick="G.fleeCombat()">🏃 Flee</button>
-        </div>
-        <div style="text-align:center;color:#94a3b8;font-size:0.75rem;margin-top:0.4rem;font-style:italic">⚔️ Auto-battling...</div>`}`;
+        </div><div style="text-align:center;color:#94a3b8;font-size:0.75rem;margin-top:0.4rem;font-style:italic">⚔️ Auto-battling...</div>`}`;
   const log=document.getElementById("combat-log");if(log)log.scrollTop=log.scrollHeight;
 }
 function combatTick(){
@@ -2029,8 +1635,7 @@ function combatTick(){
   const pCrit=Math.random()<0.12;if(pCrit)pDmg=Math.floor(pDmg*1.75);
   cs.monsterHp=Math.max(0,cs.monsterHp-pDmg);
   pCrit?SFX.crit():SFX.hit();
-  cs.log.push(pCrit?`<span class="log-crit">⚡ CRIT! You smash ${m.name} for ${pDmg}!</span>`
-    :`<span class="log-you">You hit ${m.name} for ${pDmg}</span>`);
+  cs.log.push(pCrit?`<span class="log-crit">⚡ CRIT! You smash ${m.name} for ${pDmg}!</span>`:`<span class="log-you">You hit ${m.name} for ${pDmg}</span>`);
   if(cs.pet&&cs.monsterHp>0){
     const petDmg=Math.max(1,Math.floor(cs.pet.val*0.25)+rand(0,3));
     cs.monsterHp=Math.max(0,cs.monsterHp-petDmg);
@@ -2046,8 +1651,7 @@ function combatTick(){
   let mDmg=Math.max(1,m.str-cs.pDef+rand(-3,6));
   const mCrit=Math.random()<0.08;if(mCrit)mDmg=Math.floor(mDmg*1.75);
   cs.playerHp=Math.max(0,cs.playerHp-mDmg);
-  cs.log.push(mCrit?`<span class="log-crit">💥 ${m.name} CRITS you for ${mDmg}!</span>`
-    :`<span class="log-hit">${m.name} hits you for ${mDmg}</span>`);
+  cs.log.push(mCrit?`<span class="log-crit">💥 ${m.name} CRITS you for ${mDmg}!</span>`:`<span class="log-hit">${m.name} hits you for ${mDmg}</span>`);
   if(cs.playerHp<=0){
     cs.done=true;clearInterval(combatInterval);
     cs.log.push(`<span class="log-lose">💀 You were defeated by ${m.name}...</span>`);
@@ -2058,17 +1662,14 @@ function combatTick(){
   renderCombatModal();
 }
 function handleVictory(cs){
-  const m=cs.monster;
-  SFX.victory();
+  const m=cs.monster;SFX.victory();
   P.npcKills=(P.npcKills||0)+1;P.gold=(P.gold||0)+m.goldReward;P.exp=(P.exp||0)+m.expReward;P.hp=cs.playerHp;
   updateQuestProgress("kills");checkLevelUp();
   toast(`⚔️ Victory! +${m.expReward} EXP · +${m.goldReward}🪙`);
-  P.hp=clamp(P.hp,1,P.maxHp);combatState=null;P.activeCombat=null;
-  saveP();updateHdr();updateWalkUI();
+  P.hp=clamp(P.hp,1,P.maxHp);combatState=null;P.activeCombat=null;saveP();updateHdr();updateWalkUI();
 }
 function handleDefeat(cs){
-  SFX.defeat();
-  P.hp=Math.max(1,Math.floor(P.maxHp*0.25));
+  SFX.defeat();P.hp=Math.max(1,Math.floor(P.maxHp*0.25));
   toast("💀 Defeated! Buy potions in the shop!");
   combatState=null;P.activeCombat=null;saveP();updateHdr();updateWalkUI();
 }
@@ -2078,8 +1679,7 @@ function checkLevelUp(){
     P.exp-=expLv(P.level);P.level++;levels++;
     P.statPoints=(P.statPoints||0)+1;
     const{def:eDef}=equipStats(P.equipped);
-    P.maxHp=maxHpCalc(P.level,(P.baseDef||5)+eDef,P.bonusHp||0);
-    leveled=true;
+    P.maxHp=maxHpCalc(P.level,(P.baseDef||5)+eDef,P.bonusHp||0);leveled=true;
   }
   if(leveled){P.hp=P.maxHp;SFX.levelUp();toast(`🎉 LEVEL UP! Now Level ${P.level}! +${levels} stat point${levels>1?"s":""}!`);updateHdr();}
 }
@@ -2094,29 +1694,47 @@ function closeModal(){
   }
 }
 
-// ── ITEM MODAL ────────────────────────────────────────────────
-function openItemModal(source,idx){
+// ── ITEM MODAL — updated with item level + equip gate + circulation ──
+async function openItemModal(source,idx){
   let item,isEquipped=false,slot=null;
   if(source==="equipped"){slot=idx;item=P.equipped[slot];isEquipped=true;}
   else item=(P.inventory||[])[idx];
   if(!item)return;SFX.click();
+
   const color=RARITY_COLOR[item.rarity]||"#6b7280";
   const q=qualityLabel(item.val,item.base||item.val);
   const curEquipped=P.equipped[item.type];
   const compare=curEquipped&&!isEquipped
     ?`<div class="modal-row"><em>vs Equipped</em><span style="color:${item.val>curEquipped.val?"var(--green2)":"var(--crimson2)"}">
-        ${item.val>curEquipped.val?"▲":"▼"}${Math.abs(item.val-curEquipped.val)} vs +${curEquipped.val}</span></div>`:"";
+        ${item.val>curEquipped.val?"▲":"▼"}${Math.abs(item.val-curEquipped.val)} vs +${curEquipped.val}</span></div>`:"";;
   const npcVal=Math.max(5,Math.floor((item.shopPrice||item.base*item.val*2||50)*CFG.SHOP_SELL_RATE));
+
+  // Item level and equip eligibility
+  const canEquip=!item.itemLevel||(P.level||1)>=item.itemLevel;
+  const itemLevelRow=item.itemLevel
+    ?`<div class="modal-row"><em>Item Level</em><span style="color:${canEquip?"var(--green2)":"var(--crimson2)"}">Lv.${item.itemLevel} ${canEquip?"✓":"(Need Lv."+item.itemLevel+")"}</span></div>`
+    :"";
+
+  // Fetch circulation count (async, show loading then update)
+  const circ=await getCirculation(item.name);
+  const circRow=`<div class="modal-row"><em>In Circulation</em><span style="color:var(--text3)">${circ>0?circ.toLocaleString()+" found worldwide":"Be the first!"}</span></div>`;
+
   showModal(`<div class="modal-icon">${gfx(item.image,item.emoji,72)}</div>
     <div class="modal-title" style="color:${color}">${item.name}</div>
     <div class="modal-rarity" style="color:${color}">${item.rarity}<span style="margin-left:0.5rem;color:${q.color};font-size:0.65rem;font-weight:700">${q.label}</span></div>
     <div class="modal-row"><em>Type</em><span>${item.type}</span></div>
     <div class="modal-row"><em>Stat</em><span style="color:${item.stat==="str"?"var(--crimson2)":"var(--steel)"}">+${item.val} ${item.stat==="str"?"STR":"DEF"}</span></div>
     <div class="modal-row"><em>Base Roll</em><span style="color:var(--text3)">~${item.base||"?"}</span></div>
+    ${itemLevelRow}
+    ${circRow}
     <div class="modal-row"><em>NPC Value</em><span style="color:var(--text3)">🪙${npcVal}</span></div>
     ${compare}
     <div class="modal-actions">
-      ${isEquipped?`<button class="btn btn-ghost" onclick="G.unequipItem('${slot}')">Unequip</button>`:`<button class="btn btn-gold" onclick="G.equipItem(${idx})">Equip</button>`}
+      ${isEquipped
+        ?`<button class="btn btn-ghost" onclick="G.unequipItem('${slot}')">Unequip</button>`
+        :canEquip
+          ?`<button class="btn btn-gold" onclick="G.equipItem(${idx})">Equip</button>`
+          :`<button class="btn btn-ghost" style="opacity:0.4" disabled>🔒 Need Lv.${item.itemLevel}</button>`}
       ${!isEquipped?`<button class="btn btn-purple" onclick="G.promptSell(${idx});G.closeModal()">List on Market</button>`:""}
       ${!isEquipped?`<button class="btn btn-ghost" onclick="G.sellToNpc(${idx});G.closeModal()">Sell to NPC (🪙${npcVal})</button>`:""}
       <button class="btn btn-danger" onclick="${isEquipped?`G.dropEquipped('${slot}')`:`G.dropInventory(${idx})`}">Drop Item</button>
@@ -2125,6 +1743,8 @@ function openItemModal(source,idx){
 }
 function equipItem(idx){
   const item=(P.inventory||[])[idx];if(!item)return;
+  // Check level requirement
+  if(item.itemLevel&&(P.level||1)<item.itemLevel){SFX.error();toast(`🔒 Need Level ${item.itemLevel} to equip!`);return;}
   const eq={...(P.equipped||{})},inv=[...(P.inventory||[])];
   if(eq[item.type])inv.push(eq[item.type]);
   inv.splice(inv.findIndex(i=>i.id===item.id),1);
@@ -2163,8 +1783,7 @@ async function renderMarket(){
       <button class="tab-btn" id="mtab-sell" onclick="G.mTab('sell')">Sell</button>
       <button class="tab-btn" id="mtab-shop" onclick="G.mTab('shop')">NPC Shop</button>
       <button class="tab-btn" id="mtab-mine" onclick="G.mTab('mine')">My Listings</button>
-    </div>
-    <div id="market-body"></div>`;
+    </div><div id="market-body"></div>`;
   renderMarketBrowse(others);
 }
 function mTab(t){
@@ -2186,12 +1805,11 @@ function renderMarketBrowse(listings){
         <div class="market-name" style="color:${RARITY_COLOR[l.item.rarity]}">${l.item.name}
           <span class="pill" style="background:${q.color}22;color:${q.color}">${q.label}</span></div>
         <div class="market-seller">by ${l.sellerName}</div>
-        <div class="market-stat">+${l.item.val} ${l.item.stat==="str"?"STR":"DEF"} · ${l.item.type}</div>
+        <div class="market-stat">+${l.item.val} ${l.item.stat==="str"?"STR":"DEF"} · ${l.item.type}${l.item.itemLevel?" · Lv."+l.item.itemLevel:""}</div>
       </div>
       <div><div class="market-price">🪙${fmt(l.price)}</div>
         <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyListing('${l.id}',${l.price})">Buy</button>
-      </div>
-    </div>`;
+      </div></div>`;
   }).join("");
 }
 function renderMarketSell(){
@@ -2207,13 +1825,12 @@ function renderMarketSell(){
         <div class="market-info">
           <div class="market-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}
             <span class="pill" style="background:${q.color}22;color:${q.color}">${q.label}</span></div>
-          <div class="market-stat">+${item.val} ${item.stat==="str"?"STR":"DEF"}</div>
+          <div class="market-stat">+${item.val} ${item.stat==="str"?"STR":"DEF"}${item.itemLevel?" · Lv."+item.itemLevel:""}</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:0.3rem;align-items:flex-end">
           <button class="btn btn-gold btn-sm" onclick="G.promptSell(${i})">List</button>
           <button class="btn btn-ghost btn-sm" onclick="G.sellToNpc(${i})" style="font-size:0.62rem">NPC 🪙${npcVal}</button>
-        </div>
-      </div>`;
+        </div></div>`;
     }).join("");
 }
 function sellToNpc(idx){
@@ -2229,17 +1846,16 @@ function openMysteryChest(){
   if(roll<0.60){
     const item=spawnItemFromPool(ITEMS);
     P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;
-    updateQuestProgress("items");
+    updateQuestProgress("items");trackCirculation(item.name);
     const q=qualityLabel(item.val,item.base||item.val);
     reward={emoji:item.emoji,image:item.image,name:item.name,
-      sub:`+${item.val} ${item.stat==="str"?"STR":"DEF"} · ${item.rarity}`,
+      sub:`+${item.val} ${item.stat==="str"?"STR":"DEF"} · ${item.rarity}${item.itemLevel?" · Lv."+item.itemLevel:""}`,
       color:RARITY_COLOR[item.rarity],extra:`<span style="background:${q.color}22;color:${q.color};font-family:'Cinzel',serif;font-size:0.7rem;padding:2px 8px;border-radius:6px;font-weight:700">${q.label}</span>`};
   }else if(roll<0.90){
     const pet=spawnItemFromPool(PETS);
     P.inventory=[...(P.inventory||[]),pet];P.itemsFound=(P.itemsFound||0)+1;
     updateQuestProgress("items");
-    reward={emoji:pet.emoji,image:pet.image,name:pet.name,
-      sub:`+${pet.val} ${pet.stat==="str"?"STR":"DEF"} · ${pet.rarity} Pet`,color:RARITY_COLOR[pet.rarity],extra:""};
+    reward={emoji:pet.emoji,image:pet.image,name:pet.name,sub:`+${pet.val} ${pet.stat==="str"?"STR":"DEF"} · ${pet.rarity} Pet`,color:RARITY_COLOR[pet.rarity],extra:""};
   }else{
     const av=rollAvatar(),collected=P.avatars||[];
     if(collected.includes(av.id)){
@@ -2260,10 +1876,8 @@ function openMysteryChest(){
       <div style="font-size:0.75rem;color:var(--text3);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:0.5rem">✨ Chest Opened!</div>
       <div style="width:80px;height:80px;margin:0 auto 0.6rem;display:flex;align-items:center;justify-content:center">${imgHtml}</div>
       <div style="font-family:'Cinzel',serif;font-size:1.05rem;color:${reward.color};font-weight:700;margin-bottom:0.2rem">${reward.name}</div>
-      ${reward.extra}
-      <div style="font-size:0.82rem;color:var(--text3);margin:0.5rem 0 1rem">${reward.sub}</div>
-    </div>
-    <div class="modal-actions">
+      ${reward.extra}<div style="font-size:0.82rem;color:var(--text3);margin:0.5rem 0 1rem">${reward.sub}</div>
+    </div><div class="modal-actions">
       <button class="btn btn-gold" onclick="G.openMysteryChest()">Open Another (🪙${CFG.CHEST_PRICE})</button>
       <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>
     </div>`);
@@ -2274,33 +1888,28 @@ function renderMarketShop(){
   const shopItems=ITEMS.filter(i=>i.shopPrice>0);
   const shopPets=PETS.filter(p=>p.rarity==="common"||p.rarity==="uncommon");
   const chestHtml=`<div class="shop-item" style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:var(--gold2)">
-    <div class="shop-icon">📦</div>
-    <div class="shop-info"><div class="shop-name" style="color:var(--gold3)">Mystery Chest</div>
+    <div class="shop-icon">📦</div><div class="shop-info"><div class="shop-name" style="color:var(--gold3)">Mystery Chest</div>
       <div class="shop-desc">Random item, pet, or avatar!</div></div>
     <div><div class="shop-price">🪙${fmt(CFG.CHEST_PRICE)}</div>
-      <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.openMysteryChest()">Open</button>
-    </div></div>`;
+      <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.openMysteryChest()">Open</button></div></div>`;
   const consumeHtml=SHOP_CONSUMABLES.map(c=>`
     <div class="shop-item"><div class="shop-icon">${c.emoji}</div>
       <div class="shop-info"><div class="shop-name">${c.name}</div><div class="shop-desc">${c.desc}</div></div>
       <div><div class="shop-price">🪙${fmt(c.price)}</div>
-        <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyConsumable('${c.id}')">Buy</button>
-      </div></div>`).join("");
+        <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyConsumable('${c.id}')">Buy</button></div></div>`).join("");
   const equipHtml=shopItems.map((item,i)=>`
     <div class="shop-item"><div class="shop-icon">${gfx(item.image,item.emoji,40)}</div>
       <div class="shop-info"><div class="shop-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}</div>
-        <div class="shop-desc">+~${item.base} ${item.stat==="str"?"STR":"DEF"}</div></div>
+        <div class="shop-desc">+~${item.base} ${item.stat==="str"?"STR":"DEF"} · Min Lv.${item.minLevel}</div></div>
       <div><div class="shop-price">🪙${fmt(item.shopPrice)}</div>
-        <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem('item',${i})">Buy</button>
-      </div></div>`).join("");
+        <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem('item',${i})">Buy</button></div></div>`).join("");
   const petHtml=shopPets.map((pet,i)=>{
     const price=Math.round(300*(pet.base/5));
     return`<div class="shop-item"><div class="shop-icon">${gfx(pet.image,pet.emoji,40)}</div>
       <div class="shop-info"><div class="shop-name" style="color:${RARITY_COLOR[pet.rarity]}">${pet.name}</div>
         <div class="shop-desc">+~${pet.base} ${pet.stat==="str"?"STR":"DEF"} · Pet</div></div>
       <div><div class="shop-price">🪙${fmt(price)}</div>
-        <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem('pet',${i})">Buy</button>
-      </div></div>`;
+        <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem('pet',${i})">Buy</button></div></div>`;
   }).join("");
   body.innerHTML=`<div style="font-size:0.78rem;color:var(--text3);margin-bottom:0.6rem">Your gold: 🪙${fmt(P.gold)}</div>
     <div class="section-hdr">✨ Special</div>${chestHtml}
@@ -2323,7 +1932,12 @@ async function buyListing(id,price){
   if((P.gold||0)<price){SFX.error();toast("💰 Not enough gold!");return;}
   const snap=await getDoc(doc(db,"market",id));
   if(!snap.exists()){toast("Listing gone.");renderMarket();return;}
-  const listing=snap.data();P.gold-=price;P.inventory=[...(P.inventory||[]),listing.item];
+  const listing=snap.data();
+  // Check level requirement
+  if(listing.item.itemLevel&&(P.level||1)<listing.item.itemLevel){
+    SFX.error();toast(`🔒 Need Level ${listing.item.itemLevel} to equip, but you can still buy and hold!`);
+  }
+  P.gold-=price;P.inventory=[...(P.inventory||[]),listing.item];
   await removeListing(id);saveP();SFX.gold();toast(`✅ Bought ${listing.item.name}!`);
   updateQuestProgress("items");renderMarket();
 }
@@ -2333,23 +1947,22 @@ async function cancelListing(id,item){
 }
 function promptSell(idx){
   const item=(P.inventory||[])[idx];if(!item)return;
-  const suggestedPrice=item.base?(item.base*item.val*2):200;
+  const suggestedPrice=item.itemLevel
+    ?Math.round(item.base*(item.itemLevel||1)*item.val*0.5)
+    :item.base?(item.base*item.val*2):200;
   showModal(`<div class="modal-title">List on Market</div>
     <div class="modal-icon">${gfx(item.image,item.emoji,72)}</div>
-    <div style="text-align:center;color:${RARITY_COLOR[item.rarity]};margin-bottom:0.5rem;font-weight:700">${item.name}</div>
+    <div style="text-align:center;color:${RARITY_COLOR[item.rarity]};margin-bottom:0.5rem;font-weight:700">${item.name}${item.itemLevel?" (Lv."+item.itemLevel+")":""}</div>
     <input class="modal-input" id="sell-price" type="number" value="${suggestedPrice}" min="1"/>
-    <div class="modal-actions">
-      <button class="btn btn-gold" onclick="G.confirmSell(${idx})">List Item</button>
-      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>
-    </div>`);
+    <div class="modal-actions"><button class="btn btn-gold" onclick="G.confirmSell(${idx})">List Item</button>
+      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button></div>`);
 }
 async function confirmSell(idx){
   const price=Math.floor(Number(document.getElementById("sell-price").value));
   if(!price||price<1){toast("Enter a valid price");return;}
   const item=(P.inventory||[])[idx];if(!item)return;
   P.inventory=P.inventory.filter((_,i)=>i!==idx);
-  await addListing(item,price);saveP();closeModal();
-  toast(`🏪 Listed for 🪙${fmt(price)}!`);renderMarket();
+  await addListing(item,price);saveP();closeModal();toast(`🏪 Listed for 🪙${fmt(price)}!`);renderMarket();
 }
 function buyShopItem(kind,idx){
   let template,price;
@@ -2357,11 +1970,13 @@ function buyShopItem(kind,idx){
   else{const si=ITEMS.filter(i=>i.shopPrice>0);template=si[idx];price=template.shopPrice;}
   if(!template)return;
   if((P.gold||0)<price){SFX.error();toast("💰 Not enough gold!");return;}
-  const val=rollItemStat(template);
-  const item={...template,val,base:template.base,id:`item_${Date.now()}_${rand(0,9999)}`};
+  const item=kind==="pet"
+    ?{...template,val:rollItemStat(template),base:template.base,id:`item_${Date.now()}_${rand(0,9999)}`}
+    :spawnItemScaled(template);
   delete item.shopPrice;delete item.dropRate;
   P.gold-=price;P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;
-  saveP();updateQuestProgress("items");SFX.itemFound();toast(`🛒 Bought ${item.name}!`);renderMarketShop();
+  if(kind!=="pet")trackCirculation(item.name);
+  saveP();updateQuestProgress("items");SFX.itemFound();toast(`🛒 Bought ${item.name}${item.itemLevel?" (Lv."+item.itemLevel+")":""}!`);renderMarketShop();
 }
 function buyConsumable(id){
   const c=SHOP_CONSUMABLES.find(x=>x.id===id);if(!c)return;
@@ -2390,13 +2005,10 @@ async function renderSocial(){
       <button class="tab-btn" onclick="G.lbTab('steps')">👣 Steps</button>
       <button class="tab-btn" onclick="G.lbTab('gold')">🪙 Gold</button>
       <button class="tab-btn" onclick="G.lbTab('items')">🎁 Items</button>
-    </div>
-    <div id="lb-body"></div>
-    <div class="card" style="margin-top:0.5rem">
-      <div class="card-title">⚙️ Account</div>
+    </div><div id="lb-body"></div>
+    <div class="card" style="margin-top:0.5rem"><div class="card-title">⚙️ Account</div>
       <button class="btn btn-ghost" onclick="G.showTab('you')">👤 My Profile</button>
-      <button class="btn btn-ghost" onclick="G.handleSignOut()">Sign Out</button>
-    </div>`;
+      <button class="btn btn-ghost" onclick="G.handleSignOut()">Sign Out</button></div>`;
   lbTab("level");
 }
 function lbTab(type){
@@ -2438,8 +2050,7 @@ function renderYou(){
       <div class="profile-level">Level ${P.level} · <span style="color:${tier.color};font-weight:700">${TIER_EMOJIS[tierIdx]} ${tier.name}</span></div>
       <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:0.75rem;margin-bottom:0.75rem;text-align:left">
         <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--text3);margin-bottom:0.3rem;font-family:'Cinzel',serif">
-          <span>✨ Experience</span><span>${fmt(P.exp)} / ${fmt(expNeed)}</span>
-        </div>
+          <span>✨ Experience</span><span>${fmt(P.exp)} / ${fmt(expNeed)}</span></div>
         <div class="bar bar-exp"><div class="bar-fill" style="width:${expPct}%"></div></div>
         <div style="font-size:0.68rem;color:var(--text3);margin-top:0.2rem">${fmt(expNeed-P.exp)} XP to Level ${P.level+1}</div>
       </div>
@@ -2461,8 +2072,7 @@ function renderYou(){
     <button class="btn btn-purple" onclick="G.openAvatarCollection()" style="margin-bottom:0.5rem">🎭 My Avatar Collection</button>
     ${P.statPoints>0?`<button class="btn btn-gold" onclick="G.openStatModal()" style="margin-bottom:0.5rem">⬆️ Spend ${P.statPoints} Stat Point${P.statPoints>1?"s":""}</button>`:""}
     <div class="card"><div class="card-title">⚙️ Account</div>
-      <button class="btn btn-ghost" onclick="G.handleSignOut()">Sign Out</button>
-    </div>
+      <button class="btn btn-ghost" onclick="G.handleSignOut()">Sign Out</button></div>
     <button class="btn btn-ghost" onclick="G.showTab('home')" style="margin-top:0.5rem">← Back</button>`;
 }
 async function handleSignOut(){clearInterval(energyInterval);await signOut(auth);}
@@ -2474,27 +2084,18 @@ function renderQuests(){
   const hReset=Math.floor(msUntilReset/3600000),mReset=Math.floor((msUntilReset%3600000)/60000);
   const questsHtml=qs.map(q=>{
     const done=q.progress>=q.target,pct=Math.min(100,Math.round((q.progress/q.target)*100));
-    return`<div class="quest-item">
-      <div class="quest-top">
-        <div class="quest-icon">${q.icon}</div>
-        <div class="quest-info">
-          <div class="quest-name ${done?"quest-done":""}">${q.name} ${done?"✓":""}</div>
-          <div class="quest-desc">${q.desc}</div>
-          <div class="quest-reward">🎁 +${q.reward.exp} EXP · +${q.reward.gold}🪙</div>
-        </div>
-        ${done&&!q.claimed?`<button class="btn btn-green btn-sm" onclick="G.claimQuest('${q.id}')">Claim</button>`:
-          done?`<span style="color:var(--text3);font-size:0.72rem">Claimed</span>`:""}
-      </div>
-      <div class="bar bar-quest" style="height:5px"><div class="bar-fill" style="width:${pct}%"></div></div>
-      <div style="font-size:0.7rem;color:var(--text3);margin-top:0.2rem">${q.progress}/${q.target}</div>
-    </div>`;
+    return`<div class="quest-item"><div class="quest-top">
+      <div class="quest-icon">${q.icon}</div>
+      <div class="quest-info"><div class="quest-name ${done?"quest-done":""}">${q.name} ${done?"✓":""}</div>
+        <div class="quest-desc">${q.desc}</div><div class="quest-reward">🎁 +${q.reward.exp} EXP · +${q.reward.gold}🪙</div></div>
+      ${done&&!q.claimed?`<button class="btn btn-green btn-sm" onclick="G.claimQuest('${q.id}')">Claim</button>`:done?`<span style="color:var(--text3);font-size:0.72rem">Claimed</span>`:""}
+    </div>
+    <div class="bar bar-quest" style="height:5px"><div class="bar-fill" style="width:${pct}%"></div></div>
+    <div style="font-size:0.7rem;color:var(--text3);margin-top:0.2rem">${q.progress}/${q.target}</div></div>`;
   }).join("");
   document.getElementById("content").innerHTML=`
-    <div class="card">
-      <div class="card-title">📜 Daily Quests</div>
-      <div style="font-size:0.78rem;color:var(--text3);margin-bottom:0.75rem">Resets in ${hReset}h ${mReset}m</div>
-      ${questsHtml}
-    </div>
+    <div class="card"><div class="card-title">📜 Daily Quests</div>
+      <div style="font-size:0.78rem;color:var(--text3);margin-bottom:0.75rem">Resets in ${hReset}h ${mReset}m</div>${questsHtml}</div>
     <button class="btn btn-ghost" onclick="G.showTab('home')" style="margin-top:0.5rem">← Back</button>`;
 }
 function claimQuest(id){
@@ -2506,20 +2107,15 @@ function claimQuest(id){
 // ── BANK ─────────────────────────────────────────────────────
 function renderBank(){
   document.getElementById("content").innerHTML=`
-    <div class="card">
-      <div class="card-title">🏦 Royal Bank</div>
+    <div class="card"><div class="card-title">🏦 Royal Bank</div>
       <div class="bank-display"><div class="bank-amount">🏦 ${fmt(P.bank)}</div><div class="bank-label">Bank Balance</div></div>
       <div class="bank-display" style="margin-bottom:0.75rem"><div class="bank-amount">🪙 ${fmt(P.gold)}</div><div class="bank-label">On Hand</div></div>
       <div style="font-size:0.82rem;color:var(--text3);margin-bottom:0.6rem">Deposit Gold</div>
-      <div class="bank-input-row">
-        <input class="bank-input" id="deposit-amt" type="number" placeholder="Amount" min="1"/>
-        <button class="btn btn-gold btn-sm" style="width:auto;padding:0.65rem 1rem" onclick="G.doDeposit()">Deposit</button>
-      </div>
+      <div class="bank-input-row"><input class="bank-input" id="deposit-amt" type="number" placeholder="Amount" min="1"/>
+        <button class="btn btn-gold btn-sm" style="width:auto;padding:0.65rem 1rem" onclick="G.doDeposit()">Deposit</button></div>
       <div style="font-size:0.82rem;color:var(--text3);margin-bottom:0.6rem;margin-top:0.5rem">Withdraw Gold</div>
-      <div class="bank-input-row">
-        <input class="bank-input" id="withdraw-amt" type="number" placeholder="Amount" min="1"/>
-        <button class="btn btn-ghost btn-sm" style="width:auto;padding:0.65rem 1rem" onclick="G.doWithdraw()">Withdraw</button>
-      </div>
+      <div class="bank-input-row"><input class="bank-input" id="withdraw-amt" type="number" placeholder="Amount" min="1"/>
+        <button class="btn btn-ghost btn-sm" style="width:auto;padding:0.65rem 1rem" onclick="G.doWithdraw()">Withdraw</button></div>
     </div>
     <button class="btn btn-ghost" onclick="G.showTab('home')" style="margin-top:0.5rem">← Back</button>`;
 }
@@ -2547,8 +2143,7 @@ function renderProperties(){
     return`<div style="background:var(--surface);border:1.5px solid ${isHome?"var(--gold2)":"var(--border)"};border-radius:12px;padding:0.9rem;margin-bottom:0.5rem;box-shadow:var(--shadow-sm)">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
         <div style="font-size:2rem">${prop.emoji}</div>
-        <div style="flex:1">
-          <div style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700;color:${isHome?"var(--gold3)":"var(--text)"}">${prop.name}${isHome?" 🏠":""}</div>
+        <div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700;color:${isHome?"var(--gold3)":"var(--text)"}">${prop.name}${isHome?" 🏠":""}</div>
           <div style="font-size:0.75rem;color:var(--text3)">${prop.desc}</div>
           ${isHome?`<div style="font-size:0.72rem;color:var(--steel);margin-top:0.2rem;font-weight:600">+${prop.energyBonus} Max Energy (your home)</div>`
             :`<div style="font-size:0.72rem;color:var(--green2);margin-top:0.2rem;font-weight:600">🪙${fmt(daily)}/day rental</div>`}
@@ -2558,40 +2153,34 @@ function renderProperties(){
         ${!isHome?`<button class="btn btn-steel btn-sm" onclick="G.setHome('${op.instanceId}','${prop.id}')">Move In</button>`:""}
         ${isHome&&owned.length>1?`<button class="btn btn-ghost btn-sm" onclick="G.unsetHome()">Move Out</button>`:""}
         <button class="btn btn-danger btn-sm" onclick="G.sellProperty('${op.instanceId}','${prop.id}')">Sell (🪙${fmt(sellPrice)})</button>
-      </div>
-    </div>`;
+      </div></div>`;
   }).join("");
   const availHtml=PROPERTIES.map(prop=>{
     const ownedCount=countOwned(prop.id),nextPrice=propertyPrice(prop.id);
     return`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:0.9rem;margin-bottom:0.5rem;box-shadow:var(--shadow-sm)">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
         <div style="font-size:2rem">${prop.emoji}</div>
-        <div style="flex:1">
-          <div style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700">${prop.name}
-            ${ownedCount>0?`<span style="font-size:0.65rem;color:var(--text3);margin-left:0.3rem">(own ${ownedCount})</span>`:""}
-          </div>
+        <div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700">${prop.name}
+          ${ownedCount>0?`<span style="font-size:0.65rem;color:var(--text3);margin-left:0.3rem">(own ${ownedCount})</span>`:""}</div>
           <div style="font-size:0.75rem;color:var(--text3)">${prop.desc}</div>
           <div style="display:flex;gap:0.6rem;margin-top:0.25rem;flex-wrap:wrap">
             <span style="font-size:0.7rem;color:var(--steel);font-weight:600">+${prop.energyBonus} energy if home</span>
             <span style="font-size:0.7rem;color:var(--green2);font-weight:600">🪙${fmt(Math.floor(prop.price*prop.rentalRate))}/day rent</span>
           </div>
         </div>
-        <div style="text-align:right;flex-shrink:0">
-          <div style="font-family:'Cinzel',serif;color:var(--gold3);font-size:0.9rem;font-weight:700">🪙${fmt(nextPrice)}</div>
+        <div style="text-align:right;flex-shrink:0"><div style="font-family:'Cinzel',serif;color:var(--gold3);font-size:0.9rem;font-weight:700">🪙${fmt(nextPrice)}</div>
           ${ownedCount>0?`<div style="font-size:0.6rem;color:var(--text3)">+5% per copy</div>`:""}
         </div>
       </div>
       <button class="btn btn-gold btn-sm" onclick="G.buyProperty('${prop.id}')" ${(P.gold||0)<nextPrice?"disabled":""}>
-        ${(P.gold||0)>=nextPrice?"Purchase":"Need 🪙"+fmt(nextPrice)}
-      </button>
+        ${(P.gold||0)>=nextPrice?"Purchase":"Need 🪙"+fmt(nextPrice)}</button>
     </div>`;
   }).join("");
   document.getElementById("content").innerHTML=`
     ${rentalPending>0?`<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:0.85rem;margin-bottom:0.7rem;display:flex;align-items:center;gap:0.75rem">
       <div style="font-size:1.5rem">🏠</div>
       <div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.82rem;color:var(--green);font-weight:700">🪙${fmt(rentalPending)} in Rental Income!</div></div>
-      <button class="btn btn-green btn-sm" onclick="G.claimRent()">Collect</button>
-    </div>`:""}
+      <button class="btn btn-green btn-sm" onclick="G.claimRent()">Collect</button></div>`:""}
     ${owned.length>0?`<div class="section-hdr">Your Properties (${owned.length})</div>${ownedHtml}`:""}
     <div class="section-hdr">Available to Buy</div>${availHtml}
     <button class="btn btn-ghost" onclick="G.showTab('home')" style="margin-top:0.5rem">← Back</button>`;
@@ -2608,8 +2197,7 @@ function buyProperty(id){
 }
 function setHome(instanceId,propId){
   P.homePropertyInstanceId=instanceId;P.homePropertyId=propId;
-  P.energy=Math.min(P.energy,calcMaxEnergy());
-  saveP();toast("🏠 Moved in!");renderProperties();
+  P.energy=Math.min(P.energy,calcMaxEnergy());saveP();toast("🏠 Moved in!");renderProperties();
 }
 function unsetHome(){P.homePropertyInstanceId=null;P.homePropertyId=null;saveP();toast("🏠 Moved out!");renderProperties();}
 function sellProperty(instanceId,propId){
@@ -2619,10 +2207,8 @@ function sellProperty(instanceId,propId){
     <div style="text-align:center;font-size:3rem;margin:0.5rem 0">${prop.emoji}</div>
     <div style="text-align:center;color:var(--text3);font-size:0.88rem;margin-bottom:1rem">
       Sell <strong>${prop.name}</strong> for <strong style="color:var(--gold3)">🪙${fmt(sellPrice)}</strong>?</div>
-    <div class="modal-actions">
-      <button class="btn btn-danger" onclick="G.confirmSellProperty('${instanceId}','${propId}')">Confirm Sale</button>
-      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>
-    </div>`);
+    <div class="modal-actions"><button class="btn btn-danger" onclick="G.confirmSellProperty('${instanceId}','${propId}')">Confirm Sale</button>
+      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button></div>`);
 }
 function confirmSellProperty(instanceId,propId){
   const prop=PROPERTIES.find(p=>p.id===propId);if(!prop)return;
@@ -2634,43 +2220,23 @@ function confirmSellProperty(instanceId,propId){
 
 // ── EXPOSE ────────────────────────────────────────────────────
 window.G={
-  // Auth
   switchAuthTab,handleEmailAuth,handleGoogleAuth,handleSetUsername,
-  // Navigation
   showTab,hideWalk,closeModal,
-  // Walk
   takeStep,openAreaSelect,selectArea,
-  // Home
   openStatModal,spendStat,claimRent,
-  // Gear/Items
   openItemModal,equipItem,unequipItem,dropInventory,dropEquipped,
-  // Market
   renderMarket,mTab,
-  promptSell,confirmSell,buyListing,cancelListing,buyShopItem,buyConsumable,sellToNpc,
-  openMysteryChest,
-  // PvP
+  promptSell,confirmSell,buyListing,cancelListing,buyShopItem,buyConsumable,sellToNpc,openMysteryChest,
   pvpTab,attackPlayer,
-  // Bounties
   openPostBounty,confirmPostBounty,cancelBounty,claimBounty,
-  // Guilds
   openCreateGuild,confirmCreateGuild,openJoinGuild,joinGuild,
   donateToGuild,confirmDonateGold,donateItemToGuild,confirmDonateItem,
-  giveVaultItem,confirmGiveItem,
-  startGuildRaid,contributeToRaid,
+  giveVaultItem,confirmGiveItem,startGuildRaid,contributeToRaid,
   promoteGuildMember,kickGuildMember,leaveGuild,confirmLeaveGuild,
-  // Quests
-  claimQuest,
-  // Bank
-  doDeposit,doWithdraw,
-  // Properties
+  claimQuest,doDeposit,doWithdraw,
   buyProperty,setHome,unsetHome,sellProperty,confirmSellProperty,
-  // Social
-  lbTab,
-  // Profile/Avatar
-  handleSignOut,equipAvatar,openAvatarCollection,
-  // Combat
+  lbTab,handleSignOut,equipAvatar,openAvatarCollection,
   fleeCombat,healInCombat,resumeCombat,abandonCombat,
-  // Choice events
   resolveChoice,
 };
 
