@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <!-- Ghost tail wispy -->
+  <rect x="18" y="50" width="8" height="14" fill="#88aaff" opacity="0.6"/>
+  <rect x="26" y="54" width="8" height="10" fill="#88aaff" opacity="0.5"/>
+  <rect x="34" y="50" width="8" height="14" fill="#88aaff" opacity="0.6"/>
+  <rect x="14" y="56" width="6" height="8" fill="#88aaff" opacity="0.3"/>
+  <rect x="44" y="54" width="6" height="10" fill="#88aaff" opacity="0.3"/>
+  <!-- Flowing ghostly body -->
+  <rect x="14" y="26" width="36" height="28" fill="#aaccff" opacity="0.8"/>
+  <rect x="10" y="30" width="44" height="20" fill="#aaccff" opacity="0.7"/>
+  <rect x="16" y="22" width="32" height="8" fill="#aaccff" opacity="0.8"/>
+  <!-- Body glow inner -->
+  <rect x="18" y="28" width="28" height="22" fill="#ffffff" opacity="0.3"/>
+  <!-- Screaming face -->
+  <rect x="16" y="8" width="32" height="18" fill="#ddeeff"/>
+  <rect x="14" y="12" width="4" height="12" fill="#ddeeff"/>
+  <rect x="46" y="12" width="4" height="12" fill="#ddeeff"/>
+  <!-- Wild hair streaming -->
+  <rect x="10" y="6" width="6" height="20" fill="#ccddff" opacity="0.8"/>
+  <rect x="6" y="10" width="6" height="16" fill="#aabbee" opacity="0.6"/>
+  <rect x="48" y="6" width="6" height="20" fill="#ccddff" opacity="0.8"/>
+  <rect x="52" y="10" width="6" height="14" fill="#aabbee" opacity="0.6"/>
+  <!-- Crown of bones -->
+  <rect x="16" y="4" width="32" height="4" fill="#ccccaa"/>
+  <rect x="18" y="0" width="5" height="6" fill="#ccccaa"/>
+  <rect x="26" y="0" width="5" height="8" fill="#ccccaa"/>
+  <rect x="33" y="0" width="5" height="6" fill="#ccccaa"/>
+  <rect x="41" y="0" width="5" height="6" fill="#ccccaa"/>
+  <!-- Eyes screaming blue white -->
+  <rect x="18" y="10" width="12" height="10" fill="#0000aa"/>
+  <rect x="34" y="10" width="12" height="10" fill="#0000aa"/>
+  <rect x="20" y="11" width="8" height="7" fill="#4444ff"/>
+  <rect x="36" y="11" width="8" height="7" fill="#4444ff"/>
+  <rect x="22" y="12" width="4" height="4" fill="#ffffff"/>
+  <rect x="38" y="12" width="4" height="4" fill="#ffffff"/>
+  <!-- Screaming mouth WIDE open -->
+  <rect x="16" y="20" width="32" height="6" fill="#000033"/>
+  <rect x="18" y="18" width="28" height="10" fill="#000033"/>
+  <!-- Scream sound waves -->
+  <rect x="0" y="22" width="14" height="3" fill="#88aaff" opacity="0.5"/>
+  <rect x="0" y="18" width="10" height="3" fill="#88aaff" opacity="0.3"/>
+  <rect x="0" y="26" width="12" height="3" fill="#88aaff" opacity="0.4"/>
+  <rect x="50" y="22" width="14" height="3" fill="#88aaff" opacity="0.5"/>
+  <rect x="54" y="18" width="10" height="3" fill="#88aaff" opacity="0.3"/>
+  <rect x="52" y="26" width="12" height="3" fill="#88aaff" opacity="0.4"/>
+  <!-- Ghostly arms reaching -->
+  <rect x="0" y="28" width="14" height="4" fill="#aaccff" opacity="0.7"/>
+  <rect x="0" y="24" width="8" height="6" fill="#aaccff" opacity="0.5"/>
+  <rect x="50" y="28" width="14" height="4" fill="#aaccff" opacity="0.7"/>
+  <rect x="56" y="24" width="8" height="6" fill="#aaccff" opacity="0.5"/>
+  <!-- Claw fingers -->
+  <rect x="0" y="22" width="3" height="6" fill="#8899cc"/>
+  <rect x="3" y="20" width="3" height="8" fill="#8899cc"/>
+  <rect x="60" y="22" width="3" height="6" fill="#8899cc"/>
+  <rect x="58" y="20" width="3" height="8" fill="#8899cc"/>
+</svg>

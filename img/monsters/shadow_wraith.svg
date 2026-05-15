@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <!-- Ghost tail/wisp bottom -->
+  <rect x="20" y="50" width="8" height="14" fill="#1a0030" opacity="0.7"/>
+  <rect x="28" y="52" width="8" height="12" fill="#1a0030" opacity="0.6"/>
+  <rect x="36" y="50" width="8" height="14" fill="#1a0030" opacity="0.7"/>
+  <rect x="18" y="56" width="4" height="8" fill="#1a0030" opacity="0.4"/>
+  <rect x="42" y="54" width="4" height="10" fill="#1a0030" opacity="0.4"/>
+  <!-- Body - wispy translucent -->
+  <rect x="16" y="24" width="32" height="30" fill="#0a001a"/>
+  <rect x="12" y="28" width="40" height="22" fill="#0a001a"/>
+  <rect x="18" y="20" width="28" height="8" fill="#0a001a"/>
+  <!-- Body glow inner -->
+  <rect x="18" y="26" width="28" height="24" fill="#2d0050" opacity="0.5"/>
+  <rect x="14" y="30" width="36" height="16" fill="#2d0050" opacity="0.3"/>
+  <!-- Tendrils/arms -->
+  <rect x="4" y="26" width="14" height="4" fill="#0a001a"/>
+  <rect x="2" y="22" width="10" height="6" fill="#0a001a"/>
+  <rect x="0" y="18" width="6" height="6" fill="#0a001a"/>
+  <rect x="46" y="26" width="14" height="4" fill="#0a001a"/>
+  <rect x="52" y="22" width="10" height="6" fill="#0a001a"/>
+  <rect x="58" y="18" width="6" height="6" fill="#0a001a"/>
+  <!-- Claw fingers -->
+  <rect x="0" y="16" width="2" height="4" fill="#4400aa"/>
+  <rect x="2" y="14" width="2" height="6" fill="#4400aa"/>
+  <rect x="4" y="16" width="2" height="4" fill="#4400aa"/>
+  <rect x="60" y="16" width="2" height="4" fill="#4400aa"/>
+  <rect x="60" y="14" width="2" height="6" fill="#4400aa"/>
+  <rect x="62" y="16" width="2" height="4" fill="#4400aa"/>
+  <!-- Head skull -->
+  <rect x="18" y="6" width="28" height="18" fill="#0a001a"/>
+  <rect x="16" y="10" width="4" height="12" fill="#0a001a"/>
+  <rect x="44" y="10" width="4" height="12" fill="#0a001a"/>
+  <!-- Skull structure (visible through translucency) -->
+  <rect x="20" y="8" width="24" height="14" fill="#ccccaa" opacity="0.15"/>
+  <!-- Hollow eye sockets glowing -->
+  <rect x="18" y="10" width="12" height="10" fill="#6600cc"/>
+  <rect x="34" y="10" width="12" height="10" fill="#6600cc"/>
+  <rect x="20" y="11" width="8" height="7" fill="#9900ff"/>
+  <rect x="36" y="11" width="8" height="7" fill="#9900ff"/>
+  <rect x="22" y="12" width="4" height="4" fill="#cc66ff"/>
+  <rect x="38" y="12" width="4" height="4" fill="#cc66ff"/>
+  <!-- Skull nose void -->
+  <rect x="28" y="16" width="8" height="4" fill="#000"/>
+  <rect x="30" y="16" width="4" height="3" fill="#1a0030"/>
+  <!-- Jaw -->
+  <rect x="20" y="20" width="24" height="4" fill="#0a001a"/>
+  <rect x="22" y="20" width="4" height="3" fill="#ccccaa" opacity="0.3"/>
+  <rect x="28" y="20" width="4" height="3" fill="#ccccaa" opacity="0.3"/>
+  <rect x="34" y="20" width="4" height="3" fill="#ccccaa" opacity="0.3"/>
+  <!-- Floating particles -->
+  <rect x="8" y="14" width="4" height="4" fill="#6600cc" opacity="0.5"/>
+  <rect x="52" y="10" width="4" height="4" fill="#6600cc" opacity="0.5"/>
+  <rect x="4" y="36" width="4" height="4" fill="#4400aa" opacity="0.4"/>
+  <rect x="56" y="40" width="4" height="4" fill="#4400aa" opacity="0.4"/>
+  <rect x="10" y="50" width="3" height="3" fill="#9900ff" opacity="0.3"/>
+  <rect x="51" y="46" width="3" height="3" fill="#9900ff" opacity="0.3"/>
+</svg>

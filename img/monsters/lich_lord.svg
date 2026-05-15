@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <!-- Phylactery crown -->
+  <rect x="18" y="0" width="28" height="6" fill="#220044"/>
+  <rect x="16" y="4" width="32" height="4" fill="#330066"/>
+  <rect x="28" y="0" width="8" height="8" fill="#440088"/>
+  <rect x="30" y="0" width="4" height="4" fill="#8800ff"/>
+  <!-- Skull head -->
+  <rect x="14" y="8" width="36" height="24" fill="#ccccaa"/>
+  <rect x="12" y="12" width="4" height="16" fill="#ccccaa"/>
+  <rect x="48" y="12" width="4" height="16" fill="#ccccaa"/>
+  <!-- Hollow eye sockets glowing -->
+  <rect x="14" y="12" width="14" height="12" fill="#000"/>
+  <rect x="36" y="12" width="14" height="12" fill="#000"/>
+  <rect x="16" y="13" width="10" height="9" fill="#220044"/>
+  <rect x="38" y="13" width="10" height="9" fill="#220044"/>
+  <rect x="18" y="14" width="6" height="6" fill="#6600cc"/>
+  <rect x="40" y="14" width="6" height="6" fill="#6600cc"/>
+  <rect x="20" y="15" width="3" height="4" fill="#aa44ff"/>
+  <rect x="42" y="15" width="3" height="4" fill="#aa44ff"/>
+  <!-- Nose void -->
+  <rect x="28" y="20" width="8" height="5" fill="#000"/>
+  <rect x="30" y="20" width="4" height="4" fill="#110022"/>
+  <!-- Jaw/teeth -->
+  <rect x="16" y="26" width="32" height="6" fill="#aaa888"/>
+  <rect x="18" y="24" width="4" height="8" fill="#ccccaa"/>
+  <rect x="24" y="24" width="4" height="6" fill="#ccccaa"/>
+  <rect x="30" y="24" width="4" height="6" fill="#ccccaa"/>
+  <rect x="36" y="24" width="4" height="6" fill="#ccccaa"/>
+  <rect x="42" y="24" width="4" height="8" fill="#ccccaa"/>
+  <!-- Robes dark -->
+  <rect x="10" y="32" width="44" height="30" fill="#0a0020"/>
+  <rect x="6" y="38" width="52" height="20" fill="#0a0020"/>
+  <!-- Death runes -->
+  <rect x="14" y="36" width="8" height="12" fill="#220044"/>
+  <rect x="10" y="42" width="16" height="6" fill="#220044"/>
+  <rect x="42" y="36" width="8" height="12" fill="#220044"/>
+  <rect x="38" y="42" width="16" height="6" fill="#220044"/>
+  <rect x="28" y="34" width="8" height="14" fill="#330066"/>
+  <rect x="24" y="38" width="16" height="6" fill="#330066"/>
+  <!-- Death orb staff -->
+  <rect x="54" y="4" width="4" height="52" fill="#220044"/>
+  <rect x="50" y="2" width="12" height="8" fill="#330066"/>
+  <rect x="52" y="0" width="8" height="6" fill="#6600cc"/>
+  <rect x="54" y="0" width="4" height="4" fill="#aa44ff"/>
+  <!-- Orb glow -->
+  <rect x="50" y="0" width="12" height="2" fill="#cc88ff" opacity="0.5"/>
+  <!-- Skeleton arm holding staff -->
+  <rect x="48" y="36" width="8" height="16" fill="#ccccaa"/>
+  <rect x="50" y="50" width="6" height="6" fill="#bbbbaa"/>
+  <!-- Other arm with death magic -->
+  <rect x="8" y="36" width="8" height="16" fill="#ccccaa"/>
+  <!-- Death magic from hand -->
+  <rect x="0" y="32" width="10" height="4" fill="#6600cc" opacity="0.6"/>
+  <rect x="0" y="28" width="8" height="6" fill="#440088" opacity="0.5"/>
+  <rect x="0" y="24" width="6" height="6" fill="#8800ff" opacity="0.4"/>
+  <!-- Undead particles -->
+  <rect x="4" y="14" width="4" height="4" fill="#6600cc" opacity="0.4"/>
+  <rect x="56" y="10" width="4" height="4" fill="#6600cc" opacity="0.4"/>
+  <rect x="6" y="56" width="3" height="3" fill="#aa44ff" opacity="0.3"/>
+</svg>
