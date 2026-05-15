@@ -177,6 +177,179 @@ const PROPERTIES=[
 
 // ── CHOICE EVENTS ─────────────────────────────────────────────
 const CHOICE_EVENTS=[
+  // ── NEW CHOICE EVENTS — paste these into your CHOICE_EVENTS array ──
+// Just add them before the closing ]; of your existing array
+
+  {id:"wounded_knight",emoji:"⚔️",title:"A Wounded Knight",
+   desc:"A knight slumped against a tree. Badly hurt. He reaches out a hand.",
+   choices:[
+     {label:"Help him",outcome:()=>{
+       const r=Math.random();
+       return r<0.5
+         ?{msg:"He thanks you and presses a coin pouch into your hand.",gold:()=>rand(40,100),hp:0}
+         :{msg:"He thanks you weakly. That's all he has to give.",gold:0,hp:0};
+     }},
+     {label:"Leave him",outcome:()=>({msg:"You walk past. Some things aren't your problem.",gold:0,hp:0})},
+   ]},
+
+  {id:"cursed_coin",emoji:"🪙",title:"A Glowing Coin",
+   desc:"A single gold coin sits in the middle of the path, glowing faintly. Pick it up?",
+   choices:[
+     {label:"Pick it up",outcome:()=>{
+       const r=Math.random();
+       return r<0.4
+         ?{msg:"Just a coin. Lucky you!",gold:()=>rand(20,80),hp:0}
+         :r<0.7
+         ?{msg:"It burns your hand! Cursed gold.",gold:0,hp:()=>-rand(10,30)}
+         :{msg:"It vanishes the moment you touch it. Illusion.",gold:0,hp:0};
+     }},
+     {label:"Leave it",outcome:()=>({msg:"Some things are too good to be true.",gold:0,hp:0})},
+   ]},
+
+  {id:"ancient_well",emoji:"🪣",title:"An Ancient Well",
+   desc:"A stone well covered in moss. The bucket still works. Drink?",
+   choices:[
+     {label:"Drink from it",outcome:()=>{
+       const r=Math.random();
+       return r<0.5
+         ?{msg:"Cool and sweet. You feel refreshed.",gold:0,hp:()=>rand(20,50)}
+         :r<0.75
+         ?{msg:"Tastes foul. Your stomach protests.",gold:0,hp:()=>-rand(10,25)}
+         :{msg:"Nothing happens. Just water.",gold:0,hp:0};
+     }},
+     {label:"Move on",outcome:()=>({msg:"Probably wise. Ancient wells are risky.",gold:0,hp:0})},
+   ]},
+
+  {id:"travelling_merchant",emoji:"🛒",title:"A Travelling Merchant",
+   desc:"A cheerful merchant offers you a mystery item for 75 gold. No refunds.",
+   choices:[
+     {label:"Buy it (75 gold)",outcome:(p)=>{
+       if((p.gold||0)<75)return{msg:"Not enough gold. He shrugs and moves on.",gold:0,hp:0};
+       const r=Math.random();
+       return r<0.4
+         ?{msg:"A health tonic! You drink it immediately.",gold:-75,hp:()=>rand(30,60)}
+         :r<0.7
+         ?{msg:"A bag of gold! Net gain.",gold:()=>rand(-75+80,150),hp:0}
+         :{msg:"A rock. A painted rock. He's already gone.",gold:-75,hp:0};
+     }},
+     {label:"Decline",outcome:()=>({msg:"He tips his hat and disappears around the bend.",gold:0,hp:0})},
+   ]},
+
+  {id:"haunted_tree",emoji:"🌳",title:"A Whispering Tree",
+   desc:"An ancient tree with a face carved into it. It seems to whisper your name.",
+   choices:[
+     {label:"Listen closely",outcome:()=>{
+       const r=Math.random();
+       return r<0.33
+         ?{msg:"It reveals where something is buried nearby. Gold!",gold:()=>rand(50,150),hp:0}
+         :r<0.66
+         ?{msg:"The whispers grow to screams. You flee, shaken.",gold:0,hp:()=>-rand(15,35)}
+         :{msg:"It says: 'keep walking'. You keep walking.",gold:0,hp:0};
+     }},
+     {label:"Back away slowly",outcome:()=>({msg:"Smart. Whispering trees are never a good sign.",gold:0,hp:0})},
+   ]},
+
+  {id:"wounded_creature",emoji:"🐺",title:"A Wounded Animal",
+   desc:"A small creature caught in a trap whimpers at you. Free it?",
+   choices:[
+     {label:"Free it",outcome:()=>{
+       const r=Math.random();
+       return r<0.5
+         ?{msg:"It licks your hand before bounding off. You feel good about that.",gold:0,hp:()=>rand(10,25)}
+         :r<0.75
+         ?{msg:"It bites you for your trouble then runs. Ungrateful.",gold:0,hp:()=>-rand(5,15)}
+         :{msg:"It drops something shiny as it flees.",gold:()=>rand(20,60),hp:0};
+     }},
+     {label:"Leave it",outcome:()=>({msg:"Nature is cruel. So are you, apparently.",gold:0,hp:0})},
+   ]},
+
+  {id:"fortune_teller",emoji:"🔮",title:"A Fortune Teller",
+   desc:"A veiled figure offers to read your future for 30 gold.",
+   choices:[
+     {label:"Pay 30 gold",outcome:(p)=>{
+       if((p.gold||0)<30)return{msg:"She looks at your empty pockets and sighs.",gold:0,hp:0};
+       const fortunes=[
+         "Gold finds those who walk far.",
+         "Your next battle will test you. Be ready.",
+         "A great item awaits around the next corner.",
+         "Trust no one who offers you something for free.",
+         "You will live. Probably.",
+       ];
+       const f=fortunes[Math.floor(Math.random()*fortunes.length)];
+       return{msg:`She stares into the crystal and says: "${f}"`,gold:-30,hp:0};
+     }},
+     {label:"Keep walking",outcome:()=>({msg:"Your future remains unread. Probably fine.",gold:0,hp:0})},
+   ]},
+
+  {id:"rope_bridge",emoji:"🌉",title:"A Rope Bridge",
+   desc:"A rickety rope bridge over a deep gorge. Cross it or go the long way around?",
+   choices:[
+     {label:"Cross it",outcome:()=>{
+       const r=Math.random();
+       return r<0.6
+         ?{msg:"It holds! And you spot something glinting on the other side.",gold:()=>rand(30,80),hp:0}
+         :r<0.85
+         ?{msg:"A rope snaps! You make it but not without bruises.",gold:0,hp:()=>-rand(15,30)}
+         :{msg:"You cross safely. Nothing on the other side. Oh well.",gold:0,hp:0};
+     }},
+     {label:"Go around",outcome:()=>({msg:"Takes longer but your bones are intact.",gold:0,hp:0})},
+   ]},
+
+  {id:"alchemist_fire",emoji:"🧪",title:"Bubbling Vials",
+   desc:"An abandoned alchemist's pack. Several vials bubble ominously. Drink one?",
+   choices:[
+     {label:"Drink a vial",outcome:()=>{
+       const r=Math.random();
+       return r<0.35
+         ?{msg:"A healing elixir! Excellent find.",gold:0,hp:()=>rand(30,70)}
+         :r<0.6
+         ?{msg:"Tastes like burning. Is burning.",gold:0,hp:()=>-rand(20,40)}
+         :r<0.8
+         ?{msg:"Nothing. Probably just coloured water.",gold:0,hp:0}
+         :{msg:"You find a coin hidden in the pack too!",gold:()=>rand(40,100),hp:()=>rand(10,30)};
+     }},
+     {label:"Leave them",outcome:()=>({msg:"Wise. Unlabelled potions are never a good idea.",gold:0,hp:0})},
+   ]},
+
+  {id:"sleeping_giant",emoji:"👹",title:"A Sleeping Giant",
+   desc:"A massive creature sleeps against a boulder. Its pockets look full. Rob it?",
+   choices:[
+     {label:"Pick its pocket",outcome:()=>{
+       const r=Math.random();
+       return r<0.5
+         ?{msg:"Success! Heavy coin pouch secured. You sprint away.",gold:()=>rand(80,200),hp:0}
+         :{msg:"It wakes up! You run. It throws a rock. Ouch.",gold:0,hp:()=>-rand(20,45)};
+     }},
+     {label:"Sneak past",outcome:()=>({msg:"You tiptoe past. Living to fight another day.",gold:0,hp:0})},
+   ]},
+
+  {id:"wishing_fountain",emoji:"⛲",title:"A Wishing Fountain",
+   desc:"A pristine fountain in the middle of nowhere. Make a wish?",
+   choices:[
+     {label:"Toss in 10 gold",outcome:(p)=>{
+       if((p.gold||0)<10)return{msg:"Not even 10 gold to spare. The fountain judges you.",gold:0,hp:0};
+       const r=Math.random();
+       return r<0.3
+         ?{msg:"The water glows! Your wish is granted.",gold:()=>rand(50,200),hp:0}
+         :r<0.6
+         ?{msg:"The fountain bubbles warmly. You feel healthier.",gold:-10,hp:()=>rand(20,50)}
+         :{msg:"Nothing happens. The gold sinks. The fountain doesn't care.",gold:-10,hp:0};
+     }},
+     {label:"Just look at it",outcome:()=>({msg:"Pretty fountain. You move on.",gold:0,hp:0})},
+   ]},
+
+  {id:"dark_pact",emoji:"😈",title:"A Voice in the Dark",
+   desc:"A voice offers you power in exchange for something. You can't quite make out what.",
+   choices:[
+     {label:"Accept",outcome:()=>{
+       const r=Math.random();
+       return r<0.4
+         ?{msg:"Power surges through you! (And something feels slightly wrong.)",gold:()=>rand(100,250),hp:0}
+         :{msg:"You feel something leave you. Was that worth it?",gold:0,hp:()=>-rand(30,60)};
+     }},
+     {label:"Refuse",outcome:()=>({msg:"The voice sighs. Smart choice. Probably.",gold:0,hp:0})},
+   ]},
+
   {id:"chest",emoji:"📦",title:"A Weathered Chest",
    desc:"You stumble across an old chest half-buried in the dirt. Investigate?",
    choices:[
@@ -384,6 +557,95 @@ const WALK_EVENTS=[
   {emoji:"🌸",text:"Cherry blossoms drift across the path."},
   {emoji:"🎵",text:"You catch yourself humming. Not sure what song."},
   {emoji:"🔥",text:"Smoke rises to the east. Not your problem. Probably."},
+  // ── NEW WALK EVENTS — copy these into your WALK_EVENTS array ──
+// Just paste them before the closing ]; of your existing array
+
+  // ── Funny / Personality ──────────────────────────────────
+  {emoji:"😤", text:"You trip on a root. No one saw that. Probably."},
+  {emoji:"💨", text:"A tumbleweed rolls by. Where did that even come from?"},
+  {emoji:"🐦", text:"A bird lands nearby, stares at you, then leaves. Rude."},
+  {emoji:"🪨", text:"You kick a rock. It hits another rock. Very satisfying."},
+  {emoji:"🎵", text:"You catch yourself humming. Not sure what song."},
+  {emoji:"👟", text:"Your boot comes untied. Again."},
+  {emoji:"🌬️", text:"The wind blows your hair dramatically. Nobody saw it."},
+  {emoji:"😴", text:"You yawn so hard your jaw pops. Time to keep moving."},
+  {emoji:"🤔", text:"You could have sworn you've been here before."},
+  {emoji:"💭", text:"You think about what you'd do with a million gold. Nice thought."},
+  {emoji:"🦗", text:"Something bites you. Nothing there when you look."},
+  {emoji:"👁️", text:"You feel watched. You turn. Nothing. Classic."},
+  {emoji:"🧦", text:"A single sock hangs from a branch. The mystery deepens."},
+  {emoji:"📍", text:"Someone planted a flag here. For what? Unknown."},
+  {emoji:"🗑️", text:"An empty potion bottle. Someone had a rough time here."},
+
+  // ── Eerie / Mysterious ───────────────────────────────────
+  {emoji:"💀", text:"Bones of something large litter the clearing. Old bones. Very old."},
+  {emoji:"🕯️", text:"A lit candle sits on a stump. Still warm."},
+  {emoji:"🩸", text:"A trail of something dark leads off the path. You don't follow."},
+  {emoji:"🌀", text:"The air shimmers for a moment. Then nothing."},
+  {emoji:"🔔", text:"A bell rings in the distance. No church for miles."},
+  {emoji:"🪞", text:"A mirror propped against a tree. You don't look in it."},
+  {emoji:"🧿", text:"An evil eye amulet dangles from a branch. Someone left a warning."},
+  {emoji:"🕸️", text:"An enormous spiderweb blocks the trail. No spider in sight."},
+  {emoji:"🌑", text:"The shadows move the wrong way for a moment."},
+  {emoji:"📿", text:"Prayer beads scattered across the path. Recently dropped."},
+  {emoji:"🚪", text:"A door frame stands alone in the forest. No walls. Just the door."},
+  {emoji:"🪦", text:"A small grave marker. The name has worn away."},
+  {emoji:"🌡️", text:"The temperature drops ten degrees and then returns. Strange."},
+  {emoji:"👣", text:"Footprints in the mud. They stop suddenly. In the middle of nowhere."},
+  {emoji:"🔮", text:"A crystal ball half buried in the dirt. Cloudy inside."},
+
+  // ── Action / Discovery ───────────────────────────────────
+  {emoji:"⚔️", text:"Scorch marks scar the earth. A battle happened here recently."},
+  {emoji:"🏰", text:"Ruins of something old crumble in the distance."},
+  {emoji:"📦", text:"An empty chest sits open. Already looted. As usual."},
+  {emoji:"🗺️", text:"A torn map flutters past. Nowhere you recognize."},
+  {emoji:"🏹", text:"An arrow is lodged in a tree. Still quivering."},
+  {emoji:"🛡️", text:"A cracked shield leans against a rock. Its owner moved on."},
+  {emoji:"⛺", text:"An abandoned campsite. The fire is still warm."},
+  {emoji:"🔑", text:"A rusty key on the ground. No lock in sight."},
+  {emoji:"📜", text:"A torn piece of parchment. The writing is smudged beyond reading."},
+  {emoji:"🧲", text:"Your gear tugs slightly in one direction. Odd."},
+  {emoji:"💎", text:"Something glints in the dirt. Just a piece of glass. Still pretty."},
+  {emoji:"🪤", text:"You nearly step on a trap. Nearly."},
+  {emoji:"🎒", text:"Someone's pack lies abandoned by the road."},
+  {emoji:"🔭", text:"A spyglass hanging from a branch. Someone was watching something."},
+
+  // ── Creatures / Wildlife ─────────────────────────────────
+  {emoji:"🦊", text:"A fox crosses your path and gives you a judgemental look."},
+  {emoji:"🐺", text:"A distant howl echoes through the trees. Then silence."},
+  {emoji:"🦅", text:"A hawk circles overhead for a while, then moves on."},
+  {emoji:"🐍", text:"A snake slithers across the path and disappears into the brush."},
+  {emoji:"🦋", text:"A butterfly lands on your shoulder, then vanishes."},
+  {emoji:"🐗", text:"Sounds of something large crashing through the undergrowth. It moves away."},
+  {emoji:"🐾", text:"Large paw prints in the mud. Very large."},
+  {emoji:"🦉", text:"An owl watches you from a low branch. In the middle of the day."},
+  {emoji:"🐉", text:"Something huge flew over — very high up. Gone before you could be sure."},
+  {emoji:"🐜", text:"A column of ants marches across your boot. They have somewhere to be."},
+  {emoji:"🦎", text:"A lizard basks on a warm rock. It doesn't move as you pass."},
+  {emoji:"🐸", text:"Hundreds of frogs. Then none. All at once."},
+
+  // ── Weather / World ──────────────────────────────────────
+  {emoji:"🌈", text:"A rainbow appears. It points somewhere. Maybe useful."},
+  {emoji:"⚡", text:"Lightning strikes nearby. No clouds in sight."},
+  {emoji:"🌋", text:"The ground rumbles faintly. Nothing more."},
+  {emoji:"🌊", text:"A wave of cold air rolls across the path from nowhere."},
+  {emoji:"☄️", text:"Something streaks across the sky. Too fast to track."},
+  {emoji:"🌪️", text:"A tiny whirlwind of leaves spirals up and fades."},
+  {emoji:"🌤️", text:"Perfect weather today. You almost feel safe."},
+  {emoji:"🌧️", text:"Rain begins suddenly, then stops just as fast."},
+  {emoji:"❄️", text:"A single snowflake falls. Just one. In summer."},
+  {emoji:"🌫️", text:"Fog rolls in from nowhere and vanishes just as quickly."},
+
+  // ── NPC Encounters (no combat) ───────────────────────────
+  {emoji:"🧙", text:"A hooded figure walks in the opposite direction. Doesn't acknowledge you."},
+  {emoji:"👴", text:"An old man sits by the road. Asleep, or pretending."},
+  {emoji:"🧝", text:"Someone watches you from the treeline. Gone when you look directly."},
+  {emoji:"🧟", text:"Something shuffles in the bushes. It shuffles away."},
+  {emoji:"🎪", text:"Distant music carries on the wind. Happy music. Out here."},
+  {emoji:"📯", text:"A horn sounds far away. Not a warning. A celebration maybe."},
+  {emoji:"🏇", text:"Hoofbeats thunder past on a parallel road. Gone in seconds."},
+  {emoji:"🧝", text:"Someone whistles a tune nearby. You never see them."},
+
 ];
 
 // ============================================================
