@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges">
+  <!-- Legs left - 4 -->
+  <rect x="0" y="18" width="16" height="3" fill="#1a0a00" transform="rotate(-25 0 20)"/>
+  <rect x="0" y="26" width="18" height="3" fill="#1a0a00"/>
+  <rect x="0" y="34" width="16" height="3" fill="#1a0a00" transform="rotate(15 0 35)"/>
+  <rect x="2" y="42" width="14" height="3" fill="#1a0a00" transform="rotate(30 2 43)"/>
+  <!-- Legs right -->
+  <rect x="48" y="18" width="16" height="3" fill="#1a0a00" transform="rotate(25 64 20)"/>
+  <rect x="46" y="26" width="18" height="3" fill="#1a0a00"/>
+  <rect x="48" y="34" width="16" height="3" fill="#1a0a00" transform="rotate(-15 64 35)"/>
+  <rect x="48" y="42" width="14" height="3" fill="#1a0a00" transform="rotate(-30 62 43)"/>
+  <!-- Abdomen - purple veined -->
+  <rect x="20" y="36" width="24" height="20" fill="#2a0040"/>
+  <rect x="18" y="40" width="28" height="12" fill="#2a0040"/>
+  <!-- Venom vein markings -->
+  <rect x="28" y="40" width="2" height="10" fill="#00cc44"/>
+  <rect x="22" y="44" width="20" height="2" fill="#00cc44"/>
+  <rect x="34" y="40" width="2" height="10" fill="#00cc44"/>
+  <!-- Hourglass marking -->
+  <rect x="28" y="42" width="8" height="6" fill="#00ff66" opacity="0.5"/>
+  <!-- Thorax -->
+  <rect x="20" y="22" width="24" height="16" fill="#1a0028"/>
+  <rect x="18" y="26" width="28" height="8" fill="#1a0028"/>
+  <!-- Head -->
+  <rect x="22" y="12" width="20" height="14" fill="#1a0028"/>
+  <!-- Eyes - 8 glowing green venom -->
+  <rect x="22" y="14" width="5" height="5" fill="#00ff00"/>
+  <rect x="29" y="12" width="4" height="4" fill="#00cc00"/>
+  <rect x="35" y="12" width="4" height="4" fill="#00cc00"/>
+  <rect x="41" y="14" width="4" height="5" fill="#00ff00"/>
+  <rect x="24" y="19" width="3" height="3" fill="#008800"/>
+  <rect x="30" y="19" width="3" height="3" fill="#008800"/>
+  <rect x="36" y="19" width="3" height="3" fill="#008800"/>
+  <!-- Eye shine -->
+  <rect x="22" y="14" width="2" height="2" fill="#88ff88"/>
+  <rect x="41" y="14" width="2" height="2" fill="#88ff88"/>
+  <!-- Fangs dripping venom -->
+  <rect x="26" y="24" width="5" height="7" fill="#c8c8a0"/>
+  <rect x="33" y="24" width="5" height="7" fill="#c8c8a0"/>
+  <!-- Venom drip -->
+  <rect x="28" y="30" width="2" height="6" fill="#00ff44"/>
+  <rect x="35" y="30" width="2" height="5" fill="#00ff44"/>
+  <rect x="28" y="36" width="2" height="3" fill="#00cc33" opacity="0.7"/>
+  <!-- Web strand -->
+  <rect x="30" y="0" width="4" height="14" fill="#d0d0d0" opacity="0.5"/>
+</svg>
