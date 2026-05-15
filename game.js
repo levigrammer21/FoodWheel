@@ -253,7 +253,7 @@ const CHOICE_EVENTS = [
 const CFG = {
   BASE_ENERGY:        30,
   ENERGY_PER_5_LEVELS:1,        // +1 max energy per 5 player levels
-  ENERGY_REGEN_MS:    3*60*1000, // 3 min per energy point
+  ENERGY_REGEN_MS:    1*30*1000, // 30 seconds per energy point
   MONSTER_CHANCE:     0.30,
   GOLD_CHANCE:        0.22,
   ITEM_CHANCE:        0.13,
