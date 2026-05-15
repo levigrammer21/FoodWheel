@@ -299,7 +299,7 @@ const AVATARS=[
   {id:"av_celestial",name:"Celestial Lord",  emoji:"✨",rarity:"legendary", dropRate:0.5,desc:"Touched by the gods."},
   {id:"av_chaos",    name:"Chaos Herald",    emoji:"🌀",rarity:"legendary", dropRate:0.5,desc:"Order fears this one."},
   {id:"av_champion", name:"Eternal Champion",emoji:"👑",rarity:"legendary", dropRate:0.4,desc:"The last one standing."},
-].map(av=>({...av,image:`img/avatars/${av.id}.gif`}));
+].map(av=>({...av,image:`img/avatars/${av.id}.svg`}));
 
 // ── ITEMS ────────────────────────────────────────────────────
 const ITEMS=[
