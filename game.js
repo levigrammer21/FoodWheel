@@ -460,7 +460,7 @@ function equipStats(eq){
   return{str,def};
 }
 function gfx(image,emoji,size=32){
-  if(image) return`<img src="${image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.outerHTML='${emoji}'">`;
+if(image) return`<img src="${image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain">`;
   return emoji;
 }
 
