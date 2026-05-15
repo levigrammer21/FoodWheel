@@ -283,7 +283,7 @@ const MONSTERS=[
   {name:"Celestial Titan", emoji:"✨",desc:"A god that fell from grace.",              str:[100,150],def:[50,70],hp:[700,1100],exp:[700,1100],gold:[350,700],minLevel:50},
   {name:"Abyssal Horror",  emoji:"🌊",desc:"Something that should not exist.",         str:[120,170],def:[60,85],hp:[900,1400],exp:[900,1400],gold:[450,900],minLevel:60},
   {name:"Chaos Incarnate", emoji:"☄️",desc:"The end. The beginning. Everything.",     str:[150,220],def:[80,110],hp:[1200,2000],exp:[1200,2000],gold:[600,1200],minLevel:75},
-].map(m=>({...m,image:`img/monsters/${slug(m.name)}.png`}));
+].map(m=>({...m,image:`img/monsters/${slug(m.name)}.svg`}));
 
 // ── AVATARS ──────────────────────────────────────────────────
 const AVATARS=[
@@ -333,7 +333,7 @@ const ITEMS=[
   {name:"Crown of the Fallen",type:"Helmet",stat:"def",base:55, rarity:"legendary",emoji:"👑",dropRate:0.3},
   {name:"Aegis of Eternity",  type:"Shield",stat:"def",base:60, rarity:"legendary",emoji:"🌟",dropRate:0.3},
   {name:"Dragonhide Armour",  type:"Armour",stat:"def",base:65, rarity:"legendary",emoji:"🐉",dropRate:0.3},
-].map(item=>({...item,image:`img/items/${slug(item.name)}.png`}));
+].map(item=>({...item,image:`img/items/${slug(item.name)}.svg`}));
 
 // ── PETS ─────────────────────────────────────────────────────
 const PETS=[
@@ -349,7 +349,7 @@ const PETS=[
   {name:"Frost Wolf",    type:"Pet",stat:"def",base:32, rarity:"epic",    emoji:"🐺",dropRate:1, desc:"Howls before every battle."},
   {name:"Ancient Phoenix",type:"Pet",stat:"str",base:50,rarity:"legendary",emoji:"🦅",dropRate:0.2,desc:"Reborn every battle."},
   {name:"Celestial Crab", type:"Pet",stat:"def",base:55,rarity:"legendary",emoji:"🦀",dropRate:0.2,desc:"Claws from another dimension."},
-].map(p=>({...p,image:`img/pets/${slug(p.name)}.png`}));
+].map(p=>({...p,image:`img/pets/${slug(p.name)}.svg`}));
 
 // ── SHOP CONSUMABLES ─────────────────────────────────────────
 const SHOP_CONSUMABLES=[
