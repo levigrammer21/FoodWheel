@@ -23,7 +23,7 @@ const FIREBASE_CONFIG={
 
 // ── UI CONFIG ─────────────────────────────────────────────────
 const UI={
-  LOGO:      {emoji:"⚔", image:"img/ui/logo.png"},
+  LOGO:      {emoji:"⚔", image:"img/ui/logo.svg"},
   WALK_BTN:  {emoji:"⚔️",image:""},
   NAV_HOME:  {emoji:"🏠",image:""},
   NAV_GEAR:  {emoji:"🎒",image:""},
