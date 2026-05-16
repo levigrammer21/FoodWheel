@@ -41,6 +41,7 @@ import{
   lbTab,handleSignOut,equipAvatar,openAvatarCollection,
   fleeCombat,healInCombat,resumeCombat,abandonCombat,
   resolveChoice,
+  salvageItem,confirmSalvage,upgradeItem,
   updateHdr,
 }from"./ui.js";
 
@@ -87,4 +88,5 @@ window.G={
   lbTab,handleSignOut,equipAvatar,openAvatarCollection,
   fleeCombat,healInCombat,resumeCombat,abandonCombat,
   resolveChoice,
+  salvageItem,confirmSalvage,upgradeItem,
 };
