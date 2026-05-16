@@ -6,14 +6,16 @@
 // ============================================================
 
 import{CFG,RARITY_SCALE,RARITY_COLOR,ARENA_TIERS,ITEMS,PETS,MONSTERS,AVATARS,
-  EQUIP_SLOTS,PROPERTIES,SHOP_CONSUMABLES,WALK_AREAS,CHOICE_EVENTS,WALK_EVENTS}from"./data.js";
+  EQUIP_SLOTS,PROPERTIES,SHOP_CONSUMABLES,WALK_AREAS,CHOICE_EVENTS,WALK_EVENTS,
+  WEATHER_TYPES}from"./data.js";
 
 // ── MATH ─────────────────────────────────────────────────────
 export const rand  =(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 export const pick  =a=>a[Math.floor(Math.random()*a.length)];
 export const clamp =(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
 export const fmt   =n=>n>=1e6?(n/1e6).toFixed(1)+"M":n>=1000?(n/1000).toFixed(1)+"K":String(Math.floor(n||0));
-export const expLv =lv=>Math.floor(100*Math.pow(1.5,lv-1));
+// ── Faster levelling: exponent 1.2 instead of 1.5 ──────────
+export const expLv =lv=>Math.floor(80*Math.pow(1.2,lv-1));
 export const maxHpCalc=(lv,def,bonusHp)=>100+lv*10+def*2+(bonusHp||0);
 
 // ── AUDIO ENGINE ──────────────────────────────────────────────
@@ -66,6 +68,8 @@ export const SFX={
   guild:    ()=>{[330,415,523].forEach((f,i)=>playTone(f,"sine",0.15,0.25,i*0.08));},
   donate:   ()=>{playTone(523,"sine",0.1,0.2);playTone(784,"sine",0.12,0.2,0.1);},
   raid:     ()=>{playNoise(0.1,0.3);[150,200,250].forEach((f,i)=>playTone(f,"sawtooth",0.15,0.35,i*0.08));},
+  combo:    ()=>{playTone(660,"sine",0.06,0.25);playTone(880,"sine",0.08,0.3,0.06);},
+  burn:     ()=>{playTone(300,"sawtooth",0.08,0.2);},
 };
 export function unlockAudio(){
   if(_audioUnlocked)return;_audioUnlocked=true;
@@ -109,7 +113,7 @@ export function rollItemAtLevel(template,itemLevel){
   return Math.max(1,bellRoll(base,variance));
 }
 export function spawnItemScaled(template,playerLv){
-  const itemLevel=clamp((playerLv||1)+rand(-3,3),template.minLevel||1,100);
+  const itemLevel=clamp((playerLv||1)+rand(-3,3),template.minLevel||1,9999);
   const val=rollItemAtLevel(template,itemLevel);
   const base=Math.round(template.base+itemLevel*(RARITY_SCALE[template.rarity]||1.0));
   return{...template,val,base,itemLevel,id:`item_${Date.now()}_${rand(0,9999)}`};
@@ -135,15 +139,100 @@ export function spawnItemFromPool(pool,playerLv){
     ?{...t,val:rollItemStat(t),base:t.base,id:`item_${Date.now()}`}
     :spawnItemScaled(t,lv);
 }
+
+// ── MONSTER SPAWNING — area-capped ───────────────────────────
+// Monsters scale within the area's [monsterMinLv, monsterMaxLv] range.
+// Your personal level does NOT push them above the area ceiling.
 export function spawnMonster(area,playerLv){
-  const bonusLevel=area?area.monsterLevelBonus:0;
-  const effectiveLevel=(playerLv||1)+bonusLevel;
-  const eligible=MONSTERS.filter(m=>effectiveLevel>=(m.minLevel||0));
-  const base=pick(eligible.length?eligible:MONSTERS);
-  return{...base,str:rand(...base.str),def:rand(...base.def),
-    hp:rand(...base.hp),maxHp:base.hp[1],
-    expReward:Math.round(rand(...base.exp)*(area?area.expMult:1)),
-    goldReward:Math.round(rand(...base.gold)*(area?area.goldMult:1))};
+  const areaMin=area?area.monsterMinLv:1;
+  const areaMax=area?area.monsterMaxLv:8;
+  // Within the area, tilt toward player level but clamp to area bounds
+  const targetLv=clamp(playerLv||1, areaMin, areaMax);
+  // Add some variance so fights aren't all the same power
+  const effectiveLv=clamp(targetLv+rand(-2,3), areaMin, areaMax);
+
+  // Filter monsters by area affinity
+  const areaId=area?area.id:null;
+  const eligible=areaId
+    ?MONSTERS.filter(m=>!m.areaIds||m.areaIds.includes(areaId))
+    :MONSTERS;
+  const pool=eligible.length?eligible:MONSTERS;
+  const base=pick(pool);
+
+  // Scale stats using [base, perLevel] pairs
+  const lv=effectiveLv;
+  const str =Math.max(1, Math.round(base.str[0]  + base.str[1]  * lv + rand(-2,4)));
+  const def =Math.max(0, Math.round(base.def[0]  + base.def[1]  * lv + rand(-1,2)));
+  const hp  =Math.max(5, Math.round(base.hp[0]   + base.hp[1]   * lv + rand(-5,10)));
+  const exp =Math.max(1, Math.round(base.exp[0]  + base.exp[1]  * lv));
+  const gold=Math.max(1, Math.round(base.gold[0] + base.gold[1] * lv));
+
+  const expMult =area?area.expMult :1;
+  const goldMult=area?area.goldMult:1;
+
+  return{
+    ...base,
+    effectiveLv,
+    str, def, hp, maxHp:hp,
+    expReward:  Math.round(exp  * expMult),
+    goldReward: Math.round(gold * goldMult),
+    // status effect chance scales with area depth
+    burnChance:  clamp((areaMin/100)*0.4, 0.05, 0.35),
+    bleedChance: clamp((areaMin/100)*0.3, 0.04, 0.28),
+  };
+}
+
+// ── WEATHER ───────────────────────────────────────────────────
+export function rollWeather(){
+  const weights=[40,20,20,10,10]; // clear, rain, fog, bloodmoon, blessing
+  const total=weights.reduce((a,b)=>a+b,0);
+  let r=Math.random()*total;
+  for(let i=0;i<WEATHER_TYPES.length;i++){r-=weights[i];if(r<=0)return WEATHER_TYPES[i];}
+  return WEATHER_TYPES[0];
+}
+
+// ── COMBO SYSTEM ─────────────────────────────────────────────
+export function getComboTier(streak){
+  const tiers=CFG.COMBO_TIERS;
+  let tier=0;
+  for(let i=tiers.length-1;i>=0;i--){if(streak>=tiers[i]){tier=i;break;}}
+  return tier;
+}
+export function getComboMult(streak){
+  return CFG.COMBO_MULTS[getComboTier(streak)]||1;
+}
+export function comboLabel(streak){
+  if(streak<=0)return"";
+  const tier=getComboTier(streak);
+  const labels=["","🔥 Hot","⚡ Blazing","💥 UNSTOPPABLE"];
+  return`${labels[tier]||""} x${CFG.COMBO_MULTS[tier]} (${streak} steps)`;
+}
+
+// ── ITEM UPGRADE / SALVAGE ────────────────────────────────────
+export function salvageShards(item){
+  // Better items yield more shards
+  const rarityMult={common:1,uncommon:2,rare:4,epic:8,legendary:15};
+  const mult=rarityMult[item.rarity]||1;
+  const upgrades=item.upgrades||0;
+  return Math.max(1, Math.round(CFG.SALVAGE_SHARDS_BASE * mult + upgrades));
+}
+export function upgradeItemCost(item){
+  const upgrades=item.upgrades||0;
+  const goldCost=Math.round((item.val||1) * CFG.UPGRADE_GOLD_COST_PER_VAL * (1+upgrades*0.3));
+  const shardCost=CFG.UPGRADE_SHARD_COST + upgrades;
+  return{goldCost, shardCost};
+}
+export function canUpgrade(item){
+  return(item.upgrades||0)<CFG.UPGRADE_MAX_TIMES;
+}
+export function applyUpgrade(item){
+  // Each upgrade adds ~15% of base stat, minimum +1
+  const gain=Math.max(1, Math.round((item.base||item.val)*0.15));
+  return{
+    ...item,
+    val:(item.val||1)+gain,
+    upgrades:(item.upgrades||0)+1,
+  };
 }
 
 // ── ENERGY ───────────────────────────────────────────────────
@@ -225,10 +314,11 @@ export function newPlayer(username){
     properties:[],homePropertyId:null,homePropertyInstanceId:null,
     avatars:[],activeAvatar:null,
     guildId:null,pvpAttackLog:{},notifications:[],
+    walkStreak:0, shards:0,
     createdAt:Date.now()};
 }
 
-// ── COMBAT SIMULATION ─────────────────────────────────────────
+// ── COMBAT SIMULATION (PvP) ───────────────────────────────────
 export function simulateFight(attacker,defender){
   let aHp=attacker.maxHp,dHp=defender.maxHp;
   const log=[];let round=0;
