@@ -2,7 +2,7 @@
 //  MicroMMO — ui.js
 // ============================================================
 import{CFG,UI,PLAYER_AVATAR,EQUIP_SLOTS,SLOT_EMOJI,RARITY_COLOR,TIER_EMOJIS,
-  ARENA_TIERS,PROPERTIES,SHOP_CONSUMABLES,ITEMS,PETS,AVATARS,CHOICE_EVENTS,WALK_AREAS,WEATHER_TYPES}from"./data.js";
+  ARENA_TIERS,PROPERTIES,SHOP_CONSUMABLES,ITEMS,PETS,AVATARS,CHOICE_EVENTS,WALK_AREAS,WEATHER_TYPES,WALK_EVENTS}from"./data.js";
 import{rand,clamp,fmt,expLv,maxHpCalc,SFX,unlockAudio,
   equipStats,arenaT,qualityLabel,rollAvatar,rollItemStat,spawnItemScaled,spawnItemFromPool,
   spawnMonster,calcMaxEnergy,getRentalIncome,countOwned,propertyPrice,getOwnedProperties,
@@ -23,22 +23,34 @@ export function setP(data){P=data;}
 function saveP(){return fbSaveP(CU?.uid,P);}
 function pick(a){return a[Math.floor(Math.random()*a.length)];}
 
+// Safe image renderer — onerror just hides the img; a sibling span shows the emoji.
+// We do NOT embed emoji in onerror attributes (breaks with variation-selector chars).
 export function gfx(image,emoji,size=32){
-  if(image)return`<img src="${image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${emoji}',style:'font-size:${Math.round(size*0.75)}px'}))">`;
+  if(image)return`<span style="display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;position:relative">
+    <img src="${image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;position:absolute" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <span style="font-size:${Math.round(size*0.75)}px;display:none;align-items:center;justify-content:center;width:${size}px;height:${size}px">${emoji}</span>
+  </span>`;
   return`<span style="font-size:${Math.round(size*0.75)}px">${emoji}</span>`;
 }
 export function avatarGfx(size=32){
   const av=getActiveAvatar(P);
-  if(av?.image)return`<img src="${av.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:4px" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${av.emoji}',style:'font-size:${Math.round(size*0.75)}px'}))">`;
-  if(av)return`<span style="font-size:${Math.round(size*0.75)}px">${av.emoji}</span>`;
-  if(PLAYER_AVATAR.image)return`<img src="${PLAYER_AVATAR.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${PLAYER_AVATAR.emoji}',style:'font-size:${Math.round(size*0.75)}px'}))">`;
-  return`<span style="font-size:${Math.round(size*0.75)}px">${PLAYER_AVATAR.emoji}</span>`;
+  const em=av?av.emoji:PLAYER_AVATAR.emoji;
+  const img=av?av.image:PLAYER_AVATAR.image;
+  if(img)return`<span style="display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;position:relative">
+    <img src="${img}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:4px;position:absolute" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <span style="font-size:${Math.round(size*0.75)}px;display:none;align-items:center;justify-content:center">${em}</span>
+  </span>`;
+  return`<span style="font-size:${Math.round(size*0.75)}px">${em}</span>`;
 }
 export function avatarGfxFor(plyr,size=24){
   const id=plyr.activeAvatar,av=id?AVATARS.find(a=>a.id===id):null;
-  if(av?.image)return`<img src="${av.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:3px" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${av.emoji}',style:'font-size:${Math.round(size*0.7)}px'}))">`;
-  if(av)return`<span style="font-size:${Math.round(size*0.7)}px">${av.emoji}</span>`;
-  return`<span style="font-size:${Math.round(size*0.7)}px">${PLAYER_AVATAR.emoji}</span>`;
+  const em=av?av.emoji:PLAYER_AVATAR.emoji;
+  const img=av?av.image:"";
+  if(img)return`<span style="display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;position:relative">
+    <img src="${img}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:3px;position:absolute" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <span style="font-size:${Math.round(size*0.7)}px;display:none;align-items:center;justify-content:center">${em}</span>
+  </span>`;
+  return`<span style="font-size:${Math.round(size*0.7)}px">${em}</span>`;
 }
 export function showModal(html){
   document.getElementById("modal-content").innerHTML=html;
@@ -1282,4 +1294,4 @@ export function confirmSellProperty(instanceId,propId){
   if(P.homePropertyInstanceId===instanceId){P.homePropertyInstanceId=null;P.homePropertyId=null;}
   P.gold=(P.gold||0)+Math.floor(prop.price*CFG.PROPERTY_SELL_RATE);
   saveP();closeModal();SFX.gold();toast(`🪙 Property sold!`);renderProperties();
-}
+                                                              }
