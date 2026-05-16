@@ -23,29 +23,21 @@ export function setP(data){P=data;}
 function saveP(){return fbSaveP(CU?.uid,P);}
 function pick(a){return a[Math.floor(Math.random()*a.length)];}
 
-// Only use image if it's an absolute URL (http/https) — skip local img/ paths
-// that don't exist yet, falling back cleanly to emoji.
-function hasRealImage(path){return typeof path==="string"&&(path.startsWith("http://")||path.startsWith("https://"));}
-
 export function gfx(image,emoji,size=32){
-  if(hasRealImage(image))return`<img src="${image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.style.display='none'">`;
-  return`<span style="font-size:${Math.round(size*0.75)}px;line-height:1;display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px">${emoji}</span>`;
+  if(image)return`<img src="${image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${emoji}',style:'font-size:${Math.round(size*0.75)}px'}))">`;
+  return`<span style="font-size:${Math.round(size*0.75)}px">${emoji}</span>`;
 }
 export function avatarGfx(size=32){
   const av=getActiveAvatar(P);
-  if(av){
-    if(hasRealImage(av.image))return`<img src="${av.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:4px" onerror="this.outerHTML='<span style=font-size:${Math.round(size*0.75)}px>${av.emoji}</span>'">`;
-    return`<span style="font-size:${Math.round(size*0.75)}px">${av.emoji}</span>`;
-  }
-  if(hasRealImage(PLAYER_AVATAR.image))return`<img src="${PLAYER_AVATAR.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.outerHTML='<span>${PLAYER_AVATAR.emoji}</span>'">`;
+  if(av?.image)return`<img src="${av.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:4px" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${av.emoji}',style:'font-size:${Math.round(size*0.75)}px'}))">`;
+  if(av)return`<span style="font-size:${Math.round(size*0.75)}px">${av.emoji}</span>`;
+  if(PLAYER_AVATAR.image)return`<img src="${PLAYER_AVATAR.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${PLAYER_AVATAR.emoji}',style:'font-size:${Math.round(size*0.75)}px'}))">`;
   return`<span style="font-size:${Math.round(size*0.75)}px">${PLAYER_AVATAR.emoji}</span>`;
 }
 export function avatarGfxFor(plyr,size=24){
   const id=plyr.activeAvatar,av=id?AVATARS.find(a=>a.id===id):null;
-  if(av){
-    if(hasRealImage(av.image))return`<img src="${av.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:3px" onerror="this.outerHTML='<span>${av.emoji}</span>'">`;
-    return`<span style="font-size:${Math.round(size*0.7)}px">${av.emoji}</span>`;
-  }
+  if(av?.image)return`<img src="${av.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:3px" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${av.emoji}',style:'font-size:${Math.round(size*0.7)}px'}))">`;
+  if(av)return`<span style="font-size:${Math.round(size*0.7)}px">${av.emoji}</span>`;
   return`<span style="font-size:${Math.round(size*0.7)}px">${PLAYER_AVATAR.emoji}</span>`;
 }
 export function showModal(html){
@@ -1190,104 +1182,4 @@ export function renderQuests(){
       ${done&&!q.claimed?`<button class="btn btn-green btn-sm" onclick="G.claimQuest('${q.id}')">Claim</button>`:done?`<span style="color:var(--text3);font-size:0.72rem">Claimed</span>`:""}
     </div>
     <div class="bar bar-quest" style="height:5px"><div class="bar-fill" style="width:${pct}%"></div></div>
-    <div style="font-size:0.7rem;color:var(--text3);margin-top:0.2rem">${q.progress}/${q.target}</div></div>`;}).join("");
-  document.getElementById("content").innerHTML=`<div class="card"><div class="card-title">📜 Daily Quests</div>
-    <div style="font-size:0.78rem;color:var(--text3);margin-bottom:0.75rem">Resets in ${hReset}h ${mReset}m</div>${questsHtml}</div>
-    <button class="btn btn-ghost" onclick="G.showTab('home')" style="margin-top:0.5rem">← Back</button>`;
-}
-export function claimQuest(id){
-  const q=P.quests.list.find(x=>x.id===id);if(!q||q.claimed||q.progress<q.target)return;
-  q.claimed=true;P.exp=(P.exp||0)+q.reward.exp;P.gold=(P.gold||0)+q.reward.gold;
-  checkLevelUp();saveP();SFX.gold();toast(`🎁 Claimed! +${q.reward.exp} EXP · +${q.reward.gold}🪙`);renderQuests();
-}
-
-// ── BANK ─────────────────────────────────────────────────────
-export function renderBank(){
-  document.getElementById("content").innerHTML=`<div class="card"><div class="card-title">🏦 Royal Bank</div>
-    <div class="bank-display"><div class="bank-amount">🏦 ${fmt(P.bank)}</div><div class="bank-label">Bank Balance</div></div>
-    <div class="bank-display" style="margin-bottom:0.75rem"><div class="bank-amount">🪙 ${fmt(P.gold)}</div><div class="bank-label">On Hand</div></div>
-    <div style="font-size:0.82rem;color:var(--text3);margin-bottom:0.6rem">Deposit Gold</div>
-    <div class="bank-input-row"><input class="bank-input" id="deposit-amt" type="number" placeholder="Amount" min="1"/>
-      <button class="btn btn-gold btn-sm" style="width:auto;padding:0.65rem 1rem" onclick="G.doDeposit()">Deposit</button></div>
-    <div style="font-size:0.82rem;color:var(--text3);margin-bottom:0.6rem;margin-top:0.5rem">Withdraw Gold</div>
-    <div class="bank-input-row"><input class="bank-input" id="withdraw-amt" type="number" placeholder="Amount" min="1"/>
-      <button class="btn btn-ghost btn-sm" style="width:auto;padding:0.65rem 1rem" onclick="G.doWithdraw()">Withdraw</button></div>
-  </div><button class="btn btn-ghost" onclick="G.showTab('home')" style="margin-top:0.5rem">← Back</button>`;
-}
-export function doDeposit(){
-  const amt=Math.floor(Number(document.getElementById("deposit-amt").value));if(!amt||amt<1){toast("Enter a valid amount");return;}
-  if(amt>(P.gold||0)){SFX.error();toast("Not enough gold!");return;}
-  P.gold-=amt;P.bank=(P.bank||0)+amt;saveP();SFX.gold();toast(`🏦 Deposited 🪙${fmt(amt)}`);renderBank();
-}
-export function doWithdraw(){
-  const amt=Math.floor(Number(document.getElementById("withdraw-amt").value));if(!amt||amt<1){toast("Enter a valid amount");return;}
-  if(amt>(P.bank||0)){SFX.error();toast("Not enough in bank!");return;}
-  P.bank-=amt;P.gold=(P.gold||0)+amt;saveP();SFX.gold();toast(`🪙 Withdrew ${fmt(amt)}`);renderBank();
-}
-
-// ── PROPERTIES ───────────────────────────────────────────────
-export function renderProperties(){
-  const owned=getOwnedProperties(P),rentalPending=getRentalIncome(P);
-  const ownedHtml=owned.length===0?"":owned.map(op=>{const prop=PROPERTIES.find(p=>p.id===op.id);if(!prop)return"";
-    const isHome=op.instanceId===P.homePropertyInstanceId,daily=Math.floor(prop.price*prop.rentalRate),sellPrice=Math.floor(prop.price*CFG.PROPERTY_SELL_RATE);
-    return`<div style="background:var(--surface);border:1.5px solid ${isHome?"var(--gold2)":"var(--border)"};border-radius:12px;padding:0.9rem;margin-bottom:0.5rem">
-      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
-        <div style="font-size:2rem">${prop.emoji}</div>
-        <div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700;color:${isHome?"var(--gold3)":"var(--text)"}">${prop.name}${isHome?" 🏠":""}</div>
-          <div style="font-size:0.75rem;color:var(--text3)">${prop.desc}</div>
-          ${isHome?`<div style="font-size:0.72rem;color:var(--steel);margin-top:0.2rem;font-weight:600">+${prop.energyBonus} Max Energy</div>`
-            :`<div style="font-size:0.72rem;color:var(--green2);margin-top:0.2rem;font-weight:600">🪙${fmt(daily)}/day rental</div>`}
-        </div></div>
-      <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
-        ${!isHome?`<button class="btn btn-steel btn-sm" onclick="G.setHome('${op.instanceId}','${prop.id}')">Move In</button>`:""}
-        ${isHome&&owned.length>1?`<button class="btn btn-ghost btn-sm" onclick="G.unsetHome()">Move Out</button>`:""}
-        <button class="btn btn-danger btn-sm" onclick="G.sellProperty('${op.instanceId}','${prop.id}')">Sell (🪙${fmt(sellPrice)})</button>
-      </div></div>`;}).join("");
-  const availHtml=PROPERTIES.map(prop=>{const ownedCount=countOwned(P,prop.id),nextPrice=propertyPrice(P,prop.id);
-    return`<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:0.9rem;margin-bottom:0.5rem">
-      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
-        <div style="font-size:2rem">${prop.emoji}</div>
-        <div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700">${prop.name}${ownedCount>0?` <span style="font-size:0.65rem;color:var(--text3)">(own ${ownedCount})</span>`:""}</div>
-          <div style="font-size:0.75rem;color:var(--text3)">${prop.desc}</div>
-          <div style="display:flex;gap:0.6rem;margin-top:0.25rem;flex-wrap:wrap">
-            <span style="font-size:0.7rem;color:var(--steel);font-weight:600">+${prop.energyBonus} energy if home</span>
-            <span style="font-size:0.7rem;color:var(--green2);font-weight:600">🪙${fmt(Math.floor(prop.price*prop.rentalRate))}/day rent</span>
-          </div></div>
-        <div style="text-align:right;flex-shrink:0"><div style="font-family:'Cinzel',serif;color:var(--gold3);font-size:0.9rem;font-weight:700">🪙${fmt(nextPrice)}</div>
-          ${ownedCount>0?`<div style="font-size:0.6rem;color:var(--text3)">+5% per copy</div>`:""}
-        </div></div>
-      <button class="btn btn-gold btn-sm" onclick="G.buyProperty('${prop.id}')" ${(P.gold||0)<nextPrice?"disabled":""}>${(P.gold||0)>=nextPrice?"Purchase":"Need 🪙"+fmt(nextPrice)}</button>
-    </div>`;}).join("");
-  document.getElementById("content").innerHTML=`
-    ${rentalPending>0?`<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:0.85rem;margin-bottom:0.7rem;display:flex;align-items:center;gap:0.75rem">
-      <div style="font-size:1.5rem">🏠</div><div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.82rem;color:var(--green);font-weight:700">🪙${fmt(rentalPending)} in Rental Income!</div></div>
-      <button class="btn btn-green btn-sm" onclick="G.claimRent()">Collect</button></div>`:""}
-    ${owned.length>0?`<div class="section-hdr">Your Properties (${owned.length})</div>${ownedHtml}`:""}
-    <div class="section-hdr">Available to Buy</div>${availHtml}
-    <button class="btn btn-ghost" onclick="G.showTab('home')" style="margin-top:0.5rem">← Back</button>`;
-}
-export function buyProperty(id){
-  const prop=PROPERTIES.find(p=>p.id===id);if(!prop)return;const price=propertyPrice(P,id);
-  if((P.gold||0)<price){SFX.error();toast("💰 Not enough gold!");return;}
-  P.gold-=price;const instanceId=`${id}_${Date.now()}`;
-  P.properties=[...(P.properties||[]),{id:prop.id,instanceId,purchasedAt:Date.now(),lastRentClaim:Date.now()}];
-  if(!P.homePropertyInstanceId){P.homePropertyId=prop.id;P.homePropertyInstanceId=instanceId;}
-  saveP();SFX.gold();toast(`🏠 Purchased ${prop.name}!`);renderProperties();
-}
-export function setHome(instanceId,propId){P.homePropertyInstanceId=instanceId;P.homePropertyId=propId;P.energy=Math.min(P.energy,calcMaxEnergy(P));saveP();toast("🏠 Moved in!");renderProperties();}
-export function unsetHome(){P.homePropertyInstanceId=null;P.homePropertyId=null;saveP();toast("🏠 Moved out!");renderProperties();}
-export function sellProperty(instanceId,propId){
-  const prop=PROPERTIES.find(p=>p.id===propId);if(!prop)return;const sellPrice=Math.floor(prop.price*CFG.PROPERTY_SELL_RATE);
-  showModal(`<div class="modal-title">Sell Property?</div>
-    <div style="text-align:center;font-size:3rem;margin:0.5rem 0">${prop.emoji}</div>
-    <div style="text-align:center;color:var(--text3);font-size:0.88rem;margin-bottom:1rem">Sell <strong>${prop.name}</strong> for <strong style="color:var(--gold3)">🪙${fmt(sellPrice)}</strong>?</div>
-    <div class="modal-actions"><button class="btn btn-danger" onclick="G.confirmSellProperty('${instanceId}','${propId}')">Confirm Sale</button>
-      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button></div>`);
-}
-export function confirmSellProperty(instanceId,propId){
-  const prop=PROPERTIES.find(p=>p.id===propId);if(!prop)return;
-  P.properties=(P.properties||[]).filter(op=>op.instanceId!==instanceId);
-  if(P.homePropertyInstanceId===instanceId){P.homePropertyInstanceId=null;P.homePropertyId=null;}
-  P.gold=(P.gold||0)+Math.floor(prop.price*CFG.PROPERTY_SELL_RATE);
-  saveP();closeModal();SFX.gold();toast(`🪙 Property sold!`);renderProperties();
-}
+    <div style="font-size:0.7rem;color:var(--text3);margin-top:0.2r
