@@ -23,21 +23,29 @@ export function setP(data){P=data;}
 function saveP(){return fbSaveP(CU?.uid,P);}
 function pick(a){return a[Math.floor(Math.random()*a.length)];}
 
+// Only use image if it's an absolute URL (http/https) — skip local img/ paths
+// that don't exist yet, falling back cleanly to emoji.
+function hasRealImage(path){return typeof path==="string"&&(path.startsWith("http://")||path.startsWith("https://"));}
+
 export function gfx(image,emoji,size=32){
-  if(image)return`<img src="${image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.style.display='none'">`;
-  return emoji;
+  if(hasRealImage(image))return`<img src="${image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.style.display='none'">`;
+  return`<span style="font-size:${Math.round(size*0.75)}px;line-height:1;display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px">${emoji}</span>`;
 }
 export function avatarGfx(size=32){
   const av=getActiveAvatar(P);
-  if(av?.image)return`<img src="${av.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:4px" onerror="this.outerHTML='${av.emoji}'">`;
-  if(av)return`<span style="font-size:${Math.round(size*0.75)}px">${av.emoji}</span>`;
-  if(PLAYER_AVATAR.image)return`<img src="${PLAYER_AVATAR.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.outerHTML='${PLAYER_AVATAR.emoji}'">`;
+  if(av){
+    if(hasRealImage(av.image))return`<img src="${av.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:4px" onerror="this.outerHTML='<span style=font-size:${Math.round(size*0.75)}px>${av.emoji}</span>'">`;
+    return`<span style="font-size:${Math.round(size*0.75)}px">${av.emoji}</span>`;
+  }
+  if(hasRealImage(PLAYER_AVATAR.image))return`<img src="${PLAYER_AVATAR.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain" onerror="this.outerHTML='<span>${PLAYER_AVATAR.emoji}</span>'">`;
   return`<span style="font-size:${Math.round(size*0.75)}px">${PLAYER_AVATAR.emoji}</span>`;
 }
 export function avatarGfxFor(plyr,size=24){
   const id=plyr.activeAvatar,av=id?AVATARS.find(a=>a.id===id):null;
-  if(av?.image)return`<img src="${av.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:3px" onerror="this.outerHTML='${av.emoji}'">`;
-  if(av)return`<span style="font-size:${Math.round(size*0.7)}px">${av.emoji}</span>`;
+  if(av){
+    if(hasRealImage(av.image))return`<img src="${av.image}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;border-radius:3px" onerror="this.outerHTML='<span>${av.emoji}</span>'">`;
+    return`<span style="font-size:${Math.round(size*0.7)}px">${av.emoji}</span>`;
+  }
   return`<span style="font-size:${Math.round(size*0.7)}px">${PLAYER_AVATAR.emoji}</span>`;
 }
 export function showModal(html){
