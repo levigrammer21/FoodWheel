@@ -198,7 +198,7 @@ export const AVATARS=[
   {id:"av_goblin",   name:"Goblin King",     emoji:"👺",rarity:"common",    dropRate:20, desc:"Surprisingly regal."},
   {id:"av_skeleton", name:"Bone Lord",       emoji:"💀",rarity:"rare",      dropRate:8,  desc:"Rattles ominously."},
   {id:"av_nature",   name:"Forest Guardian", emoji:"🌿",rarity:"uncommon",  dropRate:15, desc:"One with the woods."},
-].map(a=>({...a,image:""}));
+].map(a=>({...a,image:`img/avatars/${slug(a.name)}.svg`}));
 
 // ── ITEMS ─────────────────────────────────────────────────────
 export const ITEMS=[
@@ -275,7 +275,7 @@ export const ITEMS=[
   {name:"Amulet of the Fallen",  type:"Amulet", stat:"str", base:40, minLevel:20, rarity:"legendary", emoji:"💀", dropRate:0.3},
   {name:"Eye of the Void",       type:"Amulet", stat:"str", base:50, minLevel:50, rarity:"legendary", emoji:"👁️", dropRate:0.3},
   {name:"Godchain",              type:"Amulet", stat:"def", base:55, minLevel:60, rarity:"legendary", emoji:"✨", dropRate:0.2},
-].map(item=>({...item,image:""}));
+].map(item=>({...item,image:`img/items/${slug(item.name)}.svg`}));
 
 // ── PETS ─────────────────────────────────────────────────────
 export const PETS=[
@@ -291,7 +291,7 @@ export const PETS=[
   {name:"Frost Wolf",    type:"Pet",stat:"def",base:32, rarity:"epic",     emoji:"🐺",dropRate:1, desc:"Howls before every battle."},
   {name:"Ancient Phoenix",type:"Pet",stat:"str",base:50,rarity:"legendary",emoji:"🦅",dropRate:0.2,desc:"Reborn every battle."},
   {name:"Celestial Crab", type:"Pet",stat:"def",base:55,rarity:"legendary",emoji:"🦀",dropRate:0.2,desc:"Claws from another dimension."},
-].map(p=>({...p,image:""}));
+].map(p=>({...p,image:`img/pets/${slug(p.name)}.svg`}));
 
 // ── CHOICE EVENTS ─────────────────────────────────────────────
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
