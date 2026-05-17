@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="eg" cx="38%" cy="32%" r="62%">
+      <stop offset="0%" stop-color="#b8d8ff"/>
+      <stop offset="55%" stop-color="#2060cc"/>
+      <stop offset="100%" stop-color="#0a1f6e"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="54%" r="50%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="100%" stop-color="rgba(30,80,255,0.28)"/>
+    </radialGradient>
+    <filter id="f" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Outer glow -->
+  <ellipse cx="50" cy="54" rx="33" ry="39" fill="rgba(40,100,255,0.2)" filter="url(#f)"/>
+  <!-- Egg body -->
+  <ellipse cx="50" cy="54" rx="28" ry="34" fill="url(#eg)"/>
+  <ellipse cx="50" cy="54" rx="28" ry="34" fill="url(#glow)"/>
+  <!-- Crack glow lines -->
+  <path d="M50 36 L46 48 L52 52 L47 68" stroke="rgba(120,180,255,0.7)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  <path d="M52 52 L60 58" stroke="rgba(120,180,255,0.5)" stroke-width="1.0" fill="none" stroke-linecap="round"/>
+  <path d="M46 48 L38 54" stroke="rgba(120,180,255,0.45)" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+  <!-- Stars/sparkles -->
+  <circle cx="58" cy="40" r="1.5" fill="#80c0ff" opacity="0.8"/>
+  <circle cx="38" cy="60" r="1.3" fill="#80c0ff" opacity="0.6"/>
+  <circle cx="62" cy="64" r="1.0" fill="#80c0ff" opacity="0.5"/>
+  <!-- Shine -->
+  <ellipse cx="40" cy="40" rx="8" ry="5" fill="white" opacity="0.3" transform="rotate(-20 40 40)"/>
+</svg>

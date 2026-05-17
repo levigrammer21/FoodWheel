@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="eg" cx="38%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#e8e4df"/>
+      <stop offset="100%" stop-color="#a09890"/>
+    </radialGradient>
+    <radialGradient id="sh" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="transparent"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0.18)"/>
+    </radialGradient>
+  </defs>
+  <!-- Egg body -->
+  <ellipse cx="50" cy="54" rx="28" ry="34" fill="url(#eg)"/>
+  <!-- Shadow overlay -->
+  <ellipse cx="50" cy="54" rx="28" ry="34" fill="url(#sh)"/>
+  <!-- Speckles -->
+  <circle cx="40" cy="45" r="2.2" fill="#7a7068" opacity="0.5"/>
+  <circle cx="55" cy="38" r="1.6" fill="#7a7068" opacity="0.45"/>
+  <circle cx="62" cy="52" r="1.8" fill="#7a7068" opacity="0.4"/>
+  <circle cx="44" cy="62" r="2.0" fill="#7a7068" opacity="0.5"/>
+  <circle cx="57" cy="65" r="1.4" fill="#7a7068" opacity="0.4"/>
+  <circle cx="36" cy="58" r="1.6" fill="#7a7068" opacity="0.35"/>
+  <circle cx="50" cy="72" r="1.5" fill="#7a7068" opacity="0.4"/>
+  <!-- Shine -->
+  <ellipse cx="40" cy="40" rx="8" ry="5" fill="white" opacity="0.22" transform="rotate(-20 40 40)"/>
+</svg>

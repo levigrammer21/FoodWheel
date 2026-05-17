@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="eg" cx="38%" cy="32%" r="62%">
+      <stop offset="0%" stop-color="#d4a8ff"/>
+      <stop offset="50%" stop-color="#7020cc"/>
+      <stop offset="100%" stop-color="#2a0058"/>
+    </radialGradient>
+    <radialGradient id="inner" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(180,80,255,0.35)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <filter id="f" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Outer glow -->
+  <ellipse cx="50" cy="54" rx="34" ry="40" fill="rgba(130,30,220,0.25)" filter="url(#f)"/>
+  <!-- Egg body -->
+  <ellipse cx="50" cy="54" rx="28" ry="34" fill="url(#eg)"/>
+  <ellipse cx="50" cy="54" rx="28" ry="34" fill="url(#inner)"/>
+  <!-- Swirl -->
+  <path d="M50 38 Q62 46 56 54 Q50 62 44 58 Q36 52 42 44 Q46 38 54 42" stroke="rgba(220,160,255,0.55)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <!-- Rune-like marks -->
+  <line x1="44" y1="50" x2="44" y2="58" stroke="rgba(220,160,255,0.6)" stroke-width="1.2"/>
+  <line x1="41" y1="54" x2="47" y2="54" stroke="rgba(220,160,255,0.6)" stroke-width="1.2"/>
+  <line x1="56" y1="48" x2="60" y2="52" stroke="rgba(220,160,255,0.55)" stroke-width="1.1"/>
+  <line x1="60" y1="48" x2="56" y2="52" stroke="rgba(220,160,255,0.55)" stroke-width="1.1"/>
+  <!-- Sparkles -->
+  <circle cx="38" cy="42" r="1.8" fill="#d080ff" opacity="0.8"/>
+  <circle cx="63" cy="48" r="1.4" fill="#d080ff" opacity="0.7"/>
+  <circle cx="55" cy="72" r="1.2" fill="#d080ff" opacity="0.6"/>
+  <circle cx="36" cy="64" r="1.0" fill="#d080ff" opacity="0.5"/>
+  <!-- Shine -->
+  <ellipse cx="40" cy="40" rx="8" ry="5" fill="white" opacity="0.26" transform="rotate(-20 40 40)"/>
+</svg>

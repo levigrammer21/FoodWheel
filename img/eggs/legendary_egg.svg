@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="eg" cx="38%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#fff8c0"/>
+      <stop offset="40%" stop-color="#f0b020"/>
+      <stop offset="80%" stop-color="#b06800"/>
+      <stop offset="100%" stop-color="#6a3800"/>
+    </radialGradient>
+    <radialGradient id="inner" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="rgba(255,230,80,0.45)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <filter id="gf" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="sf" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+  </defs>
+  <!-- Outer radiant glow -->
+  <ellipse cx="50" cy="54" rx="36" ry="42" fill="rgba(255,180,0,0.28)" filter="url(#gf)"/>
+  <!-- Light rays -->
+  <g opacity="0.35">
+    <line x1="50" y1="54" x2="50" y2="8"  stroke="#ffd040" stroke-width="1.5"/>
+    <line x1="50" y1="54" x2="82" y2="22" stroke="#ffd040" stroke-width="1.2"/>
+    <line x1="50" y1="54" x2="92" y2="54" stroke="#ffd040" stroke-width="1.0"/>
+    <line x1="50" y1="54" x2="82" y2="86" stroke="#ffd040" stroke-width="1.0"/>
+    <line x1="50" y1="54" x2="18" y2="22" stroke="#ffd040" stroke-width="1.2"/>
+    <line x1="50" y1="54" x2="8"  y2="54" stroke="#ffd040" stroke-width="1.0"/>
+    <line x1="50" y1="54" x2="18" y2="86" stroke="#ffd040" stroke-width="1.0"/>
+  </g>
+  <!-- Egg body -->
+  <ellipse cx="50" cy="54" rx="28" ry="34" fill="url(#eg)"/>
+  <ellipse cx="50" cy="54" rx="28" ry="34" fill="url(#inner)"/>
+  <!-- Star marking centre -->
+  <polygon points="50,42 52,49 59,49 53,53 55,60 50,56 45,60 47,53 41,49 48,49"
+    fill="rgba(255,240,120,0.75)" stroke="rgba(200,140,0,0.5)" stroke-width="0.5"/>
+  <!-- Ornamental lines -->
+  <path d="M36 46 Q38 54 36 62" stroke="rgba(255,220,80,0.45)" stroke-width="1.2" fill="none"/>
+  <path d="M64 46 Q62 54 64 62" stroke="rgba(255,220,80,0.45)" stroke-width="1.2" fill="none"/>
+  <path d="M42 72 Q50 76 58 72" stroke="rgba(255,220,80,0.4)" stroke-width="1.0" fill="none"/>
+  <!-- Sparkles -->
+  <circle cx="36" cy="38" r="2.0" fill="#ffe060" opacity="0.9" filter="url(#sf)"/>
+  <circle cx="65" cy="36" r="1.6" fill="#ffe060" opacity="0.85"/>
+  <circle cx="68" cy="66" r="1.4" fill="#ffe060" opacity="0.75"/>
+  <circle cx="34" cy="68" r="1.2" fill="#ffe060" opacity="0.7"/>
+  <circle cx="50" cy="84" r="1.5" fill="#ffe060" opacity="0.7"/>
+  <!-- Shine -->
+  <ellipse cx="40" cy="40" rx="9" ry="5.5" fill="white" opacity="0.35" transform="rotate(-22 40 40)"/>
+  <ellipse cx="43" cy="38" rx="3.5" ry="2" fill="white" opacity="0.5" transform="rotate(-22 43 38)"/>
+</svg>
