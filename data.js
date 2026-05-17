@@ -1,123 +1,41 @@
 // ============================================================
 //  MicroMMO — data.js
-//  All static config, constants, and data arrays.
-//  Nothing here should import from other game files.
 // ============================================================
 
-// ── HELPERS (needed to build data arrays) ────────────────────
 export function slug(n){return n.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");}
 
-// ── UI CONFIG ─────────────────────────────────────────────────
 export const UI={
-  LOGO:      {emoji:"⚔", image:"img/ui/logo.svg"},
-  WALK_BTN:  {emoji:"⚔️",image:""},
-  NAV_HOME:  {emoji:"🏠",image:""},
-  NAV_GEAR:  {emoji:"🎒",image:""},
-  NAV_MARKET:{emoji:"🏪",image:""},
-  NAV_SOCIAL:{emoji:"👥",image:""},
+  LOGO:{emoji:"⚔",image:"img/ui/logo.svg"},
+  WALK_BTN:{emoji:"⚔️",image:""},NAV_HOME:{emoji:"🏠",image:""},
+  NAV_GEAR:{emoji:"🎒",image:""},NAV_MARKET:{emoji:"🏪",image:""},NAV_SOCIAL:{emoji:"👥",image:""},
 };
 export const PLAYER_AVATAR={emoji:"🧙",image:""};
 
-// ── GAME SETTINGS ────────────────────────────────────────────
 export const CFG={
-  BASE_ENERGY:25,
-  ENERGY_PER_5_LEVELS:1,
-  ENERGY_REGEN_MS:1*60*1000,
+  BASE_ENERGY:25,ENERGY_PER_5_LEVELS:1,ENERGY_REGEN_MS:1*60*1000,
   MONSTER_CHANCE:0.30,GOLD_CHANCE:0.22,ITEM_CHANCE:0.13,CHOICE_EVENT_CHANCE:0.12,
-  WALK_EGG_CHANCE:0.005, // 0.5% per step
-  MARKET_FEE:0.05,
-  PVP_GOLD_STEAL:0.10,
-  PVP_COOLDOWN_MS:4*60*60*1000,
-  ARENA_COST_GOLD:200,ARENA_COST_EP:1,
-  POTION_HEAL_SMALL:0.3,POTION_HEAL_BIG:0.7,
+  WALK_EGG_CHANCE:0.005,
+  MARKET_FEE:0.05,PVP_GOLD_STEAL:0.10,PVP_COOLDOWN_MS:4*60*60*1000,
+  ARENA_COST_GOLD:200,ARENA_COST_EP:1,POTION_HEAL_SMALL:0.3,POTION_HEAL_BIG:0.7,
   AVATAR_DROP_CHANCE:0.04,SHOP_SELL_RATE:0.20,
   PROPERTY_SELL_RATE:0.80,PROPERTY_STACK_FEE:0.05,
-  // Shop chest — price scales +25% per purchase, resets daily
-  CHEST_BASE_PRICE:500,
-  CHEST_PRICE_SCALE:1.25,
-  CHEST_EGG_CHANCE:0.05,   // 5% egg from shop chest
-  COMBAT_VICTORY_CLOSE_MS:3000,
-  GUILD_CREATE_COST:5000,
-  GUILD_MAX_MEMBERS:10,
-  GUILD_RAID_COST:1000,
-  BOUNTY_MIN:500,
-  // Item economy
-  SALVAGE_SHARDS_BASE:3,
-  UPGRADE_SHARD_COST:5,
-  UPGRADE_GOLD_COST_PER_VAL:20,
-  UPGRADE_MAX_TIMES:10,
-  // Step XP
-  STEP_XP_BASE:3,
-  STEP_XP_PER_LEVEL:0.5,
-  // Combo
-  COMBO_TIERS:[1,5,15,30],
-  COMBO_MULTS:[1,1.1,1.2,1.3],
-  COMBO_DECAY_ON_DEATH:true,
-  // Chest loot — universal egg rarity weights (same everywhere)
+  CHEST_BASE_PRICE:500,CHEST_PRICE_SCALE:1.25,CHEST_EGG_CHANCE:0.05,
+  COMBAT_VICTORY_CLOSE_MS:3000,GUILD_CREATE_COST:5000,GUILD_MAX_MEMBERS:10,
+  GUILD_RAID_COST:1000,BOUNTY_MIN:500,
+  SALVAGE_SHARDS_BASE:3,UPGRADE_SHARD_COST:5,UPGRADE_GOLD_COST_PER_VAL:20,UPGRADE_MAX_TIMES:10,
+  STEP_XP_BASE:3,STEP_XP_PER_LEVEL:0.5,
+  COMBO_TIERS:[1,5,15,30],COMBO_MULTS:[1,1.1,1.2,1.3],COMBO_DECAY_ON_DEATH:true,
   CHEST_EGG_RARITY:{common:45,uncommon:25,rare:15,epic:10,legendary:5},
-  // Dungeon chest egg chance (same 20% across all tiers)
   DUNGEON_CHEST_EGG_CHANCE:0.20,
 };
 
-// ── DUNGEONS ─────────────────────────────────────────────────
-export const DUNGEONS=[
-  {
-    id:"quick",
-    name:"Quick Run",
-    emoji:"⚡",
-    desc:"A fast raid into the ruins. High XP efficiency.",
-    durationMs:10*60*1000,       // 10 min
-    // Chests: 45% chance of 1 chest, otherwise 0
-    minChests:0,maxChests:1,
-    chestChance:0.45,            // chance to get ANY chest
-    // XP — most efficient per hour
-    expBase:120,expPerLevel:18,
-    goldBase:40,goldPerLevel:8,
-    color:"#2563eb",
-    bgColor:"#eff6ff",
-    borderColor:"#93c5fd",
-  },
-  {
-    id:"expedition",
-    name:"Expedition",
-    emoji:"🗺️",
-    desc:"A full dungeon run. Guaranteed rewards.",
-    durationMs:60*60*1000,       // 1 hr
-    // Chests: guaranteed 1, up to 3
-    minChests:1,maxChests:3,
-    chestChance:1.0,
-    expBase:600,expPerLevel:60,
-    goldBase:180,goldPerLevel:30,
-    color:"#7c3aed",
-    bgColor:"#f5f3ff",
-    borderColor:"#c4b5fd",
-  },
-  {
-    id:"delve",
-    name:"Deep Delve",
-    emoji:"💀",
-    desc:"The depths below. Bring patience.",
-    durationMs:5*60*60*1000,     // 5 hr
-    // Chests: guaranteed 3, up to 8
-    minChests:3,maxChests:8,
-    chestChance:1.0,
-    expBase:2800,expPerLevel:200,
-    goldBase:800,goldPerLevel:120,
-    color:"#dc2626",
-    bgColor:"#fff1f2",
-    borderColor:"#fca5a5",
-  },
-];
-
-// ── ENGINE CONSTANTS ──────────────────────────────────────────
-export const EQUIP_SLOTS =["Helmet","Armour","Weapon","Shield","Greaves","Boots","Amulet","Pet"];
-export const SLOT_EMOJI  ={Helmet:"🪖",Armour:"🦺",Weapon:"⚔️",Shield:"🛡️",Greaves:"🦵",Boots:"👢",Amulet:"💍",Pet:"🐾"};
+export const EQUIP_SLOTS=["Helmet","Armour","Weapon","Shield","Greaves","Boots","Amulet","Pet"];
+export const SLOT_EMOJI={Helmet:"🪖",Armour:"🦺",Weapon:"⚔️",Shield:"🛡️",Greaves:"🦵",Boots:"👢",Amulet:"💍",Pet:"🐾"};
 export const RARITY_COLOR={common:"#6b7280",uncommon:"#059669",rare:"#2563eb",epic:"#7c3aed",legendary:"#d97706"};
 export const RARITY_SCALE={common:0.8,uncommon:1.2,rare:1.8,epic:2.5,legendary:3.5};
-export const TIER_EMOJIS =["🪙","🥉","🥈","🥇","💠","💎","👑"];
-export const GUILD_ROLES ={leader:"Leader",admin:"Admin",member:"Member"};
+export const TIER_EMOJIS=["🪙","🥉","🥈","🥇","💠","💎","👑"];
+export const GUILD_ROLES={leader:"Leader",admin:"Admin",member:"Member"};
 
-// ── ARENA TIERS ───────────────────────────────────────────────
 export const ARENA_TIERS=[
   {name:"Copper",  color:"#cd7f32",wins:0,  expBonus:1.0, goldBonus:1.0},
   {name:"Bronze",  color:"#c9943a",wins:10, expBonus:1.1, goldBonus:1.1},
@@ -128,55 +46,27 @@ export const ARENA_TIERS=[
   {name:"Champion",color:"#fbbf24",wins:400,expBonus:2.2, goldBonus:2.0},
 ];
 
-// ── WALK ZONES ────────────────────────────────────────────────
-// ── WEATHER ───────────────────────────────────────────────────
 export const WEATHER_TYPES=[
-  {id:"clear",    name:"Clear Skies",    emoji:"☀️", desc:"A fine day for adventuring.",
-   goldMult:1.0, expMult:1.0,  monsterMult:1.0, lootMult:1.0, color:"#fbbf24"},
-  {id:"rain",     name:"Heavy Rain",     emoji:"🌧️", desc:"Gold washes out of the mud.",
-   goldMult:1.4, expMult:1.0,  monsterMult:0.8, lootMult:1.1, color:"#60a5fa"},
-  {id:"fog",      name:"Thick Fog",      emoji:"🌫️", desc:"Monsters lurk unseen — but so does treasure.",
-   goldMult:1.2, expMult:1.1,  monsterMult:1.3, lootMult:1.2, color:"#94a3b8"},
-  {id:"bloodmoon",name:"Blood Moon",     emoji:"🌑", desc:"Double danger. Double glory.",
-   goldMult:1.5, expMult:1.5,  monsterMult:1.6, lootMult:1.4, color:"#ef4444"},
-  {id:"blessing", name:"Divine Blessing",emoji:"✨", desc:"The gods smile upon you today.",
-   goldMult:1.2, expMult:1.5,  monsterMult:0.9, lootMult:1.5, color:"#c084fc"},
+  {id:"clear",    name:"Clear Skies",    emoji:"☀️", desc:"A fine day for adventuring.",    goldMult:1.0,expMult:1.0, monsterMult:1.0,lootMult:1.0,color:"#fbbf24"},
+  {id:"rain",     name:"Heavy Rain",     emoji:"🌧️", desc:"Gold washes out of the mud.",    goldMult:1.4,expMult:1.0, monsterMult:0.8,lootMult:1.1,color:"#60a5fa"},
+  {id:"fog",      name:"Thick Fog",      emoji:"🌫️", desc:"Monsters lurk unseen.",          goldMult:1.2,expMult:1.1, monsterMult:1.3,lootMult:1.2,color:"#94a3b8"},
+  {id:"bloodmoon",name:"Blood Moon",     emoji:"🌑", desc:"Double danger. Double glory.",   goldMult:1.5,expMult:1.5, monsterMult:1.6,lootMult:1.4,color:"#ef4444"},
+  {id:"blessing", name:"Divine Blessing",emoji:"✨", desc:"The gods smile upon you today.", goldMult:1.2,expMult:1.5, monsterMult:0.9,lootMult:1.5,color:"#c084fc"},
 ];
 
 export const WALK_AREAS=[
-  {id:"greenwood",    name:"Greenwood Vale",   emoji:"🌲",desc:"A peaceful forest. Beware the shadows.",
-   minLevel:1,  monsterMinLv:1,  monsterMaxLv:8,  expMult:1.0,goldMult:1.0,lootBonus:0,
-   bgCSS:`background:linear-gradient(180deg,#0d2b1a 0%,#1a4a2a 50%,#0f2a18 100%);`,particles:"leaves"},
-  {id:"stonecrypt",   name:"Stone Crypt",      emoji:"💀",desc:"Ancient burial grounds. The dead don't rest.",
-   minLevel:5,  monsterMinLv:5,  monsterMaxLv:14, expMult:1.3,goldMult:1.2,lootBonus:0.05,
-   bgCSS:`background:linear-gradient(180deg,#0e0e1a 0%,#1a1a2e 50%,#0a0a14 100%);`,particles:"spirits"},
-  {id:"shadowpeaks",  name:"Shadow Peaks",     emoji:"⛰️",desc:"Treacherous mountains. Monsters roam freely.",
-   minLevel:10, monsterMinLv:10, monsterMaxLv:22, expMult:1.7,goldMult:1.5,lootBonus:0.08,
-   bgCSS:`background:linear-gradient(180deg,#0a0814 0%,#1a1030 50%,#080612 100%);`,particles:"snow"},
-  {id:"voidrift",     name:"The Void Rift",    emoji:"🌀",desc:"Reality tears here. Only legends survive.",
-   minLevel:18, monsterMinLv:18, monsterMaxLv:35, expMult:2.2,goldMult:2.0,lootBonus:0.12,
-   bgCSS:`background:linear-gradient(180deg,#050514 0%,#0a0520 50%,#020208 100%);`,particles:"void"},
-  {id:"ashvolcano",   name:"Ashveil Volcano",  emoji:"🌋",desc:"Rivers of lava. The air burns your lungs.",
-   minLevel:25, monsterMinLv:25, monsterMaxLv:50, expMult:2.6,goldMult:2.4,lootBonus:0.15,
-   bgCSS:`background:linear-gradient(180deg,#1a0500 0%,#3a0f00 50%,#0f0200 100%);`,particles:"embers"},
-  {id:"frostspire",   name:"Frostspire Wastes",emoji:"🧊",desc:"Eternal blizzard. Only the cold survives.",
-   minLevel:32, monsterMinLv:32, monsterMaxLv:65, expMult:3.0,goldMult:2.8,lootBonus:0.18,
-   bgCSS:`background:linear-gradient(180deg,#050a14 0%,#0a1428 50%,#050a1a 100%);`,particles:"blizzard"},
-  {id:"shadowrealm",  name:"Shadow Realm",     emoji:"👁️",desc:"A dimension of pure darkness and terror.",
-   minLevel:40, monsterMinLv:40, monsterMaxLv:80, expMult:3.5,goldMult:3.2,lootBonus:0.22,
-   bgCSS:`background:linear-gradient(180deg,#080008 0%,#150015 50%,#050005 100%);`,particles:"shadow"},
-  {id:"celestialplane",name:"Celestial Plane", emoji:"✨",desc:"The realm of gods. Few mortals see this and live.",
-   minLevel:50, monsterMinLv:50, monsterMaxLv:100,expMult:4.0,goldMult:3.8,lootBonus:0.28,
-   bgCSS:`background:linear-gradient(180deg,#0a0820 0%,#181030 50%,#080618 100%);`,particles:"stars"},
-  {id:"abyssaldepths",name:"Abyssal Depths",   emoji:"🌊",desc:"The ocean floor. Ancient horrors dwell here.",
-   minLevel:60, monsterMinLv:60, monsterMaxLv:130,expMult:4.8,goldMult:4.5,lootBonus:0.35,
-   bgCSS:`background:linear-gradient(180deg,#000814 0%,#001428 50%,#000510 100%);`,particles:"bubbles"},
-  {id:"chaoscore",    name:"The Chaos Core",   emoji:"☄️",desc:"The end of all things. Pure destruction incarnate.",
-   minLevel:75, monsterMinLv:75, monsterMaxLv:200,expMult:6.0,goldMult:5.5,lootBonus:0.45,
-   bgCSS:`background:linear-gradient(180deg,#0f0000 0%,#1f0505 50%,#0a0000 100%);`,particles:"chaos"},
+  {id:"greenwood",    name:"Greenwood Vale",   emoji:"🌲",desc:"A peaceful forest. Beware the shadows.",minLevel:1,  monsterMinLv:1,  monsterMaxLv:8,  expMult:1.0,goldMult:1.0,lootBonus:0,   bgCSS:`background:linear-gradient(180deg,#0d2b1a 0%,#1a4a2a 50%,#0f2a18 100%);`,particles:"leaves"},
+  {id:"stonecrypt",   name:"Stone Crypt",      emoji:"💀",desc:"Ancient burial grounds. The dead don't rest.",minLevel:5,  monsterMinLv:5,  monsterMaxLv:14, expMult:1.3,goldMult:1.2,lootBonus:0.05,bgCSS:`background:linear-gradient(180deg,#0e0e1a 0%,#1a1a2e 50%,#0a0a14 100%);`,particles:"spirits"},
+  {id:"shadowpeaks",  name:"Shadow Peaks",     emoji:"⛰️",desc:"Treacherous mountains. Monsters roam freely.",minLevel:10, monsterMinLv:10, monsterMaxLv:22, expMult:1.7,goldMult:1.5,lootBonus:0.08,bgCSS:`background:linear-gradient(180deg,#0a0814 0%,#1a1030 50%,#080612 100%);`,particles:"snow"},
+  {id:"voidrift",     name:"The Void Rift",    emoji:"🌀",desc:"Reality tears here. Only legends survive.",minLevel:18, monsterMinLv:18, monsterMaxLv:35, expMult:2.2,goldMult:2.0,lootBonus:0.12,bgCSS:`background:linear-gradient(180deg,#050514 0%,#0a0520 50%,#020208 100%);`,particles:"void"},
+  {id:"ashvolcano",   name:"Ashveil Volcano",  emoji:"🌋",desc:"Rivers of lava. The air burns your lungs.",minLevel:25, monsterMinLv:25, monsterMaxLv:50, expMult:2.6,goldMult:2.4,lootBonus:0.15,bgCSS:`background:linear-gradient(180deg,#1a0500 0%,#3a0f00 50%,#0f0200 100%);`,particles:"embers"},
+  {id:"frostspire",   name:"Frostspire Wastes",emoji:"🧊",desc:"Eternal blizzard. Only the cold survives.",minLevel:32, monsterMinLv:32, monsterMaxLv:65, expMult:3.0,goldMult:2.8,lootBonus:0.18,bgCSS:`background:linear-gradient(180deg,#050a14 0%,#0a1428 50%,#050a1a 100%);`,particles:"blizzard"},
+  {id:"shadowrealm",  name:"Shadow Realm",     emoji:"👁️",desc:"A dimension of pure darkness and terror.",minLevel:40, monsterMinLv:40, monsterMaxLv:80, expMult:3.5,goldMult:3.2,lootBonus:0.22,bgCSS:`background:linear-gradient(180deg,#080008 0%,#150015 50%,#050005 100%);`,particles:"shadow"},
+  {id:"celestialplane",name:"Celestial Plane", emoji:"✨",desc:"The realm of gods. Few mortals see this and live.",minLevel:50, monsterMinLv:50, monsterMaxLv:100,expMult:4.0,goldMult:3.8,lootBonus:0.28,bgCSS:`background:linear-gradient(180deg,#0a0820 0%,#181030 50%,#080618 100%);`,particles:"stars"},
+  {id:"abyssaldepths",name:"Abyssal Depths",   emoji:"🌊",desc:"The ocean floor. Ancient horrors dwell here.",minLevel:60, monsterMinLv:60, monsterMaxLv:130,expMult:4.8,goldMult:4.5,lootBonus:0.35,bgCSS:`background:linear-gradient(180deg,#000814 0%,#001428 50%,#000510 100%);`,particles:"bubbles"},
+  {id:"chaoscore",    name:"The Chaos Core",   emoji:"☄️",desc:"The end of all things. Pure destruction incarnate.",minLevel:75, monsterMinLv:75, monsterMaxLv:200,expMult:6.0,goldMult:5.5,lootBonus:0.45,bgCSS:`background:linear-gradient(180deg,#0f0000 0%,#1f0505 50%,#0a0000 100%);`,particles:"chaos"},
 ];
 
-// ── PROPERTIES ───────────────────────────────────────────────
 export const PROPERTIES=[
   {id:"prop_hovel",   name:"Wanderer's Hovel",  emoji:"🪨",price:500,   energyBonus:2,  rentalRate:0.05,desc:"A damp cave you've claimed."},
   {id:"prop_shack",   name:"Rustic Shack",       emoji:"🛖",price:1500,  energyBonus:5,  rentalRate:0.05,desc:"Four walls and a leaky roof."},
@@ -187,57 +77,35 @@ export const PROPERTIES=[
   {id:"prop_citadel", name:"Celestial Citadel",  emoji:"✨",price:150000,energyBonus:100,rentalRate:0.05,desc:"Touched by the gods."},
 ];
 
-// ── SHOP CONSUMABLES ─────────────────────────────────────────
 export const SHOP_CONSUMABLES=[
-  {id:"potion_small", name:"Minor Healing Potion",emoji:"🧪",desc:"Restores 30% max HP",price:120, effect:"heal_small"},
-  {id:"potion_big",   name:"Major Healing Potion", emoji:"💊",desc:"Restores 70% max HP",price:350, effect:"heal_big"},
-  {id:"energy_refill",name:"Energy Crystal",       emoji:"⚡",desc:"Refills all energy",  price:200, effect:"energy_full"},
-  {id:"exp_scroll",   name:"Tome of Knowledge",    emoji:"📜",desc:"Grants 200 EXP",      price:500, effect:"exp_200"},
+  {id:"potion_small", name:"Minor Healing Potion",emoji:"🧪",desc:"Restores 30% max HP",price:120,effect:"heal_small"},
+  {id:"potion_big",   name:"Major Healing Potion", emoji:"💊",desc:"Restores 70% max HP",price:350,effect:"heal_big"},
+  {id:"energy_refill",name:"Energy Crystal",       emoji:"⚡",desc:"Refills all energy",  price:200,effect:"energy_full"},
+  {id:"exp_scroll",   name:"Tome of Knowledge",    emoji:"📜",desc:"Grants 200 EXP",      price:500,effect:"exp_200"},
 ];
 
-// ── MONSTERS ─────────────────────────────────────────────────
 export const MONSTERS=[
-  {name:"Goblin Scout",    emoji:"👺",desc:"A sneaky little menace.",
-   str:[5,1.2], def:[2,0.8], hp:[30,6],   exp:[10,2.5], gold:[3,1.5], areaIds:["greenwood","stonecrypt"]},
-  {name:"Forest Wolf",     emoji:"🐺",desc:"Runs in packs. Alone now.",
-   str:[8,1.5], def:[3,1.0], hp:[45,8],   exp:[25,3.5], gold:[8,2.0], areaIds:["greenwood","stonecrypt","shadowpeaks"]},
-  {name:"Cave Bat",        emoji:"🦇",desc:"Dives from the dark.",
-   str:[6,1.3], def:[2,0.8], hp:[25,5],   exp:[15,2.5], gold:[4,1.5], areaIds:["greenwood","stonecrypt"]},
-  {name:"Stone Golem",     emoji:"🗿",desc:"Slow but devastating.",
-   str:[10,1.8],def:[15,2.0],hp:[80,12],  exp:[40,5.0], gold:[15,2.5],areaIds:["stonecrypt","shadowpeaks"]},
-  {name:"Shadow Wraith",   emoji:"👻",desc:"Feeds on life force.",
-   str:[18,2.5],def:[5,1.2], hp:[60,10],  exp:[55,6.5], gold:[20,3.5],areaIds:["stonecrypt","shadowpeaks","voidrift"]},
-  {name:"Venomfang Spider",emoji:"🕷️",desc:"Its bite carries rot.",
-   str:[14,2.0],def:[6,1.4], hp:[55,9],   exp:[35,4.5], gold:[12,2.5],areaIds:["stonecrypt","shadowpeaks"]},
-  {name:"Troll Brute",     emoji:"👹",desc:"Regenerates. Hit it fast.",
-   str:[20,2.8],def:[12,2.0],hp:[110,16], exp:[60,7.0], gold:[25,4.0],areaIds:["shadowpeaks","voidrift"]},
-  {name:"Dragon Whelp",    emoji:"🐉",desc:"Young dragon. Still lethal.",
-   str:[26,3.2],def:[10,2.0],hp:[120,18], exp:[80,9.0], gold:[35,5.5],areaIds:["shadowpeaks","voidrift","ashvolcano"]},
-  {name:"Skeleton Knight", emoji:"💀",desc:"Fought a hundred wars.",
-   str:[22,2.8],def:[18,2.5],hp:[95,14],  exp:[65,7.5], gold:[28,4.5],areaIds:["stonecrypt","shadowpeaks","voidrift"]},
-  {name:"Dark Sorcerer",   emoji:"🧙",desc:"Commands ancient spells.",
-   str:[35,4.0],def:[5,1.2], hp:[90,14],  exp:[90,10],  gold:[45,6.5],areaIds:["voidrift","ashvolcano"]},
-  {name:"Banshee Queen",   emoji:"👸",desc:"Her scream alone can end you.",
-   str:[32,3.8],def:[7,1.5], hp:[140,20], exp:[100,11], gold:[50,7.0],areaIds:["voidrift","ashvolcano","frostspire"]},
-  {name:"Lich Lord",       emoji:"💀",desc:"Mastered death itself.",
-   str:[40,4.5],def:[14,2.5],hp:[190,24], exp:[130,14], gold:[65,9.0],areaIds:["ashvolcano","frostspire"]},
-  {name:"Elder Dragon",    emoji:"🐲",desc:"A living catastrophe.",
-   str:[55,5.5],def:[20,3.2],hp:[320,38], exp:[220,22], gold:[110,14],areaIds:["frostspire","shadowrealm"]},
-  {name:"Void Titan",      emoji:"🌀",desc:"Born from the rift.",
-   str:[68,7.0],def:[28,4.0],hp:[450,48], exp:[300,28], gold:[150,18],areaIds:["shadowrealm","celestialplane"]},
-  {name:"Frost Wyrm",      emoji:"🧊",desc:"Freezes all it touches.",
-   str:[72,7.5],def:[32,4.5],hp:[500,54], exp:[340,32], gold:[170,20],areaIds:["frostspire","shadowrealm"]},
-  {name:"Shadow Demon",    emoji:"😈",desc:"Pure malice given form.",
-   str:[80,8.5],def:[38,5.0],hp:[560,60], exp:[380,36], gold:[190,23],areaIds:["shadowrealm","celestialplane"]},
-  {name:"Celestial Titan", emoji:"✨",desc:"A god that fell.",
-   str:[95,10.0],def:[48,6.5],hp:[750,82],exp:[500,48], gold:[250,30],areaIds:["celestialplane","abyssaldepths"]},
-  {name:"Abyssal Horror",  emoji:"🌊",desc:"Should not exist.",
-   str:[115,12.0],def:[60,8.0],hp:[950,105],exp:[650,62],gold:[320,38],areaIds:["abyssaldepths","chaoscore"]},
-  {name:"Chaos Incarnate", emoji:"☄️",desc:"The end. The beginning.",
-   str:[140,14.0],def:[80,10.0],hp:[1200,130],exp:[850,82],gold:[420,50],areaIds:["chaoscore"]},
+  {name:"Goblin Scout",    emoji:"👺",desc:"A sneaky little menace.",    str:[5,1.2], def:[2,0.8], hp:[30,6],    exp:[10,2.5], gold:[3,1.5],  areaIds:["greenwood","stonecrypt"]},
+  {name:"Forest Wolf",     emoji:"🐺",desc:"Runs in packs. Alone now.", str:[8,1.5], def:[3,1.0], hp:[45,8],    exp:[25,3.5], gold:[8,2.0],  areaIds:["greenwood","stonecrypt","shadowpeaks"]},
+  {name:"Cave Bat",        emoji:"🦇",desc:"Dives from the dark.",       str:[6,1.3], def:[2,0.8], hp:[25,5],    exp:[15,2.5], gold:[4,1.5],  areaIds:["greenwood","stonecrypt"]},
+  {name:"Stone Golem",     emoji:"🗿",desc:"Slow but devastating.",      str:[10,1.8],def:[15,2.0],hp:[80,12],   exp:[40,5.0], gold:[15,2.5], areaIds:["stonecrypt","shadowpeaks"]},
+  {name:"Shadow Wraith",   emoji:"👻",desc:"Feeds on life force.",       str:[18,2.5],def:[5,1.2], hp:[60,10],   exp:[55,6.5], gold:[20,3.5], areaIds:["stonecrypt","shadowpeaks","voidrift"]},
+  {name:"Venomfang Spider",emoji:"🕷️",desc:"Its bite carries rot.",      str:[14,2.0],def:[6,1.4], hp:[55,9],    exp:[35,4.5], gold:[12,2.5], areaIds:["stonecrypt","shadowpeaks"]},
+  {name:"Troll Brute",     emoji:"👹",desc:"Regenerates. Hit it fast.",  str:[20,2.8],def:[12,2.0],hp:[110,16],  exp:[60,7.0], gold:[25,4.0], areaIds:["shadowpeaks","voidrift"]},
+  {name:"Dragon Whelp",    emoji:"🐉",desc:"Young dragon. Still lethal.",str:[26,3.2],def:[10,2.0],hp:[120,18],  exp:[80,9.0], gold:[35,5.5], areaIds:["shadowpeaks","voidrift","ashvolcano"]},
+  {name:"Skeleton Knight", emoji:"💀",desc:"Fought a hundred wars.",     str:[22,2.8],def:[18,2.5],hp:[95,14],   exp:[65,7.5], gold:[28,4.5], areaIds:["stonecrypt","shadowpeaks","voidrift"]},
+  {name:"Dark Sorcerer",   emoji:"🧙",desc:"Commands ancient spells.",   str:[35,4.0],def:[5,1.2], hp:[90,14],   exp:[90,10],  gold:[45,6.5], areaIds:["voidrift","ashvolcano"]},
+  {name:"Banshee Queen",   emoji:"👸",desc:"Her scream alone can end you.",str:[32,3.8],def:[7,1.5],hp:[140,20],  exp:[100,11], gold:[50,7.0], areaIds:["voidrift","ashvolcano","frostspire"]},
+  {name:"Lich Lord",       emoji:"💀",desc:"Mastered death itself.",      str:[40,4.5],def:[14,2.5],hp:[190,24],  exp:[130,14], gold:[65,9.0], areaIds:["ashvolcano","frostspire"]},
+  {name:"Elder Dragon",    emoji:"🐲",desc:"A living catastrophe.",       str:[55,5.5],def:[20,3.2],hp:[320,38],  exp:[220,22], gold:[110,14], areaIds:["frostspire","shadowrealm"]},
+  {name:"Void Titan",      emoji:"🌀",desc:"Born from the rift.",         str:[68,7.0],def:[28,4.0],hp:[450,48],  exp:[300,28], gold:[150,18], areaIds:["shadowrealm","celestialplane"]},
+  {name:"Frost Wyrm",      emoji:"🧊",desc:"Freezes all it touches.",     str:[72,7.5],def:[32,4.5],hp:[500,54],  exp:[340,32], gold:[170,20], areaIds:["frostspire","shadowrealm"]},
+  {name:"Shadow Demon",    emoji:"😈",desc:"Pure malice given form.",     str:[80,8.5],def:[38,5.0],hp:[560,60],  exp:[380,36], gold:[190,23], areaIds:["shadowrealm","celestialplane"]},
+  {name:"Celestial Titan", emoji:"✨",desc:"A god that fell.",            str:[95,10.0],def:[48,6.5],hp:[750,82], exp:[500,48], gold:[250,30], areaIds:["celestialplane","abyssaldepths"]},
+  {name:"Abyssal Horror",  emoji:"🌊",desc:"Should not exist.",           str:[115,12.0],def:[60,8.0],hp:[950,105],exp:[650,62],gold:[320,38], areaIds:["abyssaldepths","chaoscore"]},
+  {name:"Chaos Incarnate", emoji:"☄️",desc:"The end. The beginning.",     str:[140,14.0],def:[80,10.0],hp:[1200,130],exp:[850,82],gold:[420,50],areaIds:["chaoscore"]},
 ].map(m=>({...m,image:`img/monsters/${slug(m.name)}.svg`}));
 
-// ── AVATARS ──────────────────────────────────────────────────
 export const AVATARS=[
   {id:"av_wolf",     name:"Shadow Wolf",     emoji:"🐺",rarity:"rare",      dropRate:8,  desc:"Runs alone through the dark."},
   {id:"av_knight",   name:"Iron Knight",     emoji:"⚔️",rarity:"rare",      dropRate:8,  desc:"Steel and honour."},
@@ -253,9 +121,7 @@ export const AVATARS=[
   {id:"av_champion", name:"Eternal Champion",emoji:"👑",rarity:"legendary", dropRate:0.4,desc:"The last one standing."},
 ].map(av=>({...av,image:`img/avatars/${av.id}.svg`}));
 
-// ── ITEMS ────────────────────────────────────────────────────
 export const ITEMS=[
-  // ── WEAPONS ──────────────────────────────────────────────
   {name:"Rusty Sword",          type:"Weapon", stat:"str", base:4,  minLevel:1,  rarity:"common",    emoji:"⚔️", dropRate:18, shopPrice:80},
   {name:"Wooden Club",          type:"Weapon", stat:"str", base:3,  minLevel:1,  rarity:"common",    emoji:"🪵", dropRate:18, shopPrice:60},
   {name:"Hunting Knife",        type:"Weapon", stat:"str", base:5,  minLevel:1,  rarity:"common",    emoji:"🔪", dropRate:16, shopPrice:90},
@@ -283,7 +149,6 @@ export const ITEMS=[
   {name:"The Last Word",        type:"Weapon", stat:"str", base:60, minLevel:60, rarity:"legendary", emoji:"🔱", dropRate:0.3},
   {name:"Ragnarok",             type:"Weapon", stat:"str", base:70, minLevel:75, rarity:"legendary", emoji:"💥", dropRate:0.2},
   {name:"Eternal Flame",        type:"Weapon", stat:"str", base:50, minLevel:40, rarity:"legendary", emoji:"🔥", dropRate:0.3},
-  // ── HELMETS ──────────────────────────────────────────────
   {name:"Leather Cap",          type:"Helmet", stat:"def", base:3,  minLevel:1,  rarity:"common",    emoji:"🪖", dropRate:18, shopPrice:55},
   {name:"Cloth Hood",           type:"Helmet", stat:"def", base:3,  minLevel:1,  rarity:"common",    emoji:"🪖", dropRate:18, shopPrice:50},
   {name:"Wooden Helm",          type:"Helmet", stat:"def", base:4,  minLevel:2,  rarity:"common",    emoji:"🪖", dropRate:16, shopPrice:65},
@@ -300,7 +165,6 @@ export const ITEMS=[
   {name:"Crown of the Fallen",  type:"Helmet", stat:"def", base:40, minLevel:20, rarity:"legendary", emoji:"👑", dropRate:0.3},
   {name:"Helm of Eternity",     type:"Helmet", stat:"def", base:50, minLevel:55, rarity:"legendary", emoji:"🌟", dropRate:0.2},
   {name:"Godking's Crown",      type:"Helmet", stat:"def", base:60, minLevel:70, rarity:"legendary", emoji:"👑", dropRate:0.2},
-  // ── ARMOUR ───────────────────────────────────────────────
   {name:"Cloth Robe",           type:"Armour", stat:"def", base:3,  minLevel:1,  rarity:"common",    emoji:"👘", dropRate:18, shopPrice:65},
   {name:"Padded Vest",          type:"Armour", stat:"def", base:4,  minLevel:1,  rarity:"common",    emoji:"🦺", dropRate:18, shopPrice:70},
   {name:"Leather Armour",       type:"Armour", stat:"def", base:5,  minLevel:2,  rarity:"common",    emoji:"🦺", dropRate:16, shopPrice:85},
@@ -320,7 +184,6 @@ export const ITEMS=[
   {name:"Dragonhide Armour",    type:"Armour", stat:"def", base:45, minLevel:25, rarity:"legendary", emoji:"🐉", dropRate:0.3},
   {name:"Aegis Robes",          type:"Armour", stat:"def", base:50, minLevel:45, rarity:"legendary", emoji:"✨", dropRate:0.3},
   {name:"Armour of the Gods",   type:"Armour", stat:"def", base:65, minLevel:70, rarity:"legendary", emoji:"⚡", dropRate:0.2},
-  // ── SHIELDS ──────────────────────────────────────────────
   {name:"Wooden Shield",        type:"Shield", stat:"def", base:3,  minLevel:1,  rarity:"common",    emoji:"🛡️", dropRate:16, shopPrice:55},
   {name:"Worn Shield",          type:"Shield", stat:"def", base:4,  minLevel:1,  rarity:"common",    emoji:"🛡️", dropRate:16, shopPrice:70},
   {name:"Iron Shield",          type:"Shield", stat:"def", base:7,  minLevel:5,  rarity:"uncommon",  emoji:"🛡️", dropRate:11, shopPrice:280},
@@ -333,7 +196,6 @@ export const ITEMS=[
   {name:"Dawnbreaker Shield",   type:"Shield", stat:"def", base:32, minLevel:34, rarity:"epic",      emoji:"🌟", dropRate:2},
   {name:"Aegis of Eternity",    type:"Shield", stat:"def", base:42, minLevel:20, rarity:"legendary", emoji:"🌟", dropRate:0.3},
   {name:"The Immovable",        type:"Shield", stat:"def", base:55, minLevel:60, rarity:"legendary", emoji:"🛡️", dropRate:0.2},
-  // ── GREAVES ──────────────────────────────────────────────
   {name:"Cloth Leggings",       type:"Greaves",stat:"def", base:2,  minLevel:1,  rarity:"common",    emoji:"🦵", dropRate:16, shopPrice:45},
   {name:"Leather Greaves",      type:"Greaves",stat:"def", base:4,  minLevel:2,  rarity:"common",    emoji:"🦵", dropRate:16, shopPrice:65},
   {name:"Chain Greaves",        type:"Greaves",stat:"def", base:7,  minLevel:5,  rarity:"uncommon",  emoji:"🦵", dropRate:11, shopPrice:260},
@@ -344,7 +206,6 @@ export const ITEMS=[
   {name:"Shadow Greaves",       type:"Greaves",stat:"def", base:26, minLevel:28, rarity:"epic",      emoji:"🦵", dropRate:2},
   {name:"Celestial Greaves",    type:"Greaves",stat:"def", base:32, minLevel:36, rarity:"epic",      emoji:"✨", dropRate:2},
   {name:"Greaves of the Fallen",type:"Greaves",stat:"def", base:45, minLevel:40, rarity:"legendary", emoji:"💀", dropRate:0.3},
-  // ── BOOTS ────────────────────────────────────────────────
   {name:"Simple Boots",         type:"Boots",  stat:"def", base:2,  minLevel:1,  rarity:"common",    emoji:"👟", dropRate:16, shopPrice:45},
   {name:"Leather Boots",        type:"Boots",  stat:"def", base:3,  minLevel:2,  rarity:"common",    emoji:"👢", dropRate:16, shopPrice:55},
   {name:"Traveller's Boots",    type:"Boots",  stat:"def", base:4,  minLevel:3,  rarity:"common",    emoji:"👢", dropRate:14, shopPrice:70},
@@ -357,7 +218,6 @@ export const ITEMS=[
   {name:"Celestial Walkers",    type:"Boots",  stat:"def", base:25, minLevel:30, rarity:"epic",      emoji:"✨", dropRate:2},
   {name:"Boots of Eternity",    type:"Boots",  stat:"def", base:35, minLevel:45, rarity:"legendary", emoji:"🌟", dropRate:0.3},
   {name:"Godwalkers",           type:"Boots",  stat:"def", base:50, minLevel:65, rarity:"legendary", emoji:"⚡", dropRate:0.2},
-  // ── AMULETS ──────────────────────────────────────────────
   {name:"Copper Amulet",        type:"Amulet", stat:"def", base:2,  minLevel:1,  rarity:"common",    emoji:"📿", dropRate:14, shopPrice:50},
   {name:"Bone Necklace",        type:"Amulet", stat:"str", base:3,  minLevel:1,  rarity:"common",    emoji:"💀", dropRate:14, shopPrice:55},
   {name:"Wooden Charm",         type:"Amulet", stat:"def", base:3,  minLevel:2,  rarity:"common",    emoji:"🪵", dropRate:13, shopPrice:60},
@@ -376,52 +236,57 @@ export const ITEMS=[
   {name:"Godchain",             type:"Amulet", stat:"def", base:55, minLevel:60, rarity:"legendary", emoji:"✨", dropRate:0.2},
 ].map(item=>({...item,image:`img/items/${slug(item.name)}.svg`}));
 
-// ── PETS ─────────────────────────────────────────────────────
 export const PETS=[
-  {name:"Baby Slime",    type:"Pet",stat:"def",base:6,  rarity:"uncommon", emoji:"🟢",dropRate:8, desc:"Wobbly but loyal."},
-  {name:"Forest Sprite", type:"Pet",stat:"str",base:7,  rarity:"uncommon", emoji:"🧚",dropRate:7, desc:"Zips around your shoulder."},
-  {name:"Tamed Rat",     type:"Pet",stat:"def",base:5,  rarity:"uncommon", emoji:"🐀",dropRate:8, desc:"Surprisingly useful."},
-  {name:"Shadow Cat",    type:"Pet",stat:"str",base:14, rarity:"rare",     emoji:"🐈",dropRate:4, desc:"Vanishes in dim light."},
-  {name:"Storm Hawk",    type:"Pet",stat:"str",base:16, rarity:"rare",     emoji:"🦅",dropRate:3, desc:"Dives at your enemies."},
-  {name:"Crystal Turtle",type:"Pet",stat:"def",base:18, rarity:"rare",     emoji:"🐢",dropRate:3, desc:"A walking shield."},
-  {name:"Baby Dragon",   type:"Pet",stat:"str",base:20, rarity:"rare",     emoji:"🐉",dropRate:2, desc:"Breathes tiny flames."},
-  {name:"Void Familiar", type:"Pet",stat:"str",base:30, rarity:"epic",     emoji:"👁️",dropRate:1, desc:"Sees through walls."},
-  {name:"Lava Pup",      type:"Pet",stat:"str",base:28, rarity:"epic",     emoji:"🔥",dropRate:1, desc:"Always warm. Always angry."},
-  {name:"Frost Wolf",    type:"Pet",stat:"def",base:32, rarity:"epic",     emoji:"🐺",dropRate:1, desc:"Howls before every battle."},
-  {name:"Ancient Phoenix",type:"Pet",stat:"str",base:50,rarity:"legendary",emoji:"🦅",dropRate:0.2,desc:"Reborn every battle."},
-  {name:"Celestial Crab", type:"Pet",stat:"def",base:55,rarity:"legendary",emoji:"🦀",dropRate:0.2,desc:"Claws from another dimension."},
+  {name:"Baby Slime",    type:"Pet",stat:"def",base:6,  rarity:"common",   emoji:"🟢",desc:"Wobbly but loyal."},
+  {name:"Forest Sprite", type:"Pet",stat:"str",base:7,  rarity:"common",   emoji:"🧚",desc:"Zips around your shoulder."},
+  {name:"Tamed Rat",     type:"Pet",stat:"def",base:5,  rarity:"common",   emoji:"🐀",desc:"Surprisingly useful."},
+  {name:"Shadow Cat",    type:"Pet",stat:"str",base:14, rarity:"uncommon", emoji:"🐈",desc:"Vanishes in dim light."},
+  {name:"Storm Hawk",    type:"Pet",stat:"str",base:16, rarity:"uncommon", emoji:"🦅",desc:"Dives at your enemies."},
+  {name:"Crystal Turtle",type:"Pet",stat:"def",base:18, rarity:"rare",     emoji:"🐢",desc:"A walking shield."},
+  {name:"Baby Dragon",   type:"Pet",stat:"str",base:20, rarity:"rare",     emoji:"🐉",desc:"Breathes tiny flames."},
+  {name:"Void Familiar", type:"Pet",stat:"str",base:30, rarity:"epic",     emoji:"👁️",desc:"Sees through walls."},
+  {name:"Lava Pup",      type:"Pet",stat:"str",base:28, rarity:"epic",     emoji:"🔥",desc:"Always warm. Always angry."},
+  {name:"Frost Wolf",    type:"Pet",stat:"def",base:32, rarity:"epic",     emoji:"🐺",desc:"Howls before every battle."},
+  {name:"Ancient Phoenix",type:"Pet",stat:"str",base:50,rarity:"legendary",emoji:"🦅",desc:"Reborn every battle."},
+  {name:"Celestial Crab", type:"Pet",stat:"def",base:55,rarity:"legendary",emoji:"🦀",desc:"Claws from another dimension."},
 ].map(p=>({...p,image:`img/pets/${slug(p.name)}.svg`}));
 
-// ── EGG TYPES ─────────────────────────────────────────────────
 export const EGG_TYPES={
-  common:   {id:"common",   name:"Common Egg",   emoji:"🥚", color:"#6b7280",
-    incubationMs:5*60*1000,
-    rarityWeights:{common:75,uncommon:20,rare:5,epic:0,legendary:0},
-    marketPrice:50},
-  uncommon: {id:"uncommon", name:"Uncommon Egg", emoji:"🟡", color:"#059669",
-    incubationMs:15*60*1000,
-    rarityWeights:{common:0,uncommon:60,rare:35,epic:5,legendary:0},
-    marketPrice:300},
-  rare:     {id:"rare",     name:"Rare Egg",     emoji:"🟠", color:"#2563eb",
-    incubationMs:60*60*1000,
-    rarityWeights:{common:0,uncommon:0,rare:60,epic:35,legendary:5},
-    marketPrice:1500},
-  epic:     {id:"epic",     name:"Epic Egg",     emoji:"💜", color:"#7c3aed",
-    incubationMs:4*60*60*1000,
-    rarityWeights:{common:0,uncommon:0,rare:0,epic:80,legendary:20},
-    marketPrice:6000},
-  legendary:{id:"legendary",name:"Legendary Egg",emoji:"✨", color:"#d97706",
-    incubationMs:12*60*60*1000,
-    rarityWeights:{common:0,uncommon:0,rare:0,epic:50,legendary:50},
-    marketPrice:20000},
+  common:   {id:"common",   name:"Common Egg",   emoji:"🥚", color:"#6b7280",incubationMs:5*60*1000,    rarityWeights:{common:75,uncommon:20,rare:5, epic:0, legendary:0},marketPrice:50},
+  uncommon: {id:"uncommon", name:"Uncommon Egg", emoji:"🟡", color:"#059669",incubationMs:15*60*1000,   rarityWeights:{common:0, uncommon:60,rare:35,epic:5, legendary:0},marketPrice:300},
+  rare:     {id:"rare",     name:"Rare Egg",     emoji:"🟠", color:"#2563eb",incubationMs:60*60*1000,   rarityWeights:{common:0, uncommon:0, rare:60,epic:35,legendary:5},marketPrice:1500},
+  epic:     {id:"epic",     name:"Epic Egg",     emoji:"💜", color:"#7c3aed",incubationMs:4*60*60*1000, rarityWeights:{common:0, uncommon:0, rare:0, epic:80,legendary:20},marketPrice:6000},
+  legendary:{id:"legendary",name:"Legendary Egg",emoji:"✨", color:"#d97706",incubationMs:12*60*60*1000,rarityWeights:{common:0, uncommon:0, rare:0, epic:50,legendary:50},marketPrice:20000},
 };
 export const SHINY_CHANCE=1/50;
-export const PET_HUNGER={
-  MAX:100,BATTLE_DRAIN:10,
-  STARVING_THRESHOLD:20,HUNGRY_THRESHOLD:50,
-  FEED_GOLD_NORMAL:30,FEED_GOLD_WEAKENED:80,
-  WEAKENED_BATTLES:3,PET_EXP_PER_BATTLE:15,PET_STAT_PER_LEVEL:2,
-};
+
+export const DUNGEONS=[
+  {
+    id:"quick",name:"Quick Run",emoji:"⚡",
+    desc:"A fast raid into the ruins. High XP efficiency.",
+    durationMs:10*60*1000,
+    minChests:0,maxChests:1,chestChance:0.45,
+    expBase:120,expPerLevel:18,goldBase:40,goldPerLevel:8,
+    color:"#2563eb",bgColor:"#eff6ff",borderColor:"#93c5fd",
+  },
+  {
+    id:"expedition",name:"Expedition",emoji:"🗺️",
+    desc:"A full dungeon run. Guaranteed rewards.",
+    durationMs:60*60*1000,
+    minChests:1,maxChests:3,chestChance:1.0,
+    expBase:600,expPerLevel:60,goldBase:180,goldPerLevel:30,
+    color:"#7c3aed",bgColor:"#f5f3ff",borderColor:"#c4b5fd",
+  },
+  {
+    id:"delve",name:"Deep Delve",emoji:"💀",
+    desc:"The depths below. Bring patience.",
+    durationMs:5*60*60*1000,
+    minChests:3,maxChests:8,chestChance:1.0,
+    expBase:2800,expPerLevel:200,goldBase:800,goldPerLevel:120,
+    color:"#dc2626",bgColor:"#fff1f2",borderColor:"#fca5a5",
+  },
+];
+
 export const CHOICE_EVENTS=[
   {id:"wounded_knight",emoji:"⚔️",title:"A Wounded Knight",desc:"A knight slumped against a tree. Badly hurt. He reaches out a hand.",choices:[{label:"Help him",outcome:()=>{const r=Math.random();return r<0.5?{msg:"He thanks you and presses a coin pouch into your hand.",gold:()=>rand(40,100),hp:0}:{msg:"He thanks you weakly. That's all he has to give.",gold:0,hp:0};}},{label:"Leave him",outcome:()=>({msg:"You walk past. Some things aren't your problem.",gold:0,hp:0})}]},
   {id:"cursed_coin",emoji:"🪙",title:"A Glowing Coin",desc:"A single gold coin sits in the middle of the path, glowing faintly. Pick it up?",choices:[{label:"Pick it up",outcome:()=>{const r=Math.random();return r<0.4?{msg:"Just a coin. Lucky you!",gold:()=>rand(20,80),hp:0}:r<0.7?{msg:"It burns your hand! Cursed gold.",gold:0,hp:()=>-rand(10,30)}:{msg:"It vanishes the moment you touch it. Illusion.",gold:0,hp:0};}},{label:"Leave it",outcome:()=>({msg:"Some things are too good to be true.",gold:0,hp:0})}]},
@@ -443,7 +308,6 @@ export const CHOICE_EVENTS=[
   {id:"cave",emoji:"🕳️",title:"Dark Cave Entrance",desc:"A cave mouth yawns in the hillside. Enter?",choices:[{label:"Go in",outcome:()=>{const win=Math.random()<0.5;return{msg:win?"A cache of gold!":"A bat colony erupts! You flee.",gold:win?rand(40,100):-10,hp:win?0:-rand(5,15)};}},{label:"Move on",outcome:()=>({msg:"Some things are best left alone.",gold:0,hp:0})}]},
 ];
 
-// ── WALK FLAVOUR TEXT ─────────────────────────────────────────
 export const WALK_EVENTS=[
   {emoji:"🌿",text:"You walk through the quiet forest."},{emoji:"🍃",text:"Leaves rustle overhead. Nothing stirs."},
   {emoji:"🌧️",text:"A light rain begins to fall."},{emoji:"☀️",text:"The sun breaks through the canopy."},
@@ -488,6 +352,4 @@ export const WALK_EVENTS=[
   {emoji:"💨",text:"A tumbleweed rolls by. Where did that even come from?"},
 ];
 
-// ── CHOICE EVENT HELPER (needed inside data closures) ─────────
-// rand is referenced by CHOICE_EVENTS closures, so must be defined here too
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
