@@ -7,7 +7,7 @@
 
 import{CFG,RARITY_SCALE,RARITY_COLOR,ARENA_TIERS,ITEMS,PETS,MONSTERS,AVATARS,
   EQUIP_SLOTS,PROPERTIES,SHOP_CONSUMABLES,WALK_AREAS,CHOICE_EVENTS,WALK_EVENTS,
-  WEATHER_TYPES,EGG_TYPES,SHINY_CHANCE,PET_HUNGER,DUNGEONS}from"./data.js";
+  WEATHER_TYPES}from"./data.js";
 
 // ── MATH ─────────────────────────────────────────────────────
 export const rand  =(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
@@ -16,7 +16,7 @@ export const clamp =(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
 export const fmt   =n=>n>=1e6?(n/1e6).toFixed(1)+"M":n>=1000?(n/1000).toFixed(1)+"K":String(Math.floor(n||0));
 // ── Faster levelling: exponent 1.2 instead of 1.5 ──────────
 export const expLv =lv=>Math.floor(80*Math.pow(1.2,lv-1));
-export const maxHpCalc=(lv,def,bonusHp)=>100+def*2+(bonusHp||0); // HP only from DEF equip + stat points, NOT level
+export const maxHpCalc=(lv,def,bonusHp)=>Math.floor(100+def*0.5+(bonusHp||0)); // HP only from DEF equip + stat points, NOT level
 
 // ── AUDIO ENGINE ──────────────────────────────────────────────
 let _audioCtx=null;
@@ -159,11 +159,11 @@ export function spawnMonster(area,playerLv){
   const pool=eligible.length?eligible:MONSTERS;
   const base=pick(pool);
 
-  // Scale stats using [base, perLevel] pairs — 15% global power buff
-  const lv=effectiveLv,BUFF=1.15;
-  const str =Math.max(1, Math.round((base.str[0]  + base.str[1]  * lv + rand(-2,4))*BUFF));
-  const def =Math.max(0, Math.round((base.def[0]  + base.def[1]  * lv + rand(-1,2))*BUFF));
-  const hp  =Math.max(5, Math.round((base.hp[0]   + base.hp[1]   * lv + rand(-5,10))*BUFF));
+  // Scale stats using [base, perLevel] pairs
+  const lv=effectiveLv;
+  const str =Math.max(1, Math.round(base.str[0]  + base.str[1]  * lv + rand(-2,4)));
+  const def =Math.max(0, Math.round(base.def[0]  + base.def[1]  * lv + rand(-1,2)));
+  const hp  =Math.max(5, Math.round(base.hp[0]   + base.hp[1]   * lv + rand(-5,10)));
   const exp =Math.max(1, Math.round(base.exp[0]  + base.exp[1]  * lv));
   const gold=Math.max(1, Math.round(base.gold[0] + base.gold[1] * lv));
 
@@ -347,227 +347,4 @@ export function applyConsumable(P,effect){
   else if(effect==="heal_big")P.hp=Math.min(P.maxHp,P.hp+Math.floor(P.maxHp*CFG.POTION_HEAL_BIG));
   else if(effect==="energy_full"){P.energy=maxE;P.lastEnergyTime=Date.now();}
   else if(effect==="exp_200"){P.exp=(P.exp||0)+200;}
-}
-
-// ── EGG RARITY ROLLER ────────────────────────────────────────
-// Universal egg rarity table used by all chest sources
-export function rollEggRarity(){
-  const w=CFG.CHEST_EGG_RARITY; // {common:45,uncommon:25,rare:15,epic:10,legendary:5}
-  const total=Object.values(w).reduce((a,b)=>a+b,0);
-  let r=Math.random()*total;
-  for(const [rar,wt] of Object.entries(w)){r-=wt;if(r<=0)return rar;}
-  return"common";
-}
-
-// Build a hatched-ready egg item for inventory
-export function makeEgg(eggTypeId,acquiredAt=Date.now()){
-  const def=EGG_TYPES[eggTypeId];if(!def)return null;
-  return{
-    id:`egg_${Date.now()}_${rand(0,9999)}`,
-    isEgg:true,eggType:eggTypeId,
-    name:def.name,emoji:def.emoji,
-    image:`img/eggs/${eggTypeId}_egg.svg`,
-    rarity:eggTypeId,
-    acquiredAt,placedAt:acquiredAt,
-    type:"Egg",
-    desc:`A ${def.name}. Incubates ${def.incubationMs>=3600000?def.incubationMs/3600000+"h":def.incubationMs/60000+"m"}.`,
-    marketPrice:def.marketPrice,
-    soulbound:false,
-    val:0,base:0,stat:"def", // dummy stats so item modal doesn't break
-  };
-}
-
-// Open one chest — returns array of reward objects for display
-export function openChest(P){
-  const rewards=[];
-  // 20% egg chance
-  if(Math.random()<CFG.DUNGEON_CHEST_EGG_CHANCE){
-    const eggType=rollEggRarity();
-    const egg=makeEgg(eggType);
-    P.inventory=[...(P.inventory||[]),egg];
-    rewards.push({type:"egg",item:egg});
-  } else {
-    // 80%: gold + possibly an item
-    const goldGain=rand(20+P.level*3, 60+P.level*8);
-    P.gold=(P.gold||0)+goldGain;
-    rewards.push({type:"gold",amount:goldGain});
-    // 40% chance of bonus item too
-    if(Math.random()<0.40){
-      const item=spawnItemFromPool(ITEMS,P.level);
-      P.inventory=[...(P.inventory||[]),item];
-      P.itemsFound=(P.itemsFound||0)+1;
-      rewards.push({type:"item",item});
-    }
-  }
-  return rewards;
-}
-
-// Shop chest — 5% egg, else item/avatar, price scales daily
-export function shopChestPrice(P){
-  const buys=shopChestBuysToday(P);
-  return Math.round(CFG.CHEST_BASE_PRICE*Math.pow(CFG.CHEST_PRICE_SCALE,buys));
-}
-export function shopChestBuysToday(P){
-  if(!P.shopChest)return 0;
-  const today=new Date().toDateString();
-  if(P.shopChest.date!==today)return 0;
-  return P.shopChest.buys||0;
-}
-export function recordShopChestBuy(P){
-  const today=new Date().toDateString();
-  if(!P.shopChest||P.shopChest.date!==today)P.shopChest={date:today,buys:0};
-  P.shopChest.buys++;
-}
-
-// ── DUNGEON SYSTEM ────────────────────────────────────────────
-export function startDungeon(P,dungeonId){
-  const def=DUNGEONS.find(d=>d.id===dungeonId);if(!def)return{ok:false,msg:"Unknown dungeon"};
-  if(P.activeDungeon)return{ok:false,msg:"Already in a dungeon!"};
-  P.activeDungeon={
-    id:dungeonId,
-    startedAt:Date.now(),
-    endsAt:Date.now()+def.durationMs,
-  };
-  return{ok:true,def};
-}
-
-export function getDungeonProgress(P){
-  if(!P.activeDungeon)return null;
-  const def=DUNGEONS.find(d=>d.id===P.activeDungeon.id);if(!def)return null;
-  const now=Date.now();
-  const elapsed=now-P.activeDungeon.startedAt;
-  const pct=Math.min(1,elapsed/def.durationMs);
-  const done=now>=P.activeDungeon.endsAt;
-  const remaining=Math.max(0,P.activeDungeon.endsAt-now);
-  return{def,pct,done,remaining,elapsed};
-}
-
-export function claimDungeon(P){
-  const prog=getDungeonProgress(P);
-  if(!prog)return{ok:false,msg:"No active dungeon"};
-  if(!prog.done)return{ok:false,msg:"Not finished yet!"};
-  const def=prog.def;
-  // Roll chest count
-  let chestCount;
-  if(def.chestChance<1&&Math.random()>def.chestChance){
-    chestCount=0;
-  } else {
-    chestCount=def.minChests+Math.floor(Math.random()*(def.maxChests-def.minChests+1));
-  }
-  // Open each chest
-  const allRewards=[];
-  for(let i=0;i<chestCount;i++){
-    const r=openChest(P);
-    allRewards.push(...r);
-  }
-  // XP + gold base reward
-  const expGain=Math.round((def.expBase+P.level*def.expPerLevel));
-  const goldGain=Math.round((def.goldBase+P.level*def.goldPerLevel));
-  P.exp=(P.exp||0)+expGain;
-  P.gold=(P.gold||0)+goldGain;
-  P.activeDungeon=null;
-  return{ok:true,chestCount,allRewards,expGain,goldGain,def};
-}
-
-export function abandonDungeon(P){
-  if(!P.activeDungeon)return;
-  P.activeDungeon=null;
-}
-
-// Format ms remaining as "4h 32m" or "8m 15s"
-export function fmtDuration(ms){
-  if(ms<=0)return"Done!";
-  const h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000),s=Math.floor((ms%60000)/1000);
-  if(h>0)return`${h}h ${m}m`;
-  if(m>0)return`${m}m ${s}s`;
-  return`${s}s`;
-}
-
-// Pet helpers needed by ui.js
-export const petExpNeeded=lv=>Math.floor(50*Math.pow(1.3,lv-1));
-export function gainPetExp(pet,amount){
-  if(!pet||!pet.petLevel)return pet;
-  pet=Object.assign({},pet);
-  pet.petExp=(pet.petExp||0)+amount;
-  while(pet.petExp>=petExpNeeded(pet.petLevel)){
-    pet.petExp-=petExpNeeded(pet.petLevel);
-    pet.petLevel++;
-    pet.val=(pet.val||pet.base)+2;
-  }
-  return pet;
-}
-export function getPetMood(pet){
-  if(!pet)return null;
-  if(pet.weakened)return"Weakened";
-  const h=pet.hunger??100;
-  if(h<=0||h<20)return"Starving";
-  if(h<50)return"Hungry";
-  return"Happy";
-}
-export function getPetPowerMult(pet){
-  if(!pet)return 1;
-  if(pet.weakened)return 0.25;
-  const m=getPetMood(pet);
-  if(m==="Starving")return 0.5;
-  if(m==="Hungry")return 0.75;
-  return 1.0;
-}
-export function drainPetHunger(pet){
-  if(!pet)return pet;
-  pet=Object.assign({},pet);
-  pet.hunger=Math.max(0,(pet.hunger??100)-10);
-  if(pet.hunger<=0){
-    pet.weakenedBattles=(pet.weakenedBattles||0)+1;
-    if(pet.weakenedBattles>=3)pet.weakened=true;
-  }
-  return pet;
-}
-export function feedPet(pet,P){
-  if(!pet)return{pet,cost:0,ok:false,msg:"No pet"};
-  const cost=pet.weakened?80:30;
-  if((P.gold||0)<cost)return{pet,cost,ok:false,msg:`Need 🪙${cost} to feed`};
-  pet=Object.assign({},pet);
-  pet.hunger=Math.min(100,(pet.hunger||0)+30);
-  if(pet.weakened&&pet.hunger>=20){pet.weakened=false;pet.weakenedBattles=0;}
-  return{pet,cost,ok:true};
-}
-export function getActivePet(P){
-  if(!P||!P.activePetId)return null;
-  return(P.petCollection||[]).find(p=>p.id===P.activePetId)||null;
-}
-export function saveActivePet(P,updatedPet){
-  if(!updatedPet||!P)return;
-  P.petCollection=(P.petCollection||[]).map(p=>p.id===updatedPet.id?updatedPet:p);
-}
-
-// Egg hatch roller (for pet system)
-export function rollEggHatch(eggTypeId){
-  const def=EGG_TYPES[eggTypeId];if(!def)return null;
-  const w=def.rarityWeights;
-  const total=Object.values(w).reduce((a,b)=>a+b,0);
-  let r=Math.random()*total;
-  let chosenRarity="common";
-  for(const[rar,wt]of Object.entries(w)){r-=wt;if(r<=0){chosenRarity=rar;break;}}
-  const pool=PETS.filter(p=>p.rarity===chosenRarity);
-  const src=pool.length?pool:PETS;
-  const template=src[Math.floor(Math.random()*src.length)];
-  const isShiny=Math.random()<SHINY_CHANCE;
-  return{
-    ...template,
-    id:`pet_${Date.now()}_${rand(0,9999)}`,
-    petLevel:1,petExp:0,
-    hunger:100,isShiny,weakened:false,weakenedBattles:0,
-    hatchedAt:Date.now(),soulbound:true,
-    val:template.base,base:template.base,
-  };
-}
-export function canHatchEgg(egg){
-  if(!egg||!egg.isEgg)return{ok:false,reason:"Not an egg"};
-  const elapsed=Date.now()-(egg.placedAt||egg.acquiredAt||Date.now());
-  const def=EGG_TYPES[egg.eggType];if(!def)return{ok:false,reason:"Unknown egg type"};
-  if(elapsed<def.incubationMs){
-    const remaining=def.incubationMs-elapsed;
-    return{ok:false,reason:`Incubating — ${fmtDuration(remaining)} remaining`,remaining};
-  }
-  return{ok:true};
 }
