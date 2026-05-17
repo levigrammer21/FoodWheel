@@ -219,7 +219,8 @@ export function salvageShards(item){
 export function upgradeItemCost(item){
   const upgrades=item.upgrades||0;
   const goldCost=Math.round((item.val||1) * CFG.UPGRADE_GOLD_COST_PER_VAL * (1+upgrades*0.3));
-  const shardCost=CFG.UPGRADE_SHARD_COST + upgrades;
+  // Shard cost: ~10 at first upgrade, ~300 at 10th — quadratic curve
+  const shardCost=Math.round(10 + (upgrades**2) * 3.7);
   return{goldCost, shardCost};
 }
 export function canUpgrade(item){
