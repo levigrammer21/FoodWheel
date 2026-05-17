@@ -144,21 +144,36 @@ function renderWeatherBanner(){
 export function updateWalkUI(){
   const maxE=calcMaxEnergy(P);
   const epText=document.getElementById("walk-ep-text"),epBar=document.getElementById("walk-ep-bar");
-  const stepBtn=document.getElementById("walk-step-btn"),areaDisplay=document.getElementById("walk-area-display");
+  const areaDisplay=document.getElementById("walk-area-display");
   const wa=document.getElementById("walk-avatar-el");
   if(epText)epText.textContent=`${P.energy}/${maxE}`;
   if(epBar)epBar.style.width=`${Math.round((P.energy/maxE)*100)}%`;
-  if(stepBtn){stepBtn.classList.toggle("no-energy",P.energy<1);stepBtn.textContent="👣";}
-  if(wa)wa.innerHTML=avatarGfx(30);
-  if(areaDisplay){if(CURRENT_AREA){areaDisplay.innerHTML=`${CURRENT_AREA.emoji} <strong>${CURRENT_AREA.name}</strong>`;areaDisplay.classList.add("selected");}
-    else{areaDisplay.textContent="🌍 Choose Area";areaDisplay.classList.remove("selected");}}
+  if(wa)wa.innerHTML=avatarGfx(48);
+  if(areaDisplay){
+    if(CURRENT_AREA){
+      areaDisplay.innerHTML=`${CURRENT_AREA.emoji} ${CURRENT_AREA.name}`;
+      areaDisplay.classList.add("selected");
+      // Set world background to area theme
+      const world=document.getElementById("walk-world");
+      if(world&&CURRENT_AREA.bgCSS)world.style.cssText=CURRENT_AREA.bgCSS;
+    }else{
+      areaDisplay.textContent="🌍 Choose Area";
+      areaDisplay.classList.remove("selected");
+    }
+  }
   const resumeBanner=document.getElementById("walk-resume-banner"),enemyName=document.getElementById("walk-enemy-name");
   if(resumeBanner){const hasCombat=(combatState&&!combatState.done)||P.activeCombat;
     resumeBanner.style.display=hasCombat?"flex":"none";
     if(hasCombat&&enemyName)enemyName.textContent=`vs ${(combatState?.monster||P.activeCombat?.monster)?.name||"Unknown"}`;}
   const comboEl=document.getElementById("walk-combo-label");
-  if(comboEl){const streak=P.walkStreak||0;comboEl.textContent=streak>=CFG.COMBO_TIERS[1]?comboLabel(streak):"";
-    comboEl.style.color=["","#f59e0b","#ef4444","#c084fc"][getComboTier(streak)]||"";}
+  if(comboEl){const streak=P.walkStreak||0;
+    if(streak>=CFG.COMBO_TIERS[1]){
+      comboEl.textContent=comboLabel(streak);
+      comboEl.style.color=["","#f59e0b","#ef4444","#c084fc"][getComboTier(streak)]||"";
+    }else{comboEl.textContent="";}}
+  // Update no-energy world dim
+  const world=document.getElementById("walk-world");
+  if(world)world.style.opacity=P.energy<1?"0.6":"1";
 }
 function startWalkRegenTimer(){
   if(walkRegenInterval)clearInterval(walkRegenInterval);
@@ -193,22 +208,60 @@ export function openAreaSelect(){
 }
 export function selectArea(id){CURRENT_AREA=WALK_AREAS.find(a=>a.id===id)||null;closeModal();updateWalkUI();SFX.click();}
 export function renderWalkFeed(){
-  const feedEl=document.getElementById("walk-feed");if(!feedEl)return;
-  const wb=renderWeatherBanner();
-  if(feed.length===0){feedEl.innerHTML=wb+`<div style="text-align:center;padding:2rem;color:var(--text2);font-style:italic;font-size:0.9rem">Choose an area and tap 👣 to explore!</div>`;return;}
-  feedEl.innerHTML=wb+feed.map(f=>`<div class="feed-item">
-    <div class="feed-icon">${gfx(f.image,f.emoji||"🌿",30)}</div>
-    <div class="feed-text">${f.text}</div>
-    <div class="feed-badge" style="color:${f.color||"var(--text3)"}">${f.badge||""}</div>
-  </div>`).join("");feedEl.scrollTop=0;
+  // New UI: no feed div. Events show in the world directly.
+  // Hide tap hint after first step
+  if(feed.length>0){const hint=document.getElementById("walk-tap-hint");if(hint)hint.style.display="none";}
 }
-function addFeed(emoji,image,text,badge,color){feed.unshift({emoji,image,text,badge,color});if(feed.length>30)feed.pop();}
+function addFeed(emoji,image,text,badge,color){
+  feed.unshift({emoji,image,text,badge,color});if(feed.length>30)feed.pop();
+}
+function spawnFlavorText(text,emoji){
+  const layer=document.getElementById("walk-flavor-layer");if(!layer)return;
+  const el=document.createElement("div");
+  el.className="walk-flavor";
+  // Randomize horizontal position slightly
+  const offset=(Math.random()-0.5)*60;
+  el.style.cssText=`bottom:38%;left:calc(50% + ${offset}px);transform:translateX(-50%);`;
+  el.textContent=`${emoji} ${text}`;
+  layer.appendChild(el);
+  setTimeout(()=>el.remove(),3200);
+}
+function spawnEventCard(emoji,title,type,color){
+  const layer=document.getElementById("walk-flavor-layer");if(!layer)return;
+  const el=document.createElement("div");
+  el.className="walk-event-card";
+  el.style.bottom="20%";
+  el.style.borderColor=color||"rgba(255,255,255,0.2)";
+  el.innerHTML=`<div class="walk-event-emoji">${emoji}</div>
+    <div class="walk-event-title">${title}</div>
+    <div class="walk-event-type">${type}</div>`;
+  layer.appendChild(el);
+  setTimeout(()=>{el.style.opacity="0";el.style.transform="translateX(-50%) translateY(-60px) scale(0.9)";el.style.transition="all 0.4s ease";setTimeout(()=>el.remove(),400);},2200);
+}
+function spawnFootprint(){
+  const fp=document.getElementById("walk-footprints");if(!fp)return;
+  const el=document.createElement("div");
+  el.className="walk-footprint";
+  const streak=P.walkStreak||0;
+  const tier=getComboTier(streak);
+  const colors=["rgba(255,255,255,0.4)","rgba(251,191,36,0.7)","rgba(239,68,68,0.8)","rgba(192,132,252,0.9)"];
+  el.style.cssText=`left:calc(50% + ${(Math.random()-0.5)*20}px);bottom:${28+Math.random()*8}%;color:${colors[tier]};`;
+  el.textContent="👣";
+  fp.appendChild(el);
+  setTimeout(()=>el.remove(),2600);
+}
 function questProgress(type,amount=1){
   if(!P.quests)return;
   P.quests.list.forEach(q=>{if(q.type===type&&q.progress<q.target){q.progress=Math.min(q.target,q.progress+amount);if(q.progress>=q.target&&!q.claimed)toast(`📜 Quest complete: ${q.name}!`);}});
   saveP();
 }
-function doAvatarHop(){const el=document.getElementById("walk-avatar-el");if(!el)return;el.style.transform="translateY(-6px)";setTimeout(()=>{el.style.transform="translateY(0)";},180);}
+function doAvatarHop(){
+  const el=document.getElementById("walk-avatar-el");if(!el)return;
+  el.classList.remove("hop");void el.offsetWidth;// reflow to restart animation
+  el.classList.add("hop");
+  setTimeout(()=>el.classList.remove("hop"),320);
+  spawnFootprint();
+}
 
 export function takeStep(){
   unlockAudio();
@@ -220,21 +273,23 @@ export function takeStep(){
   if(P.energy<calcMaxEnergy(P)&&!P.lastEnergyTime)P.lastEnergyTime=Date.now();
   updateHdr();updateWalkUI();questProgress("steps");
   const streak=P.walkStreak;
-  if(CFG.COMBO_TIERS.slice(1).includes(streak)){const mult=CFG.COMBO_MULTS[getComboTier(streak)];SFX.combo();toast(`🔥 Combo x${mult}! Keep stepping!`,"#f59e0b");}
+  if(CFG.COMBO_TIERS.slice(1).includes(streak)){const mult=CFG.COMBO_MULTS[getComboTier(streak)];SFX.combo();spawnFlavorText(`COMBO x${mult}!`,"🔥");toast(`🔥 Combo x${mult}! Keep stepping!`,"#f59e0b");}
   const w=currentWeather||{goldMult:1,expMult:1,monsterMult:1,lootMult:1};
   const comboMult=getComboMult(streak),area=CURRENT_AREA;
   const totalItemChance=(CFG.ITEM_CHANCE+(area.lootBonus||0))*w.lootMult;
-  const totalMonsterChance=CFG.MONSTER_CHANCE*w.monsterMult;
+  const totalMonsterChance=Math.min(CFG.MONSTER_CHANCE,0.22)*w.monsterMult; // capped so flavor text always has room
   const stepXp=Math.round((CFG.STEP_XP_BASE+P.level*CFG.STEP_XP_PER_LEVEL)*area.expMult*w.expMult*comboMult);
   P.exp=(P.exp||0)+stepXp;checkLevelUp();
   const roll=Math.random();
   if(roll<totalMonsterChance){
     const m=spawnMonster(area,P.level);
-    addFeed(m.emoji,m.image,`Encountered <strong>Lv.${m.effectiveLv} ${m.name}</strong>!`,"⚔️ Fight!","#f87171");
-    saveP();renderWalkFeed();setTimeout(()=>openCombatModal(m),350);
+    spawnEventCard(m.emoji,`Lv.${m.effectiveLv} ${m.name}`,"⚔️ Battle!","#ef444466");
+    addFeed(m.emoji,m.image,`Encountered Lv.${m.effectiveLv} ${m.name}!`,"⚔️","#f87171");
+    saveP();renderWalkFeed();setTimeout(()=>openCombatModal(m),600);
   }else if(roll<totalMonsterChance+CFG.GOLD_CHANCE){
     const g=Math.round(rand(5,25+P.level*2)*area.goldMult*w.goldMult*comboMult);P.gold=(P.gold||0)+g;SFX.gold();
-    addFeed("🪙","",`Found gold in ${area.name}!`,`+${g}🪙${comboMult>1?" x"+comboMult:""}`.trim(),"#fbbf24");
+    spawnFlavorText(`+${g} 🪙${comboMult>1?" x"+comboMult:""}`.trim(),"🪙");
+    addFeed("🪙","",`Found gold in ${area.name}!`,`+${g}🪙`,"#fbbf24");
     saveP();renderWalkFeed();
   }else if(roll<totalMonsterChance+CFG.GOLD_CHANCE+totalItemChance){
     const item=spawnItemFromPool([...ITEMS,...PETS],P.level);
@@ -245,12 +300,15 @@ export function takeStep(){
     const cColor=cur?(item.val>cur.val?"#4ade80":"#f87171"):"";
     SFX.itemFound();const lvlTag=item.itemLevel?` Lv.${item.itemLevel}`:"";
     addFeed(item.emoji,item.image,`Found <strong>${item.name}</strong>${lvlTag} <span style="color:${q.color};font-weight:700">${q.label}</span>${cStr?`<span style="color:${cColor}"> ${cStr}</span>`:""}`,item.rarity,RARITY_COLOR[item.rarity]);
+    spawnEventCard(item.emoji,item.name,`+${item.val} ${item.stat==="str"?"STR":"DEF"} · ${item.rarity}`,RARITY_COLOR[item.rarity]+"66");
     toast(`${item.emoji} ${item.name}${lvlTag} (+${item.val}) ${q.label}${cStr}`);
     questProgress("items");tryAvatarDrop();trackCirculation(item.name);saveP();renderWalkFeed();
   }else if(roll<totalMonsterChance+CFG.GOLD_CHANCE+totalItemChance+CFG.CHOICE_EVENT_CHANCE){
     const evt=pick(CHOICE_EVENTS);saveP();renderWalkFeed();openChoiceEventModal(evt);
   }else{
     const wev=WALK_EVENTS[Math.floor(Math.random()*WALK_EVENTS.length)];
+    spawnFlavorText(wev.text,wev.emoji);
+    spawnFlavorText(`+${stepXp} XP`,"✨");
     addFeed(wev.emoji,"",wev.text,`+${stepXp} XP`,"#60a5fa");saveP();renderWalkFeed();
   }
 }

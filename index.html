@@ -208,82 +208,196 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
   display:flex;align-items:center;gap:0.5rem}
 .section-hdr::after{content:'';flex:1;height:1.5px;background:var(--border)}
 
-/* ── WALK SCREEN ── */
+/* ══════════════════════════════════════════
+   WALK SCREEN — IMMERSIVE PATH
+   ══════════════════════════════════════════ */
 #walk-screen{
   display:none;position:absolute;top:0;left:0;right:0;bottom:0;
-  z-index:20;background:var(--bg2);flex-direction:column;
+  z-index:20;flex-direction:column;overflow:hidden;
+  background:#0d1a0d;
 }
 #walk-screen.active{display:flex}
 
-#walk-header{
-  height:var(--hdr-h);background:var(--surface);border-bottom:1.5px solid var(--border);
-  padding:0 0.9rem;display:flex;align-items:center;gap:0.75rem;flex-shrink:0;box-shadow:var(--shadow-sm);
+/* ── TOP HUD ── */
+#walk-hud-top{
+  flex-shrink:0;height:52px;
+  display:flex;align-items:center;gap:0.6rem;
+  padding:0 0.75rem;
+  background:linear-gradient(180deg,rgba(0,0,0,0.7) 0%,transparent 100%);
+  position:relative;z-index:5;
 }
-.walk-hdr-logo{
-  font-family:'Cinzel',serif;font-size:1rem;font-weight:700;
-  background:linear-gradient(135deg,var(--steel),var(--gold2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0;
+.walk-hud-back{
+  width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.2);
+  background:rgba(0,0,0,0.4);color:white;font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
-.walk-hdr-energy{flex:1;display:flex;flex-direction:column;gap:0.18rem;min-width:0;}
-.walk-ep-row{display:flex;justify-content:space-between;font-size:0.65rem;color:var(--text3);font-family:'Cinzel',serif;letter-spacing:0.04em;}
-.walk-ep-bar-bg{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border);}
-.walk-ep-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold3),var(--gold2));transition:width 0.4s;}
-
-#walk-feed{flex:1;overflow-y:auto;padding:0.75rem;-webkit-overflow-scrolling:touch;}
-#walk-feed::-webkit-scrollbar{width:3px}
-#walk-feed::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-
-#walk-action-bar{
-  flex-shrink:0;background:var(--surface);border-top:1.5px solid var(--border);
-  padding:0.8rem 1rem 1rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;
-  box-shadow:0 -4px 16px rgba(0,0,0,0.06);
+.walk-hud-area{
+  flex:1;padding:0.35rem 0.6rem;background:rgba(0,0,0,0.4);
+  border:1.5px solid rgba(255,255,255,0.15);border-radius:20px;
+  font-family:'Cinzel',serif;font-size:0.68rem;color:rgba(255,255,255,0.8);
+  cursor:pointer;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
+.walk-hud-area.selected{border-color:rgba(251,191,36,0.6);color:#fbbf24;}
+.walk-hud-ep{display:flex;align-items:center;gap:0.4rem;flex-shrink:0;}
+.walk-hud-ep-bar-bg{width:60px;height:6px;background:rgba(255,255,255,0.15);border-radius:3px;overflow:hidden;}
+.walk-hud-ep-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#f59e0b,#fbbf24);transition:width 0.4s;}
+.walk-hud-ep-text{font-family:'Cinzel',serif;font-size:0.62rem;color:rgba(255,255,255,0.7);white-space:nowrap;}
 
+/* ── RESUME BANNER ── */
 #walk-resume-banner{
-  display:none;width:100%;background:#fef2f2;border:1.5px solid #fca5a5;border-radius:12px;
-  padding:0.7rem 0.9rem;flex-direction:row;align-items:center;gap:0.75rem;
-}
-#walk-resume-banner.visible{display:flex}
-
-/* ── NEW: combo label ── */
-#walk-combo-label{
-  font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;
-  min-height:1rem;text-align:center;width:100%;letter-spacing:0.04em;
-  transition:color 0.3s;
+  display:none;flex-shrink:0;
+  background:rgba(220,38,38,0.85);backdrop-filter:blur(8px);
+  padding:0.6rem 0.85rem;flex-direction:row;align-items:center;gap:0.6rem;
+  border-bottom:1px solid rgba(239,68,68,0.5);z-index:5;position:relative;
 }
 
-.walk-bottom-row{display:flex;align-items:center;gap:0.75rem;width:100%;}
-.walk-area-btn{
-  flex:1;padding:0.55rem 0.75rem;background:var(--bg3);border:1.5px solid var(--border);
-  border-radius:10px;font-family:'Cinzel',serif;font-size:0.7rem;color:var(--text2);
-  cursor:pointer;text-align:center;transition:all 0.18s;line-height:1.3;
+/* ── THE WORLD ── */
+#walk-world{
+  flex:1;position:relative;overflow:hidden;cursor:pointer;
+  /* default forest bg, overridden by JS per area */
+  background:linear-gradient(180deg,#0a1f0a 0%,#0f2d0f 40%,#0a1a0a 100%);
+  user-select:none;-webkit-user-select:none;
 }
-.walk-area-btn.selected{border-color:var(--gold2);color:var(--gold3);background:#fefce8}
+#walk-world:active{filter:brightness(0.92)}
 
-/* ── Step button ── */
-.walk-step-btn{
-  width:70px;height:70px;border-radius:50%;border:none;cursor:pointer;
-  background:linear-gradient(135deg,var(--steel2),var(--steel));
-  color:white;font-size:1.8rem;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 6px 20px rgba(42,96,144,0.45);transition:all 0.18s;flex-shrink:0;
+/* ── SCENERY ── */
+#walk-scenery{position:absolute;inset:0;pointer-events:none;}
+.walk-tree,.walk-deco{
+  position:absolute;font-size:2rem;
+  animation:walkTreeSway 3s ease-in-out infinite;
+  transform-origin:bottom center;opacity:0.85;
 }
-.walk-step-btn:active{transform:scale(0.88)}
-.walk-step-btn.no-energy{background:linear-gradient(135deg,#9ca3af,#d1d5db);box-shadow:none;cursor:not-allowed;}
-@keyframes stepPulse{
-  0%,100%{box-shadow:0 6px 20px rgba(42,96,144,0.45)}
-  50%{box-shadow:0 8px 32px rgba(42,96,144,0.75)}}
-.walk-step-btn:not(.no-energy){animation:stepPulse 2s ease-in-out infinite}
+.walk-tree-r{animation-delay:-1.5s;}
+@keyframes walkTreeSway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
 
-.walk-info-col{flex:1;text-align:center}
-.walk-back-btn{
-  display:flex;align-items:center;justify-content:center;
-  width:38px;height:38px;border-radius:50%;background:var(--bg3);
-  border:1.5px solid var(--border);cursor:pointer;font-size:1rem;color:var(--text3);
-  flex-shrink:0;transition:all 0.18s;
+/* ── PATH ── */
+#walk-path{
+  position:absolute;left:50%;transform:translateX(-50%);
+  bottom:0;top:0;width:120px;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
 }
-.walk-back-btn:active{transform:scale(0.9)}
+.walk-path-segment{
+  width:100%;flex:1;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    rgba(139,110,75,0.3) 10%,
+    rgba(139,110,75,0.5) 50%,
+    rgba(110,85,55,0.6) 100%);
+  position:relative;
+}
+.walk-path-segment::before,.walk-path-segment::after{
+  content:'';position:absolute;top:0;bottom:0;width:3px;
+  background:repeating-linear-gradient(180deg,
+    rgba(255,255,255,0.15) 0px, rgba(255,255,255,0.15) 12px,
+    transparent 12px, transparent 24px);
+}
+.walk-path-segment::before{left:20px;}
+.walk-path-segment::after{right:20px;}
 
+/* ── FOOTPRINTS ── */
+#walk-footprints{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.walk-footprint{
+  position:absolute;font-size:0.9rem;opacity:0;
+  animation:footprintFade 2.5s ease forwards;
+}
+@keyframes footprintFade{
+  0%{opacity:0.8;transform:scale(1)}
+  100%{opacity:0;transform:scale(0.6) translateY(40px)}
+}
+
+/* ── AVATAR ── */
+#walk-avatar-figure{
+  position:absolute;bottom:30%;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  pointer-events:none;z-index:3;
+}
+#walk-avatar-el{
+  font-size:3rem;line-height:1;
+  transition:transform 0.15s;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+}
+#walk-avatar-el.hop{animation:avatarHop 0.3s ease;}
+@keyframes avatarHop{
+  0%{transform:translateY(0) scaleX(1)}
+  30%{transform:translateY(-18px) scaleX(0.95)}
+  60%{transform:translateY(-8px) scaleX(1)}
+  100%{transform:translateY(0) scaleX(1)}
+}
+#walk-avatar-shadow{
+  width:36px;height:8px;border-radius:50%;
+  background:rgba(0,0,0,0.35);filter:blur(3px);
+  transition:transform 0.15s;
+}
+
+/* ── FLAVOR FLOATS ── */
+#walk-flavor-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:4;}
+.walk-flavor{
+  position:absolute;left:50%;transform:translateX(-50%);
+  font-family:'Crimson Pro',serif;font-style:italic;
+  font-size:0.82rem;color:rgba(255,255,255,0.75);
+  text-align:center;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,0.8);
+  animation:flavorFloat 3s ease forwards;
+  pointer-events:none;
+}
+@keyframes flavorFloat{
+  0%{opacity:0;transform:translateX(-50%) translateY(0)}
+  15%{opacity:1}
+  75%{opacity:0.8}
+  100%{opacity:0;transform:translateX(-50%) translateY(-70px)}
+}
+.walk-event-card{
+  position:absolute;left:50%;transform:translateX(-50%) translateY(60px);
+  width:220px;background:rgba(10,10,10,0.88);
+  border:1.5px solid rgba(255,255,255,0.2);border-radius:16px;
+  padding:0.85rem;text-align:center;
+  animation:eventCardIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  z-index:10;backdrop-filter:blur(12px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+}
+@keyframes eventCardIn{
+  0%{opacity:0;transform:translateX(-50%) translateY(60px) scale(0.85)}
+  100%{opacity:1;transform:translateX(-50%) translateY(-20px) scale(1)}
+}
+.walk-event-emoji{font-size:2.5rem;margin-bottom:0.3rem;}
+.walk-event-title{font-family:'Cinzel',serif;font-size:0.82rem;color:#fbbf24;font-weight:700;margin-bottom:0.2rem;}
+.walk-event-type{font-size:0.72rem;color:rgba(255,255,255,0.6);}
+
+/* ── TAP HINT ── */
+#walk-tap-hint{
+  position:absolute;bottom:35%;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  pointer-events:none;z-index:6;
+}
+.walk-tap-pulse{
+  width:60px;height:60px;border-radius:50%;
+  border:2.5px solid rgba(251,191,36,0.6);
+  animation:tapPulse 1.5s ease-in-out infinite;
+}
+@keyframes tapPulse{
+  0%{transform:scale(0.8);opacity:0.8}
+  50%{transform:scale(1.2);opacity:0.3}
+  100%{transform:scale(0.8);opacity:0.8}
+}
+.walk-tap-text{
+  font-family:'Cinzel',serif;font-size:0.75rem;
+  color:rgba(255,255,255,0.7);letter-spacing:0.1em;text-transform:uppercase;
+}
+
+/* ── BOTTOM HUD ── */
+#walk-hud-bottom{
+  flex-shrink:0;min-height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.6rem 1rem;
+  background:linear-gradient(0deg,rgba(0,0,0,0.75) 0%,transparent 100%);
+  position:relative;z-index:5;
+}
+.walk-combo-display{
+  font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;
+  min-width:120px;text-shadow:0 1px 4px rgba(0,0,0,0.8);
+}
+.walk-hud-info{text-align:right;}
+
+/* ── AREA SELECT ── */
 /* ── AREA SELECT ── */
 .area-card{border-radius:12px;padding:0.9rem;margin-bottom:0.5rem;cursor:pointer;
   transition:all 0.18s;border:2px solid var(--border);background:var(--surface)}
@@ -533,58 +647,82 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
     </div>
   </div>
 
-  <!-- WALK SCREEN -->
+  <!-- WALK SCREEN — immersive path view -->
   <div id="walk-screen">
 
-    <div id="walk-header">
-      <div class="walk-hdr-logo">⚔ MicroMMO</div>
-      <div class="walk-hdr-energy">
-        <div class="walk-ep-row">
-          <span>⚡ Energy</span>
-          <span id="walk-ep-text">5/5</span>
-        </div>
-        <div class="walk-ep-bar-bg">
-          <div class="walk-ep-bar-fill" id="walk-ep-bar" style="width:100%"></div>
-        </div>
+    <!-- Top HUD -->
+    <div id="walk-hud-top">
+      <button class="walk-hud-back" onclick="G.hideWalk()">←</button>
+      <div id="walk-area-display" class="walk-hud-area" onclick="G.openAreaSelect()">🌍 Choose Area</div>
+      <div class="walk-hud-ep">
+        <div class="walk-hud-ep-bar-bg"><div id="walk-ep-bar" class="walk-hud-ep-bar-fill" style="width:100%"></div></div>
+        <span id="walk-ep-text" class="walk-hud-ep-text">25/25</span>
       </div>
-      <div class="hdr-avatar" onclick="G.showTab('you')" id="walk-avatar-el">🧙</div>
     </div>
 
-    <div id="walk-feed">
-      <div class="feed-empty">Select an area below, then tap 👣 to explore!</div>
+    <!-- Resume combat banner -->
+    <div id="walk-resume-banner">
+      <span style="font-size:1.1rem">⚔️</span>
+      <div style="flex:1">
+        <div style="font-family:'Cinzel',serif;font-size:0.75rem;color:#fca5a5;font-weight:700">Battle in Progress!</div>
+        <div style="font-size:0.68rem;color:rgba(255,255,255,0.6)" id="walk-enemy-name">vs Unknown</div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="G.resumeCombat()">Resume</button>
+      <button class="btn btn-ghost btn-sm" style="font-size:0.6rem;margin-left:0.3rem;background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:white" onclick="G.abandonCombat()">Flee</button>
     </div>
 
-    <div id="walk-action-bar">
+    <!-- THE WORLD — tap anywhere to step -->
+    <div id="walk-world" onclick="G.takeStep()">
 
-      <!-- Resume combat banner -->
-      <div id="walk-resume-banner">
-        <div style="font-size:1.3rem">⚔️</div>
-        <div style="flex:1">
-          <div style="font-family:'Cinzel',serif;font-size:0.78rem;color:var(--crimson2);font-weight:700">Battle in Progress!</div>
-          <div style="font-size:0.72rem;color:var(--text3)" id="walk-enemy-name">vs Unknown</div>
-        </div>
-        <button class="btn btn-danger btn-sm" onclick="G.resumeCombat()">Resume</button>
-        <button class="btn btn-ghost btn-sm" style="font-size:0.62rem;margin-left:0.3rem" onclick="G.abandonCombat()">Flee</button>
+      <!-- Scrolling background scenery -->
+      <div id="walk-scenery">
+        <div class="walk-tree walk-tree-l" style="left:2%;top:15%">🌲</div>
+        <div class="walk-tree walk-tree-r" style="right:3%;top:8%">🌲</div>
+        <div class="walk-tree walk-tree-l" style="left:5%;top:45%">🌿</div>
+        <div class="walk-tree walk-tree-r" style="right:6%;top:55%">🌲</div>
+        <div class="walk-tree walk-tree-l" style="left:1%;top:70%">🌳</div>
+        <div class="walk-tree walk-tree-r" style="right:2%;top:72%">🌳</div>
+        <div class="walk-deco" style="left:8%;top:30%">🪨</div>
+        <div class="walk-deco" style="right:10%;top:40%">🍄</div>
+        <div class="walk-deco" style="left:12%;top:80%">💀</div>
       </div>
 
-      <!-- ← NEW: combo streak label -->
-      <div id="walk-combo-label"></div>
-
-      <!-- Area selector | Step button | Regen timer -->
-      <div class="walk-bottom-row">
-        <button class="walk-back-btn" onclick="G.hideWalk()">←</button>
-        <div id="walk-area-display" class="walk-area-btn" onclick="G.openAreaSelect()">
-          🌍 Choose Area
-        </div>
-        <!-- ← 👣 footprints step button -->
-        <button id="walk-step-btn" class="walk-step-btn" onclick="G.takeStep()">👣</button>
-        <div class="walk-info-col">
-          <div style="font-family:'Cinzel',serif;font-size:0.6rem;color:var(--text3)">1 EP / step</div>
-          <div style="font-size:0.68rem;color:var(--text3);margin-top:0.1rem" id="walk-regen-label">Full</div>
-        </div>
+      <!-- The path -->
+      <div id="walk-path">
+        <div class="walk-path-segment"></div>
       </div>
 
+      <!-- Footprint trail -->
+      <div id="walk-footprints"></div>
+
+      <!-- Avatar on the path -->
+      <div id="walk-avatar-figure">
+        <div id="walk-avatar-el" class="walk-avatar-sprite">🧙</div>
+        <div id="walk-avatar-shadow"></div>
+      </div>
+
+      <!-- Flavor text floats -->
+      <div id="walk-flavor-layer"></div>
+
+      <!-- Tap hint (fades after first step) -->
+      <div id="walk-tap-hint">
+        <div class="walk-tap-pulse"></div>
+        <div class="walk-tap-text">Tap to Walk</div>
+      </div>
+
+    </div><!-- end #walk-world -->
+
+    <!-- Bottom HUD -->
+    <div id="walk-hud-bottom">
+      <div id="walk-combo-label" class="walk-combo-display"></div>
+      <div class="walk-hud-info">
+        <div style="font-size:0.62rem;color:rgba(255,255,255,0.5);font-family:'Cinzel',serif">1 EP / step</div>
+        <div id="walk-regen-label" style="font-size:0.68rem;color:rgba(255,255,255,0.7)">Full ⚡</div>
+      </div>
+      <!-- hidden step btn kept for JS compatibility -->
+      <button id="walk-step-btn" style="display:none"></button>
     </div>
+
   </div><!-- end #walk-screen -->
 
 </div><!-- end #app -->
