@@ -177,7 +177,7 @@ export const MONSTERS=[
    str:[115,12.0],def:[60,8.0],hp:[950,105],exp:[650,62],gold:[320,38],areaIds:["abyssaldepths","chaoscore"]},
   {name:"Chaos Incarnate", emoji:"☄️",desc:"The end. The beginning.",
    str:[140,14.0],def:[80,10.0],hp:[1200,130],exp:[850,82],gold:[420,50],areaIds:["chaoscore"]},
-]].map(m=>({...m,image:`img/monsters/${slug(m.name)}.svg`}));
+].map(m=>({...m,image:`img/monsters/${slug(m.name)}.svg`}));
 
 // ── AVATARS ──────────────────────────────────────────────────
 export const AVATARS=[
