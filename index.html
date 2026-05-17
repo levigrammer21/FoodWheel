@@ -262,13 +262,46 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
 
 /* ── SCENERY ── */
 #walk-scenery{position:absolute;inset:0;pointer-events:none;}
-.walk-tree,.walk-deco{
-  position:absolute;font-size:2rem;
-  animation:walkTreeSway 3s ease-in-out infinite;
-  transform-origin:bottom center;opacity:0.85;
-}
-.walk-tree-r{animation-delay:-1.5s;}
-@keyframes walkTreeSway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+/* ── TREES (CSS only, no emojis) ── */
+.ws-tree{position:absolute;width:60px;pointer-events:none;}
+.ws-tree::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:10px;background:linear-gradient(180deg,#3d2b1f,#2a1a10);border-radius:2px;height:30%;}
+.ws-tree::after{content:'';position:absolute;bottom:25%;left:50%;transform:translateX(-50%);
+  border-left:28px solid transparent;border-right:28px solid transparent;
+  border-bottom:100% solid rgba(15,40,15,0.85);width:0;height:0;}
+.ws-tree-l{animation:treeSwayL 4s ease-in-out infinite;transform-origin:bottom center;}
+.ws-tree-r{animation:treeSwayR 3.5s ease-in-out infinite;transform-origin:bottom center;}
+.ws-tree-dark::after{border-bottom-color:rgba(8,20,8,0.9);}
+@keyframes treeSwayL{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1deg)}}
+@keyframes treeSwayR{0%,100%{transform:rotate(1.5deg)}50%{transform:rotate(-1deg)}}
+/* ── MIST ── */
+.ws-mist{position:absolute;left:-10%;width:120%;pointer-events:none;
+  border-radius:50%;filter:blur(18px);}
+.ws-mist-1{top:40%;height:60px;background:rgba(100,150,100,0.08);
+  animation:mistDrift 8s ease-in-out infinite;}
+.ws-mist-2{top:60%;height:40px;background:rgba(80,120,80,0.06);
+  animation:mistDrift 12s ease-in-out infinite reverse;}
+@keyframes mistDrift{0%,100%{transform:translateX(-5%)}50%{transform:translateX(5%)}}
+/* ── PARTICLES (fireflies/spores) ── */
+.ws-particle{position:absolute;width:3px;height:3px;border-radius:50%;
+  background:rgba(180,255,150,0.6);box-shadow:0 0 6px rgba(180,255,150,0.8);
+  animation:particleFloat 5s ease-in-out infinite;}
+.ws-particle-bright{background:rgba(255,230,100,0.8);box-shadow:0 0 8px rgba(255,230,100,1);
+  width:4px;height:4px;}
+@keyframes particleFloat{
+  0%{transform:translateY(0) scale(1);opacity:0}
+  20%{opacity:1}
+  80%{opacity:0.6}
+  100%{transform:translateY(-120px) scale(0.5);opacity:0}}
+/* ── GROUND FOG ── */
+.ws-fog{position:absolute;bottom:0;left:-5%;width:110%;height:80px;
+  background:linear-gradient(0deg,rgba(20,40,20,0.5) 0%,transparent 100%);
+  pointer-events:none;}
+/* ── LIGHT RAYS ── */
+.ws-ray{position:absolute;top:0;width:1px;height:40%;
+  background:linear-gradient(180deg,rgba(255,255,200,0.12),transparent);
+  animation:rayFlicker 6s ease-in-out infinite;transform-origin:top center;}
+@keyframes rayFlicker{0%,100%{opacity:0.4;transform:scaleX(1)}50%{opacity:0.1;transform:scaleX(2)}}
 
 /* ── PATH ── */
 #walk-path{
@@ -674,17 +707,31 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
     <!-- THE WORLD — tap anywhere to step -->
     <div id="walk-world" onclick="G.takeStep()">
 
-      <!-- Scrolling background scenery -->
+      <!-- Pure CSS mystical scenery - no emojis -->
       <div id="walk-scenery">
-        <div class="walk-tree walk-tree-l" style="left:2%;top:15%">🌲</div>
-        <div class="walk-tree walk-tree-r" style="right:3%;top:8%">🌲</div>
-        <div class="walk-tree walk-tree-l" style="left:5%;top:45%">🌿</div>
-        <div class="walk-tree walk-tree-r" style="right:6%;top:55%">🌲</div>
-        <div class="walk-tree walk-tree-l" style="left:1%;top:70%">🌳</div>
-        <div class="walk-tree walk-tree-r" style="right:2%;top:72%">🌳</div>
-        <div class="walk-deco" style="left:8%;top:30%">🪨</div>
-        <div class="walk-deco" style="right:10%;top:40%">🍄</div>
-        <div class="walk-deco" style="left:12%;top:80%">💀</div>
+        <!-- Mist layers -->
+        <div class="ws-mist ws-mist-1"></div>
+        <div class="ws-mist ws-mist-2"></div>
+        <!-- Trees left -->
+        <div class="ws-tree ws-tree-l" style="left:-10px;top:0;height:45%"></div>
+        <div class="ws-tree ws-tree-l ws-tree-dark" style="left:20px;top:15%;height:35%"></div>
+        <div class="ws-tree ws-tree-l" style="left:5px;top:55%;height:40%"></div>
+        <!-- Trees right -->
+        <div class="ws-tree ws-tree-r" style="right:-10px;top:5%;height:42%"></div>
+        <div class="ws-tree ws-tree-r ws-tree-dark" style="right:18px;top:20%;height:30%"></div>
+        <div class="ws-tree ws-tree-r" style="right:2px;top:58%;height:38%"></div>
+        <!-- Floating particles -->
+        <div class="ws-particle" style="left:15%;animation-delay:0s"></div>
+        <div class="ws-particle" style="left:72%;animation-delay:1.2s"></div>
+        <div class="ws-particle" style="left:38%;animation-delay:2.4s"></div>
+        <div class="ws-particle" style="left:58%;animation-delay:0.8s"></div>
+        <div class="ws-particle ws-particle-bright" style="left:25%;animation-delay:1.8s"></div>
+        <div class="ws-particle ws-particle-bright" style="left:80%;animation-delay:3s"></div>
+        <!-- Ground fog -->
+        <div class="ws-fog"></div>
+        <!-- Ambient light rays -->
+        <div class="ws-ray" style="left:30%;animation-delay:0s"></div>
+        <div class="ws-ray" style="left:55%;animation-delay:1.5s"></div>
       </div>
 
       <!-- The path -->

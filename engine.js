@@ -16,7 +16,7 @@ export const clamp =(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
 export const fmt   =n=>n>=1e6?(n/1e6).toFixed(1)+"M":n>=1000?(n/1000).toFixed(1)+"K":String(Math.floor(n||0));
 // ── Faster levelling: exponent 1.2 instead of 1.5 ──────────
 export const expLv =lv=>Math.floor(80*Math.pow(1.2,lv-1));
-export const maxHpCalc=(lv,def,bonusHp)=>100+lv*10+def*2+(bonusHp||0);
+export const maxHpCalc=(lv,def,bonusHp)=>100+def*2+(bonusHp||0); // HP only from DEF equip + stat points, NOT level
 
 // ── AUDIO ENGINE ──────────────────────────────────────────────
 let _audioCtx=null;
