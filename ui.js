@@ -23,25 +23,37 @@ export function setP(data){P=data;}
 function saveP(){return fbSaveP(CU?.uid,P);}
 function pick(a){return a[Math.floor(Math.random()*a.length)];}
 
-// Image renderer using CSS class .gi (defined in index.html)
-// emoji fallback is always rendered behind the img; onerror adds class "err" to hide img.
-// No emoji text in onerror attributes — avoids Unicode variation-selector crashes.
+// Image renderer: renders emoji immediately, then tries to load SVG over it.
+// Uses a post-render JS hook to swap emoji->image cleanly, avoiding all onerror issues.
+let _gfxId=0;
+function _gfxWrap(imgSrc,emoji,size,extraStyle){
+  const id='gfx'+(++_gfxId);
+  // Schedule image load after this render cycle
+  setTimeout(()=>{
+    const el=document.getElementById(id);
+    if(!el||!imgSrc)return;
+    const img=new Image();
+    img.onload=()=>{el.style.backgroundImage=`url('${imgSrc}')`;el.style.backgroundSize='contain';el.style.backgroundRepeat='no-repeat';el.style.backgroundPosition='center';el.textContent='';};
+    img.src=imgSrc;
+  },0);
+  return`<span id="${id}" style="display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;flex-shrink:0;font-size:${Math.round(size*0.75)}px;${extraStyle||''}">${emoji}</span>`;
+}
 export function gfx(image,emoji,size=32){
-  if(image)return`<span class="gi" style="width:${size}px;height:${size}px;font-size:${Math.round(size*0.75)}px"><img src="${image}" alt="" onerror="this.className='err'"><span class="gf">${emoji}</span></span>`;
-  return`<span style="font-size:${Math.round(size*0.75)}px">${emoji}</span>`;
+  if(image)return _gfxWrap(image,emoji,size,'');
+  return`<span style="font-size:${Math.round(size*0.75)}px;display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px">${emoji}</span>`;
 }
 export function avatarGfx(size=32){
   const av=getActiveAvatar(P);
   const em=av?av.emoji:PLAYER_AVATAR.emoji;
   const img=av?av.image:PLAYER_AVATAR.image;
-  if(img)return`<span class="gi" style="width:${size}px;height:${size}px;font-size:${Math.round(size*0.75)}px;border-radius:4px"><img src="${img}" alt="" onerror="this.className='err'"><span class="gf">${em}</span></span>`;
+  if(img)return _gfxWrap(img,em,size,'border-radius:4px;overflow:hidden;');
   return`<span style="font-size:${Math.round(size*0.75)}px">${em}</span>`;
 }
 export function avatarGfxFor(plyr,size=24){
   const id=plyr.activeAvatar,av=id?AVATARS.find(a=>a.id===id):null;
   const em=av?av.emoji:PLAYER_AVATAR.emoji;
-  const img=av?av.image:"";
-  if(img)return`<span class="gi" style="width:${size}px;height:${size}px;font-size:${Math.round(size*0.7)}px;border-radius:3px"><img src="${img}" alt="" onerror="this.className='err'"><span class="gf">${em}</span></span>`;
+  const img=av?av.image:'';
+  if(img)return _gfxWrap(img,em,size,'border-radius:3px;overflow:hidden;');
   return`<span style="font-size:${Math.round(size*0.7)}px">${em}</span>`;
 }
 export function showModal(html){
