@@ -320,7 +320,7 @@ export function takeStep(){
   }else{
     const wev=WALK_EVENTS[Math.floor(Math.random()*WALK_EVENTS.length)];
     spawnFlavorText(wev.text,wev.emoji);
-    spawnFlavorText(`+${stepXp} XP`,"✨");
+    setTimeout(()=>spawnFlavorText(`+${stepXp} XP`,"✨"),800);
     addFeed(wev.emoji,"",wev.text,`+${stepXp} XP`,"#60a5fa");saveP();renderWalkFeed();
   }
 }
@@ -626,7 +626,7 @@ function combatTick(){
   const cs=combatState,m=cs.monster;
   const comboMult=getComboMult(P.walkStreak||0);
   if(!cs.stunned){
-    let pDmg=Math.max(1,Math.round((cs.pStr-m.def+rand(-3,6))*comboMult));
+    const pDefReduction=m.def/(m.def+150);let pDmg=Math.max(1,Math.round((cs.pStr*(1-pDefReduction)+rand(-3,6))*comboMult));
     const pCrit=Math.random()<(0.12+getComboTier(P.walkStreak||0)*0.03);
     if(pCrit)pDmg=Math.floor(pDmg*1.85);
     cs.monsterHp=Math.max(0,cs.monsterHp-pDmg);
@@ -652,7 +652,7 @@ function combatTick(){
     setTimeout(()=>{const ov=document.getElementById("modal-overlay");if(ov&&ov.style.display!=="none")closeModal();},CFG.COMBAT_VICTORY_CLOSE_MS);
     return;
   }
-  let mDmg=Math.max(1,m.str-cs.pDef+rand(-3,6));const mCrit=Math.random()<0.09;if(mCrit)mDmg=Math.floor(mDmg*1.85);
+  const mDefReduction=cs.pDef/(cs.pDef+150);let mDmg=Math.max(1,Math.round(m.str*(1-mDefReduction)+rand(-3,6)));const mCrit=Math.random()<0.09;if(mCrit)mDmg=Math.floor(mDmg*1.85);
   cs.playerHp=Math.max(0,cs.playerHp-mDmg);flashFighter("player");
   const mv=["slashes","bites","mauls","claws","crushes"][Math.floor(Math.random()*5)];
   cs.log.push(mCrit?`<span class="log-crit">💥 ${m.name} CRITS! ${mv} you for ${mDmg}!</span>`:`<span class="log-hit">${m.name} ${mv} you for ${mDmg}</span>`);
