@@ -2,17 +2,12 @@
 //  MicroMMO — ui.js
 // ============================================================
 import{CFG,UI,PLAYER_AVATAR,EQUIP_SLOTS,SLOT_EMOJI,RARITY_COLOR,TIER_EMOJIS,
-  ARENA_TIERS,PROPERTIES,SHOP_CONSUMABLES,ITEMS,PETS,AVATARS,CHOICE_EVENTS,WALK_AREAS,WEATHER_TYPES,WALK_EVENTS,
-  EGG_TYPES,SHINY_CHANCE,PET_HUNGER,DUNGEONS}from"./data.js";
+  ARENA_TIERS,PROPERTIES,SHOP_CONSUMABLES,ITEMS,PETS,AVATARS,CHOICE_EVENTS,WALK_AREAS,WEATHER_TYPES,WALK_EVENTS}from"./data.js";
 import{rand,clamp,fmt,expLv,maxHpCalc,SFX,unlockAudio,
   equipStats,arenaT,qualityLabel,rollAvatar,rollItemStat,spawnItemScaled,spawnItemFromPool,
   spawnMonster,calcMaxEnergy,getRentalIncome,countOwned,propertyPrice,getOwnedProperties,
   getActiveAvatar,getQuests,updateQuestProgress,applyConsumable,simulateFight,newPlayer,
-  rollWeather,getComboMult,getComboTier,comboLabel,salvageShards,upgradeItemCost,canUpgrade,applyUpgrade,
-  rollEggRarity,makeEgg,openChest,shopChestPrice,shopChestBuysToday,recordShopChestBuy,
-  startDungeon,getDungeonProgress,claimDungeon,abandonDungeon,fmtDuration,
-  rollEggHatch,canHatchEgg,petExpNeeded,gainPetExp,getPetMood,getPetPowerMult,
-  drainPetHunger,feedPet,getActivePet,saveActivePet}from"./engine.js";
+  rollWeather,getComboMult,getComboTier,comboLabel,salvageShards,upgradeItemCost,canUpgrade,applyUpgrade}from"./engine.js";
 import{db,auth,gp,saveP as fbSaveP,loadP,loadLeaderboard,getListings,addListing,removeListing,
   getBounties,getGuild,trackCirculation,getCirculation,
   onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,
@@ -137,6 +132,10 @@ export function startGame(){
   if(P.activePetId===undefined)P.activePetId=null;
   if(P.activeDungeon===undefined)P.activeDungeon=null;
   if(P.shopChest===undefined)P.shopChest=null;
+  // Always recalculate maxHp on load so formula changes take effect immediately
+  const{def:eDef}=equipStats(P.equipped||{});
+  P.maxHp=maxHpCalc(P.level,(P.baseDef||5)+eDef,P.bonusHp||0);
+  P.hp=clamp(P.hp,1,P.maxHp);
   const _maxE=calcMaxEnergy(P);P.energy=clamp(P.energy,0,_maxE);
   showScreen("game-screen");updateHdr();regenCheck();energyInterval=setInterval(regenCheck,15000);
   if(P.activeCombat&&!combatState)combatState={...P.activeCombat,done:false};
@@ -307,25 +306,13 @@ export function takeStep(){
     spawnEventCard(m.emoji,`Lv.${m.effectiveLv} ${m.name}`,"⚔️ Battle!","#ef444466");
     addFeed(m.emoji,m.image,`Encountered Lv.${m.effectiveLv} ${m.name}!`,"⚔️","#f87171");
     saveP();renderWalkFeed();setTimeout(()=>openCombatModal(m),600);
-  }else if(roll<totalMonsterChance+CFG.WALK_EGG_CHANCE){
-    // 0.5% chance to find an egg while walking
-    const eggType=rollEggRarity();
-    const egg=makeEgg(eggType);
-    P.inventory=[...(P.inventory||[]),egg];
-    const def=EGG_TYPES[eggType];
-    SFX.itemFound();
-    spawnEventCard(def.emoji,def.name,"🥚 Egg Found!",def.color+"88");
-    spawnFlavorText("You found an egg!",def.emoji);
-    addFeed(def.emoji,"",`Found a <strong>${def.name}</strong> on the path!`,"🥚 Egg",def.color);
-    toast(`${def.emoji} Found a ${def.name}!`);
-    saveP();renderWalkFeed();
-  }else if(roll<totalMonsterChance+CFG.WALK_EGG_CHANCE+CFG.GOLD_CHANCE){
+  }else if(roll<totalMonsterChance+CFG.GOLD_CHANCE){
     const g=Math.round(rand(5,25+P.level*2)*area.goldMult*w.goldMult*comboMult);P.gold=(P.gold||0)+g;SFX.gold();
     spawnFlavorText(`+${g} 🪙${comboMult>1?" x"+comboMult:""}`.trim(),"🪙");
     addFeed("🪙","",`Found gold in ${area.name}!`,`+${g}🪙`,"#fbbf24");
     saveP();renderWalkFeed();
-  }else if(roll<totalMonsterChance+CFG.WALK_EGG_CHANCE+CFG.GOLD_CHANCE+totalItemChance){
-    const item=spawnItemFromPool([...ITEMS],P.level);
+  }else if(roll<totalMonsterChance+CFG.GOLD_CHANCE+totalItemChance){
+    const item=spawnItemFromPool([...ITEMS,...PETS],P.level);
     P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;
     const q=qualityLabel(item.val,item.base||item.val);
     const cur=P.equipped[item.type];
@@ -336,7 +323,7 @@ export function takeStep(){
     spawnEventCard(item.emoji,item.name,`+${item.val} ${item.stat==="str"?"STR":"DEF"} · ${item.rarity}`,RARITY_COLOR[item.rarity]+"66");
     toast(`${item.emoji} ${item.name}${lvlTag} (+${item.val}) ${q.label}${cStr}`);
     questProgress("items");tryAvatarDrop();trackCirculation(item.name);saveP();renderWalkFeed();
-  }else if(roll<totalMonsterChance+CFG.WALK_EGG_CHANCE+CFG.GOLD_CHANCE+totalItemChance+CFG.CHOICE_EVENT_CHANCE){
+  }else if(roll<totalMonsterChance+CFG.GOLD_CHANCE+totalItemChance+CFG.CHOICE_EVENT_CHANCE){
     const evt=pick(CHOICE_EVENTS);saveP();renderWalkFeed();openChoiceEventModal(evt);
   }else{
     const wev=WALK_EVENTS[Math.floor(Math.random()*WALK_EVENTS.length)];
@@ -400,7 +387,6 @@ export function renderHome(){
       <div class="bar-wrap"><div class="bar-labels"><span>${P.energy}/${maxE} EP</span><span>${timerStr} to next</span></div><div class="bar bar-energy"><div class="bar-fill" style="width:${enPct}%"></div></div></div>
       ${homeProp?`<div style="font-size:0.72rem;color:var(--text3);margin-top:0.3rem">🏠 ${homeProp.name} gives +${homeProp.energyBonus} energy</div>`:""}
     </div>
-    ${renderDungeonPanel()}
     <div class="card"><div class="card-title">💰 Currencies</div>
       <div class="curr-row">
         <div class="curr-item"><div class="curr-amount">🪙 ${fmt(P.gold)}</div><div class="curr-label">Gold</div></div>
@@ -432,245 +418,6 @@ export function renderHome(){
       <button class="btn btn-ghost btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('social')">👥 Social</button>
     </div>`;
 }
-// ── DUNGEON UI ────────────────────────────────────────────────
-function renderDungeonPanel(){
-  const prog=getDungeonProgress(P);
-  if(prog&&!prog.done){
-    const def=prog.def;
-    const pct=Math.round(prog.pct*100);
-    const timeLeft=fmtDuration(prog.remaining);
-    return`<div class="card" style="margin-bottom:0.7rem;border-color:${def.borderColor};background:${def.bgColor}">
-      <div class="card-title" style="color:${def.color}">${def.emoji} ${def.name} — In Progress</div>
-      <div style="font-size:0.82rem;color:var(--text2);margin-bottom:0.5rem">${def.desc}</div>
-      <div class="bar-wrap">
-        <div class="bar-labels"><span style="color:${def.color};font-weight:600">⏱ ${timeLeft} remaining</span><span>${pct}%</span></div>
-        <div class="bar" style="height:9px"><div class="bar-fill" style="width:${pct}%;background:linear-gradient(90deg,${def.color},${def.color}bb)"></div></div>
-      </div>
-      <div style="display:flex;gap:0.4rem;margin-top:0.6rem">
-        <button class="btn btn-ghost btn-sm" style="flex:1" onclick="G.abandonDungeonUI()">Abandon</button>
-      </div>
-    </div>`;
-  }
-  if(prog&&prog.done){
-    const def=prog.def;
-    return`<div class="card" style="margin-bottom:0.7rem;border-color:${def.borderColor};background:${def.bgColor}">
-      <div class="card-title" style="color:${def.color}">${def.emoji} ${def.name} — Complete!</div>
-      <div style="font-size:0.82rem;color:var(--text2);margin-bottom:0.5rem">Your dungeon run is finished. Claim your rewards!</div>
-      <button class="btn btn-gold" onclick="G.claimDungeonUI()">🎁 Claim Rewards</button>
-    </div>`;
-  }
-  // No active dungeon — show selection
-  const cards=DUNGEONS.map(d=>`
-    <div style="background:${d.bgColor};border:1.5px solid ${d.borderColor};border-radius:10px;padding:0.75rem;margin-bottom:0.4rem;display:flex;align-items:center;gap:0.75rem">
-      <div style="font-size:2rem;flex-shrink:0">${d.emoji}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-family:'Cinzel',serif;font-size:0.82rem;font-weight:700;color:${d.color}">${d.name}</div>
-        <div style="font-size:0.68rem;color:var(--text3);margin-top:0.1rem">${d.desc}</div>
-        <div style="font-size:0.65rem;color:var(--text3);margin-top:0.1rem">
-          ⏱ ${fmtDuration(d.durationMs)} · 
-          📦 ${d.minChests===d.maxChests?d.minChests:d.chestChance<1?`0–${d.maxChests} (${Math.round(d.chestChance*100)}% chance)`:d.minChests+"–"+d.maxChests} chests ·
-          🥚 20% egg/chest
-        </div>
-      </div>
-      <button class="btn btn-sm" style="background:${d.color};color:white;flex-shrink:0" onclick="G.launchDungeon('${d.id}')">Send</button>
-    </div>`).join("");
-  return`<div class="card" style="margin-bottom:0.7rem">
-    <div class="card-title">⚔️ Dungeons</div>
-    ${cards}
-  </div>`;
-}
-
-export function launchDungeon(id){
-  const result=startDungeon(P,id);
-  if(!result.ok){SFX.error();toast(result.msg);return;}
-  saveP();SFX.guild();
-  toast(`${result.def.emoji} ${result.def.name} started! Check back in ${fmtDuration(result.def.durationMs)}.`);
-  renderHome();
-}
-
-export function abandonDungeonUI(){
-  showModal(`<div class="modal-title">Abandon Dungeon?</div>
-    <div style="text-align:center;color:var(--text3);font-size:0.88rem;margin-bottom:1rem">You'll lose all progress and get no rewards.</div>
-    <div class="modal-actions">
-      <button class="btn btn-danger" onclick="G.confirmAbandonDungeon()">Abandon</button>
-      <button class="btn btn-ghost" onclick="G.closeModal()">Keep Going</button>
-    </div>`);
-}
-export function confirmAbandonDungeon(){
-  abandonDungeon(P);saveP();closeModal();toast("🏃 Dungeon abandoned.");renderHome();
-}
-
-export function claimDungeonUI(){
-  const result=claimDungeon(P);
-  if(!result.ok){SFX.error();toast(result.msg);return;}
-  saveP();SFX.chest();
-  // Build reward summary
-  const eggs=result.allRewards.filter(r=>r.type==="egg");
-  const items=result.allRewards.filter(r=>r.type==="item");
-  const gold=result.allRewards.filter(r=>r.type==="gold");
-  const totalGold=gold.reduce((s,r)=>s+r.amount,0)+result.goldGain;
-  const chestWord=result.chestCount===1?"chest":"chests";
-  const eggLines=eggs.map(r=>`<div style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0">
-    <span style="font-size:1.4rem">${r.item.emoji}</span>
-    <span style="font-size:0.85rem;color:${RARITY_COLOR[r.item.rarity]||"var(--text2)"};font-weight:600">${r.item.name}</span>
-    <span style="font-size:0.65rem;color:var(--text3)">🔒 hatch to get pet</span>
-  </div>`).join("");
-  const itemLines=items.map(r=>{const q=qualityLabel(r.item.val,r.item.base||r.item.val);
-    return`<div style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0">
-      <span style="font-size:1.2rem">${r.item.emoji}</span>
-      <span style="font-size:0.82rem;color:${RARITY_COLOR[r.item.rarity]};font-weight:600">${r.item.name}</span>
-      <span style="font-size:0.68rem;color:${q.color}">${q.label}</span>
-    </div>`;}).join("");
-  checkLevelUp();updateHdr();
-  showModal(`<div style="text-align:center;margin-bottom:0.75rem">
-    <div style="font-size:3rem">${result.def.emoji}</div>
-    <div style="font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--gold3);margin:0.3rem 0">${result.def.name} Complete!</div>
-    <div style="font-size:0.78rem;color:var(--text3)">${result.chestCount} ${chestWord} opened</div>
-  </div>
-  <div style="background:var(--bg3);border-radius:10px;padding:0.75rem;margin-bottom:0.75rem">
-    <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:0.4rem">
-      <span>✨ EXP</span><strong style="color:var(--steel)">+${fmt(result.expGain)}</strong>
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:0.82rem">
-      <span>🪙 Gold</span><strong style="color:var(--gold3)">+${fmt(totalGold)}</strong>
-    </div>
-  </div>
-  ${eggs.length>0||items.length>0?`<div style="max-height:200px;overflow-y:auto;margin-bottom:0.75rem">
-    ${eggs.length>0?`<div style="font-size:0.68rem;color:var(--text3);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:0.3rem">🥚 Eggs Found</div>${eggLines}`:""}
-    ${items.length>0?`<div style="font-size:0.68rem;color:var(--text3);font-family:'Cinzel',serif;text-transform:uppercase;margin:0.4rem 0 0.3rem">Items Found</div>${itemLines}`:""}
-  </div>`:`<div style="text-align:center;color:var(--text3);font-style:italic;font-size:0.85rem;margin-bottom:0.75rem">No chests found this run.</div>`}
-  <button class="btn btn-gold" onclick="G.closeModal();G.renderHome?G.renderHome():null">Close</button>`);
-  renderHome();
-}
-
-// ── EGG BUYING ────────────────────────────────────────────────
-export function buyEgg(eggTypeId){
-  const def=EGG_TYPES[eggTypeId];if(!def)return;
-  if((P.gold||0)<def.marketPrice){SFX.error();toast(`Need 🪙${fmt(def.marketPrice)}!`);return;}
-  P.gold-=def.marketPrice;
-  const egg=makeEgg(eggTypeId,Date.now());
-  P.inventory=[...(P.inventory||[]),egg];
-  saveP();SFX.itemFound();toast(`${def.emoji} Got a ${def.name}!`);
-  if(TAB==="market")renderMarketShop();
-}
-
-// ── EGG HATCHING ─────────────────────────────────────────────
-export function hatchEgg(idx){
-  const egg=(P.inventory||[])[idx];if(!egg||!egg.isEgg){toast("No egg here!");return;}
-  const check=canHatchEgg(egg);
-  if(!check.ok){SFX.error();toast(check.reason);return;}
-  const coll=P.petCollection||[];
-  if(coll.length>=20){SFX.error();toast("Pet collection full! (20/20)");return;}
-  const pet=rollEggHatch(egg.eggType);
-  if(!pet){SFX.error();return;}
-  P.inventory=P.inventory.filter((_,i)=>i!==idx);
-  P.petCollection=[...coll,pet];
-  saveP();closeModal();SFX.chest();
-  const rarityColor=RARITY_COLOR[pet.rarity]||"#6b7280";
-  const shinyStyle=pet.isShiny?"filter:invert(1) hue-rotate(180deg);":"";
-  showModal(`<div style="text-align:center">
-    <div style="font-size:0.75rem;color:var(--gold3);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:0.5rem">🐣 Hatched!</div>
-    <div style="font-size:4rem;margin:0.5rem 0;${shinyStyle}">${pet.emoji}</div>
-    ${pet.isShiny?`<div style="font-size:0.7rem;color:#fbbf24;font-family:'Cinzel',serif;font-weight:700;margin-bottom:0.3rem">✨ SHINY!</div>`:""}
-    <div style="font-family:'Cinzel',serif;font-size:1.05rem;color:${rarityColor};font-weight:700;margin:0.3rem 0">${pet.name}</div>
-    <div style="font-size:0.7rem;color:${rarityColor};text-transform:uppercase;font-weight:700;margin-bottom:0.5rem">${pet.rarity}</div>
-    <div style="font-size:0.82rem;color:var(--text3);font-style:italic;margin-bottom:0.5rem">"${pet.desc}"</div>
-    <div style="font-size:0.72rem;color:var(--text3);margin-bottom:1rem">🔒 Soulbound · Collection: ${P.petCollection.length}/20</div>
-  </div>
-  <div class="modal-actions">
-    ${!P.activePetId?`<button class="btn btn-gold" onclick="G.setActivePet('${pet.id}')">Set as Active Pet</button>`:""}
-    <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>
-  </div>`);
-}
-
-export function openItemModalEgg(idx,item){
-  const check=canHatchEgg(item);
-  const collSize=(P.petCollection||[]).length;
-  const collFull=collSize>=20;
-  const def=EGG_TYPES[item.eggType]||{};
-  showModal(`<div style="text-align:center;font-size:4rem;margin-bottom:0.4rem">${item.emoji}</div>
-    <div class="modal-title" style="color:${RARITY_COLOR[item.rarity]||def.color||"var(--gold3)"}">${item.name}</div>
-    <div class="modal-rarity" style="color:${def.color||"var(--text3)"}">${item.rarity}</div>
-    <div class="modal-row"><em>Status</em><span style="color:${check.ok?"var(--green2)":"var(--text3)"}">${check.ok?"✅ Ready to hatch!":check.reason}</span></div>
-    <div class="modal-row"><em>Collection</em><span style="color:${collFull?"var(--crimson2)":"var(--text3)"}">${collSize}/20${collFull?" — Full!":""}</span></div>
-    <div class="modal-row"><em>Tradeable</em><span style="color:var(--text3)">Yes (pet is soulbound)</span></div>
-    <div class="modal-actions">
-      ${check.ok&&!collFull?`<button class="btn btn-gold" onclick="G.hatchEgg(${idx})">🐣 Hatch Now!</button>`
-        :collFull?`<button class="btn btn-ghost" disabled style="opacity:0.5">Collection Full</button>`
-        :`<button class="btn btn-ghost" disabled style="opacity:0.5">Still Incubating…</button>`}
-      <button class="btn btn-purple" onclick="G.promptSell(${idx});G.closeModal()">List on Market</button>
-      <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>
-    </div>`);
-}
-
-// ── PET UI ────────────────────────────────────────────────────
-export function setActivePet(petId){
-  P.activePetId=petId;saveP();SFX.equip();toast("🐾 Active pet set!");closeModal();
-}
-export function openPetCollection(){
-  const coll=P.petCollection||[];
-  if(coll.length===0){showModal(`<div class="modal-title">🐾 Pet Collection</div>
-    <div style="text-align:center;color:var(--text3);padding:1.5rem;font-style:italic">No pets yet!<br><span style="font-size:0.8rem">Hatch eggs to get pets.</span></div>
-    <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);return;}
-  const rows=coll.map(pet=>{
-    const isActive=P.activePetId===pet.id;
-    const mood=getPetMood(pet);
-    const moodColor={Happy:"var(--green2)",Hungry:"var(--gold3)",Starving:"var(--crimson2)",Weakened:"#9333ea"}[mood];
-    const shinyStyle=pet.isShiny?"filter:invert(1) hue-rotate(180deg);":"";
-    const expNeeded=petExpNeeded(pet.petLevel||1);
-    const expPct=Math.round(((pet.petExp||0)/expNeeded)*100);
-    return`<div style="background:var(--surface);border:1.5px solid ${isActive?"var(--gold2)":"var(--border)"};border-radius:12px;padding:0.85rem;margin-bottom:0.5rem">
-      <div style="display:flex;align-items:center;gap:0.75rem">
-        <div style="font-size:2.2rem;${shinyStyle}">${pet.emoji}</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-family:'Cinzel',serif;font-size:0.85rem;font-weight:700;color:${RARITY_COLOR[pet.rarity]}">${pet.name}${pet.isShiny?" ✨":""}</div>
-          <div style="font-size:0.7rem;color:var(--text3)">Lv.${pet.petLevel||1} · +${pet.val} ${pet.stat==="str"?"STR":"DEF"}</div>
-          <div style="font-size:0.68rem;color:${moodColor};font-weight:600">${mood} · ❤️ ${pet.hunger??100}/100</div>
-          <div style="height:4px;background:var(--bg3);border-radius:2px;margin-top:0.25rem;overflow:hidden">
-            <div style="height:100%;width:${expPct}%;background:linear-gradient(90deg,var(--steel2),var(--steel));border-radius:2px"></div>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:0.3rem;flex-shrink:0">
-          ${isActive?`<span style="font-size:0.65rem;color:var(--green2);font-weight:700">Active ✓</span>`
-            :`<button class="btn btn-gold btn-sm" onclick="G.setActivePet('${pet.id}')">Set Active</button>`}
-          <button class="btn btn-green btn-sm" onclick="G.feedPetUI('${pet.id}')">🍖 Feed</button>
-          <button class="btn btn-danger btn-sm" onclick="G.releasePetUI('${pet.id}')">Release</button>
-        </div>
-      </div>
-    </div>`;
-  }).join("");
-  showModal(`<div class="modal-title">🐾 Pets (${coll.length}/20)</div>
-    <div style="max-height:65vh;overflow-y:auto;margin-bottom:0.75rem">${rows}</div>
-    <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);
-}
-export function feedPetUI(petId){
-  let pet=(P.petCollection||[]).find(p=>p.id===petId);if(!pet)return;
-  if(getPetMood(pet)==="Happy"&&!pet.weakened){toast(`${pet.name} is already full! 😊`);return;}
-  const result=feedPet(pet,P);
-  if(!result.ok){SFX.error();toast(result.msg);return;}
-  P.gold-=result.cost;
-  saveActivePet(P,result.pet);saveP();
-  SFX.gold();toast(`🍖 Fed ${result.pet.name}! (-🪙${result.cost})`);
-  openPetCollection();
-}
-export function releasePetUI(petId){
-  const pet=(P.petCollection||[]).find(p=>p.id===petId);if(!pet)return;
-  showModal(`<div class="modal-title">⚠️ Release Pet?</div>
-    <div style="text-align:center;font-size:3rem;margin:0.5rem 0">${pet.emoji}</div>
-    <div style="text-align:center;font-size:0.88rem;color:var(--text3);margin-bottom:1rem">
-      Release <strong style="color:${RARITY_COLOR[pet.rarity]}">${pet.name}</strong> forever?<br>
-      <strong style="color:var(--crimson2)">Cannot be undone. No refund.</strong></div>
-    <div class="modal-actions">
-      <button class="btn btn-danger" onclick="G.confirmReleasePet('${petId}')">Release Forever</button>
-      <button class="btn btn-ghost" onclick="G.openPetCollection()">Cancel</button>
-    </div>`);
-}
-export function confirmReleasePet(petId){
-  P.petCollection=(P.petCollection||[]).filter(p=>p.id!==petId);
-  if(P.activePetId===petId)P.activePetId=null;
-  saveP();closeModal();SFX.error();toast("🐾 Pet released.");
-}
-
 export function openStatModal(){
   if(!P.statPoints||P.statPoints<1){toast("No stat points available!");return;}
   showModal(`<div class="modal-title">⬆️ Spend Stat Points</div>
@@ -727,8 +474,6 @@ export async function openItemModal(source,idx){
   let item,isEquipped=false,slot=null;
   if(source==="equipped"){slot=idx;item=P.equipped[slot];isEquipped=true;}else item=(P.inventory||[])[idx];
   if(!item)return;SFX.click();
-  // Eggs get their own modal
-  if(item.isEgg){openItemModalEgg(idx,item);return;}
   const color=RARITY_COLOR[item.rarity]||"#6b7280",q=qualityLabel(item.val,item.base||item.val);
   const curEquipped=P.equipped[item.type];
   const compare=curEquipped&&!isEquipped?`<div class="modal-row"><em>vs Equipped</em><span style="color:${item.val>curEquipped.val?"var(--green2)":"var(--crimson2)"}">
@@ -760,6 +505,7 @@ export async function openItemModal(source,idx){
       ${!isEquipped?`<button class="btn btn-ghost" style="background:#6b728018" onclick="G.salvageItem(${idx})">🧩 Salvage (+${salvCount} shards)</button>`:""}
       ${!isEquipped?`<button class="btn btn-purple" onclick="G.promptSell(${idx});G.closeModal()">List on Market</button>`:""}
       ${!isEquipped?`<button class="btn btn-ghost" onclick="G.sellToNpc(${idx});G.closeModal()">Sell to NPC (🪙${npcVal})</button>`:""}
+      <button class="btn btn-danger" onclick="${isEquipped?`G.dropEquipped('${slot}')`:`G.dropInventory(${idx})`}">Drop Item</button>
       <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>
     </div>`);
 }
@@ -1055,30 +801,16 @@ export function sellToNpc(idx){
   SFX.gold();saveP();toast(`🛒 Sold for 🪙${npcVal}`);renderMarketSell();
 }
 export function openMysteryChest(){
-  const price=shopChestPrice(P);
-  if((P.gold||0)<price){SFX.error();toast(`Need 🪙${fmt(price)}!`);return;}
-  P.gold-=price;
-  recordShopChestBuy(P);
-  const roll=Math.random();let reward;
-  if(roll<CFG.CHEST_EGG_CHANCE){
-    // 5% egg
-    const eggType=rollEggRarity();
-    const egg=makeEgg(eggType);
-    P.inventory=[...(P.inventory||[]),egg];
-    const def=EGG_TYPES[eggType];
-    reward={emoji:def.emoji,image:"",name:def.name,sub:`${def.rarity} Egg · Hatch for a pet!`,color:def.color,extra:""};
-  }else if(roll<CFG.CHEST_EGG_CHANCE+0.80){
-    const item=spawnItemFromPool(ITEMS,P.level);P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;questProgress("items");trackCirculation(item.name);
-    const q=qualityLabel(item.val,item.base||item.val);
-    reward={emoji:item.emoji,image:item.image,name:item.name,sub:`+${item.val} ${item.stat==="str"?"STR":"DEF"} · ${item.rarity}`,color:RARITY_COLOR[item.rarity],extra:`<span style="background:${q.color}22;color:${q.color};font-family:'Cinzel',serif;font-size:0.7rem;padding:2px 8px;border-radius:6px;font-weight:700">${q.label}</span>`};
-  }else{
-    const av=rollAvatar(),collected=P.avatars||[];
+  if((P.gold||0)<CFG.CHEST_PRICE){SFX.error();toast(`Need 🪙${CFG.CHEST_PRICE}!`);return;}
+  P.gold-=CFG.CHEST_PRICE;const roll=Math.random();let reward;
+  if(roll<0.60){const item=spawnItemFromPool(ITEMS,P.level);P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;questProgress("items");trackCirculation(item.name);
+    const q=qualityLabel(item.val,item.base||item.val);reward={emoji:item.emoji,image:item.image,name:item.name,sub:`+${item.val} ${item.stat==="str"?"STR":"DEF"} · ${item.rarity}`,color:RARITY_COLOR[item.rarity],extra:`<span style="background:${q.color}22;color:${q.color};font-family:'Cinzel',serif;font-size:0.7rem;padding:2px 8px;border-radius:6px;font-weight:700">${q.label}</span>`};}
+  else if(roll<0.90){const pet=spawnItemFromPool(PETS,P.level);P.inventory=[...(P.inventory||[]),pet];P.itemsFound=(P.itemsFound||0)+1;questProgress("items");
+    reward={emoji:pet.emoji,image:pet.image,name:pet.name,sub:`+${pet.val} ${pet.stat==="str"?"STR":"DEF"} · ${pet.rarity} Pet`,color:RARITY_COLOR[pet.rarity],extra:""};}
+  else{const av=rollAvatar(),collected=P.avatars||[];
     if(collected.includes(av.id)){const bonus=rand(100,400);P.gold=(P.gold||0)+bonus;reward={emoji:"🪙",image:"",name:"Duplicate Avatar",sub:`Converted to 🪙${bonus} gold`,color:"#d97706",extra:""};}
     else{P.avatars=[...collected,av.id];reward={emoji:av.emoji,image:av.image,name:av.name,sub:`${av.rarity} Avatar`,color:RARITY_COLOR[av.rarity],extra:""};}}
-  saveP();
-  const nextPrice=shopChestPrice(P);
-  const buysLeft="Resets daily";
-  showModal(`<div style="text-align:center"><div style="font-size:5rem;margin-bottom:0.5rem">📦</div><div style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--text3)">Opening...</div></div>`);SFX.chest();
+  saveP();showModal(`<div style="text-align:center"><div style="font-size:5rem;margin-bottom:0.5rem">📦</div><div style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--text3)">Opening...</div></div>`);SFX.chest();
   setTimeout(()=>{const imgHtml=reward.image?gfx(reward.image,reward.emoji,80):`<span style="font-size:4rem">${reward.emoji}</span>`;
     showModal(`<div style="text-align:center">
       <div style="font-size:0.75rem;color:var(--text3);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:0.5rem">✨ Chest Opened!</div>
@@ -1086,43 +818,29 @@ export function openMysteryChest(){
       <div style="font-family:'Cinzel',serif;font-size:1.05rem;color:${reward.color};font-weight:700;margin-bottom:0.2rem">${reward.name}</div>
       ${reward.extra}<div style="font-size:0.82rem;color:var(--text3);margin:0.5rem 0 1rem">${reward.sub}</div>
     </div><div class="modal-actions">
-      <button class="btn btn-gold" onclick="G.openMysteryChest()">Open Another (🪙${fmt(nextPrice)})</button>
+      <button class="btn btn-gold" onclick="G.openMysteryChest()">Open Another (🪙${CFG.CHEST_PRICE})</button>
       <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>
     </div>`);},600);
 }
 function renderMarketShop(){
   const body=document.getElementById("market-body");if(!body)return;
-  const shopItems=ITEMS.filter(i=>i.shopPrice>0);
-  const chestPrice=shopChestPrice(P);
-  const buysToday=shopChestBuysToday(P);
+  const shopItems=ITEMS.filter(i=>i.shopPrice>0),shopPets=PETS.filter(p=>p.rarity==="common"||p.rarity==="uncommon");
   const chestHtml=`<div class="shop-item" style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:var(--gold2)">
-    <div class="shop-icon">📦</div>
-    <div class="shop-info">
-      <div class="shop-name" style="color:var(--gold3)">Mystery Chest</div>
-      <div class="shop-desc">Item, avatar, or 5% egg · Resets daily${buysToday>0?` · Opened ${buysToday}× today`:""}</div>
-    </div>
-    <div><div class="shop-price">🪙${fmt(chestPrice)}</div>
-      <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.openMysteryChest()" ${(P.gold||0)<chestPrice?"disabled":""}>Open</button>
-    </div></div>`;
+    <div class="shop-icon">📦</div><div class="shop-info"><div class="shop-name" style="color:var(--gold3)">Mystery Chest</div><div class="shop-desc">Random item, pet, or avatar!</div></div>
+    <div><div class="shop-price">🪙${fmt(CFG.CHEST_PRICE)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.openMysteryChest()">Open</button></div></div>`;
   const consumeHtml=SHOP_CONSUMABLES.map(c=>`<div class="shop-item"><div class="shop-icon">${c.emoji}</div>
     <div class="shop-info"><div class="shop-name">${c.name}</div><div class="shop-desc">${c.desc}</div></div>
     <div><div class="shop-price">🪙${fmt(c.price)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyConsumable('${c.id}')">Buy</button></div></div>`).join("");
-  const eggHtml=Object.values(EGG_TYPES).map(et=>`<div class="shop-item">
-    <div class="shop-icon" style="font-size:1.8rem">${et.emoji}</div>
-    <div class="shop-info">
-      <div class="shop-name" style="color:${et.color}">${et.name}</div>
-      <div class="shop-desc">Incubates ${et.incubationMs>=3600000?et.incubationMs/3600000+"h":et.incubationMs/60000+"m"} · ${et.id} pet rarity</div>
-    </div>
-    <div><div class="shop-price">🪙${fmt(et.marketPrice)}</div>
-      <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyEgg('${et.id}')" ${(P.gold||0)<et.marketPrice?"disabled":""}>Buy</button>
-    </div></div>`).join("");
   const equipHtml=shopItems.map((item,i)=>`<div class="shop-item"><div class="shop-icon">${gfx(item.image,item.emoji,40)}</div>
     <div class="shop-info"><div class="shop-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}</div><div class="shop-desc">+~${item.base} ${item.stat==="str"?"STR":"DEF"} · Min Lv.${item.minLevel}</div></div>
     <div><div class="shop-price">🪙${fmt(item.shopPrice)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem('item',${i})">Buy</button></div></div>`).join("");
+  const petHtml=shopPets.map((pet,i)=>{const price=Math.round(300*(pet.base/5));
+    return`<div class="shop-item"><div class="shop-icon">${gfx(pet.image,pet.emoji,40)}</div>
+      <div class="shop-info"><div class="shop-name" style="color:${RARITY_COLOR[pet.rarity]}">${pet.name}</div><div class="shop-desc">+~${pet.base} ${pet.stat==="str"?"STR":"DEF"} · Pet</div></div>
+      <div><div class="shop-price">🪙${fmt(price)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem('pet',${i})">Buy</button></div></div>`;}).join("");
   body.innerHTML=`<div style="font-size:0.78rem;color:var(--text3);margin-bottom:0.6rem">Gold: 🪙${fmt(P.gold)} · Shards: 🧩${P.shards||0}</div>
-    <div class="section-hdr">✨ Special</div>${chestHtml}
-    <div class="section-hdr">Consumables</div>${consumeHtml}
-    <div class="section-hdr">🥚 Eggs <span style="font-size:0.6rem;font-weight:400;color:var(--text3)">(pets only from hatching — soulbound)</span></div>${eggHtml}
+    <div class="section-hdr">✨ Special</div>${chestHtml}<div class="section-hdr">Consumables</div>${consumeHtml}
+    <div class="section-hdr">🐾 Pets</div>${petHtml||`<div style="color:var(--text3);font-style:italic;padding:0.5rem">No pets.</div>`}
     <div class="section-hdr">Equipment</div>${equipHtml}`;
 }
 function renderMyListings(listings){
@@ -1158,14 +876,13 @@ export async function confirmSell(idx){
   await addListing(CU.uid,P.username,item,price);saveP();closeModal();toast(`🏪 Listed for 🪙${fmt(price)}!`);renderMarket();
 }
 export function buyShopItem(kind,idx){
-  const si=ITEMS.filter(i=>i.shopPrice>0);const template=si[idx];if(!template)return;
-  const price=template.shopPrice;
-  if((P.gold||0)<price){SFX.error();toast("💰 Not enough gold!");return;}
-  const item=spawnItemScaled(template,P.level);
-  delete item.shopPrice;delete item.dropRate;
-  P.gold-=price;P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;
-  trackCirculation(item.name);saveP();questProgress("items");SFX.itemFound();toast(`🛒 Bought ${item.name}!`);
-  if(TAB==="market")renderMarketShop();
+  let template,price;
+  if(kind==="pet"){const sp=PETS.filter(p=>p.rarity==="common"||p.rarity==="uncommon");template=sp[idx];price=Math.round(300*(template.base/5));}
+  else{const si=ITEMS.filter(i=>i.shopPrice>0);template=si[idx];price=template.shopPrice;}
+  if(!template)return;if((P.gold||0)<price){SFX.error();toast("💰 Not enough gold!");return;}
+  const item=kind==="pet"?{...template,val:rollItemStat(template),base:template.base,id:`item_${Date.now()}_${rand(0,9999)}`}:spawnItemScaled(template,P.level);
+  delete item.shopPrice;delete item.dropRate;P.gold-=price;P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;
+  if(kind!=="pet")trackCirculation(item.name);saveP();questProgress("items");SFX.itemFound();toast(`🛒 Bought ${item.name}!`);renderMarketShop();
 }
 export function buyConsumable(id){
   const c=SHOP_CONSUMABLES.find(x=>x.id===id);if(!c)return;if((P.gold||0)<c.price){SFX.error();toast("💰 Not enough gold!");return;}
