@@ -197,7 +197,7 @@ export function renderWalkFeed(){
   const wb=renderWeatherBanner();
   if(feed.length===0){feedEl.innerHTML=wb+`<div style="text-align:center;padding:2rem;color:var(--text2);font-style:italic;font-size:0.9rem">Choose an area and tap 👣 to explore!</div>`;return;}
   feedEl.innerHTML=wb+feed.map(f=>`<div class="feed-item">
-    <div class="feed-icon">${f.image?`<img src="${f.image}" alt="" style="width:30px;height:30px;object-fit:contain">`:f.emoji||"🌿"}</div>
+    <div class="feed-icon">${gfx(f.image,f.emoji||"🌿",30)}</div>
     <div class="feed-text">${f.text}</div>
     <div class="feed-badge" style="color:${f.color||"var(--text3)"}">${f.badge||""}</div>
   </div>`).join("");feedEl.scrollTop=0;
@@ -629,7 +629,7 @@ function tryAvatarDrop(){
   if(collected.includes(av.id)){const bonus=rand(50,200);P.gold=(P.gold||0)+bonus;SFX.gold();toast(`✨ Duplicate avatar → 🪙${bonus} gold!`);saveP();return;}
   P.avatars=[...collected,av.id];saveP();
   const color=RARITY_COLOR[av.rarity]||"#6b7280";
-  const imgHtml=av.image?`<img src="${av.image}" alt="" style="width:80px;height:80px;object-fit:contain;border-radius:8px">`:`<span style="font-size:3.5rem">${av.emoji}</span>`;
+  const imgHtml=gfx(av.image,av.emoji,80);
   SFX.chest();
   showModal(`<div style="text-align:center">
     <div style="font-size:0.72rem;color:var(--gold3);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:0.5rem">✨ Avatar Unlocked!</div>
@@ -648,7 +648,7 @@ export function openAvatarCollection(){
   if(collected.length===0){showModal(`<div class="modal-title">🎭 Avatars</div><div style="text-align:center;color:var(--text3);padding:1.5rem;font-style:italic">No avatars yet!</div><button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);return;}
   const rows=AVATARS.filter(a=>collected.includes(a.id)).map(av=>{
     const color=RARITY_COLOR[av.rarity],isActive=P.activeAvatar===av.id;
-    const imgHtml=av.image?`<img src="${av.image}" alt="" style="width:44px;height:44px;object-fit:contain;border-radius:6px">`:`<span style="font-size:2rem">${av.emoji}</span>`;
+    const imgHtml=gfx(av.image,av.emoji,44);
     return`<div style="display:flex;align-items:center;gap:0.75rem;padding:0.65rem 0;border-bottom:1px solid var(--border)">
       <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${imgHtml}</div>
       <div style="flex:1;min-width:0"><div style="font-family:'Cinzel',serif;font-size:0.82rem;color:${color};font-weight:700">${av.name}</div>
@@ -733,7 +733,7 @@ export function openMysteryChest(){
     if(collected.includes(av.id)){const bonus=rand(100,400);P.gold=(P.gold||0)+bonus;reward={emoji:"🪙",image:"",name:"Duplicate Avatar",sub:`Converted to 🪙${bonus} gold`,color:"#d97706",extra:""};}
     else{P.avatars=[...collected,av.id];reward={emoji:av.emoji,image:av.image,name:av.name,sub:`${av.rarity} Avatar`,color:RARITY_COLOR[av.rarity],extra:""};}}
   saveP();showModal(`<div style="text-align:center"><div style="font-size:5rem;margin-bottom:0.5rem">📦</div><div style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--text3)">Opening...</div></div>`);SFX.chest();
-  setTimeout(()=>{const imgHtml=reward.image?`<img src="${reward.image}" alt="" style="width:80px;height:80px;object-fit:contain;border-radius:8px">`:`<span style="font-size:4rem">${reward.emoji}</span>`;
+  setTimeout(()=>{const imgHtml=reward.image?gfx(reward.image,reward.emoji,80):`<span style="font-size:4rem">${reward.emoji}</span>`;
     showModal(`<div style="text-align:center">
       <div style="font-size:0.75rem;color:var(--text3);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:0.5rem">✨ Chest Opened!</div>
       <div style="width:80px;height:80px;margin:0 auto 0.6rem;display:flex;align-items:center;justify-content:center">${imgHtml}</div>
