@@ -36,6 +36,48 @@ body{font-family:'Crimson Pro',Georgia,serif;color:var(--text);
   display:flex;flex-direction:column;background:var(--bg2);overflow:hidden;
   box-shadow:0 0 60px rgba(0,0,0,0.12);position:relative;}
 
+/* ── RESPONSIVE: iPad (768px+) ── */
+@media(min-width:768px){
+  :root{--nav-h:72px;--hdr-h:64px;}
+  body{align-items:center;background:var(--bg);}
+  #app{max-width:540px;border-radius:24px;height:calc(100vh - 40px);height:calc(100dvh - 40px);margin:20px auto;}
+  #toast-container{max-width:500px;}
+  .modal{max-width:420px;}
+  .btn{font-size:0.88rem;}
+  #content{padding:1.1rem;}
+  .nav-btn{font-size:0.55rem;}
+  .nav-icon{font-size:1.4rem;}
+  .hdr-logo{font-size:1.25rem;}
+  .walk-hud-area{font-size:0.75rem;}
+}
+
+/* ── RESPONSIVE: Laptop (1024px+) ── */
+@media(min-width:1024px){
+  :root{--nav-h:80px;--hdr-h:68px;}
+  body{gap:0;}
+  #app{max-width:600px;height:calc(100vh - 60px);height:calc(100dvh - 60px);margin:30px auto;border-radius:28px;}
+  #toast-container{max-width:560px;}
+  .modal{max-width:460px;}
+  .btn{font-size:0.9rem;padding:0.9rem;}
+  .btn-sm{padding:0.45rem 0.85rem;font-size:0.72rem;}
+  #content{padding:1.25rem;}
+  .card{padding:1.1rem;margin-bottom:0.85rem;}
+  .card-title{font-size:0.72rem;}
+  .nav-btn{font-size:0.6rem;gap:0.25rem;}
+  .nav-icon{font-size:1.5rem;}
+  .nav-walk{width:60px;height:60px;margin-top:-26px;}
+  .hdr-logo{font-size:1.35rem;}
+  .hdr-level{font-size:0.82rem;}
+  .hdr-hp{font-size:0.78rem;}
+  .hdr-avatar{width:38px;height:38px;}
+  .stat-badge{font-size:0.82rem;padding:0.4rem 0.75rem;}
+  .feed-text{font-size:0.88rem;}
+  .combat-log{font-size:0.84rem;max-height:130px;}
+  .walk-hud-area{font-size:0.78rem;}
+  .profile-ava{width:96px;height:96px;}
+  .profile-name{font-size:1.4rem;}
+}
+
 /* ── SCREENS ── */
 .screen{display:none;flex-direction:column;height:100%;overflow:hidden}
 .screen.active{display:flex}

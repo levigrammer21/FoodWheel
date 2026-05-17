@@ -319,20 +319,80 @@ export const ITEMS=[
 ].map(item=>({...item,image:`img/items/${slug(item.name)}.svg`}));
 
 // ── PETS ─────────────────────────────────────────────────────
+// Pets are ONLY obtained from hatching eggs. Soulbound on hatch.
+// Each pet has its own level (petLevel), hunger, and a unique passive ability.
+// Abilities: wolf=crit, turtle=dmgReduce, dragon=burn, rat=extraGold, sprite=bonusXP,
+//            slime=healOnKill, shadowCat=dodge, stormHawk=firstStrike,
+//            voidFamiliar=lifesteal, lavaPup=burnAoe, frostWolf=slow,
+//            ancientPhoenix=revive, celestialCrab=reflect
 export const PETS=[
-  {name:"Baby Slime",    type:"Pet",stat:"def",base:6,  rarity:"uncommon", emoji:"🟢",dropRate:8, desc:"Wobbly but loyal."},
-  {name:"Forest Sprite", type:"Pet",stat:"str",base:7,  rarity:"uncommon", emoji:"🧚",dropRate:7, desc:"Zips around your shoulder."},
-  {name:"Tamed Rat",     type:"Pet",stat:"def",base:5,  rarity:"uncommon", emoji:"🐀",dropRate:8, desc:"Surprisingly useful."},
-  {name:"Shadow Cat",    type:"Pet",stat:"str",base:14, rarity:"rare",     emoji:"🐈",dropRate:4, desc:"Vanishes in dim light."},
-  {name:"Storm Hawk",    type:"Pet",stat:"str",base:16, rarity:"rare",     emoji:"🦅",dropRate:3, desc:"Dives at your enemies."},
-  {name:"Crystal Turtle",type:"Pet",stat:"def",base:18, rarity:"rare",     emoji:"🐢",dropRate:3, desc:"A walking shield."},
-  {name:"Baby Dragon",   type:"Pet",stat:"str",base:20, rarity:"rare",     emoji:"🐉",dropRate:2, desc:"Breathes tiny flames."},
-  {name:"Void Familiar", type:"Pet",stat:"str",base:30, rarity:"epic",     emoji:"👁️",dropRate:1, desc:"Sees through walls."},
-  {name:"Lava Pup",      type:"Pet",stat:"str",base:28, rarity:"epic",     emoji:"🔥",dropRate:1, desc:"Always warm. Always angry."},
-  {name:"Frost Wolf",    type:"Pet",stat:"def",base:32, rarity:"epic",     emoji:"🐺",dropRate:1, desc:"Howls before every battle."},
-  {name:"Ancient Phoenix",type:"Pet",stat:"str",base:50,rarity:"legendary",emoji:"🦅",dropRate:0.2,desc:"Reborn every battle."},
-  {name:"Celestial Crab", type:"Pet",stat:"def",base:55,rarity:"legendary",emoji:"🦀",dropRate:0.2,desc:"Claws from another dimension."},
+  {name:"Baby Slime",    type:"Pet",stat:"def",base:6,  rarity:"common",   emoji:"🟢", desc:"Wobbly but loyal.",
+   ability:"heal_on_kill",   abilityDesc:"Restores 3% HP on kill",         eggPool:["common","uncommon"]},
+  {name:"Forest Sprite", type:"Pet",stat:"str",base:7,  rarity:"common",   emoji:"🧚", desc:"Zips around your shoulder.",
+   ability:"bonus_xp",       abilityDesc:"+10% EXP from battles",          eggPool:["common","uncommon"]},
+  {name:"Tamed Rat",     type:"Pet",stat:"def",base:5,  rarity:"common",   emoji:"🐀", desc:"Surprisingly useful.",
+   ability:"extra_gold",     abilityDesc:"+15% gold from battles",         eggPool:["common","uncommon"]},
+  {name:"Shadow Cat",    type:"Pet",stat:"str",base:14, rarity:"uncommon", emoji:"🐈", desc:"Vanishes in dim light.",
+   ability:"dodge",          abilityDesc:"10% chance to dodge enemy hit",  eggPool:["uncommon","rare"]},
+  {name:"Storm Hawk",    type:"Pet",stat:"str",base:16, rarity:"uncommon", emoji:"🦅", desc:"Dives at your enemies.",
+   ability:"first_strike",   abilityDesc:"Deals double damage first hit",  eggPool:["uncommon","rare"]},
+  {name:"Crystal Turtle",type:"Pet",stat:"def",base:18, rarity:"rare",     emoji:"🐢", desc:"A walking shield.",
+   ability:"dmg_reduce",     abilityDesc:"Reduces all damage taken by 8%", eggPool:["rare","epic"]},
+  {name:"Baby Dragon",   type:"Pet",stat:"str",base:20, rarity:"rare",     emoji:"🐉", desc:"Breathes tiny flames.",
+   ability:"burn",           abilityDesc:"30% chance to burn enemy for 3 rounds", eggPool:["rare","epic"]},
+  {name:"Void Familiar", type:"Pet",stat:"str",base:30, rarity:"epic",     emoji:"👁️", desc:"Sees through walls.",
+   ability:"lifesteal",      abilityDesc:"Steal 5% of damage dealt as HP", eggPool:["epic","legendary"]},
+  {name:"Lava Pup",      type:"Pet",stat:"str",base:28, rarity:"epic",     emoji:"🔥", desc:"Always warm. Always angry.",
+   ability:"burn_aoe",       abilityDesc:"Burns deal +50% damage",         eggPool:["epic","legendary"]},
+  {name:"Frost Wolf",    type:"Pet",stat:"def",base:32, rarity:"epic",     emoji:"🐺", desc:"Howls before every battle.",
+   ability:"crit",           abilityDesc:"+15% crit chance in battle",     eggPool:["epic","legendary"]},
+  {name:"Ancient Phoenix",type:"Pet",stat:"str",base:50,rarity:"legendary",emoji:"🦅", desc:"Reborn every battle.",
+   ability:"revive",         abilityDesc:"Once per battle: survive lethal hit at 1 HP", eggPool:["legendary"]},
+  {name:"Celestial Crab", type:"Pet",stat:"def",base:55,rarity:"legendary",emoji:"🦀", desc:"Claws from another dimension.",
+   ability:"reflect",        abilityDesc:"Reflects 10% of damage back to attacker",     eggPool:["legendary"]},
 ].map(p=>({...p,image:`img/pets/${slug(p.name)}.svg`}));
+
+// ── EGG TYPES ─────────────────────────────────────────────────
+// Eggs are tradeable on the market. Pets hatched from them are soulbound.
+// Incubation period (ms) before the egg can be hatched.
+export const EGG_TYPES={
+  common:   {id:"common",   name:"Common Egg",   emoji:"🥚", color:"#6b7280",
+    incubationMs: 5*60*1000,  // 5 min
+    rarityWeights:{common:75, uncommon:20, rare:5,  epic:0,  legendary:0},
+    marketPrice:50},
+  uncommon: {id:"uncommon", name:"Uncommon Egg", emoji:"🟡", color:"#059669",
+    incubationMs: 15*60*1000, // 15 min
+    rarityWeights:{common:0,  uncommon:60, rare:35, epic:5,  legendary:0},
+    marketPrice:300},
+  rare:     {id:"rare",     name:"Rare Egg",     emoji:"🟠", color:"#2563eb",
+    incubationMs: 60*60*1000, // 1 hr
+    rarityWeights:{common:0,  uncommon:0,  rare:60, epic:35, legendary:5},
+    marketPrice:1500},
+  epic:     {id:"epic",     name:"Epic Egg",     emoji:"💜", color:"#7c3aed",
+    incubationMs: 4*60*60*1000, // 4 hr
+    rarityWeights:{common:0,  uncommon:0,  rare:0,  epic:80, legendary:20},
+    marketPrice:6000},
+  legendary:{id:"legendary",name:"Legendary Egg",emoji:"✨", color:"#d97706",
+    incubationMs: 12*60*60*1000, // 12 hr
+    rarityWeights:{common:0,  uncommon:0,  rare:0,  epic:50, legendary:50},
+    marketPrice:20000},
+};
+
+// Shiny: additional 1/50 roll on any hatch (CSS filter inversion)
+export const SHINY_CHANCE=1/50;
+
+// Pet hunger constants
+export const PET_HUNGER={
+  MAX:100,
+  BATTLE_DRAIN:10,          // hunger lost per battle
+  STARVING_THRESHOLD:20,    // below this = Starving (50% power)
+  HUNGRY_THRESHOLD:50,      // below this = Hungry
+  FEED_GOLD_NORMAL:30,      // gold to feed once (restores 30 hunger)
+  FEED_GOLD_WEAKENED:80,    // emergency feed when Weakened
+  WEAKENED_BATTLES:3,       // battles at 0 hunger before Weakened
+  PET_EXP_PER_BATTLE:15,
+  PET_STAT_PER_LEVEL:2,
+};
 
 // ── CHOICE EVENTS ─────────────────────────────────────────────
 export const CHOICE_EVENTS=[

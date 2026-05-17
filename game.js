@@ -43,12 +43,11 @@ import{
   resolveChoice,
   salvageItem,confirmSalvage,upgradeItem,
   updateHdr,
+  // pets & eggs
+  buyEgg,hatchEgg,openPetCollection,setActivePet,feedPetUI,releasePetUI,confirmReleasePet,
 }from"./ui.js";
 
 // ── AUTH STATE LISTENER ────────────────────────────────────────
-// We import CU/P as references but they're module-level lets in ui.js.
-// The auth handler below mutates game state via startGame (which reads
-// from P set inside ui.js). We use a pair of setter functions.
 import{setCU,setP}from"./ui.js";
 
 onAuthStateChanged(auth,async u=>{
@@ -89,4 +88,6 @@ window.G={
   fleeCombat,healInCombat,resumeCombat,abandonCombat,
   resolveChoice,
   salvageItem,confirmSalvage,upgradeItem,
+  // pets & eggs
+  buyEgg,hatchEgg,openPetCollection,setActivePet,feedPetUI,releasePetUI,confirmReleasePet,
 };

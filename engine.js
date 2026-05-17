@@ -7,7 +7,7 @@
 
 import{CFG,RARITY_SCALE,RARITY_COLOR,ARENA_TIERS,ITEMS,PETS,MONSTERS,AVATARS,
   EQUIP_SLOTS,PROPERTIES,SHOP_CONSUMABLES,WALK_AREAS,CHOICE_EVENTS,WALK_EVENTS,
-  WEATHER_TYPES}from"./data.js";
+  WEATHER_TYPES,EGG_TYPES,SHINY_CHANCE,PET_HUNGER}from"./data.js";
 
 // ── MATH ─────────────────────────────────────────────────────
 export const rand  =(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
@@ -347,4 +347,137 @@ export function applyConsumable(P,effect){
   else if(effect==="heal_big")P.hp=Math.min(P.maxHp,P.hp+Math.floor(P.maxHp*CFG.POTION_HEAL_BIG));
   else if(effect==="energy_full"){P.energy=maxE;P.lastEnergyTime=Date.now();}
   else if(effect==="exp_200"){P.exp=(P.exp||0)+200;}
+}
+
+// ── EGG SYSTEM ────────────────────────────────────────────────
+export function rollEggHatch(eggType){
+  const def=EGG_TYPES[eggType];if(!def)return null;
+  const weights=def.rarityWeights;
+  const total=Object.values(weights).reduce((a,b)=>a+b,0);
+  if(total===0)return null;
+  let r=Math.random()*total;
+  const rarityOrder=["common","uncommon","rare","epic","legendary"];
+  let chosenRarity="common";
+  for(const rar of rarityOrder){
+    r-=(weights[rar]||0);
+    if(r<=0){chosenRarity=rar;break;}
+  }
+  // Filter pets by chosen rarity (pets that appear in this egg pool)
+  const pool=PETS.filter(p=>p.rarity===chosenRarity&&p.eggPool&&p.eggPool.includes(eggType));
+  const fallback=PETS.filter(p=>p.rarity===chosenRarity);
+  const src=pool.length?pool:fallback.length?fallback:PETS;
+  const template=src[Math.floor(Math.random()*src.length)];
+  const isShiny=Math.random()<SHINY_CHANCE;
+  return{
+    ...template,
+    id:`pet_${Date.now()}_${rand(0,9999)}`,
+    petLevel:1,
+    petExp:0,
+    hunger:PET_HUNGER.MAX,
+    isShiny,
+    weakened:false,
+    weakenedBattles:0,
+    hatchedAt:Date.now(),
+    soulbound:true,
+    // initial stat is base + rarity bonus
+    val:template.base,
+    base:template.base,
+  };
+}
+
+export function canHatchEgg(egg){
+  if(!egg||!egg.isEgg)return{ok:false,reason:"Not an egg"};
+  const elapsed=Date.now()-(egg.placedAt||egg.acquiredAt||Date.now());
+  const def=EGG_TYPES[egg.eggType];if(!def)return{ok:false,reason:"Unknown egg type"};
+  if(elapsed<def.incubationMs){
+    const remaining=def.incubationMs-elapsed;
+    const h=Math.floor(remaining/3600000),m=Math.floor((remaining%3600000)/60000),s=Math.floor((remaining%60000)/1000);
+    const timeStr=h>0?`${h}h ${m}m`:`${m}m ${s}s`;
+    return{ok:false,reason:`Incubating — ${timeStr} remaining`,remaining};
+  }
+  return{ok:true};
+}
+
+export function makeEgg(eggType,acquiredAt=Date.now()){
+  const def=EGG_TYPES[eggType];if(!def)return null;
+  return{
+    id:`egg_${Date.now()}_${rand(0,9999)}`,
+    isEgg:true,
+    eggType,
+    name:def.name,
+    emoji:def.emoji,
+    image:`img/eggs/${eggType}_egg.svg`,
+    rarity:eggType,
+    acquiredAt,
+    placedAt:acquiredAt, // incubation starts on acquire
+    type:"Egg",
+    desc:`A ${def.name}. Incubates for ${def.incubationMs>=3600000?def.incubationMs/3600000+"h":def.incubationMs/60000+"m"}.`,
+    marketPrice:def.marketPrice,
+    soulbound:false, // eggs ARE tradeable
+  };
+}
+
+// ── PET LEVELING ─────────────────────────────────────────────
+export const petExpNeeded=lv=>Math.floor(50*Math.pow(1.3,lv-1));
+
+export function gainPetExp(pet,amount){
+  if(!pet||!pet.petLevel)return pet;
+  pet=Object.assign({},pet);
+  pet.petExp=(pet.petExp||0)+amount;
+  while(pet.petExp>=petExpNeeded(pet.petLevel)){
+    pet.petExp-=petExpNeeded(pet.petLevel);
+    pet.petLevel++;
+    pet.val=(pet.val||pet.base)+PET_HUNGER.PET_STAT_PER_LEVEL;
+    pet.base=(pet.base||pet.val);
+  }
+  return pet;
+}
+
+// ── PET HUNGER ────────────────────────────────────────────────
+export function getPetMood(pet){
+  if(!pet)return null;
+  if(pet.weakened)return"Weakened";
+  const h=pet.hunger??PET_HUNGER.MAX;
+  if(h<=0)return"Starving";
+  if(h<PET_HUNGER.STARVING_THRESHOLD)return"Starving";
+  if(h<PET_HUNGER.HUNGRY_THRESHOLD)return"Hungry";
+  return"Happy";
+}
+export function getPetPowerMult(pet){
+  if(!pet)return 1;
+  if(pet.weakened)return 0.25;
+  const mood=getPetMood(pet);
+  if(mood==="Starving")return 0.5;
+  if(mood==="Hungry")return 0.75;
+  return 1.0;
+}
+export function drainPetHunger(pet){
+  if(!pet)return pet;
+  pet=Object.assign({},pet);
+  pet.hunger=Math.max(0,(pet.hunger??PET_HUNGER.MAX)-PET_HUNGER.BATTLE_DRAIN);
+  if(pet.hunger<=0){
+    pet.weakenedBattles=(pet.weakenedBattles||0)+1;
+    if(pet.weakenedBattles>=PET_HUNGER.WEAKENED_BATTLES)pet.weakened=true;
+  }
+  return pet;
+}
+export function feedPet(pet,P){
+  if(!pet)return{pet,cost:0,ok:false,msg:"No pet"};
+  const cost=pet.weakened?PET_HUNGER.FEED_GOLD_WEAKENED:PET_HUNGER.FEED_GOLD_NORMAL;
+  if((P.gold||0)<cost)return{pet,cost,ok:false,msg:`Need 🪙${cost} to feed`};
+  pet=Object.assign({},pet);
+  pet.hunger=Math.min(PET_HUNGER.MAX,(pet.hunger||0)+30);
+  if(pet.weakened&&pet.hunger>=20){pet.weakened=false;pet.weakenedBattles=0;}
+  return{pet,cost,ok:true,msg:`Fed ${pet.name}! Hunger restored.`};
+}
+
+// ── ACTIVE PET HELPERS ────────────────────────────────────────
+export function getActivePet(P){
+  if(!P||!P.activePetId)return null;
+  return(P.petCollection||[]).find(p=>p.id===P.activePetId)||null;
+}
+export function saveActivePet(P,updatedPet){
+  // Replace the pet in collection and update activePetId reference
+  if(!updatedPet||!P)return;
+  P.petCollection=(P.petCollection||[]).map(p=>p.id===updatedPet.id?updatedPet:p);
 }
