@@ -71,6 +71,20 @@ export const ARENA_TIERS=[
 ];
 
 // ── WALK ZONES ────────────────────────────────────────────────
+// ── WEATHER ───────────────────────────────────────────────────
+export const WEATHER_TYPES=[
+  {id:"clear",    name:"Clear Skies",    emoji:"☀️", desc:"A fine day for adventuring.",
+   goldMult:1.0, expMult:1.0,  monsterMult:1.0, lootMult:1.0, color:"#fbbf24"},
+  {id:"rain",     name:"Heavy Rain",     emoji:"🌧️", desc:"Gold washes out of the mud.",
+   goldMult:1.4, expMult:1.0,  monsterMult:0.8, lootMult:1.1, color:"#60a5fa"},
+  {id:"fog",      name:"Thick Fog",      emoji:"🌫️", desc:"Monsters lurk unseen — but so does treasure.",
+   goldMult:1.2, expMult:1.1,  monsterMult:1.3, lootMult:1.2, color:"#94a3b8"},
+  {id:"bloodmoon",name:"Blood Moon",     emoji:"🌑", desc:"Double danger. Double glory.",
+   goldMult:1.5, expMult:1.5,  monsterMult:1.6, lootMult:1.4, color:"#ef4444"},
+  {id:"blessing", name:"Divine Blessing",emoji:"✨", desc:"The gods smile upon you today.",
+   goldMult:1.2, expMult:1.5,  monsterMult:0.9, lootMult:1.5, color:"#c084fc"},
+];
+
 export const WALK_AREAS=[
   {id:"greenwood",    name:"Greenwood Vale",   emoji:"🌲",desc:"A peaceful forest. Beware the shadows.",
    minLevel:1,  monsterMinLv:1,  monsterMaxLv:8,  expMult:1.0,goldMult:1.0,lootBonus:0,
