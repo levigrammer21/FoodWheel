@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <defs><filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feFlood flood-color="#42a5f5" flood-opacity="0.5" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+      <linearGradient id="boot" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#90caf9"/>
+        <stop offset="100%" stop-color="#1565c0"/>
+      </linearGradient>
+    </defs>
+    <g filter="url(#glow)">
+      <rect x="14" y="10" width="16" height="30" rx="5" fill="url(#boot)"/>
+      <path d="M14,36 Q10,42 8,50 L38,50 L36,40 L30,40 L30,36 Z" fill="#42a5f5"/>
+      <rect x="8" y="48" width="30" height="6" rx="3" fill="#1565c0"/>
+      <rect x="14" y="10" width="16" height="5" rx="3" fill="#90caf9" opacity="0.5"/>
+      
+      <line x1="22" y1="14" x2="22" y2="38" stroke="#90caf9" stroke-width="0.8" opacity="0.35"/>
+    </g>
+</svg>
