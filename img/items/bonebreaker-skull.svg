@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Skull dome - large cranium -->
+  <path d="M18,58 Q18,22 50,16 Q82,22 82,58 L76,70 Q50,78 24,70Z" fill="#d4c8a8"/>
+  <!-- Skull texture -->
+  <ellipse cx="38" cy="34" rx="10" ry="8" fill="#c8bc9a" opacity="0.4"/>
+  <!-- Cheekbone prominences -->
+  <ellipse cx="22" cy="60" rx="8" ry="6" fill="#c8bc9a"/>
+  <ellipse cx="78" cy="60" rx="8" ry="6" fill="#c8bc9a"/>
+  <!-- Eye sockets - wearer looks through these -->
+  <ellipse cx="36" cy="52" rx="10" ry="9" fill="#1a1000" opacity="0.9"/>
+  <ellipse cx="64" cy="52" rx="10" ry="9" fill="#1a1000" opacity="0.9"/>
+  <!-- Crack lines in skull -->
+  <path d="M50,16 Q52,28 50,40" stroke="#b0a480" stroke-width="1.2" fill="none"/>
+  <path d="M34,22 Q38,32 36,42" stroke="#b0a480" stroke-width="0.8" fill="none" opacity="0.5"/>
+  <!-- Nose cavity -->
+  <path d="M46,60 Q50,57 54,60 L52,66 Q50,67 48,66Z" fill="#1a1000" opacity="0.8"/>
+  <!-- Teeth at bottom -->
+  <rect x="38" y="70" width="5" height="7" rx="1" fill="#d4c8a8"/>
+  <rect x="45" y="70" width="5" height="8" rx="1" fill="#d4c8a8"/>
+  <rect x="52" y="70" width="5" height="8" rx="1" fill="#d4c8a8"/>
+  <rect x="59" y="70" width="5" height="7" rx="1" fill="#d4c8a8"/>
+  <!-- Jaw line -->
+  <path d="M36,70 Q50,76 64,70" stroke="#b0a480" stroke-width="2" fill="none"/>
+</svg>

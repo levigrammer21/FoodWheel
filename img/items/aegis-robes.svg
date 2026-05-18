@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="aegisrobe" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0f0ff"/>
+      <stop offset="50%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#d8d8f8"/>
+    </linearGradient>
+    <radialGradient id="aegisglow" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#aaddff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#ffd700" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="aegisblur"><feGaussianBlur stdDeviation="2.5"/></filter>
+  </defs>
+  <!-- Divine light -->
+  <ellipse cx="50" cy="48" rx="40" ry="44" fill="url(#aegisglow)" filter="url(#aegisblur)"/>
+  <!-- Robe body -->
+  <path d="M20,24 L12,96 L88,96 L80,24 Q66,14 50,14 Q34,14 20,24Z" fill="url(#aegisrobe)"/>
+  <!-- Gold trim edges -->
+  <path d="M20,24 L12,96" stroke="#ffd700" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M80,24 L88,96" stroke="#ffd700" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M12,96 Q50,100 88,96" stroke="#ffd700" stroke-width="2" fill="none" opacity="0.7"/>
+  <!-- Celestial protection circle on chest -->
+  <circle cx="50" cy="46" r="16" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="50" cy="46" r="11" fill="none" stroke="#ffd700" stroke-width="0.8" opacity="0.4"/>
+  <!-- Aegis symbol inside circle -->
+  <line x1="50" y1="30" x2="50" y2="62" stroke="#ffd700" stroke-width="1" opacity="0.6"/>
+  <line x1="34" y1="46" x2="66" y2="46" stroke="#ffd700" stroke-width="1" opacity="0.6"/>
+  <line x1="38" y1="34" x2="62" y2="58" stroke="#ffd700" stroke-width="0.8" opacity="0.4"/>
+  <line x1="62" y1="34" x2="38" y2="58" stroke="#ffd700" stroke-width="0.8" opacity="0.4"/>
+  <!-- Center gem -->
+  <circle cx="50" cy="46" r="4" fill="#aaddff"/>
+  <circle cx="50" cy="46" r="2.5" fill="#ffffff"/>
+  <!-- Gold collar -->
+  <path d="M30,24 Q50,14 70,24 L66,34 Q50,28 34,34Z" fill="#ffd700" opacity="0.7"/>
+  <path d="M32,24 Q50,16 68,24" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Fold lines -->
+  <line x1="36" y1="34" x2="28" y2="94" stroke="#d0d0f0" stroke-width="0.8" opacity="0.4"/>
+  <line x1="64" y1="34" x2="72" y2="94" stroke="#d0d0f0" stroke-width="0.8" opacity="0.4"/>
+  <!-- Floating light motes -->
+  <circle cx="28" cy="42" r="1.5" fill="#ffd700" opacity="0.6"/>
+  <circle cx="72" cy="38" r="1.5" fill="#ffd700" opacity="0.6"/>
+  <circle cx="24" cy="68" r="1" fill="#aaddff" opacity="0.5"/>
+  <circle cx="76" cy="72" r="1" fill="#aaddff" opacity="0.5"/>
+  <!-- Golden hem band -->
+  <rect x="12" y="92" width="76" height="4" rx="1" fill="#ffd700" opacity="0.6"/>
+</svg>

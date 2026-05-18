@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Handle -->
+  <rect x="46" y="12" width="8" height="76" rx="3" fill="#5c3d1e"/>
+  <line x1="50" y1="14" x2="50" y2="86" stroke="#7a5530" stroke-width="1.5" opacity="0.5"/>
+  <!-- Left axe blade -->
+  <path d="M46,28 Q20,35 22,52 Q20,68 46,72 L46,28Z" fill="#7a8a92"/>
+  <!-- Right axe blade -->
+  <path d="M54,28 Q80,35 78,52 Q80,68 54,72 L54,28Z" fill="#7a8a92"/>
+  <!-- Left blade edge highlight -->
+  <path d="M22,52 Q20,35 46,28" stroke="#b0c0c8" stroke-width="1.2" fill="none" opacity="0.6"/>
+  <!-- Right blade edge highlight -->
+  <path d="M78,52 Q80,35 54,28" stroke="#b0c0c8" stroke-width="1.2" fill="none" opacity="0.6"/>
+  <!-- Blade etch line left -->
+  <path d="M40,36 Q28,50 40,64" stroke="#5a6a72" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Blade etch line right -->
+  <path d="M60,36 Q72,50 60,64" stroke="#5a6a72" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Center collar -->
+  <rect x="42" y="38" width="16" height="24" rx="2" fill="#6a7a84"/>
+  <rect x="43" y="39" width="14" height="4" rx="1" fill="#9ab0bc" opacity="0.4"/>
+</svg>

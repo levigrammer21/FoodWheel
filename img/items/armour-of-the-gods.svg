@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="godarmour" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="25%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#4af"/>
+      <stop offset="75%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#ffd700"/>
+    </linearGradient>
+    <radialGradient id="godaura" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="40%" stop-color="#ffd700" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ff8800" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="godblaze"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <!-- Massive divine aura -->
+  <ellipse cx="50" cy="48" rx="44" ry="46" fill="url(#godaura)" filter="url(#godblaze)"/>
+  <!-- Divine rays shooting outward -->
+  <line x1="50" y1="10" x2="50" y2="2" stroke="#ffd700" stroke-width="2" opacity="0.6"/>
+  <line x1="50" y1="10" x2="60" y2="4" stroke="#ffffff" stroke-width="1.5" opacity="0.5"/>
+  <line x1="50" y1="10" x2="40" y2="4" stroke="#ffffff" stroke-width="1.5" opacity="0.5"/>
+  <line x1="50" y1="10" x2="70" y2="8" stroke="#ffd700" stroke-width="1" opacity="0.4"/>
+  <line x1="50" y1="10" x2="30" y2="8" stroke="#ffd700" stroke-width="1" opacity="0.4"/>
+  <line x1="50" y1="10" x2="82" y2="14" stroke="#ff8800" stroke-width="1" opacity="0.3"/>
+  <line x1="50" y1="10" x2="18" y2="14" stroke="#ff8800" stroke-width="1" opacity="0.3"/>
+  <!-- Armour body - blinding bright -->
+  <path d="M14,26 Q14,6 50,2 Q86,6 86,26 L82,84 Q50,94 18,84Z" fill="url(#godarmour)"/>
+  <!-- Inner body glow -->
+  <path d="M20,30 Q20,14 50,10 Q80,14 80,30 L76,80 Q50,88 24,80Z" fill="#ffffff" opacity="0.3"/>
+  <!-- Element panels - fire/water/lightning/nature -->
+  <path d="M20,34 Q28,28 36,34 Q28,40 20,34Z" fill="#ff4400" opacity="0.7"/>
+  <path d="M36,34 Q44,28 50,32 Q44,38 36,34Z" fill="#ffd700" opacity="0.8"/>
+  <path d="M50,32 Q56,28 64,34 Q56,38 50,32Z" fill="#4488ff" opacity="0.7"/>
+  <path d="M64,34 Q72,28 80,34 Q72,40 64,34Z" fill="#44cc44" opacity="0.7"/>
+  <path d="M22,50 Q30,44 38,50 Q30,56 22,50Z" fill="#4488ff" opacity="0.6"/>
+  <path d="M38,50 Q48,44 56,50 Q48,56 38,50Z" fill="#ff8800" opacity="0.6"/>
+  <path d="M56,50 Q64,44 78,50 Q64,56 56,50Z" fill="#cc44ff" opacity="0.6"/>
+  <!-- God face chest medallion -->
+  <circle cx="50" cy="20" r="9" fill="#ffd700"/>
+  <circle cx="50" cy="20" r="7" fill="#ffffff"/>
+  <circle cx="50" cy="20" r="4" fill="#ffd700" opacity="0.8"/>
+  <!-- Radiating from medallion -->
+  <line x1="50" y1="11" x2="50" y2="9" stroke="#ffd700" stroke-width="1.5" opacity="0.7"/>
+  <line x1="57" y1="14" x2="59" y2="12" stroke="#ffd700" stroke-width="1.5" opacity="0.7"/>
+  <line x1="43" y1="14" x2="41" y2="12" stroke="#ffd700" stroke-width="1.5" opacity="0.7"/>
+  <line x1="59" y1="20" x2="61" y2="20" stroke="#ffd700" stroke-width="1.5" opacity="0.7"/>
+  <line x1="41" y1="20" x2="39" y2="20" stroke="#ffd700" stroke-width="1.5" opacity="0.7"/>
+  <!-- Pauldrons blazing -->
+  <ellipse cx="14" cy="28" rx="10" ry="8" fill="#ffd700" opacity="0.8"/>
+  <ellipse cx="86" cy="28" rx="10" ry="8" fill="#ffd700" opacity="0.8"/>
+  <ellipse cx="14" cy="27" rx="6" ry="5" fill="#ffffff" opacity="0.5"/>
+  <ellipse cx="86" cy="27" rx="6" ry="5" fill="#ffffff" opacity="0.5"/>
+  <!-- Bottom hem - all elements swirling -->
+  <path d="M18,82 Q26,76 34,82 Q42,76 50,82 Q58,76 66,82 Q74,76 82,82" stroke="#ffd700" stroke-width="2" fill="none" opacity="0.7"/>
+</svg>

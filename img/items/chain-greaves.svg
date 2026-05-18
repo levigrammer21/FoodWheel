@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Left chain leg -->
+  <path d="M20,10 Q30,8 36,10 L40,76 Q28,80 20,76Z" fill="#6a7a84"/>
+  <!-- Right chain leg -->
+  <path d="M64,10 Q72,8 80,10 L80,76 Q70,80 60,76Z" fill="#6a7a84"/>
+  <!-- Chain ring rows left leg -->
+  <path d="M20,18 Q28,16 36,18" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.7"/>
+  <path d="M20,26 Q28,24 36,26" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.7"/>
+  <path d="M20,34 Q28,32 37,34" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.7"/>
+  <path d="M20,42 Q28,40 38,42" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.6"/>
+  <path d="M20,50 Q28,48 38,50" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.6"/>
+  <path d="M21,58 Q28,56 38,58" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M22,66 Q29,64 38,66" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Chain ring rows right leg -->
+  <path d="M64,18 Q72,16 80,18" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.7"/>
+  <path d="M63,26 Q72,24 80,26" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.7"/>
+  <path d="M63,34 Q71,32 80,34" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.7"/>
+  <path d="M62,42 Q71,40 80,42" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.6"/>
+  <path d="M62,50 Q71,48 80,50" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.6"/>
+  <path d="M62,58 Q71,56 80,58" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M62,66 Q71,64 80,66" stroke="#4a5a64" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Knee plates -->
+  <ellipse cx="28" cy="46" rx="9" ry="8" fill="#5a6a74"/>
+  <ellipse cx="72" cy="46" rx="9" ry="8" fill="#5a6a74"/>
+  <ellipse cx="27" cy="45" rx="5" ry="4" fill="#8a9ba8" opacity="0.3"/>
+  <ellipse cx="71" cy="45" rx="5" ry="4" fill="#8a9ba8" opacity="0.3"/>
+  <!-- Top belt -->
+  <rect x="18" y="8" width="64" height="5" rx="2" fill="#5a6a74"/>
+</svg>

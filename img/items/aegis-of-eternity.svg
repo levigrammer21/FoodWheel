@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="aegissh" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="30%" stop-color="#ffd700"/>
+      <stop offset="70%" stop-color="#b8860b"/>
+      <stop offset="100%" stop-color="#6a4a00"/>
+    </radialGradient>
+    <filter id="aegisshglow"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <!-- Massive aura -->
+  <circle cx="50" cy="50" r="46" fill="#ffd700" opacity="0.15" filter="url(#aegisshglow)"/>
+  <!-- Shield body - divine oval -->
+  <path d="M50,6 Q84,20 84,50 Q84,80 50,94 Q16,80 16,50 Q16,20 50,6Z" fill="url(#aegissh)"/>
+  <!-- Scale texture of the aegis (mythological aegis had scales) -->
+  <path d="M34,22 Q42,16 50,22 Q42,28 34,22Z" fill="#c8a820" opacity="0.6"/>
+  <path d="M50,22 Q58,16 66,22 Q58,28 50,22Z" fill="#c8a820" opacity="0.6"/>
+  <path d="M28,34 Q36,28 44,34 Q36,40 28,34Z" fill="#b89010" opacity="0.6"/>
+  <path d="M44,34 Q52,28 60,34 Q52,40 44,34Z" fill="#b89010" opacity="0.6"/>
+  <path d="M60,34 Q68,28 74,34 Q68,40 60,34Z" fill="#b89010" opacity="0.6"/>
+  <path d="M24,48 Q34,42 42,48 Q34,54 24,48Z" fill="#c8a820" opacity="0.55"/>
+  <path d="M42,48 Q50,42 58,48 Q50,54 42,48Z" fill="#c8a820" opacity="0.55"/>
+  <path d="M58,48 Q66,42 76,48 Q66,54 58,48Z" fill="#c8a820" opacity="0.55"/>
+  <path d="M26,62 Q36,56 44,62 Q36,68 26,62Z" fill="#b89010" opacity="0.5"/>
+  <path d="M44,62 Q52,56 60,62 Q52,68 44,62Z" fill="#b89010" opacity="0.5"/>
+  <path d="M60,62 Q68,56 74,62 Q68,68 60,62Z" fill="#b89010" opacity="0.5"/>
+  <!-- Gorgon/divine face in center -->
+  <circle cx="50" cy="50" r="12" fill="#8a6800"/>
+  <circle cx="50" cy="50" r="10" fill="#c8a820"/>
+  <!-- Divine eye motif -->
+  <ellipse cx="46" cy="48" rx="3" ry="2.5" fill="#1a0a00"/>
+  <ellipse cx="54" cy="48" rx="3" ry="2.5" fill="#1a0a00"/>
+  <ellipse cx="46" cy="48" rx="1.5" ry="1.5" fill="#ffd700"/>
+  <ellipse cx="54" cy="48" rx="1.5" ry="1.5" fill="#ffd700"/>
+  <path d="M44,54 Q50,58 56,54" stroke="#8a6800" stroke-width="1.2" fill="none"/>
+  <!-- Gold rim with snake border motif -->
+  <path d="M50,6 Q84,20 84,50 Q84,80 50,94 Q16,80 16,50 Q16,20 50,6Z" fill="none" stroke="#ffd700" stroke-width="4"/>
+  <path d="M50,6 Q84,20 84,50 Q84,80 50,94 Q16,80 16,50 Q16,20 50,6Z" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.4"/>
+  <!-- Floating star particles -->
+  <circle cx="26" cy="30" r="1.5" fill="#ffffff" opacity="0.7"/>
+  <circle cx="74" cy="28" r="1.5" fill="#ffffff" opacity="0.7"/>
+  <circle cx="22" cy="66" r="1.5" fill="#ffffff" opacity="0.6"/>
+  <circle cx="78" cy="70" r="1.5" fill="#ffffff" opacity="0.6"/>
+</svg>

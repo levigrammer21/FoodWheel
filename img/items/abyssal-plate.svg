@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="abyssplate" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#001a2e"/>
+      <stop offset="50%" stop-color="#002a44"/>
+      <stop offset="100%" stop-color="#000e1a"/>
+    </linearGradient>
+  </defs>
+  <!-- Plate body -->
+  <path d="M16,26 Q16,8 50,4 Q84,8 84,26 L80,86 Q50,94 20,86Z" fill="url(#abyssplate)"/>
+  <!-- Bioluminescent vein lines -->
+  <path d="M50,8 Q52,30 50,52 Q48,72 50,88" stroke="#00ffcc" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M26,20 Q30,40 28,60 Q26,72 24,84" stroke="#00aaff" stroke-width="0.8" fill="none" opacity="0.3"/>
+  <path d="M74,20 Q70,40 72,60 Q74,72 76,84" stroke="#00aaff" stroke-width="0.8" fill="none" opacity="0.3"/>
+  <!-- Deep-sea creature motif - anglerfish lure on chest -->
+  <circle cx="50" cy="36" r="8" fill="#001a2e"/>
+  <path d="M50,28 Q52,22 50,16 Q48,22 50,28Z" stroke="#00ffcc" stroke-width="1.5" fill="none"/>
+  <circle cx="50" cy="15" r="3" fill="#00ffcc" opacity="0.8"/>
+  <circle cx="50" cy="15" r="1.5" fill="#ffffff" opacity="0.7"/>
+  <!-- Tentacle/barnacle pauldrons -->
+  <path d="M16,26 Q8,30 6,24 Q10,22 14,28Z" fill="#002a44"/>
+  <path d="M16,32 Q6,36 4,30 Q8,28 14,34Z" fill="#002a44"/>
+  <path d="M84,26 Q92,30 94,24 Q90,22 86,28Z" fill="#002a44"/>
+  <path d="M84,32 Q94,36 96,30 Q92,28 86,34Z" fill="#002a44"/>
+  <!-- Scale texture on plate -->
+  <path d="M28,46 Q34,42 40,46 Q34,50 28,46Z" fill="#003a54" opacity="0.6"/>
+  <path d="M40,46 Q48,42 56,46 Q48,50 40,46Z" fill="#003a54" opacity="0.6"/>
+  <path d="M56,46 Q62,42 68,46 Q62,50 56,46Z" fill="#003a54" opacity="0.6"/>
+  <path d="M30,58 Q38,54 44,58 Q38,62 30,58Z" fill="#002a44" opacity="0.6"/>
+  <path d="M44,58 Q52,54 58,58 Q52,62 44,58Z" fill="#002a44" opacity="0.6"/>
+  <path d="M58,58 Q64,54 70,58 Q64,62 58,58Z" fill="#002a44" opacity="0.6"/>
+  <!-- Void holes -->
+  <ellipse cx="36" cy="34" rx="4" ry="3" fill="#000000" opacity="0.8"/>
+  <ellipse cx="64" cy="34" rx="4" ry="3" fill="#000000" opacity="0.8"/>
+  <ellipse cx="36" cy="34" rx="2" ry="1.5" fill="#00ffcc" opacity="0.15"/>
+  <ellipse cx="64" cy="34" rx="2" ry="1.5" fill="#00ffcc" opacity="0.15"/>
+</svg>
