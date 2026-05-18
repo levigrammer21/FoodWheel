@@ -10,7 +10,7 @@ import{rand,clamp,fmt,expLv,maxHpCalc,SFX,unlockAudio,
   rollWeather,getComboMult,getComboTier,comboLabel,salvageShards,upgradeItemCost,canUpgrade,applyUpgrade,
   startDungeon,getDungeonProgress,claimDungeon,abandonDungeon,fmtDuration,
   rollEggRarity,makeEgg,shopChestPrice,recordShopChestBuy,rollEggHatch,canHatchEgg,
-  gainPetExp,getPetMood,getPetPowerMult,drainPetHunger,feedPet,getActivePet as getActiveBattlePet,saveActivePet}from"./engine.js";
+  gainPetExp,getPetMood,getPetPowerMult,drainPetHunger,feedPet,getActivePet as getActiveBattlePet,saveActivePet,petExpNeeded}from"./engine.js";
 import{db,auth,gp,saveP as fbSaveP,loadP,loadLeaderboard,getListings,addListing,removeListing,
   getBounties,getGuild,trackCirculation,getCirculation,
   onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,
@@ -79,18 +79,22 @@ function stepActivePet(){
 function eggRarityColor(egg){return RARITY_COLOR[egg?.rarity]||EGG_TYPES[egg?.eggType]?.color||"#6b7280";}
 
 
+// Converts underscored paths (from data.js slug) to hyphenated (actual filenames on GitHub)
+function fixImgPath(src){if(!src)return src;return src.replace(/_/g,"-");}
+
 // Image renderer: renders emoji immediately, then tries to load SVG over it.
 // Uses a post-render JS hook to swap emoji->image cleanly, avoiding all onerror issues.
 let _gfxId=0;
 function _gfxWrap(imgSrc,emoji,size,extraStyle){
   const id='gfx'+(++_gfxId);
+  const fixedSrc=fixImgPath(imgSrc);
   // Schedule image load after this render cycle
   setTimeout(()=>{
     const el=document.getElementById(id);
-    if(!el||!imgSrc)return;
+    if(!el||!fixedSrc)return;
     const img=new Image();
-    img.onload=()=>{el.style.backgroundImage=`url('${imgSrc}')`;el.style.backgroundSize='contain';el.style.backgroundRepeat='no-repeat';el.style.backgroundPosition='center';el.textContent='';};
-    img.src=imgSrc;
+    img.onload=()=>{el.style.backgroundImage=`url('${fixedSrc}')`;el.style.backgroundSize='contain';el.style.backgroundRepeat='no-repeat';el.style.backgroundPosition='center';el.textContent='';};
+    img.src=fixedSrc;
   },0);
   return`<span id="${id}" style="display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;flex-shrink:0;font-size:${Math.round(size*0.75)}px;${extraStyle||''}">${emoji}</span>`;
 }
@@ -948,14 +952,17 @@ function renderMarketShop(){
   const equipHtml=shopItems.map((item,i)=>`<div class="shop-item"><div class="shop-icon">${gfx(item.image,item.emoji,40)}</div>
     <div class="shop-info"><div class="shop-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}</div><div class="shop-desc">+~${item.base} ${item.stat==="str"?"STR":"DEF"} · Min Lv.${item.minLevel}</div></div>
     <div><div class="shop-price">🪙${fmt(item.shopPrice)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem('item',${i})">Buy</button></div></div>`).join("");
-  const eggHtml=eggTypes.map(e=>`<div class="shop-item"><div class="shop-icon">${e.emoji}</div>
-    <div class="shop-info"><div class="shop-name" style="color:${e.color}">${e.name}</div><div class="shop-desc">Incubates ${fmtDuration(e.incubationMs)} · hatches a pet</div></div>
-    <div><div class="shop-price">🪙${fmt(e.marketPrice)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyEgg('${e.id}')">Buy</button></div></div>`).join("");
+  const eggHtml=Object.values(EGG_TYPES).map(e=>`<div class="shop-item" style="opacity:0.7"><div class="shop-icon">${e.emoji}</div>
+    <div class="shop-info"><div class="shop-name" style="color:${e.color}">${e.name}</div><div class="shop-desc">Incubates ${fmtDuration(e.incubationMs)} · hatches a pet · Market value 🪙${fmt(e.marketPrice)}</div></div>
+    <div style="text-align:right;font-size:0.7rem;color:var(--text3);font-style:italic;padding:0.4rem">Find in<br>dungeons &<br>chests</div></div>`).join("");
   body.innerHTML=`<div style="font-size:0.78rem;color:var(--text3);margin-bottom:0.6rem">Gold: 🪙${fmt(P.gold)} · Shards: 🧩${P.shards||0}</div>
     <div class="section-hdr">✨ Special</div>${chestHtml}
     <div style="font-size:0.72rem;color:var(--text3);margin:-0.25rem 0 0.75rem">Pet eggs come from dungeon chests, this chest, and rare walking finds.</div>
     <div class="section-hdr">Consumables</div>${consumeHtml}
-    <div class="section-hdr">Equipment</div>${equipHtml}`;
+    <div class="section-hdr">Equipment</div>${equipHtml}
+    <div class="section-hdr">🥚 Pet Eggs (Reference)</div>
+    <div style="font-size:0.72rem;color:var(--text3);margin-bottom:0.5rem">Eggs cannot be purchased — find them while exploring or in dungeon chests!</div>
+    ${eggHtml}`;
 }
 function renderMyListings(listings){
   const body=document.getElementById("market-body");if(!body)return;
