@@ -2,12 +2,13 @@
 //  MicroMMO — ui.js
 // ============================================================
 import{CFG,UI,PLAYER_AVATAR,EQUIP_SLOTS,SLOT_EMOJI,RARITY_COLOR,TIER_EMOJIS,
-  ARENA_TIERS,PROPERTIES,SHOP_CONSUMABLES,ITEMS,PETS,AVATARS,CHOICE_EVENTS,WALK_AREAS,WEATHER_TYPES,WALK_EVENTS}from"./data.js";
+  ARENA_TIERS,PROPERTIES,SHOP_CONSUMABLES,ITEMS,PETS,AVATARS,CHOICE_EVENTS,WALK_AREAS,WEATHER_TYPES,WALK_EVENTS,DUNGEONS}from"./data.js";
 import{rand,clamp,fmt,expLv,maxHpCalc,SFX,unlockAudio,
   equipStats,arenaT,qualityLabel,rollAvatar,rollItemStat,spawnItemScaled,spawnItemFromPool,
   spawnMonster,calcMaxEnergy,getRentalIncome,countOwned,propertyPrice,getOwnedProperties,
   getActiveAvatar,getQuests,updateQuestProgress,applyConsumable,simulateFight,newPlayer,
-  rollWeather,getComboMult,getComboTier,comboLabel,salvageShards,upgradeItemCost,canUpgrade,applyUpgrade}from"./engine.js";
+  rollWeather,getComboMult,getComboTier,comboLabel,salvageShards,upgradeItemCost,canUpgrade,applyUpgrade,
+  startDungeon,getDungeonProgress,claimDungeon,abandonDungeon,fmtDuration}from"./engine.js";
 import{db,auth,gp,saveP as fbSaveP,loadP,loadLeaderboard,getListings,addListing,removeListing,
   getBounties,getGuild,trackCirculation,getCirculation,
   onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,
@@ -409,6 +410,7 @@ export function renderHome(){
       <button class="btn btn-steel btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('quests')">📜 Quests <span style="color:${qDone===3?"var(--green2)":"var(--gold2)"}">${qDone}/3</span></button>
       <button class="btn btn-purple btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('pvp')">⚔️ PvP & Bounties</button>
     </div>
+    <button class="btn btn-gold btn-sm" style="width:100%;padding:0.7rem;margin-bottom:0.5rem" onclick="G.launchDungeon()">🏰 Dungeons${P.activeDungeon?" · Active":""}</button>
     <div class="two-col" style="margin-bottom:0.5rem">
       <button class="btn btn-gold btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('properties')">🏠 Properties</button>
       <button class="btn btn-ghost btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('guild')">🛡️ Guild</button>
@@ -1211,6 +1213,76 @@ export async function confirmLeaveGuild(guildId){
   const guild=await getGuild(guildId);if(!guild)return;const newMembers=guild.members.filter(m=>m.uid!==CU.uid);
   if(newMembers.length===0)await deleteDoc(doc(db,"guilds",guildId));else await updateDoc(doc(db,"guilds",guildId),{members:newMembers});
   P.guildId=null;saveP();closeModal();SFX.click();toast("Left the guild.");renderGuild();
+}
+
+
+// ── DUNGEONS ─────────────────────────────────────────────────
+function _dungeonRewardHtml(rewards){
+  if(!rewards||rewards.length===0)return`<div style="text-align:center;color:var(--text3);font-style:italic;padding:0.5rem">No chest rewards this time.</div>`;
+  return rewards.map(r=>{
+    if(r.type==="gold")return`<div class="modal-row"><em>🪙 Gold Chest</em><span style="color:var(--gold3)">+${fmt(r.amount)}</span></div>`;
+    if(r.type==="egg"&&r.item)return`<div class="modal-row"><em>${r.item.emoji||"🥚"} Egg</em><span style="color:${RARITY_COLOR[r.item.rarity]||"var(--gold3)"}">${r.item.name}</span></div>`;
+    if(r.type==="item"&&r.item)return`<div class="modal-row"><em>${r.item.emoji||"🎁"} Item</em><span style="color:${RARITY_COLOR[r.item.rarity]||"var(--text)"}">${r.item.name} +${r.item.val}</span></div>`;
+    return`<div class="modal-row"><em>Reward</em><span>${JSON.stringify(r)}</span></div>`;
+  }).join("");
+}
+function _renderDungeonModal(){
+  const prog=getDungeonProgress(P);
+  if(prog){
+    const pct=Math.round((prog.pct||0)*100);
+    showModal(`<div class="modal-title">${prog.def.emoji} ${prog.def.name}</div>
+      <div style="text-align:center;color:var(--text3);font-size:0.86rem;margin-bottom:0.75rem">${prog.def.desc}</div>
+      <div class="bar-wrap"><div class="bar-labels"><span>Progress</span><span>${pct}%</span></div><div class="bar bar-exp"><div class="bar-fill" style="width:${pct}%"></div></div></div>
+      <div style="text-align:center;color:${prog.done?"var(--green2)":"var(--text3)"};font-family:'Cinzel',serif;font-size:0.82rem;font-weight:700;margin:0.75rem 0">${prog.done?"Ready to claim!":"Remaining: "+fmtDuration(prog.remaining)}</div>
+      <div class="modal-actions">
+        ${prog.done?`<button class="btn btn-gold" onclick="G.claimDungeonUI()">Claim Rewards</button>`:`<button class="btn btn-ghost" disabled>Dungeon Running...</button>`}
+        <button class="btn btn-danger" onclick="G.abandonDungeonUI()">Abandon</button>
+        <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>
+      </div>`);
+    return;
+  }
+  const rows=DUNGEONS.map(d=>`<div style="background:${d.bgColor||"var(--surface)"};border:1.5px solid ${d.borderColor||"var(--border)"};border-radius:12px;padding:0.85rem;margin-bottom:0.55rem">
+    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem">
+      <div style="font-size:2rem">${d.emoji}</div>
+      <div style="flex:1"><div style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700;color:${d.color||"var(--gold3)"}">${d.name}</div>
+        <div style="font-size:0.76rem;color:var(--text3)">${d.desc}</div>
+        <div style="font-size:0.68rem;color:var(--text3);margin-top:0.25rem">⏱ ${fmtDuration(d.durationMs)} · 📦 ${d.minChests}-${d.maxChests} chest${d.maxChests===1?"":"s"}</div></div>
+    </div>
+    <button class="btn btn-gold btn-sm" onclick="G.launchDungeon('${d.id}')">Start</button>
+  </div>`).join("");
+  showModal(`<div class="modal-title">🏰 Dungeons</div>
+    <div style="text-align:center;color:var(--text3);font-size:0.84rem;margin-bottom:0.75rem">Send your hero on a timed dungeon run, then come back to claim rewards.</div>
+    ${rows}
+    <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);
+}
+export function launchDungeon(dungeonId){
+  if(!P){toast("Not logged in");return;}
+  if(!dungeonId){_renderDungeonModal();return;}
+  const res=startDungeon(P,dungeonId);
+  if(!res.ok){SFX.error();toast(res.msg||"Could not start dungeon");_renderDungeonModal();return;}
+  saveP();SFX.guild();toast(`${res.def.emoji} ${res.def.name} started!`);_renderDungeonModal();if(TAB==="home")renderHome();
+}
+export function abandonDungeonUI(){
+  const prog=getDungeonProgress(P);
+  if(!prog){toast("No active dungeon.");return;}
+  showModal(`<div class="modal-title">Abandon Dungeon?</div>
+    <div style="text-align:center;color:var(--text3);font-size:0.88rem;margin-bottom:1rem">Leave <strong>${prog.def.name}</strong>? You will lose this run's rewards.</div>
+    <div class="modal-actions"><button class="btn btn-danger" onclick="G.confirmAbandonDungeon()">Abandon</button>
+      <button class="btn btn-ghost" onclick="G.launchDungeon()">Cancel</button></div>`);
+}
+export function confirmAbandonDungeon(){
+  abandonDungeon(P);saveP();closeModal();SFX.error();toast("🏃 Dungeon abandoned.");if(TAB==="home")renderHome();
+}
+export function claimDungeonUI(){
+  const res=claimDungeon(P);
+  if(!res.ok){SFX.error();toast(res.msg||"Could not claim dungeon");_renderDungeonModal();return;}
+  checkLevelUp();saveP();SFX.chest();updateHdr();
+  const rewardsHtml=_dungeonRewardHtml(res.allRewards);
+  showModal(`<div class="modal-title">🏆 ${res.def.name} Complete!</div>
+    <div style="text-align:center;color:var(--text3);font-size:0.88rem;margin:0.6rem 0 1rem">Base rewards: <strong style="color:var(--steel)">+${fmt(res.expGain)} EXP</strong> · <strong style="color:var(--gold3)">+🪙${fmt(res.goldGain)}</strong><br>Chests opened: <strong>${res.chestCount}</strong></div>
+    ${rewardsHtml}
+    <button class="btn btn-gold" onclick="G.closeModal();G.showTab('home')" style="margin-top:1rem">Continue</button>`);
+  if(TAB==="home")renderHome();
 }
 
 // ── PROFILE ───────────────────────────────────────────────────
