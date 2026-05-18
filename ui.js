@@ -79,8 +79,14 @@ function stepActivePet(){
 function eggRarityColor(egg){return RARITY_COLOR[egg?.rarity]||EGG_TYPES[egg?.eggType]?.color||"#6b7280";}
 
 
-// Converts underscored paths (from data.js slug) to hyphenated (actual filenames on GitHub)
-function fixImgPath(src){if(!src)return src;return src.replace(/_/g,"-");}
+// Pets and items use hyphenated filenames on GitHub (e.g. baby-slime.svg, rusty-sword.svg)
+// Monsters and avatars use underscored filenames (e.g. goblin_scout.svg, av_wolf.svg)
+// So we only convert underscores→hyphens for img/pets/ and img/items/ paths.
+function fixImgPath(src){
+  if(!src)return src;
+  if(src.startsWith("img/pets/")||src.startsWith("img/items/"))return src.replace(/_/g,"-");
+  return src;
+}
 
 // Image renderer: renders emoji immediately, then tries to load SVG over it.
 // Uses a post-render JS hook to swap emoji->image cleanly, avoiding all onerror issues.
