@@ -2,13 +2,15 @@
 //  MicroMMO — ui.js
 // ============================================================
 import{CFG,UI,PLAYER_AVATAR,EQUIP_SLOTS,SLOT_EMOJI,RARITY_COLOR,TIER_EMOJIS,
-  ARENA_TIERS,PROPERTIES,SHOP_CONSUMABLES,ITEMS,PETS,AVATARS,CHOICE_EVENTS,WALK_AREAS,WEATHER_TYPES,WALK_EVENTS,DUNGEONS}from"./data.js";
+  ARENA_TIERS,PROPERTIES,SHOP_CONSUMABLES,ITEMS,PETS,AVATARS,CHOICE_EVENTS,WALK_AREAS,WEATHER_TYPES,WALK_EVENTS,DUNGEONS,EGG_TYPES}from"./data.js";
 import{rand,clamp,fmt,expLv,maxHpCalc,SFX,unlockAudio,
   equipStats,arenaT,qualityLabel,rollAvatar,rollItemStat,spawnItemScaled,spawnItemFromPool,
   spawnMonster,calcMaxEnergy,getRentalIncome,countOwned,propertyPrice,getOwnedProperties,
   getActiveAvatar,getQuests,updateQuestProgress,applyConsumable,simulateFight,newPlayer,
   rollWeather,getComboMult,getComboTier,comboLabel,salvageShards,upgradeItemCost,canUpgrade,applyUpgrade,
-  startDungeon,getDungeonProgress,claimDungeon,abandonDungeon,fmtDuration}from"./engine.js";
+  startDungeon,getDungeonProgress,claimDungeon,abandonDungeon,fmtDuration,
+  rollEggRarity,makeEgg,shopChestPrice,recordShopChestBuy,rollEggHatch,canHatchEgg,
+  gainPetExp,getPetMood,getPetPowerMult,drainPetHunger,feedPet,getActivePet as getActiveBattlePet,saveActivePet}from"./engine.js";
 import{db,auth,gp,saveP as fbSaveP,loadP,loadLeaderboard,getListings,addListing,removeListing,
   getBounties,getGuild,trackCirculation,getCirculation,
   onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,
@@ -23,6 +25,59 @@ export function setCU(u){CU=u;}
 export function setP(data){P=data;}
 function saveP(){return fbSaveP(CU?.uid,P);}
 function pick(a){return a[Math.floor(Math.random()*a.length)];}
+
+function normalizePet(pet){
+  if(!pet)return pet;
+  return{
+    ...pet,
+    id:pet.id||`pet_${Date.now()}_${rand(0,9999)}`,
+    type:"Pet",
+    petLevel:pet.petLevel||1,
+    petExp:pet.petExp||0,
+    hunger:pet.hunger??100,
+    isShiny:!!pet.isShiny,
+    soulbound:true,
+    val:pet.val||pet.base||1,
+    base:pet.base||pet.val||1
+  };
+}
+function migrateOldPets(){
+  if(!P)return;
+  P.petCollection=(P.petCollection||[]).map(normalizePet);
+  if(P.equipped?.Pet){
+    const old=normalizePet(P.equipped.Pet);
+    const exists=P.petCollection.some(p=>p.id===old.id);
+    if(!exists)P.petCollection.push(old);
+    if(!P.activePetId)P.activePetId=old.id;
+    delete P.equipped.Pet;
+  }
+  P.inventory=(P.inventory||[]).filter(item=>{
+    if(item&&item.type==="Pet"&&!item.isEgg){
+      const pet=normalizePet(item);
+      const exists=P.petCollection.some(p=>p.id===pet.id);
+      if(!exists)P.petCollection.push(pet);
+      if(!P.activePetId)P.activePetId=pet.id;
+      return false;
+    }
+    return true;
+  });
+}
+function activePet(){return getActiveBattlePet(P);}
+function petImage(pet,size=36){return pet?gfx(pet.image,pet.emoji,size):"";}
+function stepActivePet(){
+  const pet=activePet();if(!pet)return;
+  const beforeLevel=pet.petLevel||1,beforeMood=getPetMood(pet);
+  let updated=gainPetExp(drainPetHunger(pet,1),1);
+  saveActivePet(P,updated);
+  if(updated.petLevel>beforeLevel){
+    toast(`🐾 ${updated.name} reached Lv.${updated.petLevel}!`);
+    spawnFlavorText(`${updated.name} Lv.${updated.petLevel}!`,"🐾");
+  }
+  const afterMood=getPetMood(updated);
+  if(beforeMood!==afterMood&&(afterMood==="Hungry"||afterMood==="Starving"))toast(`🍖 ${updated.name} is ${afterMood.toLowerCase()}!`);
+}
+function eggRarityColor(egg){return RARITY_COLOR[egg?.rarity]||EGG_TYPES[egg?.eggType]?.color||"#6b7280";}
+
 
 // Image renderer: renders emoji immediately, then tries to load SVG over it.
 // Uses a post-render JS hook to swap emoji->image cleanly, avoiding all onerror issues.
@@ -133,6 +188,7 @@ export function startGame(){
   if(P.activePetId===undefined)P.activePetId=null;
   if(P.activeDungeon===undefined)P.activeDungeon=null;
   if(P.shopChest===undefined)P.shopChest=null;
+  migrateOldPets();
   // Always recalculate maxHp on load so formula changes take effect immediately
   const{def:eDef}=equipStats(P.equipped||{});
   P.maxHp=maxHpCalc(P.level,(P.baseDef||5)+eDef,P.bonusHp||0);
@@ -170,6 +226,21 @@ export function updateWalkUI(){
   if(epText)epText.textContent=`${P.energy}/${maxE}`;
   if(epBar)epBar.style.width=`${Math.round((P.energy/maxE)*100)}%`;
   if(wa)wa.innerHTML=avatarGfx(48);
+  if(wa){
+    let petEl=document.getElementById("walk-pet-el");
+    const pet=activePet();
+    if(pet){
+      if(!petEl){
+        petEl=document.createElement("div");
+        petEl.id="walk-pet-el";
+        petEl.style.cssText="position:absolute;left:calc(50% + 42px);bottom:31%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.55));z-index:3;pointer-events:none;";
+        const world=document.getElementById("walk-world");if(world)world.appendChild(petEl);
+      }
+      const mood=getPetMood(pet);
+      petEl.innerHTML=`${petImage(pet,34)}${mood==="Hungry"?`<span style="position:absolute;right:-6px;top:-6px;font-size:0.75rem">🍖</span>`:mood==="Starving"?`<span style="position:absolute;right:-6px;top:-6px;font-size:0.75rem">💤</span>`:""}`;
+      petEl.style.display="flex";
+    }else if(petEl)petEl.style.display="none";
+  }
   if(areaDisplay){
     if(CURRENT_AREA){
       areaDisplay.innerHTML=`${CURRENT_AREA.emoji} ${CURRENT_AREA.name}`;
@@ -281,6 +352,7 @@ function doAvatarHop(){
   el.classList.remove("hop");void el.offsetWidth;// reflow to restart animation
   el.classList.add("hop");
   setTimeout(()=>el.classList.remove("hop"),320);
+  const pet=document.getElementById("walk-pet-el");if(pet){pet.style.transform="translateY(-8px)";setTimeout(()=>pet.style.transform="",180);}
   spawnFootprint();
 }
 
@@ -291,6 +363,7 @@ export function takeStep(){
   if(!CURRENT_AREA){SFX.click();toast("Select an area first!");openAreaSelect();return;}
   SFX.step();doAvatarHop();
   P.energy--;P.steps=(P.steps||0)+1;P.walkStreak=(P.walkStreak||0)+1;
+  stepActivePet();
   if(P.energy<calcMaxEnergy(P)&&!P.lastEnergyTime)P.lastEnergyTime=Date.now();
   updateHdr();updateWalkUI();questProgress("steps");
   const streak=P.walkStreak;
@@ -301,6 +374,13 @@ export function takeStep(){
   const totalMonsterChance=Math.min(CFG.MONSTER_CHANCE,0.22)*w.monsterMult; // capped so flavor text always has room
   const stepXp=Math.round((CFG.STEP_XP_BASE+P.level*CFG.STEP_XP_PER_LEVEL)*area.expMult*w.expMult*comboMult);
   P.exp=(P.exp||0)+stepXp;checkLevelUp();
+  if(Math.random()<(CFG.WALK_EGG_CHANCE||0)){
+    const egg=makeEgg(rollEggRarity());
+    P.inventory=[...(P.inventory||[]),egg];P.itemsFound=(P.itemsFound||0)+1;
+    SFX.chest();spawnEventCard(egg.emoji,egg.name,"🥚 Pet Egg",eggRarityColor(egg)+"66");
+    toast(`${egg.emoji} Found a ${egg.name}!`);questProgress("items");saveP();renderWalkFeed();
+    return;
+  }
   const roll=Math.random();
   if(roll<totalMonsterChance){
     const m=spawnMonster(area,P.level);
@@ -313,7 +393,7 @@ export function takeStep(){
     addFeed("🪙","",`Found gold in ${area.name}!`,`+${g}🪙`,"#fbbf24");
     saveP();renderWalkFeed();
   }else if(roll<totalMonsterChance+CFG.GOLD_CHANCE+totalItemChance){
-    const item=spawnItemFromPool([...ITEMS,...PETS],P.level);
+    const item=spawnItemFromPool(ITEMS,P.level);
     P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;
     const q=qualityLabel(item.val,item.base||item.val);
     const cur=P.equipped[item.type];
@@ -410,7 +490,10 @@ export function renderHome(){
       <button class="btn btn-steel btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('quests')">📜 Quests <span style="color:${qDone===3?"var(--green2)":"var(--gold2)"}">${qDone}/3</span></button>
       <button class="btn btn-purple btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('pvp')">⚔️ PvP & Bounties</button>
     </div>
-    <button class="btn btn-gold btn-sm" style="width:100%;padding:0.7rem;margin-bottom:0.5rem" onclick="G.launchDungeon()">🏰 Dungeons${P.activeDungeon?" · Active":""}</button>
+    <div class="two-col" style="margin-bottom:0.5rem">
+      <button class="btn btn-green btn-sm" style="width:100%;padding:0.7rem" onclick="G.openPetCollection()">🐾 Pets <span style="color:var(--gold2)">${(P.petCollection||[]).length}</span></button>
+      <button class="btn btn-gold btn-sm" style="width:100%;padding:0.7rem" onclick="G.launchDungeon()">🏰 Dungeons${P.activeDungeon?" · Active":""}</button>
+    </div>
     <div class="two-col" style="margin-bottom:0.5rem">
       <button class="btn btn-gold btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('properties')">🏠 Properties</button>
       <button class="btn btn-ghost btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('guild')">🛡️ Guild</button>
@@ -448,14 +531,21 @@ export function claimRent(){
   if(TAB==="properties")renderProperties();if(TAB==="home")renderHome();
 }
 export function renderGear(){
-  const inv=P.inventory||[],eq=P.equipped||{};
-  const slotsHtml=EQUIP_SLOTS.map(slot=>{const item=eq[slot],iconHtml=item?gfx(item.image,item.emoji,26):SLOT_EMOJI[slot];
+  const inv=P.inventory||[],eq=P.equipped||{},slots=EQUIP_SLOTS.filter(s=>s!=="Pet");
+  const slotsHtml=slots.map(slot=>{const item=eq[slot],iconHtml=item?gfx(item.image,item.emoji,26):SLOT_EMOJI[slot];
     return`<div class="equip-slot ${item?"filled":""}" ${item?`onclick="G.openItemModal('equipped','${slot}')"`:""}> 
       <div class="es-icon">${iconHtml}</div>
       <div class="es-info">${item?`<div class="es-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}${item.upgrades?` <span style="color:var(--gold3)">+${item.upgrades}</span>`:""}</div><div class="es-stat">+${item.val} ${item.stat==="str"?"STR":"DEF"}${item.itemLevel?" · Lv."+item.itemLevel:""}</div>`:`<div class="es-empty">Empty</div>`}
       </div><div class="es-type">${slot}</div></div>`;}).join("");
   const invHtml=inv.length===0?`<div class="inv-empty">No items yet — go explore!</div>`:
-    inv.map((item,i)=>{const q=qualityLabel(item.val,item.base||item.val);const cur=P.equipped[item.type];
+    inv.map((item,i)=>{
+      if(item.isEgg){const hatch=canHatchEgg(item);const color=RARITY_COLOR[item.rarity]||"#6b7280";
+        return`<div class="inv-item" onclick="G.openItemModalEgg(${i})">
+          <span class="quality-badge" style="background:${color}22;color:${color}">${hatch.ok?"Ready":"Egg"}</span>
+          <div class="inv-icon">${gfx(item.image,item.emoji,40)}</div>
+          <div class="inv-item-name" style="color:${color}">${item.name}</div>
+          <div class="inv-item-stat">${hatch.ok?"Ready to hatch":"Pet Egg"}</div></div>`;}
+      const q=qualityLabel(item.val,item.base||item.val);const cur=P.equipped[item.type];
       const upg=item.upgrades?`<div style="position:absolute;bottom:3px;left:3px;font-size:0.55rem;font-family:'Cinzel',serif;color:var(--gold3);font-weight:700">+${item.upgrades}</div>`:"";
       const cmpColor=cur?(item.val>cur.val?"#4ade80":"#f87171"):"";
       const cmpDot=cur?`<div style="position:absolute;top:3px;left:3px;width:6px;height:6px;border-radius:50%;background:${cmpColor}"></div>`:"";
@@ -476,6 +566,7 @@ export async function openItemModal(source,idx){
   let item,isEquipped=false,slot=null;
   if(source==="equipped"){slot=idx;item=P.equipped[slot];isEquipped=true;}else item=(P.inventory||[])[idx];
   if(!item)return;SFX.click();
+  if(item.isEgg&&!isEquipped){openItemModalEgg(idx);return;}\n  if(item.type==="Pet"&&!item.isEgg){toast("🐾 Pets live in your pet collection now.");openPetCollection();return;}
   const color=RARITY_COLOR[item.rarity]||"#6b7280",q=qualityLabel(item.val,item.base||item.val);
   const curEquipped=P.equipped[item.type];
   const compare=curEquipped&&!isEquipped?`<div class="modal-row"><em>vs Equipped</em><span style="color:${item.val>curEquipped.val?"var(--green2)":"var(--crimson2)"}">
@@ -512,7 +603,7 @@ export async function openItemModal(source,idx){
     </div>`);
 }
 export function salvageItem(idx){
-  const item=(P.inventory||[])[idx];if(!item)return;const shards=salvageShards(item);
+  const item=(P.inventory||[])[idx];if(!item)return;if(item.isEgg){SFX.error();toast("🥚 Eggs cannot be salvaged.");return;}const shards=salvageShards(item);
   showModal(`<div class="modal-title">🧩 Salvage Item?</div>
     <div style="text-align:center;font-size:2.5rem;margin:0.4rem 0">${item.emoji||"⚔️"}</div>
     <div style="text-align:center;color:var(--text3);font-size:0.88rem;margin-bottom:1rem">
@@ -522,7 +613,7 @@ export function salvageItem(idx){
       <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button></div>`);
 }
 export function confirmSalvage(idx){
-  const item=(P.inventory||[])[idx];if(!item)return;const shards=salvageShards(item);
+  const item=(P.inventory||[])[idx];if(!item)return;if(item.isEgg){SFX.error();toast("🥚 Eggs cannot be salvaged.");return;}const shards=salvageShards(item);
   P.inventory=P.inventory.filter((_,i)=>i!==idx);P.shards=(P.shards||0)+shards;
   saveP();closeModal();SFX.equip();toast(`🧩 Salvaged! +${shards} shards (total: ${P.shards})`);renderGear();
 }
@@ -554,7 +645,7 @@ export function dropEquipped(slot){const item=P.equipped[slot];if(!item)return;d
 
 // ── COMBAT ───────────────────────────────────────────────────
 export function openCombatModal(monster){
-  const{str:eStr,def:eDef}=equipStats(P.equipped);const pet=P.equipped?.Pet||null;
+  const{str:eStr,def:eDef}=equipStats(P.equipped);const pet=getActiveBattlePet(P)||null;
   combatState={monster,playerHp:P.hp,playerMaxHp:P.maxHp,monsterHp:monster.hp,
     pStr:(P.baseStr||10)+eStr,pDef:(P.baseDef||5)+eDef,pet,log:[],done:false,burnStacks:0,bleedStacks:0,stunned:false};
   P.activeCombat=serializeCombat(combatState);saveP();showModal("");renderCombatModal();
@@ -651,9 +742,15 @@ function combatTick(){
     if(Math.random()<0.3)cs.burnStacks=Math.max(0,cs.burnStacks-1);
   }
   if(cs.pet&&cs.monsterHp>0){
-    const pd=Math.max(1,Math.floor(cs.pet.val*0.3)+rand(0,4));cs.monsterHp=Math.max(0,cs.monsterHp-pd);
-    const pv=["bites","claws","pounces on","nips at"][Math.floor(Math.random()*4)];
-    cs.log.push(`<span class="log-pet">${cs.pet.name} ${pv} ${m.name} for ${pd}!</span>`);
+    const mult=getPetPowerMult(cs.pet);
+    const mood=getPetMood(cs.pet);
+    if(mult>0){
+      const pd=Math.max(1,Math.round((cs.pet.val||cs.pet.base||1)*0.18*mult)+rand(0,2));cs.monsterHp=Math.max(0,cs.monsterHp-pd);
+      const pv=["bites","claws","pounces on","nips at"][Math.floor(Math.random()*4)];
+      cs.log.push(`<span class="log-pet">${cs.pet.isShiny?"✨ ":""}${cs.pet.name}${mood&&mood!=="Happy"?" ("+mood+")":""} ${pv} ${m.name} for ${pd}!</span>`);
+    }else{
+      cs.log.push(`<span class="log-sys">🐾 ${cs.pet.name} is starving and cannot attack.</span>`);
+    }
   }
   if(cs.monsterHp<=0){
     cs.done=true;clearInterval(combatInterval);
@@ -694,6 +791,7 @@ function handleVictory(cs){
 function handleDefeat(cs){
   SFX.defeat();const goldLost=Math.floor((P.gold||0)*0.08);
   P.gold=Math.max(0,(P.gold||0)-goldLost);P.hp=Math.max(1,Math.floor(P.maxHp*0.15));P.walkStreak=0;
+  if(cs.pet){const up=drainPetHunger(cs.pet);saveActivePet(P,up);cs.pet=up;}
   toast(`💀 Defeated! Lost 🪙${fmt(goldLost)}. Combo reset.`,"#ef4444");
   combatState=null;P.activeCombat=null;saveP();updateHdr();updateWalkUI();
 }
@@ -765,13 +863,16 @@ export function mTab(t){
 function renderMarketBrowse(listings){
   const body=document.getElementById("market-body");if(!body)return;
   if(listings.length===0){body.innerHTML=`<div style="text-align:center;color:var(--text3);padding:2rem;font-style:italic">No items listed yet.</div>`;return;}
-  body.innerHTML=listings.map(l=>{const q=qualityLabel(l.item.val,l.item.base||l.item.val);
+  body.innerHTML=listings.map(l=>{
+    const isEgg=l.item?.isEgg,color=RARITY_COLOR[l.item?.rarity]||"#6b7280";
+    const q=isEgg?{label:"Egg",color}:qualityLabel(l.item.val,l.item.base||l.item.val);
+    const statLine=isEgg?`${l.item.rarity} Pet Egg · Hatchable`:`+${l.item.val} ${l.item.stat==="str"?"STR":"DEF"} · ${l.item.type}${l.item.itemLevel?" · Lv."+l.item.itemLevel:""}`;
     return`<div class="market-item">
       <div class="market-icon">${gfx(l.item.image,l.item.emoji,36)}</div>
       <div class="market-info">
-        <div class="market-name" style="color:${RARITY_COLOR[l.item.rarity]}">${l.item.name} <span class="pill" style="background:${q.color}22;color:${q.color}">${q.label}</span></div>
+        <div class="market-name" style="color:${color}">${l.item.name} <span class="pill" style="background:${q.color}22;color:${q.color}">${q.label}</span></div>
         <div class="market-seller">by ${l.sellerName}</div>
-        <div class="market-stat">+${l.item.val} ${l.item.stat==="str"?"STR":"DEF"} · ${l.item.type}${l.item.itemLevel?" · Lv."+l.item.itemLevel:""}</div>
+        <div class="market-stat">${statLine}</div>
       </div>
       <div><div class="market-price">🪙${fmt(l.price)}</div>
         <button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyListing('${l.id}',${l.price})">Buy</button>
@@ -781,7 +882,12 @@ function renderMarketSell(){
   const body=document.getElementById("market-body");if(!body)return;const inv=P.inventory||[];
   if(inv.length===0){body.innerHTML=`<div style="text-align:center;color:var(--text3);padding:2rem;font-style:italic">No items to sell.</div>`;return;}
   body.innerHTML=`<div style="font-size:0.8rem;color:var(--text3);margin-bottom:0.75rem">${Math.round(CFG.MARKET_FEE*100)}% fee · or 🧩 Salvage for shards</div>`+
-    inv.map((item,i)=>{const q=qualityLabel(item.val,item.base||item.val);
+    inv.map((item,i)=>{if(item.isEgg){const color=RARITY_COLOR[item.rarity]||"#6b7280";const hatch=canHatchEgg(item);
+      return`<div class="market-item"><div class="market-icon">${gfx(item.image,item.emoji,36)}</div><div class="market-info">
+        <div class="market-name" style="color:${color}">${item.name} <span class="pill" style="background:${color}22;color:${color}">Egg</span></div>
+        <div class="market-stat">${hatch.ok?"Ready to hatch":hatch.reason}</div></div>
+        <div style="display:flex;flex-direction:column;gap:0.3rem;align-items:flex-end"><button class="btn btn-gold btn-sm" onclick="G.promptSell(${i})">List Egg</button><button class="btn btn-purple btn-sm" onclick="G.openItemModalEgg(${i})" style="font-size:0.62rem">View</button></div></div>`;}
+      const q=qualityLabel(item.val,item.base||item.val);
       const npcVal=Math.max(5,Math.floor((item.shopPrice||item.base*item.val*2||50)*CFG.SHOP_SELL_RATE));
       const shards=salvageShards(item);
       return`<div class="market-item">
@@ -798,62 +904,70 @@ function renderMarketSell(){
 }
 export function sellToNpc(idx){
   const item=(P.inventory||[])[idx];if(!item)return;
+  if(item.isEgg){SFX.error();toast("🥚 Eggs can be listed or hatched, not sold to NPC.");return;}
   const npcVal=Math.max(5,Math.floor((item.shopPrice||item.base*item.val*2||50)*CFG.SHOP_SELL_RATE));
   P.inventory=P.inventory.filter((_,i)=>i!==idx);P.gold=(P.gold||0)+npcVal;
   SFX.gold();saveP();toast(`🛒 Sold for 🪙${npcVal}`);renderMarketSell();
 }
 export function openMysteryChest(){
-  if((P.gold||0)<CFG.CHEST_PRICE){SFX.error();toast(`Need 🪙${CFG.CHEST_PRICE}!`);return;}
-  P.gold-=CFG.CHEST_PRICE;const roll=Math.random();let reward;
-  if(roll<0.60){const item=spawnItemFromPool(ITEMS,P.level);P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;questProgress("items");trackCirculation(item.name);
+  const price=shopChestPrice(P);
+  if((P.gold||0)<price){SFX.error();toast(`Need 🪙${fmt(price)}!`);return;}
+  P.gold-=price;recordShopChestBuy(P);let reward;
+  const roll=Math.random();
+  if(roll<(CFG.CHEST_EGG_CHANCE||0.05)){
+    const egg=makeEgg(rollEggRarity());P.inventory=[...(P.inventory||[]),egg];P.itemsFound=(P.itemsFound||0)+1;questProgress("items");
+    reward={emoji:egg.emoji,image:egg.image,name:egg.name,sub:`Pet Egg · ${egg.rarity} · Ready to hatch`,color:RARITY_COLOR[egg.rarity]||"#6b7280",extra:`<span style="background:${(RARITY_COLOR[egg.rarity]||"#6b7280")}22;color:${RARITY_COLOR[egg.rarity]||"#6b7280"};font-family:'Cinzel',serif;font-size:0.7rem;padding:2px 8px;border-radius:6px;font-weight:700">EGG</span>`};
+  }else if(roll<0.68){const item=spawnItemFromPool(ITEMS,P.level);P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;questProgress("items");trackCirculation(item.name);
     const q=qualityLabel(item.val,item.base||item.val);reward={emoji:item.emoji,image:item.image,name:item.name,sub:`+${item.val} ${item.stat==="str"?"STR":"DEF"} · ${item.rarity}`,color:RARITY_COLOR[item.rarity],extra:`<span style="background:${q.color}22;color:${q.color};font-family:'Cinzel',serif;font-size:0.7rem;padding:2px 8px;border-radius:6px;font-weight:700">${q.label}</span>`};}
-  else if(roll<0.90){const pet=spawnItemFromPool(PETS,P.level);P.inventory=[...(P.inventory||[]),pet];P.itemsFound=(P.itemsFound||0)+1;questProgress("items");
-    reward={emoji:pet.emoji,image:pet.image,name:pet.name,sub:`+${pet.val} ${pet.stat==="str"?"STR":"DEF"} · ${pet.rarity} Pet`,color:RARITY_COLOR[pet.rarity],extra:""};}
   else{const av=rollAvatar(),collected=P.avatars||[];
     if(collected.includes(av.id)){const bonus=rand(100,400);P.gold=(P.gold||0)+bonus;reward={emoji:"🪙",image:"",name:"Duplicate Avatar",sub:`Converted to 🪙${bonus} gold`,color:"#d97706",extra:""};}
     else{P.avatars=[...collected,av.id];reward={emoji:av.emoji,image:av.image,name:av.name,sub:`${av.rarity} Avatar`,color:RARITY_COLOR[av.rarity],extra:""};}}
   saveP();showModal(`<div style="text-align:center"><div style="font-size:5rem;margin-bottom:0.5rem">📦</div><div style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--text3)">Opening...</div></div>`);SFX.chest();
-  setTimeout(()=>{const imgHtml=reward.image?gfx(reward.image,reward.emoji,80):`<span style="font-size:4rem">${reward.emoji}</span>`;
+  setTimeout(()=>{const nextPrice=shopChestPrice(P);const imgHtml=reward.image?gfx(reward.image,reward.emoji,80):`<span style="font-size:4rem">${reward.emoji}</span>`;
     showModal(`<div style="text-align:center">
       <div style="font-size:0.75rem;color:var(--text3);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:0.5rem">✨ Chest Opened!</div>
       <div style="width:80px;height:80px;margin:0 auto 0.6rem;display:flex;align-items:center;justify-content:center">${imgHtml}</div>
       <div style="font-family:'Cinzel',serif;font-size:1.05rem;color:${reward.color};font-weight:700;margin-bottom:0.2rem">${reward.name}</div>
       ${reward.extra}<div style="font-size:0.82rem;color:var(--text3);margin:0.5rem 0 1rem">${reward.sub}</div>
     </div><div class="modal-actions">
-      <button class="btn btn-gold" onclick="G.openMysteryChest()">Open Another (🪙${CFG.CHEST_PRICE})</button>
+      <button class="btn btn-gold" onclick="G.openMysteryChest()">Open Another (🪙${fmt(nextPrice)})</button>
       <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>
     </div>`);},600);
 }
 function renderMarketShop(){
   const body=document.getElementById("market-body");if(!body)return;
-  const shopItems=ITEMS.filter(i=>i.shopPrice>0),shopPets=PETS.filter(p=>p.rarity==="common"||p.rarity==="uncommon");
+  const shopItems=ITEMS.filter(i=>i.shopPrice>0);
+  const chestPrice=shopChestPrice(P);
   const chestHtml=`<div class="shop-item" style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:var(--gold2)">
-    <div class="shop-icon">📦</div><div class="shop-info"><div class="shop-name" style="color:var(--gold3)">Mystery Chest</div><div class="shop-desc">Random item, pet, or avatar!</div></div>
-    <div><div class="shop-price">🪙${fmt(CFG.CHEST_PRICE)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.openMysteryChest()">Open</button></div></div>`;
+    <div class="shop-icon">📦</div><div class="shop-info"><div class="shop-name" style="color:var(--gold3)">Mystery Chest</div><div class="shop-desc">Random item, avatar, or rare pet egg!</div></div>
+    <div><div class="shop-price">🪙${fmt(chestPrice)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.openMysteryChest()">Open</button></div></div>`;
   const consumeHtml=SHOP_CONSUMABLES.map(c=>`<div class="shop-item"><div class="shop-icon">${c.emoji}</div>
     <div class="shop-info"><div class="shop-name">${c.name}</div><div class="shop-desc">${c.desc}</div></div>
     <div><div class="shop-price">🪙${fmt(c.price)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyConsumable('${c.id}')">Buy</button></div></div>`).join("");
   const equipHtml=shopItems.map((item,i)=>`<div class="shop-item"><div class="shop-icon">${gfx(item.image,item.emoji,40)}</div>
     <div class="shop-info"><div class="shop-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}</div><div class="shop-desc">+~${item.base} ${item.stat==="str"?"STR":"DEF"} · Min Lv.${item.minLevel}</div></div>
     <div><div class="shop-price">🪙${fmt(item.shopPrice)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem('item',${i})">Buy</button></div></div>`).join("");
-  const petHtml=shopPets.map((pet,i)=>{const price=Math.round(300*(pet.base/5));
-    return`<div class="shop-item"><div class="shop-icon">${gfx(pet.image,pet.emoji,40)}</div>
-      <div class="shop-info"><div class="shop-name" style="color:${RARITY_COLOR[pet.rarity]}">${pet.name}</div><div class="shop-desc">+~${pet.base} ${pet.stat==="str"?"STR":"DEF"} · Pet</div></div>
-      <div><div class="shop-price">🪙${fmt(price)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyShopItem('pet',${i})">Buy</button></div></div>`;}).join("");
+  const eggHtml=eggTypes.map(e=>`<div class="shop-item"><div class="shop-icon">${e.emoji}</div>
+    <div class="shop-info"><div class="shop-name" style="color:${e.color}">${e.name}</div><div class="shop-desc">Incubates ${fmtDuration(e.incubationMs)} · hatches a pet</div></div>
+    <div><div class="shop-price">🪙${fmt(e.marketPrice)}</div><button class="btn btn-gold btn-sm" style="margin-top:0.3rem" onclick="G.buyEgg('${e.id}')">Buy</button></div></div>`).join("");
   body.innerHTML=`<div style="font-size:0.78rem;color:var(--text3);margin-bottom:0.6rem">Gold: 🪙${fmt(P.gold)} · Shards: 🧩${P.shards||0}</div>
-    <div class="section-hdr">✨ Special</div>${chestHtml}<div class="section-hdr">Consumables</div>${consumeHtml}
-    <div class="section-hdr">🐾 Pets</div>${petHtml||`<div style="color:var(--text3);font-style:italic;padding:0.5rem">No pets.</div>`}
+    <div class="section-hdr">✨ Special</div>${chestHtml}
+    <div style="font-size:0.72rem;color:var(--text3);margin:-0.25rem 0 0.75rem">Pet eggs come from dungeon chests, this chest, and rare walking finds.</div>
+    <div class="section-hdr">Consumables</div>${consumeHtml}
     <div class="section-hdr">Equipment</div>${equipHtml}`;
 }
 function renderMyListings(listings){
   const body=document.getElementById("market-body");if(!body)return;
   if(listings.length===0){body.innerHTML=`<div style="text-align:center;color:var(--text3);padding:2rem;font-style:italic">No active listings.</div>`;return;}
-  body.innerHTML=listings.map(l=>`<div class="market-item"><div class="market-icon">${gfx(l.item.image,l.item.emoji,36)}</div>
-    <div class="market-info"><div class="market-name" style="color:${RARITY_COLOR[l.item.rarity]}">${l.item.name}</div>
-      <div class="market-stat">+${l.item.val} ${l.item.stat==="str"?"STR":"DEF"}</div></div>
+  body.innerHTML=listings.map(l=>{
+    const isEgg=l.item?.isEgg,color=RARITY_COLOR[l.item?.rarity]||"#6b7280";
+    const stat=isEgg?`${l.item.rarity} Pet Egg`:`+${l.item.val} ${l.item.stat==="str"?"STR":"DEF"}`;
+    return`<div class="market-item"><div class="market-icon">${gfx(l.item.image,l.item.emoji,36)}</div>
+    <div class="market-info"><div class="market-name" style="color:${color}">${l.item.name}</div>
+      <div class="market-stat">${stat}</div></div>
     <div><div class="market-price">🪙${fmt(l.price)}</div>
       <button class="btn btn-danger btn-sm" style="margin-top:0.3rem" onclick="G.cancelListing('${l.id}',${JSON.stringify(l.item).split("'").join("&#39;")})">Cancel</button>
-    </div></div>`).join("");
+    </div></div>`;}).join("");
 }
 export async function buyListing(id,price){
   if((P.gold||0)<price){SFX.error();toast("💰 Not enough gold!");return;}
@@ -864,7 +978,7 @@ export async function buyListing(id,price){
 export async function cancelListing(id,item){await removeListing(id);P.inventory=[...(P.inventory||[]),item];saveP();toast("📦 Listing cancelled.");renderMarket();}
 export function promptSell(idx){
   const item=(P.inventory||[])[idx];if(!item)return;
-  const suggestedPrice=item.itemLevel?Math.round(item.base*(item.itemLevel||1)*item.val*0.5):item.base?(item.base*item.val*2):200;
+  const suggestedPrice=item.isEgg?(EGG_TYPES[item.eggType]?.marketPrice||100):(item.itemLevel?Math.round(item.base*(item.itemLevel||1)*item.val*0.5):item.base?(item.base*item.val*2):200);
   showModal(`<div class="modal-title">List on Market</div>
     <div class="modal-icon">${gfx(item.image,item.emoji,72)}</div>
     <div style="text-align:center;color:${RARITY_COLOR[item.rarity]};margin-bottom:0.5rem;font-weight:700">${item.name}</div>
@@ -878,13 +992,12 @@ export async function confirmSell(idx){
   await addListing(CU.uid,P.username,item,price);saveP();closeModal();toast(`🏪 Listed for 🪙${fmt(price)}!`);renderMarket();
 }
 export function buyShopItem(kind,idx){
-  let template,price;
-  if(kind==="pet"){const sp=PETS.filter(p=>p.rarity==="common"||p.rarity==="uncommon");template=sp[idx];price=Math.round(300*(template.base/5));}
-  else{const si=ITEMS.filter(i=>i.shopPrice>0);template=si[idx];price=template.shopPrice;}
+  if(kind==="pet"){SFX.error();toast("🐾 Pets now come from eggs only.");return;}
+  const si=ITEMS.filter(i=>i.shopPrice>0),template=si[idx],price=template?.shopPrice;
   if(!template)return;if((P.gold||0)<price){SFX.error();toast("💰 Not enough gold!");return;}
-  const item=kind==="pet"?{...template,val:rollItemStat(template),base:template.base,id:`item_${Date.now()}_${rand(0,9999)}`}:spawnItemScaled(template,P.level);
+  const item=spawnItemScaled(template,P.level);
   delete item.shopPrice;delete item.dropRate;P.gold-=price;P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;
-  if(kind!=="pet")trackCirculation(item.name);saveP();questProgress("items");SFX.itemFound();toast(`🛒 Bought ${item.name}!`);renderMarketShop();
+  trackCirculation(item.name);saveP();questProgress("items");SFX.itemFound();toast(`🛒 Bought ${item.name}!`);renderMarketShop();
 }
 export function buyConsumable(id){
   const c=SHOP_CONSUMABLES.find(x=>x.id===id);if(!c)return;if((P.gold||0)<c.price){SFX.error();toast("💰 Not enough gold!");return;}
@@ -1216,6 +1329,94 @@ export async function confirmLeaveGuild(guildId){
 }
 
 
+
+// ── PETS & EGGS ──────────────────────────────────────────────
+export function buyEgg(eggTypeId){
+  SFX.error();
+  toast("🥚 Eggs come from dungeon chests, mystery chests, and rare walking finds.");
+}
+export function openItemModalEgg(idx){
+  const egg=(P.inventory||[])[idx];if(!egg||!egg.isEgg)return;
+  const def=EGG_TYPES[egg.eggType]||{};const hatch=canHatchEgg(egg);const color=RARITY_COLOR[egg.rarity]||def.color||"#6b7280";
+  showModal(`<div class="modal-icon">${gfx(egg.image,egg.emoji,72)}</div>
+    <div class="modal-title" style="color:${color}">${egg.name}</div>
+    <div class="modal-rarity" style="color:${color}">${egg.rarity} Pet Egg</div>
+    <div class="modal-row"><em>Status</em><span style="color:var(--green2)">Ready to hatch</span></div>
+    <div class="modal-row"><em>Hatching</em><span>No incubation needed</span></div>
+    <div class="modal-row"><em>Market Value</em><span style="color:var(--gold3)">🪙${fmt(def.marketPrice||0)}</span></div>
+    <div style="font-size:0.78rem;color:var(--text3);line-height:1.4;margin-top:0.75rem;text-align:center">Hatched pets are soulbound: they cannot be sold, listed, or equipped as normal items.</div>
+    <div class="modal-actions">
+      <button class="btn btn-gold" onclick="G.hatchEgg(${idx})">🥚 Hatch Egg</button>
+      <button class="btn btn-purple" onclick="G.promptSell(${idx});G.closeModal()">List Egg on Market</button>
+      <button class="btn btn-danger" onclick="G.dropInventory(${idx})">Drop Egg</button>
+      <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>
+    </div>`);
+}
+export function hatchEgg(idx){
+  const egg=(P.inventory||[])[idx];if(!egg||!egg.isEgg)return;
+  const pet=rollEggHatch(egg.eggType);if(!pet){SFX.error();toast("Could not hatch egg.");return;}
+  P.inventory=(P.inventory||[]).filter((_,i)=>i!==idx);P.petCollection=[...(P.petCollection||[]),pet];
+  if(!P.activePetId)P.activePetId=pet.id;
+  saveP();SFX.levelUp();const color=RARITY_COLOR[pet.rarity]||"#6b7280";
+  showModal(`<div style="text-align:center">
+    <div style="font-size:0.72rem;color:var(--gold3);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:0.5rem">🥚 Egg Hatched!</div>
+    <div style="width:90px;height:90px;margin:0 auto 0.5rem;display:flex;align-items:center;justify-content:center">${gfx(pet.image,pet.emoji,90)}</div>
+    <div style="font-family:'Cinzel',serif;font-size:1.1rem;color:${color};font-weight:700;margin-bottom:0.2rem">${pet.isShiny?"✨ Shiny ":""}${pet.name}</div>
+    <div style="font-size:0.72rem;color:${color};text-transform:uppercase;font-weight:700;margin-bottom:0.5rem">${pet.rarity} · Lv.${pet.petLevel}</div>
+    <div style="font-size:0.82rem;color:var(--text3);font-style:italic;margin-bottom:1rem">"${pet.desc||"A loyal companion."}"</div>
+    <div class="modal-row"><em>Stat</em><span style="color:${pet.stat==="str"?"var(--crimson2)":"var(--steel)"}">+${pet.val} ${pet.stat==="str"?"STR":"DEF"}</span></div>
+    <div class="modal-row"><em>Hunger</em><span>${pet.hunger}/100</span></div>
+    </div><div class="modal-actions">
+      <button class="btn btn-gold" onclick="G.setActivePet('${pet.id}')">Set Active</button>
+      <button class="btn btn-ghost" onclick="G.openPetCollection()">View Pets</button>
+    </div>`);
+}
+export function openPetCollection(){
+  const pets=P.petCollection||[];
+  if(pets.length===0){showModal(`<div class="modal-title">🐾 Pets</div><div style="text-align:center;color:var(--text3);padding:1.5rem;font-style:italic">No pets yet. Find eggs in chests, then hatch them.</div><button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);return;}
+  const rows=pets.map(pet=>{const color=RARITY_COLOR[pet.rarity]||"#6b7280",active=P.activePetId===pet.id,mood=getPetMood(pet),need=petExpNeeded(pet.petLevel||1),pct=Math.min(100,Math.round(((pet.petExp||0)/need)*100));
+    return`<div style="border:1.5px solid ${active?"var(--gold2)":"var(--border)"};border-radius:12px;padding:0.75rem;margin-bottom:0.55rem;background:${active?"#fffbeb":"var(--surface)"}">
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${gfx(pet.image,pet.emoji,48)}</div>
+        <div style="flex:1;min-width:0"><div style="font-family:'Cinzel',serif;font-size:0.9rem;color:${color};font-weight:700">${pet.isShiny?"✨ ":""}${pet.name}${active?" 🐾":""}</div>
+          <div style="font-size:0.7rem;color:var(--text3)">${pet.rarity} · Lv.${pet.petLevel||1} · ${mood} · 🍖${pet.hunger??100}/100</div>
+          <div style="font-size:0.7rem;color:${pet.stat==="str"?"var(--crimson2)":"var(--steel)"};font-weight:600">+${pet.val} ${pet.stat==="str"?"STR":"DEF"}</div>
+          <div class="bar bar-exp" style="height:5px;margin-top:0.25rem"><div class="bar-fill" style="width:${pct}%"></div></div>
+          <div style="font-size:0.62rem;color:var(--text3);margin-top:0.15rem">${pet.petExp||0}/${need} XP</div></div>
+      </div>
+      <div style="display:flex;gap:0.35rem;margin-top:0.6rem;flex-wrap:wrap">
+        ${active?`<button class="btn btn-ghost btn-sm" disabled>Active</button>`:`<button class="btn btn-gold btn-sm" onclick="G.setActivePet('${pet.id}')">Set Active</button>`}
+        <button class="btn btn-green btn-sm" onclick="G.feedPetUI('${pet.id}')">Feed</button>
+        <button class="btn btn-danger btn-sm" onclick="G.releasePetUI('${pet.id}')">Release</button>
+      </div></div>`;}).join("");
+  showModal(`<div class="modal-title">🐾 Pet Collection (${pets.length})</div>
+    <div style="font-size:0.78rem;color:var(--text3);text-align:center;margin-bottom:0.75rem">Active pets help in combat, gain XP from steps, and lose hunger from steps.</div>
+    <div style="max-height:64vh;overflow-y:auto;margin-bottom:0.75rem">${rows}</div>
+    <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>`);
+}
+export function setActivePet(id){
+  const pet=(P.petCollection||[]).find(p=>p.id===id);if(!pet)return;
+  P.activePetId=id;saveP();SFX.equip();toast(`🐾 ${pet.name} is now active!`);openPetCollection();
+}
+export function feedPetUI(id){
+  const pet=(P.petCollection||[]).find(p=>p.id===id);if(!pet)return;
+  const res=feedPet(pet,P);if(!res.ok){SFX.error();toast(res.msg);return;}
+  P.gold-=res.cost;saveActivePet(P,res.pet);saveP();SFX.gold();toast(`🍖 Fed ${pet.name}! -🪙${res.cost}`);openPetCollection();
+}
+export function releasePetUI(id){
+  const pet=(P.petCollection||[]).find(p=>p.id===id);if(!pet)return;
+  showModal(`<div class="modal-title">Release Pet?</div>
+    <div style="text-align:center;font-size:3rem;margin:0.5rem 0">${pet.emoji}</div>
+    <div style="text-align:center;color:var(--text3);font-size:0.88rem;margin-bottom:1rem">Release <strong style="color:${RARITY_COLOR[pet.rarity]||"#6b7280"}">${pet.name}</strong>? This cannot be undone.</div>
+    <div class="modal-actions"><button class="btn btn-danger" onclick="G.confirmReleasePet('${id}')">Release</button>
+      <button class="btn btn-ghost" onclick="G.openPetCollection()">Cancel</button></div>`);
+}
+export function confirmReleasePet(id){
+  const pet=(P.petCollection||[]).find(p=>p.id===id);if(!pet)return;
+  P.petCollection=(P.petCollection||[]).filter(p=>p.id!==id);if(P.activePetId===id)P.activePetId=P.petCollection[0]?.id||null;
+  saveP();SFX.error();toast(`🌿 Released ${pet.name}.`);openPetCollection();
+}
+
 // ── DUNGEONS ─────────────────────────────────────────────────
 function _dungeonRewardHtml(rewards){
   if(!rewards||rewards.length===0)return`<div style="text-align:center;color:var(--text3);font-style:italic;padding:0.5rem">No chest rewards this time.</div>`;
@@ -1315,6 +1516,7 @@ export function renderYou(){
         <div class="ps-item"><div class="ps-val">${(P.avatars||[]).length}/${AVATARS.length}</div><div class="ps-key">🎭 Avatars</div></div>
       </div>
     </div>
+    <button class="btn btn-green" onclick="G.openPetCollection()" style="margin-bottom:0.5rem">🐾 My Pets (${(P.petCollection||[]).length})</button>
     <button class="btn btn-purple" onclick="G.openAvatarCollection()" style="margin-bottom:0.5rem">🎭 My Avatar Collection</button>
     ${P.statPoints>0?`<button class="btn btn-gold" onclick="G.openStatModal()" style="margin-bottom:0.5rem">⬆️ Spend ${P.statPoints} Stat Point${P.statPoints>1?"s":""}</button>`:""}
     <div class="card"><div class="card-title">⚙️ Account</div>

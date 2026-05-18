@@ -465,17 +465,12 @@ export function rollEggHatch(eggTypeId){
 }
 export function canHatchEgg(egg){
   if(!egg||!egg.isEgg)return{ok:false,reason:"Not an egg"};
-  const elapsed=Date.now()-(egg.placedAt||egg.acquiredAt||Date.now());
   const def=EGG_TYPES[egg.eggType];if(!def)return{ok:false,reason:"Unknown egg type"};
-  if(elapsed<def.incubationMs){
-    const remaining=def.incubationMs-elapsed;
-    return{ok:false,reason:`Incubating — ${fmtDuration(remaining)} remaining`,remaining};
-  }
   return{ok:true};
 }
 
 // ── PET HELPERS ───────────────────────────────────────────────
-export const petExpNeeded=lv=>Math.floor(50*Math.pow(1.3,lv-1));
+export const petExpNeeded=lv=>Math.floor(18*Math.pow(1.07,(lv||1)-1));
 export function gainPetExp(pet,amount){
   if(!pet||!pet.petLevel)return pet;
   pet=Object.assign({},pet);
@@ -483,43 +478,42 @@ export function gainPetExp(pet,amount){
   while(pet.petExp>=petExpNeeded(pet.petLevel)){
     pet.petExp-=petExpNeeded(pet.petLevel);
     pet.petLevel++;
-    pet.val=(pet.val||pet.base)+2;
+    const gain=1+(pet.petLevel%10===0?1:0);
+    pet.val=(pet.val||pet.base||1)+gain;
   }
   return pet;
 }
 export function getPetMood(pet){
   if(!pet)return null;
-  if(pet.weakened)return"Weakened";
   const h=pet.hunger??100;
-  if(h<20)return"Starving";
-  if(h<50)return"Hungry";
+  if(h<=0)return"Starving";
+  if(h<=50)return"Hungry";
   return"Happy";
 }
 export function getPetPowerMult(pet){
   if(!pet)return 1;
-  if(pet.weakened)return 0.25;
   const m=getPetMood(pet);
-  if(m==="Starving")return 0.5;
-  if(m==="Hungry")return 0.75;
+  if(m==="Starving")return 0;
+  if(m==="Hungry")return 0.5;
   return 1.0;
 }
-export function drainPetHunger(pet){
+export function drainPetHunger(pet,amount=1){
   if(!pet)return pet;
   pet=Object.assign({},pet);
-  pet.hunger=Math.max(0,(pet.hunger??100)-10);
-  if(pet.hunger<=0){
-    pet.weakenedBattles=(pet.weakenedBattles||0)+1;
-    if(pet.weakenedBattles>=3)pet.weakened=true;
-  }
+  pet.hunger=Math.max(0,(pet.hunger??100)-amount);
+  pet.weakened=false;
+  pet.weakenedBattles=0;
   return pet;
 }
 export function feedPet(pet,P){
   if(!pet)return{pet,cost:0,ok:false,msg:"No pet"};
-  const cost=pet.weakened?80:30;
+  const costs={common:50,uncommon:125,rare:300,epic:750,legendary:2000};
+  const cost=costs[pet.rarity]||100;
   if((P.gold||0)<cost)return{pet,cost,ok:false,msg:`Need 🪙${cost} to feed`};
   pet=Object.assign({},pet);
-  pet.hunger=Math.min(100,(pet.hunger||0)+30);
-  if(pet.weakened&&pet.hunger>=20){pet.weakened=false;pet.weakenedBattles=0;}
+  pet.hunger=100;
+  pet.weakened=false;
+  pet.weakenedBattles=0;
   return{pet,cost,ok:true};
 }
 export function getActivePet(P){
