@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <defs><filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feFlood flood-color="#ab47bc" flood-opacity="0.5" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  <radialGradient id="lava" cx="50%" cy="40%">
+    <stop offset="0%" stop-color="#ffd54f"/><stop offset="60%" stop-color="#f44336"/><stop offset="100%" stop-color="#4e342e"/>
+  </radialGradient>
+</defs><g filter="url(#glow)">
+  <ellipse cx="32" cy="40" rx="16" ry="14" fill="#4e342e"/>
+  <ellipse cx="32" cy="36" rx="13" ry="13" fill="url(#lava)"/>
+  <ellipse cx="24" cy="26" rx="6" ry="7" fill="url(#lava)"/>
+  <ellipse cx="40" cy="26" rx="6" ry="7" fill="url(#lava)"/>
+  <ellipse cx="23" cy="22" rx="4" ry="5" fill="#bf360c"/>
+  <ellipse cx="41" cy="22" rx="4" ry="5" fill="#bf360c"/>
+  <ellipse cx="28" cy="32" rx="4" ry="5" fill="#ffd54f" opacity="0.9"/>
+  <ellipse cx="36" cy="32" rx="4" ry="5" fill="#ffd54f" opacity="0.9"/>
+  <ellipse cx="28" cy="32" rx="2" ry="3" fill="#000"/>
+  <ellipse cx="36" cy="32" rx="2" ry="3" fill="#000"/>
+  <path d="M28,38 Q32,42 36,38" stroke="#bf360c" stroke-width="1.5" fill="none"/>
+  <ellipse cx="32" cy="44" rx="10" ry="4" fill="#ffa000" opacity="0.4"/>
+  <path d="M24,34 L20,36 M24,35 L20,37 M40,34 L44,36 M40,35 L44,37" stroke="#ffa000" stroke-width="0.8"/>
+</g>
+</svg>
