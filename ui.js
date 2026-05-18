@@ -566,7 +566,8 @@ export async function openItemModal(source,idx){
   let item,isEquipped=false,slot=null;
   if(source==="equipped"){slot=idx;item=P.equipped[slot];isEquipped=true;}else item=(P.inventory||[])[idx];
   if(!item)return;SFX.click();
-  if(item.isEgg&&!isEquipped){openItemModalEgg(idx);return;}\n  if(item.type==="Pet"&&!item.isEgg){toast("🐾 Pets live in your pet collection now.");openPetCollection();return;}
+  if(item.isEgg&&!isEquipped){openItemModalEgg(idx);return;}
+  if(item.type==="Pet"&&!item.isEgg){toast("🐾 Pets live in your pet collection now.");openPetCollection();return;}
   const color=RARITY_COLOR[item.rarity]||"#6b7280",q=qualityLabel(item.val,item.base||item.val);
   const curEquipped=P.equipped[item.type];
   const compare=curEquipped&&!isEquipped?`<div class="modal-row"><em>vs Equipped</em><span style="color:${item.val>curEquipped.val?"var(--green2)":"var(--crimson2)"}">
