@@ -483,9 +483,7 @@ export function renderHome(){
         <div class="curr-item"><div class="curr-amount">🪙 ${fmt(P.gold)}</div><div class="curr-label">Gold</div></div>
         <div class="curr-item" onclick="G.showTab('bank')" style="cursor:pointer"><div class="curr-amount">🏦 ${fmt(P.bank)}</div><div class="curr-label">Bank ›</div></div>
         <div class="curr-item"><div class="curr-amount">💎 ${P.diamonds}</div><div class="curr-label">Gems</div></div>
-      </div>
-      <button class="btn btn-gold btn-sm" style="width:100%;padding:0.7rem;margin-top:0.7rem" onclick="G.openCasino()">🎰 Casino</button>
-    </div>
+      </div></div>
     <div class="card"><div class="card-title">📊 Stats</div>
       <div class="stat-row">
         <div class="stat-badge"><em>⚔️ STR</em><strong>${tStr}</strong></div>
@@ -515,100 +513,6 @@ export function renderHome(){
       <button class="btn btn-ghost btn-sm" style="width:100%;padding:0.7rem" onclick="G.showTab('social')">👥 Social</button>
     </div>`;
 }
-
-function casinoStats(){
-  P.casinoStats=P.casinoStats||{plays:0,wagered:0,paidOut:0,biggestWin:0,rareRewards:0};
-  return P.casinoStats;
-}
-function casinoBet(){
-  const el=document.getElementById("casino-bet");
-  const bet=Math.floor(Number(el?.value||0));
-  if(!Number.isFinite(bet)||bet<1){SFX.error();toast("Enter a valid bet.");return 0;}
-  if((P.gold||0)<bet){SFX.error();toast(`Need 🪙${fmt(bet)} to play.`);return 0;}
-  return bet;
-}
-function casinoAddStats(bet,payout){
-  const st=casinoStats();st.plays++;st.wagered+=bet;st.paidOut+=Math.max(0,payout||0);st.biggestWin=Math.max(st.biggestWin||0,payout||0);
-}
-function casinoBetBox(active="slots",resultHtml="",betValue=null){
-  const st=casinoStats(),defaultBet=betValue??Math.min(Math.max(50,Math.floor((P.gold||0)*0.05)),P.gold||50);
-  const tabBtn=(id,label)=>`<button class="tab-btn ${active===id?"active":""}" onclick="G.openCasino('${id}')">${label}</button>`;
-  return`<div class="modal-title">🎰 Casino</div>
-    <div class="tab-row" style="margin-bottom:0.75rem">${tabBtn("slots","Slots")}${tabBtn("twentyone","21")}${tabBtn("wheel","Wheel")}</div>
-    <div style="background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;padding:0.75rem;margin-bottom:0.75rem">
-      <label class="form-label" for="casino-bet">Bet Amount</label>
-      <input id="casino-bet" class="form-input" type="number" min="1" step="1" value="${Math.max(1,defaultBet)}" style="text-align:center;font-family:'Cinzel',serif;font-weight:700"/>
-      <div style="font-size:0.72rem;color:var(--text3);text-align:center;margin-top:0.4rem">Available: 🪙${fmt(P.gold||0)}</div>
-    </div>
-    ${resultHtml}
-    <div style="font-size:0.68rem;color:var(--text3);text-align:center;margin:0.6rem 0">Played ${fmt(st.plays||0)} · Wagered 🪙${fmt(st.wagered||0)} · Biggest win 🪙${fmt(st.biggestWin||0)}</div>`;
-}
-export function openCasino(game="slots"){
-  let body="";
-  if(game==="twentyone")body=`<div style="text-align:center;color:var(--text3);font-size:0.84rem;line-height:1.4;margin-bottom:0.8rem">Quick 21: you and the dealer draw automatically. Closest to 21 wins. Dealer wins ties.</div>
-    <button class="btn btn-steel" onclick="G.playCasino21()">🃏 Deal 21</button>`;
-  else if(game==="wheel")body=`<div style="text-align:center;color:var(--text3);font-size:0.84rem;line-height:1.4;margin-bottom:0.8rem">Lottery Wheel: mostly eats gold, sometimes pays big, and rarely drops shards, gear, avatars, or eggs.</div>
-    <button class="btn btn-purple" onclick="G.playCasinoWheel()">🎡 Spin Wheel</button>`;
-  else body=`<div style="text-align:center;color:var(--text3);font-size:0.84rem;line-height:1.4;margin-bottom:0.8rem">Goblin Slots: pairs soften the loss, triples pay, and crowns can hit huge.</div>
-    <button class="btn btn-gold" onclick="G.playCasinoSlots()">🎰 Spin Slots</button>`;
-  showModal(`${casinoBetBox(game)}${body}<button class="btn btn-ghost" onclick="G.closeModal()">Leave Casino</button>`);
-}
-export function playCasinoSlots(){
-  const bet=casinoBet();if(!bet)return;
-  const symbols=["🍒","🍒","🍋","🍋","🔔","🔔","💎","💀","👑"];
-  const reels=[pick(symbols),pick(symbols),pick(symbols)];
-  let mult=0,msg="The house takes it.";
-  const counts=reels.reduce((a,x)=>(a[x]=(a[x]||0)+1,a),{});
-  const triple=Object.entries(counts).find(([_,c])=>c===3)?.[0];
-  if(triple){mult=triple==="👑"?25:triple==="💎"?12:triple==="🔔"?6:triple==="💀"?0:3;msg=mult?`${triple}${triple}${triple}! ${mult}x payout!`:"Triple skulls. Brutal.";}
-  else if(Object.values(counts).some(c=>c===2)){mult=0.5;msg="A pair! Half your bet comes back.";}
-  P.gold=(P.gold||0)-bet;const payout=Math.floor(bet*mult);P.gold+=payout;casinoAddStats(bet,payout);saveP();updateHdr();SFX[payout>bet?"gold":payout>0?"click":"error"]();
-  const net=payout-bet;
-  showModal(`${casinoBetBox("slots",`<div style="text-align:center;margin-bottom:0.8rem"><div style="font-size:3rem;letter-spacing:0.2rem;margin-bottom:0.35rem">${reels.join("")}</div><div style="font-family:'Cinzel',serif;font-weight:700;color:${net>0?"var(--green2)":net===0?"var(--text3)":"var(--crimson2)"}">${msg}</div><div style="font-size:0.82rem;color:var(--text3);margin-top:0.35rem">Bet 🪙${fmt(bet)} · Paid 🪙${fmt(payout)} · ${net>=0?"Net +":"Net −"}🪙${fmt(Math.abs(net))}</div></div>`,bet)}<button class="btn btn-gold" onclick="G.playCasinoSlots()">Spin Again</button><button class="btn btn-ghost" onclick="G.openCasino('twentyone')">Try 21</button><button class="btn btn-ghost" onclick="G.closeModal()">Leave Casino</button>`);
-}
-function casinoHand(){
-  const cards=[];let total=0,aces=0;
-  const draw=()=>{let c=rand(1,13),v=c>10?10:c;if(c===1){v=11;aces++;}cards.push(c===1?"A":c>10?["J","Q","K"][c-11]:String(c));total+=v;while(total>21&&aces>0){total-=10;aces--;}};
-  draw();draw();return{cards,total,draw};
-}
-export function playCasino21(){
-  const bet=casinoBet();if(!bet)return;
-  const player=casinoHand(),dealer=casinoHand();
-  while(player.total<17)player.draw();
-  while(dealer.total<17)dealer.draw();
-  let mult=0,msg="Dealer wins.";
-  if(player.total>21){msg="You bust.";}
-  else if(player.total===21&&player.cards.length===2&&dealer.total!==21){mult=2.5;msg="Natural 21!";}
-  else if(dealer.total>21){mult=2;msg="Dealer busts. You win!";}
-  else if(player.total>dealer.total){mult=2;msg="You beat the dealer!";}
-  else if(player.total===dealer.total){msg="Tie goes to the house.";}
-  P.gold=(P.gold||0)-bet;const payout=Math.floor(bet*mult);P.gold+=payout;casinoAddStats(bet,payout);saveP();updateHdr();SFX[payout>bet?"gold":"error"]();
-  const net=payout-bet;
-  showModal(`${casinoBetBox("twentyone",`<div style="margin-bottom:0.8rem"><div class="modal-row"><em>You</em><span>${player.cards.join(" ")} · ${player.total}</span></div><div class="modal-row"><em>Dealer</em><span>${dealer.cards.join(" ")} · ${dealer.total}</span></div><div style="text-align:center;font-family:'Cinzel',serif;font-weight:700;color:${net>0?"var(--green2)":"var(--crimson2)"};margin-top:0.6rem">${msg}</div><div style="font-size:0.82rem;color:var(--text3);text-align:center;margin-top:0.35rem">Bet 🪙${fmt(bet)} · Paid 🪙${fmt(payout)} · ${net>=0?"Net +":"Net −"}🪙${fmt(Math.abs(net))}</div></div>`,bet)}<button class="btn btn-steel" onclick="G.playCasino21()">Deal Again</button><button class="btn btn-ghost" onclick="G.openCasino('slots')">Try Slots</button><button class="btn btn-ghost" onclick="G.closeModal()">Leave Casino</button>`);
-}
-function casinoRareReward(){
-  const r=Math.random();
-  if(r<0.45){const shards=rand(2,8);P.shards=(P.shards||0)+shards;return{title:`🧩 ${shards} Upgrade Shards`,sub:"Rare wheel reward",payout:0,rare:true};}
-  if(r<0.75){const item=spawnItemFromPool(ITEMS,P.level);P.inventory=[...(P.inventory||[]),item];P.itemsFound=(P.itemsFound||0)+1;questProgress("items");trackCirculation(item.name);return{title:`${item.emoji} ${item.name}`,sub:`${item.rarity} gear · +${item.val} ${item.stat==="str"?"STR":"DEF"}`,payout:0,rare:true};}
-  if(r<0.92){const av=rollAvatar(),collected=P.avatars||[];if(collected.includes(av.id)){const bonus=rand(150,500);P.gold=(P.gold||0)+bonus;return{title:"🪙 Duplicate Avatar",sub:`Converted to 🪙${fmt(bonus)}`,payout:bonus,rare:true};}P.avatars=[...collected,av.id];return{title:`${av.emoji} ${av.name}`,sub:`${av.rarity} avatar unlocked`,payout:0,rare:true};}
-  const egg=makeEgg(rollEggRarity());P.inventory=[...(P.inventory||[]),egg];P.itemsFound=(P.itemsFound||0)+1;questProgress("items");return{title:`${egg.emoji} ${egg.name}`,sub:`${egg.rarity} pet egg`,payout:0,rare:true};
-}
-export function playCasinoWheel(){
-  const bet=casinoBet();if(!bet)return;
-  P.gold=(P.gold||0)-bet;
-  let payout=0,title="💨 Empty Slice",sub="The wheel eats your gold.",rare=false;
-  const r=Math.random();
-  if(r<0.40){}
-  else if(r<0.62){payout=Math.floor(bet*0.5);title="🪙 Small Refund";sub="Half your bet comes back.";}
-  else if(r<0.80){payout=Math.floor(bet*1.25);title="🪙 Modest Win";sub="A little luck.";}
-  else if(r<0.92){payout=Math.floor(bet*2.5);title="💰 Big Win";sub="The crowd cheers.";}
-  else if(r<0.975){payout=Math.floor(bet*5);title="👑 Jackpot Slice";sub="Huge gold payout!";}
-  else{const rr=casinoRareReward();title=rr.title;sub=rr.sub;payout=rr.payout||0;rare=!!rr.rare;casinoStats().rareRewards=(casinoStats().rareRewards||0)+1;}
-  P.gold=(P.gold||0)+payout;casinoAddStats(bet,payout);saveP();updateHdr();SFX[payout>bet||rare?"chest":payout>0?"gold":"error"]();
-  const net=payout-bet;
-  showModal(`${casinoBetBox("wheel",`<div style="text-align:center;margin-bottom:0.8rem"><div style="font-size:3rem;margin-bottom:0.35rem">🎡</div><div style="font-family:'Cinzel',serif;font-weight:700;color:${rare?"var(--purple2)":net>0?"var(--green2)":net===0?"var(--text3)":"var(--crimson2)"}">${title}</div><div style="font-size:0.82rem;color:var(--text3);margin-top:0.35rem">${sub}</div><div style="font-size:0.82rem;color:var(--text3);margin-top:0.35rem">Bet 🪙${fmt(bet)} · Paid 🪙${fmt(payout)} · ${net>=0?"Net +":"Net −"}🪙${fmt(Math.abs(net))}</div></div>`,bet)}<button class="btn btn-purple" onclick="G.playCasinoWheel()">Spin Again</button><button class="btn btn-ghost" onclick="G.openCasino('slots')">Try Slots</button><button class="btn btn-ghost" onclick="G.closeModal()">Leave Casino</button>`);
-}
-
 export function openStatModal(){
   if(!P.statPoints||P.statPoints<1){toast("No stat points available!");return;}
   showModal(`<div class="modal-title">⬆️ Spend Stat Points</div>
@@ -1080,10 +984,29 @@ function renderMyListings(listings){
     </div></div>`;}).join("");
 }
 export async function buyListing(id,price){
-  if((P.gold||0)<price){SFX.error();toast("💰 Not enough gold!");return;}
-  const snap=await getDoc(doc(db,"market",id));if(!snap.exists()){toast("Listing gone.");renderMarket();return;}
-  const listing=snap.data();P.gold-=price;P.inventory=[...(P.inventory||[]),listing.item];
-  await removeListing(id);saveP();SFX.gold();toast(`✅ Bought ${listing.item.name}!`);questProgress("items");renderMarket();
+  const snap=await getDoc(doc(db,"market",id));
+  if(!snap.exists()){toast("Listing gone.");renderMarket();return;}
+
+  const listing=snap.data();
+  const actualPrice=Math.floor(Number(listing.price)||Number(price)||0);
+  if(!actualPrice||actualPrice<1){SFX.error();toast("Invalid listing price.");renderMarket();return;}
+  if(listing.sellerId===CU?.uid){SFX.error();toast("You cannot buy your own listing.");renderMarket();return;}
+  if((P.gold||0)<actualPrice){SFX.error();toast("💰 Not enough gold!");return;}
+  if(!listing.sellerId||!listing.item){SFX.error();toast("Invalid listing.");renderMarket();return;}
+
+  P.gold-=actualPrice;
+  P.inventory=[...(P.inventory||[]),listing.item];
+
+  await updateDoc(doc(db,"players",listing.sellerId),{
+    gold:increment(actualPrice),
+    notifications:arrayUnion(`🏪 ${listing.item.name} sold for 🪙${fmt(actualPrice)}!`)
+  });
+  await removeListing(id);
+  saveP();
+  SFX.gold();
+  toast(`✅ Bought ${listing.item.name}!`);
+  questProgress("items");
+  renderMarket();
 }
 export async function cancelListing(id,item){await removeListing(id);P.inventory=[...(P.inventory||[]),item];saveP();toast("📦 Listing cancelled.");renderMarket();}
 export function promptSell(idx){
