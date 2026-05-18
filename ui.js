@@ -918,7 +918,11 @@ export function sellToNpc(idx){
   if(item.isEgg){SFX.error();toast("🥚 Eggs can be listed or hatched, not sold to NPC.");return;}
   const npcVal=Math.max(5,Math.floor((item.shopPrice||item.base*item.val*2||50)*CFG.SHOP_SELL_RATE));
   P.inventory=P.inventory.filter((_,i)=>i!==idx);P.gold=(P.gold||0)+npcVal;
-  SFX.gold();saveP();toast(`🛒 Sold for 🪙${npcVal}`);renderMarketSell();
+  SFX.gold();saveP();toast(`🛒 Sold for 🪙${npcVal}`);
+  updateHdr();
+  if(TAB==="market")renderMarketSell();
+  else if(TAB==="gear")renderGear();
+  else if(TAB==="home")renderHome();
 }
 export function openMysteryChest(){
   const price=shopChestPrice(P);
@@ -984,29 +988,10 @@ function renderMyListings(listings){
     </div></div>`;}).join("");
 }
 export async function buyListing(id,price){
-  const snap=await getDoc(doc(db,"market",id));
-  if(!snap.exists()){toast("Listing gone.");renderMarket();return;}
-
-  const listing=snap.data();
-  const actualPrice=Math.floor(Number(listing.price)||Number(price)||0);
-  if(!actualPrice||actualPrice<1){SFX.error();toast("Invalid listing price.");renderMarket();return;}
-  if(listing.sellerId===CU?.uid){SFX.error();toast("You cannot buy your own listing.");renderMarket();return;}
-  if((P.gold||0)<actualPrice){SFX.error();toast("💰 Not enough gold!");return;}
-  if(!listing.sellerId||!listing.item){SFX.error();toast("Invalid listing.");renderMarket();return;}
-
-  P.gold-=actualPrice;
-  P.inventory=[...(P.inventory||[]),listing.item];
-
-  await updateDoc(doc(db,"players",listing.sellerId),{
-    gold:increment(actualPrice),
-    notifications:arrayUnion(`🏪 ${listing.item.name} sold for 🪙${fmt(actualPrice)}!`)
-  });
-  await removeListing(id);
-  saveP();
-  SFX.gold();
-  toast(`✅ Bought ${listing.item.name}!`);
-  questProgress("items");
-  renderMarket();
+  if((P.gold||0)<price){SFX.error();toast("💰 Not enough gold!");return;}
+  const snap=await getDoc(doc(db,"market",id));if(!snap.exists()){toast("Listing gone.");renderMarket();return;}
+  const listing=snap.data();P.gold-=price;P.inventory=[...(P.inventory||[]),listing.item];
+  await removeListing(id);saveP();SFX.gold();toast(`✅ Bought ${listing.item.name}!`);questProgress("items");renderMarket();
 }
 export async function cancelListing(id,item){await removeListing(id);P.inventory=[...(P.inventory||[]),item];saveP();toast("📦 Listing cancelled.");renderMarket();}
 export function promptSell(idx){
