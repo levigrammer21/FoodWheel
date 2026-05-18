@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="soulshield" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2a1a4a"/>
+      <stop offset="100%" stop-color="#0a0a1e"/>
+    </radialGradient>
+  </defs>
+  <!-- Shield body - round -->
+  <circle cx="50" cy="50" r="40" fill="url(#soulshield)"/>
+  <!-- Soul energy veins -->
+  <path d="M50,10 Q54,30 50,50 Q46,70 50,90" stroke="#8844ff" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M10,50 Q30,46 50,50 Q70,54 90,50" stroke="#8844ff" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- Ghostly face emerging from shield surface -->
+  <!-- Skull/face outline - faint -->
+  <ellipse cx="50" cy="46" rx="18" ry="20" fill="#3a2a5a" opacity="0.5"/>
+  <!-- Eye sockets -->
+  <ellipse cx="42" cy="42" rx="5" ry="5" fill="#6633cc" opacity="0.6"/>
+  <ellipse cx="58" cy="42" rx="5" ry="5" fill="#6633cc" opacity="0.6"/>
+  <ellipse cx="42" cy="42" rx="3" ry="3" fill="#cc88ff" opacity="0.5"/>
+  <ellipse cx="58" cy="42" rx="3" ry="3" fill="#cc88ff" opacity="0.5"/>
+  <!-- Nose -->
+  <path d="M48,50 L50,54 L52,50" stroke="#6633cc" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Screaming mouth -->
+  <path d="M40,60 Q50,68 60,60" stroke="#8844ff" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M42,60 Q50,56 58,60" stroke="#8844ff" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- Soul chains at rim -->
+  <circle cx="50" cy="10" r="3" fill="#4422aa"/>
+  <circle cx="50" cy="90" r="3" fill="#4422aa"/>
+  <circle cx="10" cy="50" r="3" fill="#4422aa"/>
+  <circle cx="90" cy="50" r="3" fill="#4422aa"/>
+  <!-- Chain links connecting -->
+  <line x1="50" y1="13" x2="50" y2="22" stroke="#4422aa" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.5"/>
+  <!-- Rim -->
+  <circle cx="50" cy="50" r="40" fill="none" stroke="#6633cc" stroke-width="3" opacity="0.6"/>
+</svg>

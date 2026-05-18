@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Haft -->
+  <rect x="47" y="42" width="6" height="50" rx="2.5" fill="#5c3d1e"/>
+  <line x1="50" y1="44" x2="50" y2="90" stroke="#7a5530" stroke-width="1.2" opacity="0.45"/>
+  <!-- Metal band on haft -->
+  <rect x="46" y="58" width="8" height="4" rx="1" fill="#7a8a92"/>
+  <!-- Hammer head body -->
+  <rect x="26" y="18" width="48" height="26" rx="4" fill="#7a8a92"/>
+  <!-- Top face highlight -->
+  <rect x="26" y="18" width="48" height="6" rx="4" fill="#aabbc8" opacity="0.5"/>
+  <!-- Strike face front -->
+  <rect x="26" y="18" width="10" height="26" rx="2" fill="#6a7a84"/>
+  <!-- Strike face back -->
+  <rect x="64" y="18" width="10" height="26" rx="2" fill="#8a9ba8"/>
+  <!-- Center channel -->
+  <rect x="36" y="22" width="28" height="4" rx="2" fill="#5a6a74" opacity="0.5"/>
+  <!-- Poll spike on back -->
+  <polygon points="74,25 84,31 74,37" fill="#6a7a84"/>
+  <!-- Haft-head join collar -->
+  <rect x="44" y="40" width="12" height="5" rx="2" fill="#5a6a74"/>
+</svg>

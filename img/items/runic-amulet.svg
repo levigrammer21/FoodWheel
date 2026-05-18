@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Chain -->
+  <path d="M50,10 Q36,12 28,22 Q20,34 20,50 Q22,64 32,74" stroke="#5a6a74" stroke-width="2" fill="none"/>
+  <path d="M50,10 Q64,12 72,22 Q80,34 80,50 Q78,64 68,74" stroke="#5a6a74" stroke-width="2" fill="none"/>
+  <!-- Pendant disc - dark stone -->
+  <circle cx="50" cy="76" r="20" fill="#1a1a2e"/>
+  <!-- Rune circle -->
+  <circle cx="50" cy="76" r="16" fill="none" stroke="#4a9eff" stroke-width="1" opacity="0.5"/>
+  <!-- Inner rune circle -->
+  <circle cx="50" cy="76" r="10" fill="none" stroke="#4a9eff" stroke-width="0.8" opacity="0.4"/>
+  <!-- Runes around outer circle -->
+  <text x="47" y="62" font-size="7" fill="#4a9eff" opacity="0.9" font-family="serif">ᚠ</text>
+  <text x="60" y="67" font-size="7" fill="#4a9eff" opacity="0.85" font-family="serif">ᚢ</text>
+  <text x="64" y="80" font-size="7" fill="#4a9eff" opacity="0.8" font-family="serif">ᚦ</text>
+  <text x="57" y="92" font-size="7" fill="#4a9eff" opacity="0.8" font-family="serif">ᚱ</text>
+  <text x="42" y="94" font-size="7" fill="#4a9eff" opacity="0.8" font-family="serif">ᚲ</text>
+  <text x="32" y="87" font-size="7" fill="#4a9eff" opacity="0.8" font-family="serif">ᚷ</text>
+  <text x="30" y="74" font-size="7" fill="#4a9eff" opacity="0.85" font-family="serif">ᚹ</text>
+  <text x="36" y="63" font-size="7" fill="#4a9eff" opacity="0.9" font-family="serif">ᚾ</text>
+  <!-- Center rune -->
+  <text x="45" y="80" font-size="11" fill="#4a9eff" opacity="0.9" font-family="serif">ᛟ</text>
+  <!-- Glow -->
+  <circle cx="50" cy="76" r="20" fill="#4a9eff" opacity="0.05"/>
+  <!-- Rim -->
+  <circle cx="50" cy="76" r="20" fill="none" stroke="#4a9eff" stroke-width="2" opacity="0.5"/>
+</svg>

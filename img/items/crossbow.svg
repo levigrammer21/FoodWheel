@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Stock / tiller body -->
+  <rect x="10" y="46" width="65" height="10" rx="4" fill="#6b3d1e"/>
+  <rect x="10" y="46" width="65" height="3" rx="2" fill="#8a5530" opacity="0.4"/>
+  <!-- Butt stock curve -->
+  <path d="M10,46 Q6,51 10,56" stroke="#5c3311" stroke-width="2" fill="none"/>
+  <!-- Prod (horizontal bow) -->
+  <path d="M62,30 Q75,40 75,51 Q75,62 62,70" stroke="#5c3311" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <path d="M62,32 Q73,42 73,51 Q73,60 62,68" stroke="#7a5020" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+  <!-- Bowstring -->
+  <line x1="62" y1="30" x2="62" y2="70" stroke="#d4c4a0" stroke-width="1.2"/>
+  <!-- Trigger mechanism -->
+  <rect x="50" y="52" width="10" height="8" rx="2" fill="#5a6a74"/>
+  <rect x="53" y="56" width="4" height="8" rx="1" fill="#4a5a64"/>
+  <!-- Bolt channel -->
+  <rect x="12" y="49" width="50" height="4" rx="1" fill="#4a2a0a" opacity="0.5"/>
+  <!-- Bolt loaded -->
+  <line x1="12" y1="51" x2="60" y2="51" stroke="#a07040" stroke-width="2"/>
+  <polygon points="12,51 20,47 19,51 20,55" fill="#8a9ba8"/>
+  <!-- Stirrup at front -->
+  <path d="M72,44 Q82,44 82,51 Q82,58 72,58" stroke="#7a8a92" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>

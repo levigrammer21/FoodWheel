@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="stormweave" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2a4a"/>
+      <stop offset="50%" stop-color="#2a4a6a"/>
+      <stop offset="100%" stop-color="#0a1a3a"/>
+    </linearGradient>
+  </defs>
+  <!-- Armour body -->
+  <path d="M18,28 Q18,12 50,6 Q82,12 82,28 L78,88 Q50,94 22,88Z" fill="url(#stormweave)"/>
+  <!-- Storm thread weave pattern -->
+  <path d="M20,30 Q35,28 50,30 Q65,28 80,30" stroke="#4a9eff" stroke-width="0.8" fill="none" opacity="0.5"/>
+  <path d="M18,40 Q35,38 50,40 Q65,38 82,40" stroke="#4a9eff" stroke-width="0.8" fill="none" opacity="0.5"/>
+  <path d="M18,50 Q35,48 50,50 Q65,48 82,50" stroke="#4a9eff" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <path d="M18,60 Q35,58 50,60 Q65,58 82,60" stroke="#4a9eff" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <path d="M20,70 Q36,68 50,70 Q64,68 80,70" stroke="#4a9eff" stroke-width="0.8" fill="none" opacity="0.3"/>
+  <!-- Vertical thread lines -->
+  <line x1="30" y1="18" x2="28" y2="88" stroke="#4a9eff" stroke-width="0.6" opacity="0.3"/>
+  <line x1="42" y1="10" x2="40" y2="90" stroke="#4a9eff" stroke-width="0.6" opacity="0.3"/>
+  <line x1="58" y1="10" x2="60" y2="90" stroke="#4a9eff" stroke-width="0.6" opacity="0.3"/>
+  <line x1="70" y1="18" x2="72" y2="88" stroke="#4a9eff" stroke-width="0.6" opacity="0.3"/>
+  <!-- Lightning arcs through fabric -->
+  <path d="M28,36 L34,42 L30,42 L38,52" stroke="#ffffff" stroke-width="1.2" fill="none" opacity="0.7"/>
+  <path d="M62,44 L68,50 L64,50 L70,60" stroke="#aaddff" stroke-width="1" fill="none" opacity="0.6"/>
+  <!-- Storm cloud shoulder pads -->
+  <ellipse cx="18" cy="30" rx="10" ry="7" fill="#2a4a6a"/>
+  <ellipse cx="82" cy="30" rx="10" ry="7" fill="#2a4a6a"/>
+  <!-- Collar glow -->
+  <path d="M34,14 Q50,8 66,14 Q60,22 50,20 Q40,22 34,14Z" fill="#1a2a4a"/>
+  <path d="M36,14 Q50,10 64,14" stroke="#4a9eff" stroke-width="1.2" fill="none" opacity="0.6"/>
+  <!-- Belt - crackling energy -->
+  <rect x="20" y="62" width="60" height="6" rx="2" fill="#0a1a3a"/>
+  <line x1="22" y1="65" x2="78" y2="65" stroke="#4a9eff" stroke-width="1.5" opacity="0.6"/>
+</svg>

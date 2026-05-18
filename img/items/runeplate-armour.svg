@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="runeplate" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3a4a54"/>
+      <stop offset="40%" stop-color="#7a8a94"/>
+      <stop offset="100%" stop-color="#2a3a44"/>
+    </linearGradient>
+  </defs>
+  <!-- Plate body -->
+  <path d="M16,26 Q16,8 50,4 Q84,8 84,26 L80,86 Q50,92 20,86Z" fill="url(#runeplate)"/>
+  <!-- Large carved runes across chest -->
+  <text x="28" y="35" font-size="11" fill="#4a9eff" opacity="0.8" font-family="serif">ᚠ</text>
+  <text x="44" y="35" font-size="11" fill="#4a9eff" opacity="0.8" font-family="serif">ᚢ</text>
+  <text x="58" y="35" font-size="11" fill="#4a9eff" opacity="0.75" font-family="serif">ᚦ</text>
+  <text x="32" y="50" font-size="11" fill="#4a9eff" opacity="0.7" font-family="serif">ᚱ</text>
+  <text x="50" y="50" font-size="11" fill="#4a9eff" opacity="0.7" font-family="serif">ᚲ</text>
+  <text x="38" y="66" font-size="11" fill="#4a9eff" opacity="0.6" font-family="serif">ᚷ</text>
+  <text x="54" y="66" font-size="11" fill="#4a9eff" opacity="0.6" font-family="serif">ᚹ</text>
+  <!-- Rune glow aura -->
+  <ellipse cx="50" cy="48" rx="32" ry="36" fill="#4a9eff" opacity="0.06"/>
+  <!-- Pauldrons with runes -->
+  <ellipse cx="16" cy="28" rx="10" ry="8" fill="#4a5a64"/>
+  <ellipse cx="84" cy="28" rx="10" ry="8" fill="#4a5a64"/>
+  <text x="9" y="32" font-size="7" fill="#4a9eff" opacity="0.7" font-family="serif">ᚾ</text>
+  <text x="80" y="32" font-size="7" fill="#4a9eff" opacity="0.7" font-family="serif">ᚾ</text>
+  <!-- Gorget -->
+  <path d="M34,12 Q50,6 66,12 Q60,20 50,18 Q40,20 34,12Z" fill="#4a5a64"/>
+  <!-- Bottom band -->
+  <rect x="20" y="84" width="60" height="7" rx="2" fill="#3a4a54"/>
+  <text x="34" y="91" font-size="8" fill="#4a9eff" opacity="0.6" font-family="serif">ᛁᛃᛇ</text>
+</svg>

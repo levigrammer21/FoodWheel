@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Vest body -->
+  <path d="M24,28 L18,88 L82,88 L76,28 Q62,22 50,22 Q38,22 24,28Z" fill="#7a8a6a"/>
+  <!-- Quilting diamond pattern -->
+  <path d="M26,36 L34,30 L42,36 L34,42Z" fill="none" stroke="#5a6a4a" stroke-width="1" opacity="0.5"/>
+  <path d="M42,36 L50,30 L58,36 L50,42Z" fill="none" stroke="#5a6a4a" stroke-width="1" opacity="0.5"/>
+  <path d="M58,36 L66,30 L74,36 L66,42Z" fill="none" stroke="#5a6a4a" stroke-width="1" opacity="0.5"/>
+  <path d="M26,50 L34,44 L42,50 L34,56Z" fill="none" stroke="#5a6a4a" stroke-width="1" opacity="0.5"/>
+  <path d="M42,50 L50,44 L58,50 L50,56Z" fill="none" stroke="#5a6a4a" stroke-width="1" opacity="0.5"/>
+  <path d="M58,50 L66,44 L74,50 L66,56Z" fill="none" stroke="#5a6a4a" stroke-width="1" opacity="0.5"/>
+  <path d="M28,66 L36,60 L44,66 L36,72Z" fill="none" stroke="#5a6a4a" stroke-width="1" opacity="0.4"/>
+  <path d="M44,66 L52,60 L60,66 L52,72Z" fill="none" stroke="#5a6a4a" stroke-width="1" opacity="0.4"/>
+  <path d="M60,66 L68,60 L76,66 L68,72Z" fill="none" stroke="#5a6a4a" stroke-width="1" opacity="0.4"/>
+  <!-- Collar -->
+  <path d="M36,28 Q50,34 64,28 L62,36 Q50,40 38,36Z" fill="#6a7a5a"/>
+  <!-- Button line -->
+  <line x1="50" y1="36" x2="50" y2="86" stroke="#5a6a4a" stroke-width="1.5" opacity="0.5"/>
+  <circle cx="50" cy="44" r="2" fill="#5a6a4a" opacity="0.6"/>
+  <circle cx="50" cy="54" r="2" fill="#5a6a4a" opacity="0.6"/>
+  <circle cx="50" cy="64" r="2" fill="#5a6a4a" opacity="0.6"/>
+  <circle cx="50" cy="74" r="2" fill="#5a6a4a" opacity="0.6"/>
+</svg>

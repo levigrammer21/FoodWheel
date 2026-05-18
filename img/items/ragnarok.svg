@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="ragblade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a0a0a"/>
+      <stop offset="35%" stop-color="#8a2020"/>
+      <stop offset="50%" stop-color="#ff4400"/>
+      <stop offset="65%" stop-color="#8a2020"/>
+      <stop offset="100%" stop-color="#1a0a0a"/>
+    </linearGradient>
+    <filter id="ragglow"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <!-- Apocalyptic glow -->
+  <polygon points="50,2 36,62 64,62" fill="#ff2200" opacity="0.2" filter="url(#ragglow)"/>
+  <!-- Sky-rending cracks around blade -->
+  <path d="M38,10 Q30,6 28,2" stroke="#ff4400" stroke-width="1.2" fill="none" opacity="0.5"/>
+  <path d="M62,15 Q70,10 74,5" stroke="#ff4400" stroke-width="1.2" fill="none" opacity="0.5"/>
+  <path d="M34,35 Q22,30 20,25" stroke="#cc2200" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M66,40 Q78,35 80,28" stroke="#cc2200" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- The enormous blade -->
+  <polygon points="50,2 36,62 64,62" fill="url(#ragblade)"/>
+  <!-- World-ending rune etched into blade - glowing -->
+  <path d="M50,10 L46,20 L54,20 L50,10Z" fill="none" stroke="#ff8800" stroke-width="1" opacity="0.7"/>
+  <path d="M50,24 L50,40" stroke="#ff8800" stroke-width="1.2" opacity="0.7"/>
+  <path d="M44,30 L56,30" stroke="#ff8800" stroke-width="1.2" opacity="0.7"/>
+  <path d="M44,30 L50,40 L56,30" fill="none" stroke="#ff6600" stroke-width="1" opacity="0.6"/>
+  <path d="M46,46 L54,46" stroke="#ff8800" stroke-width="1" opacity="0.6"/>
+  <path d="M47,50 L53,50" stroke="#ff8800" stroke-width="0.8" opacity="0.5"/>
+  <!-- Blade edge fire -->
+  <path d="M36,62 L50,2" stroke="#ff6600" stroke-width="1" opacity="0.4"/>
+  <path d="M64,62 L50,2" stroke="#ff6600" stroke-width="1" opacity="0.4"/>
+  <!-- Cross-guard - broken world -->
+  <path d="M18,61 Q30,56 42,59 L42,65 Q30,65 18,67Z" fill="#2a0a0a"/>
+  <path d="M82,61 Q70,56 58,59 L58,65 Q70,65 82,67Z" fill="#2a0a0a"/>
+  <rect x="42" y="59" width="16" height="6" rx="0" fill="#1a0a0a"/>
+  <!-- Guard crack/fracture lines -->
+  <line x1="24" y1="62" x2="32" y2="58" stroke="#ff4400" stroke-width="0.8" opacity="0.5"/>
+  <line x1="76" y1="62" x2="68" y2="58" stroke="#ff4400" stroke-width="0.8" opacity="0.5"/>
+  <!-- Grip - scorched bone -->
+  <rect x="46" y="65" width="8" height="20" rx="2" fill="#1a0a00"/>
+  <line x1="45" y1="69" x2="55" y2="69" stroke="#ff4400" stroke-width="1" opacity="0.4"/>
+  <line x1="45" y1="74" x2="55" y2="74" stroke="#ff4400" stroke-width="1" opacity="0.4"/>
+  <line x1="45" y1="79" x2="55" y2="79" stroke="#ff4400" stroke-width="1" opacity="0.4"/>
+  <!-- Pommel - apocalyptic fire eye -->
+  <circle cx="50" cy="89" r="8" fill="#1a0a00"/>
+  <circle cx="50" cy="89" r="6" fill="#8a2020"/>
+  <ellipse cx="50" cy="89" rx="4" ry="3" fill="#ff4400" opacity="0.8"/>
+  <ellipse cx="50" cy="89" rx="2" ry="1.5" fill="#ffaa00" opacity="0.9"/>
+  <line cx="50" y1="81" x2="50" y2="97" stroke="#ff2200" stroke-width="0.8" opacity="0.5"/>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="mithril" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c0d8f0"/>
+      <stop offset="40%" stop-color="#e8f4ff"/>
+      <stop offset="100%" stop-color="#8ab0d0"/>
+    </linearGradient>
+  </defs>
+  <!-- Ring band -->
+  <circle cx="50" cy="58" r="28" fill="none" stroke="url(#mithril)" stroke-width="8"/>
+  <!-- Ring band highlight -->
+  <circle cx="50" cy="58" r="28" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3" stroke-dasharray="44,132" stroke-dashoffset="0"/>
+  <!-- Setting on top of ring -->
+  <path d="M38,32 Q50,26 62,32 L60,40 Q50,36 40,40Z" fill="url(#mithril)"/>
+  <!-- Gem -->
+  <ellipse cx="50" cy="35" rx="10" ry="8" fill="#d8f0ff"/>
+  <ellipse cx="50" cy="34" rx="7" ry="5" fill="#e8f8ff"/>
+  <ellipse cx="48" cy="33" rx="3" ry="2.5" fill="#ffffff" opacity="0.6"/>
+  <!-- Gem facet lines -->
+  <line x1="50" y1="27" x2="50" y2="43" stroke="#b0d0f0" stroke-width="0.8" opacity="0.5"/>
+  <line x1="40" y1="35" x2="60" y2="35" stroke="#b0d0f0" stroke-width="0.8" opacity="0.5"/>
+  <!-- Ring inner -->
+  <circle cx="50" cy="58" r="20" fill="none" stroke="#a0c0e0" stroke-width="1" opacity="0.4"/>
+</svg>

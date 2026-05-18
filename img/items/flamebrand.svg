@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="flameblade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff6a00"/>
+      <stop offset="50%" stop-color="#ee0979"/>
+      <stop offset="100%" stop-color="#ffcc00"/>
+    </linearGradient>
+    <radialGradient id="glowfx" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff9900" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ff4400" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Glow aura -->
+  <ellipse cx="50" cy="38" rx="22" ry="32" fill="url(#glowfx)"/>
+  <!-- Blade - hot glowing metal -->
+  <polygon points="50,6 44,56 56,56" fill="url(#flameblade)"/>
+  <!-- Flame wisps off blade -->
+  <path d="M46,20 Q38,14 42,8 Q40,16 44,18Z" fill="#ff9900" opacity="0.8"/>
+  <path d="M54,28 Q62,20 58,12 Q60,22 56,26Z" fill="#ffcc00" opacity="0.7"/>
+  <path d="M44,38 Q36,32 40,24 Q38,34 43,36Z" fill="#ff6600" opacity="0.65"/>
+  <path d="M55,44 Q63,38 60,30 Q61,42 57,42Z" fill="#ff4400" opacity="0.6"/>
+  <!-- Blade center glow line -->
+  <line x1="50" y1="8" x2="50" y2="54" stroke="#fff8e0" stroke-width="1.5" opacity="0.5"/>
+  <!-- Crossguard - blackened iron with ember glow -->
+  <rect x="36" y="55" width="28" height="6" rx="2" fill="#2a1a0a"/>
+  <rect x="36" y="55" width="28" height="2" rx="1" fill="#ff6600" opacity="0.4"/>
+  <!-- Grip - dark wrapped with ember glow -->
+  <rect x="46" y="61" width="8" height="20" rx="3" fill="#1a0a00"/>
+  <line x1="45" y1="65" x2="55" y2="65" stroke="#ff4400" stroke-width="1" opacity="0.5"/>
+  <line x1="45" y1="70" x2="55" y2="70" stroke="#ff4400" stroke-width="1" opacity="0.5"/>
+  <line x1="45" y1="75" x2="55" y2="75" stroke="#ff4400" stroke-width="1" opacity="0.5"/>
+  <!-- Pommel - ember stone -->
+  <circle cx="50" cy="84" r="6" fill="#2a1a0a"/>
+  <circle cx="50" cy="84" r="4" fill="#ff6600" opacity="0.35"/>
+  <circle cx="50" cy="84" r="2" fill="#ffcc00" opacity="0.4"/>
+</svg>

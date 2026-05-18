@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <filter id="shadowleg"><feGaussianBlur stdDeviation="2"/></filter>
+  </defs>
+  <!-- Shadow tendrils extending outward -->
+  <path d="M16,30 Q8,26 6,20" stroke="#1a0030" stroke-width="4" fill="none" opacity="0.5"/>
+  <path d="M16,50 Q6,46 4,38" stroke="#1a0030" stroke-width="3" fill="none" opacity="0.4"/>
+  <path d="M84,34 Q92,28 94,20" stroke="#1a0030" stroke-width="4" fill="none" opacity="0.5"/>
+  <path d="M84,54 Q94,50 96,42" stroke="#1a0030" stroke-width="3" fill="none" opacity="0.4"/>
+  <!-- Shadow blur behind legs -->
+  <path d="M16,10 Q28,4 40,10 L44,82 Q28,90 14,82Z" fill="#330066" opacity="0.3" filter="url(#shadowleg)"/>
+  <path d="M60,10 Q74,4 84,10 L86,82 Q72,90 58,82Z" fill="#330066" opacity="0.3" filter="url(#shadowleg)"/>
+  <!-- Left shadow leg - flowing, not rigid -->
+  <path d="M18,10 Q28,6 38,10 Q40,30 42,50 Q40,66 38,82 Q28,88 18,82 Q16,66 16,50 Q14,30 18,10Z" fill="#0a0015"/>
+  <!-- Shadow wisps on left -->
+  <path d="M18,22 Q12,18 14,12" stroke="#6633cc" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M18,44 Q10,40 12,32" stroke="#4422aa" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <path d="M20,66 Q12,64 14,56" stroke="#4422aa" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <!-- Right shadow leg -->
+  <path d="M62,10 Q74,6 82,10 Q84,30 84,50 Q84,66 82,82 Q72,88 62,82 Q58,66 58,50 Q60,30 62,10Z" fill="#0a0015"/>
+  <!-- Shadow wisps right -->
+  <path d="M82,24 Q90,20 88,14" stroke="#6633cc" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M82,46 Q90,42 88,34" stroke="#4422aa" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <!-- Knee darkness -->
+  <ellipse cx="28" cy="48" rx="11" ry="9" fill="#000000" opacity="0.8"/>
+  <ellipse cx="72" cy="48" rx="11" ry="9" fill="#000000" opacity="0.8"/>
+  <ellipse cx="28" cy="48" rx="6" ry="5" fill="#330066" opacity="0.6"/>
+  <ellipse cx="72" cy="48" rx="6" ry="5" fill="#330066" opacity="0.6"/>
+  <!-- Glowing eye in each knee -->
+  <ellipse cx="28" cy="48" rx="2.5" ry="2" fill="#cc44ff" opacity="0.8"/>
+  <ellipse cx="72" cy="48" rx="2.5" ry="2" fill="#cc44ff" opacity="0.8"/>
+  <!-- Waist dark band -->
+  <rect x="16" y="6" width="68" height="6" rx="2" fill="#050010"/>
+  <rect x="16" y="6" width="68" height="2" rx="1" fill="#6633cc" opacity="0.4"/>
+</svg>

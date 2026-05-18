@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="godwalkgrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8a6a10"/>
+      <stop offset="35%" stop-color="#ffd700"/>
+      <stop offset="65%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#8a6a10"/>
+    </linearGradient>
+    <filter id="gwglow"><feGaussianBlur stdDeviation="2.5"/></filter>
+  </defs>
+  <!-- Divine light radiating from footsteps -->
+  <ellipse cx="28" cy="88" rx="18" ry="6" fill="#ffd700" opacity="0.2" filter="url(#gwglow)"/>
+  <ellipse cx="72" cy="86" rx="18" ry="6" fill="#ffd700" opacity="0.15" filter="url(#gwglow)"/>
+  <!-- Flowers/life blooming from footsteps -->
+  <circle cx="18" cy="90" r="2" fill="#ff8888" opacity="0.6"/>
+  <circle cx="28" cy="93" r="2.5" fill="#ffaa44" opacity="0.6"/>
+  <circle cx="38" cy="90" r="2" fill="#88ff88" opacity="0.6"/>
+  <circle cx="64" cy="90" r="2" fill="#ff8888" opacity="0.5"/>
+  <circle cx="72" cy="93" r="2.5" fill="#ffaa44" opacity="0.5"/>
+  <circle cx="80" cy="90" r="2" fill="#88ff88" opacity="0.5"/>
+  <!-- Left god boot - blinding gold -->
+  <path d="M14,18 L14,68 Q14,76 22,78 L40,78 Q48,74 50,68 L36,66 Q26,64 24,58 L22,18Z" fill="url(#godwalkgrad)"/>
+  <!-- God boot inner light -->
+  <path d="M18,22 L18,66 Q18,72 24,74 L38,74 Q44,70 46,66 L34,64 Q28,62 28,56 L28,22Z" fill="#ffffff" opacity="0.2"/>
+  <!-- Divine rays from boot -->
+  <line x1="14" y1="30" x2="6" y2="26" stroke="#ffd700" stroke-width="1.2" opacity="0.5"/>
+  <line x1="14" y1="42" x2="4" y2="40" stroke="#ffd700" stroke-width="1" opacity="0.4"/>
+  <line x1="14" y1="54" x2="6" y2="54" stroke="#ffd700" stroke-width="1" opacity="0.4"/>
+  <!-- God sigil on left boot -->
+  <circle cx="28" cy="40" r="9" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.5"/>
+  <line x1="28" y1="31" x2="28" y2="49" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+  <line x1="19" y1="40" x2="37" y2="40" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+  <!-- Left sole - divine radiance -->
+  <path d="M12,76 Q12,84 22,86 L40,86 Q50,82 50,76 L36,78 Q22,78 12,76Z" fill="#ffd700"/>
+  <path d="M12,76 Q12,84 22,86 L40,86 Q50,82 50,76 L36,78 Q22,78 12,76Z" fill="#ffffff" opacity="0.3"/>
+  <!-- Right god boot -->
+  <path d="M50,68 Q52,74 60,78 L80,78 Q86,76 86,68 L86,18 L78,18 L76,58 Q74,64 64,66 Q56,66 50,68Z" fill="url(#godwalkgrad)"/>
+  <path d="M54,22 L54,66 Q54,72 60,74 L76,74 Q82,70 82,66 L82,22Z" fill="#ffffff" opacity="0.2"/>
+  <!-- Divine rays right -->
+  <line x1="86" y1="30" x2="94" y2="26" stroke="#ffd700" stroke-width="1.2" opacity="0.5"/>
+  <line x1="86" y1="42" x2="96" y2="40" stroke="#ffd700" stroke-width="1" opacity="0.4"/>
+  <!-- God sigil right -->
+  <circle cx="72" cy="40" r="9" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.5"/>
+  <line x1="72" y1="31" x2="72" y2="49" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+  <line x1="63" y1="40" x2="81" y2="40" stroke="#ffffff" stroke-width="1" opacity="0.5"/>
+  <!-- Right sole -->
+  <path d="M50,76 Q50,84 60,86 L80,86 Q88,82 88,76 L84,78 Q64,78 50,76Z" fill="#ffd700"/>
+  <path d="M50,76 Q50,84 60,86 L80,86 Q88,82 88,76 L84,78 Q64,78 50,76Z" fill="#ffffff" opacity="0.3"/>
+</svg>

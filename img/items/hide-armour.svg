@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Hide body - rough irregular shape -->
+  <path d="M20,32 Q18,20 50,14 Q82,20 80,32 L76,86 Q50,92 24,86Z" fill="#9a7a50"/>
+  <!-- Fur texture at edges - top -->
+  <path d="M20,32 Q22,26 26,22 Q24,28 28,24 Q26,30 30,26 Q28,32 32,28 Q30,34 34,30" stroke="#7a5a30" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
+  <path d="M70,28 Q72,24 76,22 Q74,28 78,26 Q76,30 80,28 Q78,32 80,32" stroke="#7a5a30" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
+  <!-- Lace-up front -->
+  <line x1="50" y1="24" x2="50" y2="84" stroke="#6a4a20" stroke-width="1.5" opacity="0.5"/>
+  <path d="M44,32 Q50,30 56,32" stroke="#5a3a10" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M44,42 Q50,40 56,42" stroke="#5a3a10" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M44,52 Q50,50 56,52" stroke="#5a3a10" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M44,62 Q50,60 56,62" stroke="#5a3a10" stroke-width="2" fill="none" opacity="0.6"/>
+  <!-- Hide texture patches -->
+  <ellipse cx="34" cy="50" rx="7" ry="10" fill="#8a6a40" opacity="0.3"/>
+  <ellipse cx="66" cy="55" rx="6" ry="8" fill="#8a6a40" opacity="0.3"/>
+  <!-- Shoulder pads - bigger hide pieces -->
+  <ellipse cx="24" cy="36" rx="8" ry="6" fill="#8a6a40"/>
+  <ellipse cx="76" cy="36" rx="8" ry="6" fill="#8a6a40"/>
+</svg>

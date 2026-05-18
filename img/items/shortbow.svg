@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Bow limbs - curved wooden arc -->
+  <path d="M35,15 Q18,50 35,85" stroke="#7a4a22" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- Wood grain highlight -->
+  <path d="M35,15 Q20,50 35,85" stroke="#a06030" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.4"/>
+  <!-- Bowstring -->
+  <line x1="35" y1="15" x2="35" y2="85" stroke="#d4c4a0" stroke-width="1.2"/>
+  <!-- Arrow nocked -->
+  <line x1="35" y1="50" x2="78" y2="50" stroke="#8b6020" stroke-width="2"/>
+  <!-- Arrow fletching -->
+  <polygon points="78,50 68,45 70,50 68,55" fill="#c0392b" opacity="0.8"/>
+  <polygon points="78,50 68,46 70,50 69,48" fill="#e74c3c" opacity="0.6"/>
+  <!-- Arrowhead -->
+  <polygon points="35,50 40,46 40,54" fill="#aaa"/>
+  <!-- Grip wrap at center -->
+  <rect x="32" y="44" width="6" height="12" rx="2" fill="#5c3311" opacity="0.7"/>
+  <!-- Tip notches -->
+  <circle cx="35" cy="15" r="2.5" fill="#5c3311"/>
+  <circle cx="35" cy="85" r="2.5" fill="#5c3311"/>
+</svg>

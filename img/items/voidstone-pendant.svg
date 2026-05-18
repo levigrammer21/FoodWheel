@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Chain -->
+  <path d="M50,10 Q36,12 28,22 Q22,34 22,50 Q24,62 32,72" stroke="#8a9ba8" stroke-width="1.5" fill="none"/>
+  <path d="M50,10 Q64,12 72,22 Q78,34 78,50 Q76,62 68,72" stroke="#8a9ba8" stroke-width="1.5" fill="none"/>
+  <!-- Silver frame setting -->
+  <polygon points="50,62 62,70 62,84 50,92 38,84 38,70" fill="#6a7a84"/>
+  <polygon points="50,64 60,71 60,83 50,90 40,83 40,71" fill="#0a0015"/>
+  <!-- Void crystal interior -->
+  <!-- Stars inside the void crystal -->
+  <circle cx="50" cy="72" r="1.2" fill="#ffffff" opacity="0.9"/>
+  <circle cx="44" cy="68" r="0.8" fill="#ffffff" opacity="0.8"/>
+  <circle cx="56" cy="76" r="1" fill="#aaddff" opacity="0.8"/>
+  <circle cx="46" cy="80" r="0.8" fill="#cc88ff" opacity="0.7"/>
+  <circle cx="54" cy="68" r="0.7" fill="#ffffff" opacity="0.7"/>
+  <circle cx="48" cy="84" r="0.8" fill="#ffffff" opacity="0.6"/>
+  <circle cx="58" cy="82" r="0.6" fill="#aaddff" opacity="0.6"/>
+  <!-- Purple void nebula glow inside -->
+  <ellipse cx="50" cy="76" rx="8" ry="10" fill="#2a0050" opacity="0.5"/>
+  <!-- Crystal edge refraction -->
+  <polygon points="50,62 62,70 62,84 50,92 38,84 38,70" fill="none" stroke="#8844ff" stroke-width="1.5" opacity="0.6"/>
+  <!-- Frame detail -->
+  <circle cx="50" cy="62" r="3" fill="#8a9ba8"/>
+  <circle cx="62" cy="70" r="2.5" fill="#7a8a94"/>
+  <circle cx="62" cy="84" r="2.5" fill="#7a8a94"/>
+  <circle cx="50" cy="92" r="3" fill="#8a9ba8"/>
+  <circle cx="38" cy="84" r="2.5" fill="#7a8a94"/>
+  <circle cx="38" cy="70" r="2.5" fill="#7a8a94"/>
+</svg>

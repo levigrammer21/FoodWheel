@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="godkinggrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8a6a10"/>
+      <stop offset="25%" stop-color="#ffd700"/>
+      <stop offset="50%" stop-color="#ffffff"/>
+      <stop offset="75%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#8a6a10"/>
+    </linearGradient>
+    <radialGradient id="godkinglight" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#ffd700" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#ffd700" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="gkglow"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <!-- Divine light explosion -->
+  <circle cx="50" cy="45" r="40" fill="url(#godkinglight)" filter="url(#gkglow)"/>
+  <!-- Light rays -->
+  <line x1="50" y1="15" x2="50" y2="5" stroke="#ffd700" stroke-width="1.5" opacity="0.5"/>
+  <line x1="50" y1="15" x2="62" y2="8" stroke="#ffd700" stroke-width="1" opacity="0.4"/>
+  <line x1="50" y1="15" x2="38" y2="8" stroke="#ffd700" stroke-width="1" opacity="0.4"/>
+  <line x1="50" y1="15" x2="72" y2="14" stroke="#ffd700" stroke-width="1" opacity="0.3"/>
+  <line x1="50" y1="15" x2="28" y2="14" stroke="#ffd700" stroke-width="1" opacity="0.3"/>
+  <!-- Crown band - thick ornate -->
+  <rect x="10" y="56" width="80" height="14" rx="5" fill="url(#godkinggrad)"/>
+  <rect x="10" y="56" width="80" height="5" rx="2.5" fill="#ffffff" opacity="0.25"/>
+  <!-- Five tall crown spires -->
+  <polygon points="16,56 19,28 22,56" fill="url(#godkinggrad)"/>
+  <polygon points="28,56 32,18 36,56" fill="url(#godkinggrad)"/>
+  <polygon points="44,56 50,10 56,56" fill="url(#godkinggrad)"/>
+  <polygon points="64,56 68,18 72,56" fill="url(#godkinggrad)"/>
+  <polygon points="78,56 81,28 84,56" fill="url(#godkinggrad)"/>
+  <!-- Spire inner glow lines -->
+  <line x1="19" y1="28" x2="19" y2="54" stroke="#ffffff" stroke-width="0.8" opacity="0.3"/>
+  <line x1="32" y1="18" x2="32" y2="54" stroke="#ffffff" stroke-width="0.8" opacity="0.3"/>
+  <line x1="50" y1="10" x2="50" y2="54" stroke="#ffffff" stroke-width="1" opacity="0.4"/>
+  <line x1="68" y1="18" x2="68" y2="54" stroke="#ffffff" stroke-width="0.8" opacity="0.3"/>
+  <line x1="81" y1="28" x2="81" y2="54" stroke="#ffffff" stroke-width="0.8" opacity="0.3"/>
+  <!-- Divine gems on spire tips -->
+  <circle cx="19" cy="28" r="4" fill="#ff8800" opacity="0.9"/>
+  <circle cx="32" cy="18" r="5" fill="#4488ff" opacity="0.9"/>
+  <circle cx="50" cy="10" r="7" fill="#ffffff"/>
+  <circle cx="50" cy="10" r="4" fill="#ffd700"/>
+  <circle cx="50" cy="10" r="2" fill="#ffffff"/>
+  <circle cx="68" cy="18" r="5" fill="#ff4488" opacity="0.9"/>
+  <circle cx="81" cy="28" r="4" fill="#44ff88" opacity="0.9"/>
+  <!-- Band engravings -->
+  <path d="M20,63 Q30,59 40,63 Q50,59 60,63 Q70,59 80,63" stroke="#ffffff" stroke-width="0.8" fill="none" opacity="0.3"/>
+</svg>

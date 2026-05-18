@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="shadowblade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="50%" stop-color="#4a4a6e"/>
+      <stop offset="100%" stop-color="#0d0d1a"/>
+    </linearGradient>
+  </defs>
+  <!-- Shadow wisps -->
+  <path d="M42,20 Q32,14 36,8 Q34,18 40,18Z" fill="#5533aa" opacity="0.4"/>
+  <path d="M38,36 Q26,32 30,24 Q28,36 36,34Z" fill="#4422aa" opacity="0.35"/>
+  <!-- Curved fang blade -->
+  <path d="M55,10 Q60,40 45,62 L52,62 Q65,38 62,10Z" fill="url(#shadowblade)"/>
+  <!-- Serrated back edge -->
+  <path d="M55,10 Q50,24 48,30 Q46,38 45,62" stroke="#2a2a4e" stroke-width="1" fill="none"/>
+  <!-- Serration teeth -->
+  <polygon points="52,20 48,22 50,18" fill="#2a2a4e" opacity="0.6"/>
+  <polygon points="50,30 46,32 48,28" fill="#2a2a4e" opacity="0.6"/>
+  <polygon points="48,42 44,44 46,40" fill="#2a2a4e" opacity="0.6"/>
+  <!-- Blade edge gleam -->
+  <path d="M62,10 Q65,38 52,62" stroke="#8888cc" stroke-width="0.8" opacity="0.5"/>
+  <!-- Guard - bone/shadow -->
+  <rect x="38" y="61" width="24" height="5" rx="2" fill="#1a1a2e"/>
+  <path d="M38,63 Q50,61 62,63" stroke="#5533aa" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Grip - black wrapped -->
+  <rect x="45" y="66" width="8" height="18" rx="2.5" fill="#0d0d1a"/>
+  <line x1="44" y1="69" x2="54" y2="69" stroke="#5533aa" stroke-width="1" opacity="0.5"/>
+  <line x1="44" y1="73" x2="54" y2="73" stroke="#5533aa" stroke-width="1" opacity="0.5"/>
+  <line x1="44" y1="77" x2="54" y2="77" stroke="#5533aa" stroke-width="1" opacity="0.5"/>
+  <!-- Pommel - fang shape -->
+  <polygon points="50,86 45,84 47,92 50,90 53,92 55,84" fill="#1a1a2e"/>
+  <polygon points="50,88 47,86 50,91 53,86" fill="#4422aa" opacity="0.4"/>
+</svg>

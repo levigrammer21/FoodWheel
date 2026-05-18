@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="voideyegrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="20%" stop-color="#cc44ff"/>
+      <stop offset="55%" stop-color="#220044"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+    <radialGradient id="pupilgrad" cx="40%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+    <filter id="eyeglow"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <!-- Void tentacle wisps radiating -->
+  <path d="M50,50 Q30,36 18,28" stroke="#6600cc" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M50,50 Q70,36 82,28" stroke="#6600cc" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M50,50 Q22,50 10,50" stroke="#4400aa" stroke-width="1.2" fill="none" opacity="0.4"/>
+  <path d="M50,50 Q78,50 90,50" stroke="#4400aa" stroke-width="1.2" fill="none" opacity="0.4"/>
+  <path d="M50,50 Q34,64 26,76" stroke="#6600cc" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M50,50 Q66,64 74,76" stroke="#6600cc" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- Outer glow -->
+  <ellipse cx="50" cy="50" rx="28" ry="20" fill="#9933ff" opacity="0.15" filter="url(#eyeglow)"/>
+  <!-- Chain -->
+  <path d="M34,16 Q50,10 66,16" stroke="#2a0044" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <circle cx="34" cy="16" r="2" fill="#4a0066"/>
+  <circle cx="66" cy="16" r="2" fill="#4a0066"/>
+  <rect x="47" y="14" width="6" height="8" rx="2" fill="#2a0044"/>
+  <!-- Eye socket surround - dark lidded -->
+  <path d="M18,50 Q26,30 50,28 Q74,30 82,50 Q74,70 50,72 Q26,70 18,50Z" fill="#0a0014"/>
+  <!-- Eyelid top -->
+  <path d="M18,50 Q26,30 50,28 Q74,30 82,50" stroke="#9933ff" stroke-width="2" fill="none" opacity="0.7"/>
+  <!-- Eyelid bottom -->
+  <path d="M18,50 Q26,70 50,72 Q74,70 82,50" stroke="#6600aa" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <!-- The eye itself -->
+  <ellipse cx="50" cy="50" rx="22" ry="16" fill="url(#voideyegrad)"/>
+  <!-- Pupil - vertical slit like a god -->
+  <ellipse cx="50" cy="50" rx="7" ry="14" fill="url(#pupilgrad)"/>
+  <ellipse cx="50" cy="50" rx="4" ry="11" fill="#000000" opacity="0.9"/>
+  <!-- Iris rings -->
+  <ellipse cx="50" cy="50" rx="16" ry="12" fill="none" stroke="#9933ff" stroke-width="0.8" opacity="0.5"/>
+  <ellipse cx="50" cy="50" rx="10" ry="8" fill="none" stroke="#cc66ff" stroke-width="0.8" opacity="0.4"/>
+  <!-- Glint -->
+  <ellipse cx="44" cy="44" rx="3" ry="2" fill="#ffffff" opacity="0.4"/>
+</svg>

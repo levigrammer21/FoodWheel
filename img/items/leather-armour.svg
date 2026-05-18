@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Breastplate body -->
+  <path d="M22,30 Q22,20 50,16 Q78,20 78,30 L74,84 Q50,90 26,84Z" fill="#8b5e3c"/>
+  <!-- Chest muscle definition -->
+  <path d="M36,28 Q44,32 50,30 Q56,32 64,28 Q56,44 50,42 Q44,44 36,28Z" fill="#7a5030" opacity="0.5"/>
+  <line x1="50" y1="30" x2="50" y2="70" stroke="#6b4020" stroke-width="1.5" opacity="0.4"/>
+  <!-- Side straps -->
+  <rect x="20" y="40" width="6" height="30" rx="2" fill="#6b4020"/>
+  <rect x="74" y="40" width="6" height="30" rx="2" fill="#6b4020"/>
+  <!-- Buckle left -->
+  <rect x="18" y="52" width="10" height="6" rx="1" fill="#8a8070"/>
+  <rect x="20" y="53" width="6" height="4" rx="1" fill="none" stroke="#c0b890" stroke-width="1"/>
+  <!-- Buckle right -->
+  <rect x="72" y="52" width="10" height="6" rx="1" fill="#8a8070"/>
+  <rect x="74" y="53" width="6" height="4" rx="1" fill="none" stroke="#c0b890" stroke-width="1"/>
+  <!-- Leather edge stitching -->
+  <path d="M26,84 Q50,90 74,84" stroke="#6b4020" stroke-width="1" fill="none" stroke-dasharray="3,2" opacity="0.5"/>
+  <!-- Collar area -->
+  <path d="M34,24 Q50,20 66,24 Q60,30 50,28 Q40,30 34,24Z" fill="#7a5030"/>
+</svg>

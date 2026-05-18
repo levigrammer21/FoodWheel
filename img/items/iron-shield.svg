@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="ironshield" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5a6a74"/>
+      <stop offset="40%" stop-color="#8a9ba8"/>
+      <stop offset="100%" stop-color="#4a5a64"/>
+    </linearGradient>
+  </defs>
+  <!-- Heater shield body -->
+  <path d="M16,16 L84,16 L84,54 Q50,92 16,54Z" fill="url(#ironshield)"/>
+  <!-- Shield face highlight -->
+  <ellipse cx="38" cy="32" rx="16" ry="12" fill="#aabbc8" opacity="0.2"/>
+  <!-- Heraldic chevron design -->
+  <path d="M16,44 Q50,32 84,44" stroke="#4a5a64" stroke-width="4" fill="none"/>
+  <path d="M16,44 Q50,32 84,44" stroke="#6a7a84" stroke-width="2" fill="none" opacity="0.5"/>
+  <!-- Three dots heraldic -->
+  <circle cx="50" cy="24" r="5" fill="#4a5a64"/>
+  <circle cx="34" cy="52" r="5" fill="#4a5a64"/>
+  <circle cx="66" cy="52" r="5" fill="#4a5a64"/>
+  <!-- Rim -->
+  <path d="M16,16 L84,16 L84,54 Q50,92 16,54Z" fill="none" stroke="#4a5a64" stroke-width="5"/>
+  <!-- Top corners reinforced -->
+  <rect x="14" y="14" width="12" height="8" rx="1" fill="#5a6a74"/>
+  <rect x="74" y="14" width="12" height="8" rx="1" fill="#5a6a74"/>
+  <!-- Center spine -->
+  <line x1="50" y1="14" x2="50" y2="88" stroke="#6a7a84" stroke-width="2.5" opacity="0.4"/>
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="phoenixgrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff6600"/>
+      <stop offset="40%" stop-color="#ff3300"/>
+      <stop offset="70%" stop-color="#cc2200"/>
+      <stop offset="100%" stop-color="#8a1100"/>
+    </linearGradient>
+    <filter id="phoenixglow"><feGaussianBlur stdDeviation="2"/></filter>
+  </defs>
+  <!-- Flame aura -->
+  <ellipse cx="50" cy="50" rx="36" ry="42" fill="#ff4400" opacity="0.1" filter="url(#phoenixglow)"/>
+  <!-- Armour body - shaped like phoenix chest -->
+  <path d="M20,28 Q20,10 50,6 Q80,10 80,28 L76,82 Q50,90 24,82Z" fill="url(#phoenixgrad)"/>
+  <!-- Wing feather pauldrons -->
+  <path d="M20,28 Q8,22 6,12 Q10,18 8,10 Q14,18 12,12 Q16,20 14,14 Q20,22 18,16 Q24,24 20,28Z" fill="#ff6600"/>
+  <path d="M80,28 Q92,22 94,12 Q90,18 92,10 Q86,18 88,12 Q84,20 86,14 Q80,24 82,16 Q76,24 80,28Z" fill="#ff6600"/>
+  <!-- Feather tips on wings -->
+  <path d="M6,12 Q4,8 6,6" stroke="#ffcc00" stroke-width="1.5" fill="none"/>
+  <path d="M8,10 Q6,6 8,4" stroke="#ffaa00" stroke-width="1.5" fill="none"/>
+  <path d="M94,12 Q96,8 94,6" stroke="#ffcc00" stroke-width="1.5" fill="none"/>
+  <path d="M92,10 Q94,6 92,4" stroke="#ffaa00" stroke-width="1.5" fill="none"/>
+  <!-- Phoenix head crest on chest -->
+  <path d="M42,16 Q50,8 58,16 Q54,22 50,20 Q46,22 42,16Z" fill="#ffcc00"/>
+  <!-- Eye of phoenix -->
+  <circle cx="50" cy="18" r="3" fill="#ff8800"/>
+  <circle cx="50" cy="18" r="1.5" fill="#ffee00"/>
+  <!-- Flame feather rows on chest -->
+  <path d="M26,36 Q32,30 38,34 Q32,38 26,36Z" fill="#ff8800" opacity="0.7"/>
+  <path d="M38,34 Q44,28 50,32 Q44,36 38,34Z" fill="#ffaa00" opacity="0.7"/>
+  <path d="M50,32 Q56,28 62,34 Q56,36 50,32Z" fill="#ff8800" opacity="0.7"/>
+  <path d="M62,34 Q68,30 74,36 Q68,38 62,34Z" fill="#ffaa00" opacity="0.7"/>
+  <path d="M28,50 Q34,44 40,48 Q34,52 28,50Z" fill="#ff6600" opacity="0.6"/>
+  <path d="M40,48 Q48,42 54,46 Q48,50 40,48Z" fill="#ff8800" opacity="0.6"/>
+  <path d="M54,46 Q60,42 68,48 Q62,52 54,46Z" fill="#ff6600" opacity="0.6"/>
+  <!-- Flame hem -->
+  <path d="M24,80 Q32,74 40,78 Q50,72 60,78 Q68,74 76,80" stroke="#ffaa00" stroke-width="2" fill="none" opacity="0.7"/>
+</svg>

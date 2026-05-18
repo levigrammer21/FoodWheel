@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Cord -->
+  <path d="M50,10 Q34,14 26,24 Q34,18 50,16 Q66,18 74,24 Q66,14 50,10Z" stroke="#5a3a1a" stroke-width="1.5" fill="none"/>
+  <!-- Chain -->
+  <path d="M26,24 Q20,34 20,50" stroke="#8a6a30" stroke-width="1.5" fill="none"/>
+  <path d="M74,24 Q80,34 80,50" stroke="#8a6a30" stroke-width="1.5" fill="none"/>
+  <path d="M20,50 Q20,66 26,76" stroke="#8a6a30" stroke-width="1.5" fill="none"/>
+  <path d="M80,50 Q80,66 74,76" stroke="#8a6a30" stroke-width="1.5" fill="none"/>
+  <!-- Copper disc -->
+  <circle cx="50" cy="76" r="16" fill="#c87830"/>
+  <!-- Verdigris patches -->
+  <ellipse cx="44" cy="72" rx="4" ry="3" fill="#5aaa70" opacity="0.4"/>
+  <ellipse cx="56" cy="80" rx="3" ry="2" fill="#5aaa70" opacity="0.3"/>
+  <!-- Simple stamped design -->
+  <circle cx="50" cy="76" r="10" fill="none" stroke="#a06020" stroke-width="1" opacity="0.5"/>
+  <circle cx="50" cy="76" r="4" fill="#a06020" opacity="0.4"/>
+  <!-- Rim -->
+  <circle cx="50" cy="76" r="16" fill="none" stroke="#a06020" stroke-width="2"/>
+</svg>

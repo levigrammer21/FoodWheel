@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Left leg - partially phased -->
+  <path d="M18,10 Q28,6 38,10 L40,78 Q26,84 16,78Z" fill="#1a0030" opacity="0.85"/>
+  <!-- Stars visible through left leg (phased into void) -->
+  <circle cx="24" cy="24" r="1" fill="#ffffff" opacity="0.7"/>
+  <circle cx="32" cy="36" r="0.8" fill="#cc88ff" opacity="0.7"/>
+  <circle cx="26" cy="48" r="1" fill="#ffffff" opacity="0.6"/>
+  <circle cx="34" cy="58" r="0.8" fill="#aaddff" opacity="0.6"/>
+  <circle cx="22" cy="66" r="1" fill="#ffffff" opacity="0.5"/>
+  <!-- Right leg -->
+  <path d="M62,10 Q74,6 82,10 L84,78 Q72,84 60,78Z" fill="#1a0030" opacity="0.85"/>
+  <!-- Stars right leg -->
+  <circle cx="68" cy="22" r="1" fill="#ffffff" opacity="0.7"/>
+  <circle cx="76" cy="38" r="0.8" fill="#cc88ff" opacity="0.7"/>
+  <circle cx="70" cy="52" r="1" fill="#ffffff" opacity="0.6"/>
+  <circle cx="78" cy="64" r="0.8" fill="#aaddff" opacity="0.6"/>
+  <!-- Void energy trim lines -->
+  <path d="M18,10 Q28,6 38,10 L40,78 Q26,84 16,78Z" fill="none" stroke="#8844ff" stroke-width="1.5" opacity="0.6"/>
+  <path d="M62,10 Q74,6 82,10 L84,78 Q72,84 60,78Z" fill="none" stroke="#8844ff" stroke-width="1.5" opacity="0.6"/>
+  <!-- Knee phase points -->
+  <ellipse cx="28" cy="46" rx="10" ry="8" fill="#2a0050" opacity="0.9"/>
+  <ellipse cx="72" cy="46" rx="10" ry="8" fill="#2a0050" opacity="0.9"/>
+  <circle cx="28" cy="46" r="5" fill="#8844ff" opacity="0.4"/>
+  <circle cx="72" cy="46" r="5" fill="#8844ff" opacity="0.4"/>
+  <!-- Phase distortion rings -->
+  <circle cx="28" cy="46" r="8" fill="none" stroke="#8844ff" stroke-width="1" opacity="0.4" stroke-dasharray="2,2"/>
+  <circle cx="72" cy="46" r="8" fill="none" stroke="#8844ff" stroke-width="1" opacity="0.4" stroke-dasharray="2,2"/>
+  <!-- Waist -->
+  <rect x="16" y="6" width="68" height="6" rx="2" fill="#0a0020"/>
+  <rect x="16" y="6" width="68" height="2" rx="1" fill="#8844ff" opacity="0.5"/>
+</svg>

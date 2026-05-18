@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="stormblade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4a6a8a"/>
+      <stop offset="40%" stop-color="#c0d8f0"/>
+      <stop offset="100%" stop-color="#2a4a6a"/>
+    </linearGradient>
+    <filter id="lightglow"><feGaussianBlur stdDeviation="1.5"/></filter>
+  </defs>
+  <!-- Lightning aura around whole blade -->
+  <polygon points="50,4 42,58 58,58" fill="#4a7aaa" opacity="0.2" filter="url(#lightglow)"/>
+  <!-- Wide greatsword blade -->
+  <polygon points="50,4 41,58 59,58" fill="url(#stormblade)"/>
+  <!-- Fuller channels both sides -->
+  <rect x="48" y="8" width="1.5" height="46" rx="0.5" fill="#e0f0ff" opacity="0.5"/>
+  <rect x="50" y="8" width="1.5" height="46" rx="0.5" fill="#e0f0ff" opacity="0.3"/>
+  <!-- Lightning arcing across blade -->
+  <path d="M44,15 L48,20 L45,20 L50,28 L47,28 L52,36" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.8"/>
+  <path d="M56,18 L53,24 L56,24 L52,32 L55,32 L50,40" stroke="#aaddff" stroke-width="1" fill="none" opacity="0.6"/>
+  <!-- Side crackle arcs -->
+  <path d="M42,20 Q36,22 38,26" stroke="#74b9ff" stroke-width="1.2" fill="none" opacity="0.6"/>
+  <path d="M58,30 Q64,32 62,38" stroke="#74b9ff" stroke-width="1.2" fill="none" opacity="0.6"/>
+  <path d="M43,44 Q37,46 39,50" stroke="#74b9ff" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Ornate crossguard - wing shaped -->
+  <path d="M30,57 Q36,52 50,55 Q64,52 70,57 Q64,64 50,61 Q36,64 30,57Z" fill="#2a4a6a"/>
+  <path d="M32,57 Q38,54 50,56 Q62,54 68,57" stroke="#74b9ff" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Guard gem -->
+  <ellipse cx="50" cy="58" rx="4" ry="3" fill="#74b9ff" opacity="0.8"/>
+  <ellipse cx="50" cy="58" rx="2" ry="1.5" fill="#ffffff" opacity="0.6"/>
+  <!-- Grip -->
+  <rect x="46" y="61" width="8" height="20" rx="3" fill="#1a2a3a"/>
+  <line x1="45" y1="65" x2="55" y2="65" stroke="#4a9eff" stroke-width="1" opacity="0.5"/>
+  <line x1="45" y1="70" x2="55" y2="70" stroke="#4a9eff" stroke-width="1" opacity="0.5"/>
+  <line x1="45" y1="75" x2="55" y2="75" stroke="#4a9eff" stroke-width="1" opacity="0.5"/>
+  <!-- Pommel - storm disc -->
+  <ellipse cx="50" cy="84" rx="7" ry="5" fill="#2a4a6a"/>
+  <ellipse cx="50" cy="84" rx="4" ry="3" fill="#74b9ff" opacity="0.5"/>
+  <ellipse cx="50" cy="84" rx="2" ry="1.5" fill="#ffffff" opacity="0.4"/>
+</svg>

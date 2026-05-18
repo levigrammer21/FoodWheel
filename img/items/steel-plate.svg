@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="steelplate" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4a5a64"/>
+      <stop offset="35%" stop-color="#9ab0bc"/>
+      <stop offset="65%" stop-color="#7a8a94"/>
+      <stop offset="100%" stop-color="#3a4a54"/>
+    </linearGradient>
+  </defs>
+  <!-- Main breastplate -->
+  <path d="M18,26 Q18,12 50,8 Q82,12 82,26 L80,60 Q50,66 20,60Z" fill="url(#steelplate)"/>
+  <!-- Center keel ridge -->
+  <line x1="50" y1="10" x2="50" y2="62" stroke="#b8ccd8" stroke-width="3" opacity="0.4"/>
+  <!-- Pauldrons (shoulder guards) -->
+  <ellipse cx="18" cy="28" rx="10" ry="8" fill="#5a6a74"/>
+  <path d="M8,22 Q14,18 20,22 Q18,30 12,30Z" fill="#4a5a64"/>
+  <ellipse cx="82" cy="28" rx="10" ry="8" fill="#5a6a74"/>
+  <path d="M92,22 Q86,18 80,22 Q82,30 88,30Z" fill="#4a5a64"/>
+  <!-- Gorget (neck) -->
+  <path d="M36,14 Q50,10 64,14 Q60,22 50,20 Q40,22 36,14Z" fill="#5a6a74"/>
+  <!-- Tassets (hip guards) hanging strips -->
+  <rect x="22" y="58" width="14" height="22" rx="3" fill="#5a6a74"/>
+  <rect x="64" y="58" width="14" height="22" rx="3" fill="#5a6a74"/>
+  <rect x="38" y="60" width="10" height="20" rx="3" fill="#4a5a64"/>
+  <rect x="52" y="60" width="10" height="20" rx="3" fill="#4a5a64"/>
+  <!-- Articulation lines on breastplate -->
+  <path d="M24,40 Q50,36 76,40" stroke="#4a5a64" stroke-width="2" fill="none" opacity="0.5"/>
+  <!-- Highlight on left chest -->
+  <ellipse cx="36" cy="28" rx="10" ry="8" fill="#b8ccd8" opacity="0.2"/>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="voidweave" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0a0030"/>
+      <stop offset="100%" stop-color="#000010"/>
+    </radialGradient>
+  </defs>
+  <!-- Robe body -->
+  <path d="M22,22 L14,96 L86,96 L78,22 Q64,14 50,14 Q36,14 22,22Z" fill="url(#voidweave)"/>
+  <!-- Void patches showing stars/cosmos -->
+  <ellipse cx="38" cy="44" rx="12" ry="14" fill="#0a0030" opacity="0.8"/>
+  <ellipse cx="62" cy="56" rx="10" ry="12" fill="#0a0030" opacity="0.8"/>
+  <ellipse cx="44" cy="72" rx="8" ry="10" fill="#0a0030" opacity="0.7"/>
+  <!-- Stars in void patches -->
+  <circle cx="34" cy="40" r="0.8" fill="#ffffff" opacity="0.9"/>
+  <circle cx="40" cy="36" r="1" fill="#ffffff" opacity="0.8"/>
+  <circle cx="44" cy="44" r="0.7" fill="#aaddff" opacity="0.8"/>
+  <circle cx="36" cy="50" r="0.8" fill="#ffffff" opacity="0.7"/>
+  <circle cx="42" cy="52" r="0.6" fill="#cc88ff" opacity="0.8"/>
+  <circle cx="58" cy="52" r="0.8" fill="#ffffff" opacity="0.8"/>
+  <circle cx="66" cy="58" r="1" fill="#ffffff" opacity="0.7"/>
+  <circle cx="60" cy="64" r="0.7" fill="#aaddff" opacity="0.7"/>
+  <circle cx="64" cy="46" r="0.8" fill="#cc88ff" opacity="0.7"/>
+  <circle cx="42" cy="68" r="0.8" fill="#ffffff" opacity="0.7"/>
+  <circle cx="48" cy="76" r="0.7" fill="#aaddff" opacity="0.7"/>
+  <!-- Galaxy swirl in one patch -->
+  <path d="M38,44 Q40,40 42,44 Q40,48 38,44Z" stroke="#cc88ff" stroke-width="0.5" fill="none" opacity="0.5"/>
+  <!-- Void seam edges glowing -->
+  <path d="M22,22 L14,96" stroke="#6600cc" stroke-width="1" opacity="0.4"/>
+  <path d="M78,22 L86,96" stroke="#6600cc" stroke-width="1" opacity="0.4"/>
+  <!-- Collar - void edged -->
+  <path d="M30,22 Q50,12 70,22 L66,32 Q50,26 34,32Z" fill="#050015"/>
+  <path d="M32,22 Q50,14 68,22" stroke="#9933ff" stroke-width="1.2" fill="none" opacity="0.7"/>
+  <!-- Belt - void clasp -->
+  <rect x="24" y="56" width="52" height="6" rx="2" fill="#050015"/>
+  <circle cx="50" cy="59" r="4" fill="#9933ff" opacity="0.7"/>
+  <circle cx="50" cy="59" r="2.5" fill="#cc66ff" opacity="0.6"/>
+  <!-- Hem nebula glow -->
+  <path d="M14,94 Q50,98 86,94" stroke="#6600cc" stroke-width="2" fill="none" opacity="0.5"/>
+</svg>

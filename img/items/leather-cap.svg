@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Cap dome -->
+  <path d="M25,60 Q25,28 50,22 Q75,28 75,60Z" fill="#8b5e3c"/>
+  <!-- Leather texture seams -->
+  <path d="M50,22 Q50,40 50,60" stroke="#6b4020" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M30,45 Q40,42 50,42 Q60,42 70,45" stroke="#6b4020" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- Brim edge -->
+  <rect x="22" y="58" width="56" height="6" rx="3" fill="#6b4020"/>
+  <rect x="22" y="58" width="56" height="2" rx="1" fill="#a07050" opacity="0.4"/>
+  <!-- Simple rivet on top -->
+  <circle cx="50" cy="24" r="3" fill="#7a5030"/>
+  <circle cx="50" cy="23" r="1.5" fill="#aa8060" opacity="0.5"/>
+</svg>

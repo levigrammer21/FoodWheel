@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="stormorb" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#74b9ff"/>
+      <stop offset="100%" stop-color="#0984e3" stop-opacity="0.6"/>
+    </radialGradient>
+  </defs>
+  <!-- Staff shaft - twisted gnarled wood -->
+  <path d="M48,28 Q54,45 46,62 Q52,78 48,92" stroke="#5c3d1e" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M48,28 Q52,45 46,62 Q50,78 48,92" stroke="#7a5530" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.4"/>
+  <!-- Rune bands on staff -->
+  <rect x="44" y="50" width="10" height="3" rx="1" fill="#0984e3" opacity="0.5"/>
+  <rect x="44" y="68" width="10" height="3" rx="1" fill="#0984e3" opacity="0.4"/>
+  <!-- Crystal prongs holding orb -->
+  <line x1="48" y1="28" x2="38" y2="18" stroke="#5c3d1e" stroke-width="3" stroke-linecap="round"/>
+  <line x1="48" y1="28" x2="58" y2="18" stroke="#5c3d1e" stroke-width="3" stroke-linecap="round"/>
+  <line x1="48" y1="28" x2="48" y2="14" stroke="#5c3d1e" stroke-width="3" stroke-linecap="round"/>
+  <!-- Storm orb -->
+  <circle cx="48" cy="14" r="12" fill="url(#stormorb)" opacity="0.9"/>
+  <!-- Lightning bolts inside orb -->
+  <path d="M44,8 L47,13 L44,13 L48,20" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.8"/>
+  <path d="M52,9 L50,14 L53,14 L51,19" stroke="#dfe6e9" stroke-width="1" fill="none" opacity="0.6"/>
+  <!-- Orb ring -->
+  <circle cx="48" cy="14" r="12" fill="none" stroke="#74b9ff" stroke-width="1" opacity="0.5"/>
+  <!-- Outer crackle arcs -->
+  <path d="M36,14 Q34,8 38,6" stroke="#74b9ff" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M60,14 Q62,8 58,5" stroke="#74b9ff" stroke-width="1" fill="none" opacity="0.5"/>
+</svg>

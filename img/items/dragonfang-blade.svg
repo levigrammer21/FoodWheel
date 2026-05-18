@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="fangblade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0e6d0"/>
+      <stop offset="60%" stop-color="#c8a870"/>
+      <stop offset="100%" stop-color="#8b6030"/>
+    </linearGradient>
+  </defs>
+  <!-- Fang blade - natural curve of a tooth -->
+  <path d="M52,8 Q58,30 56,55 L44,55 Q40,30 48,8Z" fill="url(#fangblade)"/>
+  <!-- Scale ridge texture on blade -->
+  <path d="M50,14 Q54,20 53,26" stroke="#a08050" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M50,26 Q54,32 53,38" stroke="#a08050" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M50,38 Q54,44 52,50" stroke="#a08050" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M50,14 Q46,20 47,26" stroke="#c0a060" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <!-- Bone-white edge -->
+  <path d="M52,8 Q58,30 56,55" stroke="#f8f0e0" stroke-width="1.2" opacity="0.6"/>
+  <!-- Dragon scale crossguard -->
+  <path d="M34,55 Q38,50 50,52 Q62,50 66,55 Q62,60 50,58 Q38,60 34,55Z" fill="#6b4a20"/>
+  <!-- Scale detail on guard -->
+  <path d="M36,55 Q40,53 44,55 Q40,57 36,55Z" fill="#8b6030" opacity="0.5"/>
+  <path d="M56,55 Q60,53 64,55 Q60,57 56,55Z" fill="#8b6030" opacity="0.5"/>
+  <!-- Grip - wrapped in leather with claw wrapping -->
+  <rect x="46" y="58" width="8" height="22" rx="2" fill="#3d2010"/>
+  <path d="M44,62 Q50,60 56,62" stroke="#6b4a20" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M44,68 Q50,66 56,68" stroke="#6b4a20" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M44,74 Q50,72 56,74" stroke="#6b4a20" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <!-- Pommel - dragon claw grip -->
+  <path d="M46,80 Q44,84 46,88 Q50,86 54,88 Q56,84 54,80Z" fill="#6b4a20"/>
+  <path d="M46,88 Q44,92 47,93" stroke="#3d2010" stroke-width="1.5" fill="none"/>
+  <path d="M54,88 Q56,92 53,93" stroke="#3d2010" stroke-width="1.5" fill="none"/>
+</svg>

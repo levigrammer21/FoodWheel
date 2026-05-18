@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="eterngrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6a4a10"/>
+      <stop offset="35%" stop-color="#ffd700"/>
+      <stop offset="65%" stop-color="#ffee88"/>
+      <stop offset="100%" stop-color="#6a4a10"/>
+    </linearGradient>
+    <filter id="eternglow"><feGaussianBlur stdDeviation="2.5"/></filter>
+  </defs>
+  <!-- Ghost past helm (faint behind) -->
+  <path d="M14,68 Q14,22 50,12 Q86,22 86,68Z" fill="#ffd700" opacity="0.08" transform="rotate(-3,50,50)"/>
+  <!-- Ghost future helm (faint ahead) -->
+  <path d="M14,68 Q14,22 50,12 Q86,22 86,68Z" fill="#ffd700" opacity="0.08" transform="rotate(3,50,50)"/>
+  <!-- Main helm -->
+  <path d="M16,66 Q16,22 50,12 Q84,22 84,66Z" fill="url(#eterngrad)"/>
+  <!-- Eternal glow -->
+  <ellipse cx="50" cy="38" rx="28" ry="28" fill="#ffd700" opacity="0.15" filter="url(#eternglow)"/>
+  <!-- Hourglass etching on front -->
+  <path d="M42,30 L58,30 L50,42 L58,54 L42,54 L50,42Z" fill="none" stroke="#8a6a10" stroke-width="1.2" opacity="0.6"/>
+  <ellipse cx="50" cy="42" rx="2" ry="2" fill="#ffd700" opacity="0.8"/>
+  <!-- Time sand particles -->
+  <circle cx="44" cy="36" r="0.8" fill="#ffffff" opacity="0.6"/>
+  <circle cx="56" cy="38" r="0.8" fill="#ffffff" opacity="0.5"/>
+  <circle cx="46" cy="48" r="0.8" fill="#ffffff" opacity="0.6"/>
+  <circle cx="54" cy="46" r="0.8" fill="#ffffff" opacity="0.5"/>
+  <!-- Ornate brow band -->
+  <rect x="14" y="60" width="72" height="8" rx="3" fill="#6a4a10"/>
+  <rect x="14" y="60" width="72" height="3" rx="1.5" fill="#ffd700" opacity="0.5"/>
+  <!-- Sun disc centerpiece -->
+  <circle cx="50" cy="64" r="5" fill="#ffd700"/>
+  <circle cx="50" cy="64" r="3" fill="#ffee88"/>
+  <!-- Ray lines from sun -->
+  <line x1="44" y1="64" x2="40" y2="64" stroke="#ffd700" stroke-width="1.2"/>
+  <line x1="56" y1="64" x2="60" y2="64" stroke="#ffd700" stroke-width="1.2"/>
+  <line x1="50" y1="58" x2="50" y2="56" stroke="#ffd700" stroke-width="1.2"/>
+  <!-- Cheek guards gold -->
+  <path d="M16,66 Q12,74 14,82 Q18,80 20,72Z" fill="#6a4a10"/>
+  <path d="M84,66 Q88,74 86,82 Q82,80 80,72Z" fill="#6a4a10"/>
+</svg>

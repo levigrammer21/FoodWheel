@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="shadowhood" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#2a2a3e"/>
+      <stop offset="100%" stop-color="#0a0a14"/>
+    </radialGradient>
+  </defs>
+  <!-- Shadow wisps -->
+  <path d="M24,35 Q14,28 16,20" stroke="#4422aa" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <path d="M76,38 Q86,30 84,22" stroke="#4422aa" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <!-- Hood body -->
+  <path d="M20,75 Q16,48 28,30 Q38,16 50,14 Q62,16 72,30 Q84,48 80,75Z" fill="url(#shadowhood)"/>
+  <!-- Fabric fold shadows -->
+  <path d="M32,55 Q38,38 50,32 Q62,38 68,55" stroke="#1a1a2e" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M26,65 Q32,46 50,38 Q68,46 74,65" stroke="#1a1a2e" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <!-- Face shadow deep dark -->
+  <ellipse cx="50" cy="52" rx="18" ry="18" fill="#050510" opacity="0.9"/>
+  <!-- Glowing eye slits -->
+  <ellipse cx="42" cy="50" rx="5" ry="2.5" fill="#aa44ff" opacity="0.9"/>
+  <ellipse cx="58" cy="50" rx="5" ry="2.5" fill="#aa44ff" opacity="0.9"/>
+  <ellipse cx="42" cy="50" rx="3" ry="1.5" fill="#ffffff" opacity="0.5"/>
+  <ellipse cx="58" cy="50" rx="3" ry="1.5" fill="#ffffff" opacity="0.5"/>
+  <!-- Mouth slit -->
+  <rect x="44" y="58" width="12" height="2" rx="1" fill="#4422aa" opacity="0.5"/>
+  <!-- Veil wrap bottom -->
+  <path d="M20,72 Q50,80 80,72" stroke="#1a1a2e" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Hood point top -->
+  <path d="M44,14 Q50,6 56,14" fill="#1a1a2e" opacity="0.7"/>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Chain -->
+  <path d="M50,10 Q34,14 26,22 Q20,34 20,50 Q22,62 30,72" stroke="#8a8a8a" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+  <path d="M50,10 Q66,14 74,22 Q80,34 80,50 Q78,62 70,72" stroke="#8a8a8a" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+  <!-- Pendant backing disc -->
+  <circle cx="50" cy="72" r="18" fill="#5a6a74"/>
+  <circle cx="50" cy="72" r="16" fill="#6a7a84"/>
+  <!-- Crossed swords -->
+  <!-- Sword 1 diagonal -->
+  <line x1="36" y1="58" x2="64" y2="86" stroke="#c0c8d0" stroke-width="3" stroke-linecap="round"/>
+  <!-- Sword 1 guard -->
+  <line x1="38" y1="66" x2="30" y2="70" stroke="#9ab0bc" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="38" y1="66" x2="46" y2="62" stroke="#9ab0bc" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Sword 2 diagonal -->
+  <line x1="64" y1="58" x2="36" y2="86" stroke="#c0c8d0" stroke-width="3" stroke-linecap="round"/>
+  <!-- Sword 2 guard -->
+  <line x1="62" y1="66" x2="70" y2="70" stroke="#9ab0bc" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="62" y1="66" x2="54" y2="62" stroke="#9ab0bc" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Center star where they cross -->
+  <circle cx="50" cy="72" r="3" fill="#d0dce4"/>
+  <!-- Rim -->
+  <circle cx="50" cy="72" r="18" fill="none" stroke="#4a5a64" stroke-width="2.5"/>
+</svg>

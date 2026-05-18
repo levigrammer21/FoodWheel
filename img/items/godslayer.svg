@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="godkillblade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="40%" stop-color="#2a2a2a"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </linearGradient>
+    <linearGradient id="divinecrack" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="50%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#ffd700"/>
+    </linearGradient>
+    <filter id="godglow"><feGaussianBlur stdDeviation="2.5"/></filter>
+  </defs>
+  <!-- God-light bleeding through the black blade -->
+  <polygon points="50,4 41,60 59,60" fill="#ffd700" opacity="0.15" filter="url(#godglow)"/>
+  <!-- Enormous black blade -->
+  <polygon points="50,4 40,60 60,60" fill="url(#godkillblade)"/>
+  <!-- Divine cracks splitting through the blade -->
+  <path d="M50,8 L46,18 L50,16 L48,28 L52,24 L49,38 L53,34 L50,48 L54,44 L50,58" stroke="url(#divinecrack)" stroke-width="1.8" fill="none" opacity="0.9"/>
+  <!-- Secondary crack -->
+  <path d="M44,20 L48,26 L44,30" stroke="#ffd700" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M56,32 L52,38 L56,42" stroke="#ffd700" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Gold light bleeding from edges -->
+  <line x1="50" y1="4" x2="40" y2="60" stroke="#ffd700" stroke-width="0.8" opacity="0.3"/>
+  <line x1="50" y1="4" x2="60" y2="60" stroke="#ffd700" stroke-width="0.8" opacity="0.3"/>
+  <!-- Massive ornate guard - broken wing motif -->
+  <path d="M24,59 Q32,54 42,57 L42,63 Q32,62 24,65Z" fill="#1a1a1a"/>
+  <path d="M76,59 Q68,54 58,57 L58,63 Q68,62 76,65Z" fill="#1a1a1a"/>
+  <rect x="42" y="57" width="16" height="6" rx="1" fill="#0a0a0a"/>
+  <!-- Guard gold trim -->
+  <path d="M24,62 Q32,58 42,60" stroke="#ffd700" stroke-width="1" fill="none" opacity="0.6"/>
+  <path d="M76,62 Q68,58 58,60" stroke="#ffd700" stroke-width="1" fill="none" opacity="0.6"/>
+  <!-- Grip wrapped in divine cloth -->
+  <rect x="46" y="63" width="8" height="22" rx="2" fill="#0a0a0a"/>
+  <line x1="45" y1="67" x2="55" y2="67" stroke="#ffd700" stroke-width="1.2" opacity="0.6"/>
+  <line x1="45" y1="72" x2="55" y2="72" stroke="#ffd700" stroke-width="1.2" opacity="0.6"/>
+  <line x1="45" y1="77" x2="55" y2="77" stroke="#ffd700" stroke-width="1.2" opacity="0.6"/>
+  <line x1="45" y1="82" x2="55" y2="82" stroke="#ffd700" stroke-width="1.2" opacity="0.6"/>
+  <!-- Pommel - smashed divine relic -->
+  <circle cx="50" cy="89" r="8" fill="#0a0a0a"/>
+  <path d="M46,86 L50,82 L54,86 L52,92 L50,90 L48,92Z" fill="#ffd700" opacity="0.7"/>
+  <!-- Tip sparkle - last life it took -->
+  <circle cx="50" cy="4" r="1.5" fill="#ffd700" opacity="0.8"/>
+  <line x1="50" y1="1" x2="50" y2="4" stroke="#ffd700" stroke-width="1" opacity="0.6"/>
+  <line x1="47" y1="2" x2="50" y2="4" stroke="#ffd700" stroke-width="1" opacity="0.6"/>
+  <line x1="53" y1="2" x2="50" y2="4" stroke="#ffd700" stroke-width="1" opacity="0.6"/>
+</svg>

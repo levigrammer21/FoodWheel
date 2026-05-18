@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Hood main body -->
+  <path d="M28,65 Q24,40 50,20 Q76,40 72,65Z" fill="#8888aa"/>
+  <!-- Fabric fold lines -->
+  <path d="M34,55 Q40,38 50,32 Q60,38 66,55" stroke="#6666aa" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M30,62 Q36,44 50,36 Q64,44 70,62" stroke="#6666aa" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- Hood opening rim -->
+  <path d="M28,65 Q50,72 72,65" stroke="#5555aa" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Drawstring -->
+  <path d="M36,65 Q50,70 64,65" stroke="#444488" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <!-- Cowl shadow inside -->
+  <ellipse cx="50" cy="62" rx="18" ry="8" fill="#3a3a5a" opacity="0.3"/>
+  <!-- Top of hood slight point -->
+  <ellipse cx="50" cy="21" rx="3" ry="4" fill="#7777aa" opacity="0.6"/>
+</svg>

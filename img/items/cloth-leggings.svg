@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Left leg -->
+  <path d="M22,10 L34,10 L40,72 L24,72Z" fill="#7a8a9a" rx="3"/>
+  <!-- Right leg -->
+  <path d="M66,10 L78,10 L76,72 L60,72Z" fill="#7a8a9a"/>
+  <!-- Crotch join -->
+  <path d="M22,10 Q50,18 78,10 L66,10 Q50,22 34,10Z" fill="#6a7a8a"/>
+  <!-- Waistband -->
+  <rect x="20" y="8" width="60" height="6" rx="2" fill="#5a6a7a"/>
+  <rect x="20" y="8" width="60" height="2" rx="1" fill="#8a9aaa" opacity="0.4"/>
+  <!-- Cloth fold lines left leg -->
+  <line x1="26" y1="18" x2="27" y2="68" stroke="#5a6a7a" stroke-width="0.8" opacity="0.4"/>
+  <line x1="32" y1="16" x2="38" y2="68" stroke="#5a6a7a" stroke-width="0.8" opacity="0.4"/>
+  <!-- Cloth fold lines right leg -->
+  <line x1="68" y1="16" x2="62" y2="68" stroke="#5a6a7a" stroke-width="0.8" opacity="0.4"/>
+  <line x1="74" y1="18" x2="73" y2="68" stroke="#5a6a7a" stroke-width="0.8" opacity="0.4"/>
+  <!-- Hem at bottom -->
+  <rect x="22" y="70" width="18" height="4" rx="1" fill="#5a6a7a"/>
+  <rect x="60" y="70" width="18" height="4" rx="1" fill="#5a6a7a"/>
+</svg>

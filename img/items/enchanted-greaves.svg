@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Left leg plate -->
+  <path d="M16,10 Q28,6 36,10 L40,78 Q26,84 16,78Z" fill="#4a5a7a"/>
+  <!-- Right leg plate -->
+  <path d="M64,10 Q74,6 84,10 L84,78 Q72,84 60,78Z" fill="#4a5a7a"/>
+  <!-- Enchantment glow on left -->
+  <path d="M16,10 Q28,6 36,10 L40,78 Q26,84 16,78Z" fill="#4a9eff" opacity="0.08"/>
+  <!-- Runes left leg -->
+  <text x="18" y="30" font-size="8" fill="#4a9eff" opacity="0.8" font-family="serif">ᚠᚢ</text>
+  <text x="18" y="46" font-size="8" fill="#4a9eff" opacity="0.7" font-family="serif">ᚦᚱ</text>
+  <text x="18" y="62" font-size="8" fill="#4a9eff" opacity="0.65" font-family="serif">ᚲᚷ</text>
+  <!-- Runes right leg -->
+  <text x="64" y="30" font-size="8" fill="#4a9eff" opacity="0.8" font-family="serif">ᚹᚾ</text>
+  <text x="64" y="46" font-size="8" fill="#4a9eff" opacity="0.7" font-family="serif">ᛁᛃ</text>
+  <text x="64" y="62" font-size="8" fill="#4a9eff" opacity="0.65" font-family="serif">ᛇᛈ</text>
+  <!-- Knee guards glowing -->
+  <ellipse cx="28" cy="48" rx="10" ry="8" fill="#3a4a6a"/>
+  <ellipse cx="72" cy="48" rx="10" ry="8" fill="#3a4a6a"/>
+  <circle cx="28" cy="48" r="5" fill="none" stroke="#4a9eff" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="72" cy="48" r="5" fill="none" stroke="#4a9eff" stroke-width="1.5" opacity="0.6"/>
+  <!-- Edge glow rims -->
+  <path d="M16,10 Q28,6 36,10 L40,78 Q26,84 16,78Z" fill="none" stroke="#4a9eff" stroke-width="1.5" opacity="0.5"/>
+  <path d="M64,10 Q74,6 84,10 L84,78 Q72,84 60,78Z" fill="none" stroke="#4a9eff" stroke-width="1.5" opacity="0.5"/>
+  <!-- Waist band -->
+  <rect x="14" y="6" width="72" height="6" rx="2" fill="#3a4a6a"/>
+  <rect x="14" y="6" width="72" height="2" rx="1" fill="#4a9eff" opacity="0.4"/>
+</svg>

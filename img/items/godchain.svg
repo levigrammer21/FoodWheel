@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="godchainorb" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="25%" stop-color="#ffd700"/>
+      <stop offset="65%" stop-color="#cc8800"/>
+      <stop offset="100%" stop-color="#8a5500"/>
+    </radialGradient>
+    <radialGradient id="godchainlight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ffd700" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="godglow2"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <!-- Divine radiance from pendant -->
+  <circle cx="50" cy="58" r="30" fill="url(#godchainlight)" filter="url(#godglow2)"/>
+  <!-- Ornate chain - interlocking gold links -->
+  <path d="M20,24 Q35,14 50,12 Q65,14 80,24" stroke="#cc8800" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Individual ornate links -->
+  <ellipse cx="26" cy="21" rx="4" ry="2.5" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+  <ellipse cx="34" cy="17" rx="4" ry="2.5" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+  <ellipse cx="42" cy="14" rx="4" ry="2.5" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+  <ellipse cx="50" cy="13" rx="4" ry="2.5" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+  <ellipse cx="58" cy="14" rx="4" ry="2.5" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+  <ellipse cx="66" cy="17" rx="4" ry="2.5" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+  <ellipse cx="74" cy="21" rx="4" ry="2.5" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+  <!-- Pendant drop chain -->
+  <line x1="50" y1="13" x2="50" y2="30" stroke="#cc8800" stroke-width="2"/>
+  <!-- Sun burst pendant -->
+  <!-- Outer rays -->
+  <line x1="50" y1="30" x2="50" y2="20" stroke="#ffd700" stroke-width="1.5" opacity="0.6"/>
+  <line x1="50" y1="86" x2="50" y2="96" stroke="#ffd700" stroke-width="1.5" opacity="0.6"/>
+  <line x1="22" y1="58" x2="12" y2="58" stroke="#ffd700" stroke-width="1.5" opacity="0.6"/>
+  <line x1="78" y1="58" x2="88" y2="58" stroke="#ffd700" stroke-width="1.5" opacity="0.6"/>
+  <line x1="30" y1="38" x2="23" y2="31" stroke="#ffd700" stroke-width="1.2" opacity="0.5"/>
+  <line x1="70" y1="38" x2="77" y2="31" stroke="#ffd700" stroke-width="1.2" opacity="0.5"/>
+  <line x1="30" y1="78" x2="23" y2="85" stroke="#ffd700" stroke-width="1.2" opacity="0.5"/>
+  <line x1="70" y1="78" x2="77" y2="85" stroke="#ffd700" stroke-width="1.2" opacity="0.5"/>
+  <!-- Outer ornate ring -->
+  <circle cx="50" cy="58" r="24" fill="none" stroke="#cc8800" stroke-width="2.5"/>
+  <circle cx="50" cy="58" r="24" fill="none" stroke="#ffd700" stroke-width="1" opacity="0.5" stroke-dasharray="4,4"/>
+  <!-- Gem points on ring -->
+  <circle cx="50" cy="34" r="3" fill="#ff8800" opacity="0.9"/>
+  <circle cx="74" cy="58" r="3" fill="#4488ff" opacity="0.9"/>
+  <circle cx="50" cy="82" r="3" fill="#ff4488" opacity="0.9"/>
+  <circle cx="26" cy="58" r="3" fill="#44ff88" opacity="0.9"/>
+  <!-- Inner ring -->
+  <circle cx="50" cy="58" r="16" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.6"/>
+  <!-- Central sun orb -->
+  <circle cx="50" cy="58" r="12" fill="url(#godchainorb)"/>
+  <circle cx="50" cy="58" r="8" fill="#ffd700" opacity="0.6"/>
+  <circle cx="50" cy="58" r="5" fill="#ffffff" opacity="0.8"/>
+  <!-- Glint -->
+  <ellipse cx="45" cy="53" rx="3" ry="2" fill="#ffffff" opacity="0.5"/>
+</svg>

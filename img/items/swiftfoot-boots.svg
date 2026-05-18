@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Left boot streamlined -->
+  <path d="M16,30 L16,68 Q16,74 20,76 L42,76 Q48,72 50,66 L36,64 Q28,64 26,58 L24,30Z" fill="#7a7aaa"/>
+  <!-- Speed fin on back left -->
+  <path d="M16,38 Q8,30 6,22 Q10,28 12,20 Q14,28 16,30Z" fill="#6a6a9a"/>
+  <!-- Left sole - thin for speed -->
+  <path d="M14,74 Q14,80 22,82 L42,82 Q52,78 52,74 L42,76 Q22,76 14,74Z" fill="#3a3a6a"/>
+  <rect x="14" y="66" width="6" height="16" rx="2" fill="#2a2a5a"/>
+  <!-- Speed lines on left boot -->
+  <line x1="24" y1="36" x2="40" y2="36" stroke="#aaaacc" stroke-width="1" opacity="0.5"/>
+  <line x1="24" y1="44" x2="40" y2="44" stroke="#aaaacc" stroke-width="1" opacity="0.5"/>
+  <line x1="24" y1="52" x2="40" y2="52" stroke="#aaaacc" stroke-width="1" opacity="0.5"/>
+  <!-- Right boot -->
+  <path d="M50,66 Q52,72 58,76 L80,76 Q86,74 84,68 L84,30 L76,30 L74,58 Q72,64 64,64 Q56,64 50,66Z" fill="#7a7aaa"/>
+  <!-- Speed fin right -->
+  <path d="M84,38 Q92,30 94,22 Q90,28 88,20 Q86,28 84,30Z" fill="#6a6a9a"/>
+  <!-- Right sole -->
+  <path d="M48,74 Q48,80 58,82 L80,82 Q88,78 86,74 L84,76 Q64,76 48,74Z" fill="#3a3a6a"/>
+  <rect x="80" y="66" width="6" height="16" rx="2" fill="#2a2a5a"/>
+  <!-- Speed lines right -->
+  <line x1="60" y1="36" x2="76" y2="36" stroke="#aaaacc" stroke-width="1" opacity="0.5"/>
+  <line x1="60" y1="44" x2="76" y2="44" stroke="#aaaacc" stroke-width="1" opacity="0.5"/>
+  <line x1="60" y1="52" x2="76" y2="52" stroke="#aaaacc" stroke-width="1" opacity="0.5"/>
+  <!-- Ankle cuff left -->
+  <rect x="16" y="30" width="8" height="6" rx="2" fill="#5a5a8a"/>
+  <!-- Ankle cuff right -->
+  <rect x="76" y="30" width="8" height="6" rx="2" fill="#5a5a8a"/>
+</svg>

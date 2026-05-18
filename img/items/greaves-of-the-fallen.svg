@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="fallengreave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a0a00"/>
+      <stop offset="50%" stop-color="#3a2a10"/>
+      <stop offset="100%" stop-color="#0a0500"/>
+    </linearGradient>
+  </defs>
+  <!-- Hero light bleeding from cracks -->
+  <path d="M18,10 Q28,6 38,10 L42,78 Q28,84 14,78Z" fill="#ffd700" opacity="0.08"/>
+  <path d="M62,10 Q74,6 84,10 L84,78 Q72,84 60,78Z" fill="#ffd700" opacity="0.08"/>
+  <!-- Left greave - dark tarnished -->
+  <path d="M18,10 Q28,6 38,10 L42,78 Q28,84 14,78Z" fill="url(#fallengreave)"/>
+  <!-- Hero's name/sigil worn into left greave -->
+  <text x="18" y="38" font-size="18" fill="#c8a820" opacity="0.2" font-family="serif" font-style="italic">⚔</text>
+  <!-- Crack lines with light bleeding through on left -->
+  <path d="M24,16 L28,30 L22,44 L28,58 L24,72" stroke="#ffd700" stroke-width="1.2" fill="none" opacity="0.5"/>
+  <path d="M34,20 L30,36 L36,50" stroke="#c8a820" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <!-- Right greave -->
+  <path d="M62,10 Q74,6 84,10 L84,78 Q72,84 60,78Z" fill="url(#fallengreave)"/>
+  <!-- Crack lines right -->
+  <path d="M76,18 L72,32 L78,46 L72,62 L76,74" stroke="#ffd700" stroke-width="1.2" fill="none" opacity="0.5"/>
+  <path d="M66,22 L70,38 L64,52" stroke="#c8a820" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <!-- Battle dents left -->
+  <ellipse cx="26" cy="52" rx="5" ry="4" fill="#100800" opacity="0.7"/>
+  <ellipse cx="36" cy="34" rx="4" ry="3" fill="#100800" opacity="0.6"/>
+  <!-- Battle dents right -->
+  <ellipse cx="74" cy="56" rx="5" ry="4" fill="#100800" opacity="0.7"/>
+  <ellipse cx="66" cy="36" rx="4" ry="3" fill="#100800" opacity="0.6"/>
+  <!-- Knee plates - cracked and dented -->
+  <ellipse cx="28" cy="48" rx="11" ry="9" fill="#1a0a00"/>
+  <ellipse cx="72" cy="48" rx="11" ry="9" fill="#1a0a00"/>
+  <path d="M22,46 L28,52 L34,46" stroke="#ffd700" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M66,46 L72,52 L78,46" stroke="#ffd700" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- Rim - worn edges -->
+  <path d="M18,10 Q28,6 38,10 L42,78 Q28,84 14,78Z" fill="none" stroke="#3a2a10" stroke-width="3"/>
+  <path d="M62,10 Q74,6 84,10 L84,78 Q72,84 60,78Z" fill="none" stroke="#3a2a10" stroke-width="3"/>
+  <!-- Waist - broken buckle -->
+  <rect x="16" y="6" width="68" height="6" rx="2" fill="#1a0a00"/>
+  <rect x="16" y="6" width="30" height="2" rx="1" fill="#c8a820" opacity="0.3"/>
+</svg>

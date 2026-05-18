@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Left ranger boot - knee high -->
+  <path d="M14,8 L14,66 Q14,74 22,76 L40,76 Q46,72 46,64 L38,62 L26,62 Q22,60 22,54 L22,8Z" fill="#5a7a4a"/>
+  <!-- Left sole -->
+  <path d="M12,74 Q12,82 22,84 L40,84 Q50,80 50,74 L38,76 Q22,76 12,74Z" fill="#3a4a2a"/>
+  <rect x="12" y="66" width="8" height="18" rx="2" fill="#2a3a1a"/>
+  <!-- Multiple buckle straps left -->
+  <rect x="14" y="22" width="10" height="5" rx="1" fill="#4a5a3a"/>
+  <rect x="22" y="21" width="6" height="7" rx="1" fill="#8a8060"/>
+  <rect x="14" y="38" width="10" height="5" rx="1" fill="#4a5a3a"/>
+  <rect x="22" y="37" width="6" height="7" rx="1" fill="#8a8060"/>
+  <rect x="14" y="54" width="10" height="5" rx="1" fill="#4a5a3a"/>
+  <rect x="22" y="53" width="6" height="7" rx="1" fill="#8a8060"/>
+  <!-- Knee flap left -->
+  <path d="M14,8 Q22,4 28,8 Q28,16 22,18 Q16,16 14,8Z" fill="#4a6a3a"/>
+  <!-- Right boot -->
+  <path d="M54,8 L54,54 Q54,60 60,62 L72,62 L66,66 Q66,72 70,76 L84,76 Q86,72 86,64 L86,8Z" fill="#5a7a4a"/>
+  <!-- Right sole -->
+  <path d="M50,74 Q50,80 58,84 L84,84 Q90,80 88,74 L86,76 Q70,76 50,74Z" fill="#3a4a2a"/>
+  <rect x="78" y="66" width="8" height="18" rx="2" fill="#2a3a1a"/>
+  <!-- Buckle straps right -->
+  <rect x="76" y="22" width="10" height="5" rx="1" fill="#4a5a3a"/>
+  <rect x="72" y="21" width="6" height="7" rx="1" fill="#8a8060"/>
+  <rect x="76" y="38" width="10" height="5" rx="1" fill="#4a5a3a"/>
+  <rect x="72" y="37" width="6" height="7" rx="1" fill="#8a8060"/>
+  <rect x="76" y="54" width="10" height="5" rx="1" fill="#4a5a3a"/>
+  <rect x="72" y="53" width="6" height="7" rx="1" fill="#8a8060"/>
+  <!-- Knee flap right -->
+  <path d="M80,8 Q74,4 70,8 Q70,16 76,18 Q82,16 80,8Z" fill="#4a6a3a"/>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Main dome -->
+  <path d="M20,62 Q20,26 50,18 Q80,26 80,62Z" fill="#5a7a5a"/>
+  <!-- Forest green sheen -->
+  <ellipse cx="38" cy="32" rx="12" ry="9" fill="#7aaa7a" opacity="0.2"/>
+  <!-- Antler horns growing from sides -->
+  <path d="M20,48 Q10,38 12,28 Q16,34 14,26 Q18,32 16,24" stroke="#8b6030" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M14,32 Q8,30 6,26" stroke="#8b6030" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M80,48 Q90,38 88,28 Q84,34 86,26 Q82,32 84,24" stroke="#8b6030" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M86,32 Q92,30 94,26" stroke="#8b6030" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Brow band with leaf motif -->
+  <rect x="18" y="56" width="64" height="8" rx="2" fill="#4a6a4a"/>
+  <!-- Leaf engravings on band -->
+  <path d="M28,60 Q32,56 36,60 Q32,64 28,60Z" fill="#6a9a6a" opacity="0.6"/>
+  <path d="M44,60 Q48,56 52,60 Q48,64 44,60Z" fill="#6a9a6a" opacity="0.6"/>
+  <path d="M60,60 Q64,56 68,60 Q64,64 60,60Z" fill="#6a9a6a" opacity="0.6"/>
+  <!-- Nose guard -->
+  <rect x="47" y="58" width="6" height="16" rx="2" fill="#4a6a4a"/>
+  <!-- Cheek guards -->
+  <path d="M20,62 Q16,70 18,78 Q22,76 24,68Z" fill="#4a6a4a"/>
+  <path d="M80,62 Q84,70 82,78 Q78,76 76,68Z" fill="#4a6a4a"/>
+  <!-- Feather plume on top -->
+  <path d="M50,18 Q46,10 48,4 Q50,8 52,4 Q54,10 50,18" fill="#2a5a2a" opacity="0.7"/>
+</svg>

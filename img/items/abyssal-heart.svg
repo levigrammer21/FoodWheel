@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="abyssalheart" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#00ffcc" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#006688"/>
+      <stop offset="100%" stop-color="#001a2e"/>
+    </radialGradient>
+    <filter id="ahglow"><feGaussianBlur stdDeviation="2.5"/></filter>
+  </defs>
+  <!-- Glow behind heart -->
+  <path d="M50,72 Q28,58 28,42 Q28,28 38,26 Q44,24 50,30 Q56,24 62,26 Q72,28 72,42 Q72,58 50,72Z" fill="#00ffcc" opacity="0.2" filter="url(#ahglow)"/>
+  <!-- Chain -->
+  <path d="M38,18 Q50,14 62,18" stroke="#4a7a8a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <circle cx="38" cy="18" r="2" fill="#4a7a8a"/>
+  <circle cx="62" cy="18" r="2" fill="#4a7a8a"/>
+  <!-- Pendant bail -->
+  <rect x="47" y="16" width="6" height="8" rx="2" fill="#3a6a7a"/>
+  <!-- Heart gem -->
+  <path d="M50,72 Q28,58 28,42 Q28,28 38,26 Q44,24 50,30 Q56,24 62,26 Q72,28 72,42 Q72,58 50,72Z" fill="url(#abyssalheart)"/>
+  <!-- Bioluminescent vein lines -->
+  <path d="M50,32 Q44,40 42,50 Q44,62 50,70" stroke="#00ffcc" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M50,32 Q56,40 58,50 Q56,62 50,70" stroke="#00ffcc" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M36,38 Q40,44 42,52" stroke="#00aaff" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <path d="M64,38 Q60,44 58,52" stroke="#00aaff" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <!-- Deep bubble highlights -->
+  <circle cx="42" cy="36" r="2.5" fill="#00ffcc" opacity="0.3"/>
+  <circle cx="58" cy="34" r="2" fill="#00ffcc" opacity="0.25"/>
+  <!-- Bright core -->
+  <ellipse cx="50" cy="44" rx="6" ry="8" fill="#00ffcc" opacity="0.2"/>
+</svg>

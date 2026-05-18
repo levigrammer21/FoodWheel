@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="rifthole" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="30%" stop-color="#aa44ff"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+  </defs>
+  <!-- Void rift footprints below boots -->
+  <ellipse cx="28" cy="90" rx="14" ry="5" fill="url(#rifthole)" opacity="0.4"/>
+  <ellipse cx="72" cy="88" rx="14" ry="5" fill="url(#rifthole)" opacity="0.3"/>
+  <!-- Left void boot -->
+  <path d="M14,22 L14,68 Q14,76 22,78 L40,78 Q48,74 50,68 L36,66 Q26,64 24,58 L22,22Z" fill="#0a0015"/>
+  <!-- Void rifts opening in the boot surface left -->
+  <ellipse cx="28" cy="38" rx="6" ry="4" fill="url(#rifthole)" opacity="0.7"/>
+  <ellipse cx="34" cy="56" rx="5" ry="3" fill="url(#rifthole)" opacity="0.6"/>
+  <!-- Void sole left -->
+  <path d="M12,76 Q12,82 22,84 L40,84 Q50,80 50,76 L36,78 Q22,78 12,76Z" fill="#000000"/>
+  <ellipse cx="30" cy="81" rx="14" ry="3" fill="#aa44ff" opacity="0.3"/>
+  <rect x="12" y="68" width="6" height="16" rx="2" fill="#050010"/>
+  <!-- Right void boot -->
+  <path d="M50,68 Q52,74 60,78 L80,78 Q86,76 86,68 L86,22 L78,22 L76,58 Q74,64 64,66 Q56,66 50,68Z" fill="#0a0015"/>
+  <!-- Rifts right -->
+  <ellipse cx="72" cy="40" rx="6" ry="4" fill="url(#rifthole)" opacity="0.7"/>
+  <ellipse cx="66" cy="58" rx="5" ry="3" fill="url(#rifthole)" opacity="0.6"/>
+  <!-- Void sole right -->
+  <path d="M50,76 Q50,82 58,84 L80,84 Q88,80 88,76 L84,78 Q64,78 50,76Z" fill="#000000"/>
+  <ellipse cx="70" cy="81" rx="14" ry="3" fill="#aa44ff" opacity="0.3"/>
+  <rect x="82" y="68" width="6" height="16" rx="2" fill="#050010"/>
+  <!-- Rim void glow -->
+  <path d="M14,22 L14,68 Q14,76 22,78 L40,78 Q48,74 50,68 L36,66 Q26,64 24,58 L22,22Z" fill="none" stroke="#aa44ff" stroke-width="1.5" opacity="0.6"/>
+  <path d="M50,68 Q52,74 60,78 L80,78 Q86,76 86,68 L86,22 L78,22 L76,58 Q74,64 64,66 Q56,66 50,68Z" fill="none" stroke="#aa44ff" stroke-width="1.5" opacity="0.6"/>
+  <!-- Stars leaking from rift holes -->
+  <circle cx="30" cy="36" r="0.8" fill="#ffffff" opacity="0.8"/>
+  <circle cx="26" cy="40" r="0.6" fill="#cc88ff" opacity="0.7"/>
+  <circle cx="72" cy="42" r="0.8" fill="#ffffff" opacity="0.8"/>
+</svg>

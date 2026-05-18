@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Long coat body -->
+  <path d="M22,24 L14,96 L86,96 L78,24 Q64,16 50,16 Q36,16 22,24Z" fill="#1a1a2e"/>
+  <!-- Shadow seam glow lines (stitched from shadow) -->
+  <line x1="50" y1="22" x2="50" y2="94" stroke="#6633aa" stroke-width="1" opacity="0.5" stroke-dasharray="4,3"/>
+  <line x1="36" y1="30" x2="28" y2="94" stroke="#4422aa" stroke-width="0.8" opacity="0.4" stroke-dasharray="3,4"/>
+  <line x1="64" y1="30" x2="72" y2="94" stroke="#4422aa" stroke-width="0.8" opacity="0.4" stroke-dasharray="3,4"/>
+  <!-- Collar - high standing -->
+  <path d="M30,24 Q50,14 70,24 L66,36 Q50,30 34,36Z" fill="#0d0d1e"/>
+  <path d="M32,24 Q50,16 68,24" stroke="#6633aa" stroke-width="1" fill="none" opacity="0.6"/>
+  <!-- Coat lapels -->
+  <path d="M38,36 L34,60 L50,56Z" fill="#0d0d1e"/>
+  <path d="M62,36 L66,60 L50,56Z" fill="#0d0d1e"/>
+  <!-- Shadow patch details -->
+  <ellipse cx="32" cy="50" rx="7" ry="10" fill="#110c22" opacity="0.6"/>
+  <ellipse cx="68" cy="55" rx="7" ry="10" fill="#110c22" opacity="0.6"/>
+  <!-- Shadow epaulettes -->
+  <path d="M22,24 Q14,22 12,30 Q18,32 22,28Z" fill="#0d0d1e"/>
+  <path d="M78,24 Q86,22 88,30 Q82,32 78,28Z" fill="#0d0d1e"/>
+  <!-- Button clasps - purple gems -->
+  <circle cx="50" cy="46" r="3" fill="#6633aa" opacity="0.8"/>
+  <circle cx="50" cy="58" r="3" fill="#6633aa" opacity="0.8"/>
+  <circle cx="50" cy="70" r="3" fill="#6633aa" opacity="0.7"/>
+  <!-- Hem glow -->
+  <path d="M14,94 Q50,98 86,94" stroke="#4422aa" stroke-width="1.5" fill="none" opacity="0.4"/>
+</svg>
