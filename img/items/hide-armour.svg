@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <defs>
+          <linearGradient id="scales" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#9e9e9e"/>
+            <stop offset="100%" stop-color="#616161"/>
+          </linearGradient>
+        </defs>
+        <g filter="url(#shadow)">
+          <path d="M18,14 C18,14 10,20 10,36 L12,58 L52,58 L54,36 C54,20 46,14 46,14 Z" fill="url(#scales)"/>
+          <ellipse cx="32" cy="14" rx="14" ry="8" fill="#9e9e9e"/>
+          <path d='M16,28 Q24,24 32,28 Q40,24 48,28' stroke='#e0e0e0' stroke-width='1' fill='none' opacity='0.5'/>
+          <path d='M14,36 Q24,32 32,36 Q40,32 50,36' stroke='#e0e0e0' stroke-width='1' fill='none' opacity='0.5'/>
+          <path d='M14,44 Q24,40 32,44 Q40,40 50,44' stroke='#e0e0e0' stroke-width='1' fill='none' opacity='0.5'/>
+          <path d="M22,16 L18,22 L14,20" stroke="#616161" stroke-width="2" fill="none"/>
+          <path d="M42,16 L46,22 L50,20" stroke="#616161" stroke-width="2" fill="none"/>
+        </g>
+</svg>
