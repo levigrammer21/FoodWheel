@@ -4,72 +4,201 @@
 //  All logic lives in data.js / engine.js / firebase.js / ui.js
 // ============================================================
 
-import{auth,loadP,saveP}from"./firebase.js";
-import{onAuthStateChanged,signOut,doc,setDoc}from"./firebase.js";
-import{db}from"./firebase.js";
-import{newPlayer,unlockAudio}from"./engine.js";
-import{
-  CU,P,startGame,showScreen,
-  showErr,hideErr,switchAuthTab,handleEmailAuth,handleGoogleAuth,handleSetUsername,
-  showTab,hideWalk,closeModal,
-  takeStep,openAreaSelect,selectArea,
-  openStatModal,spendStat,claimRent,
-  openItemModal,equipItem,unequipItem,dropInventory,dropEquipped,
-  renderMarket,mTab,promptSell,confirmSell,buyListing,cancelListing,
-  buyShopItem,buyConsumable,sellToNpc,openMysteryChest,
-  pvpTab,attackPlayer,
-  openPostBounty,confirmPostBounty,cancelBounty,claimBounty,
-  openCreateGuild,confirmCreateGuild,openJoinGuild,joinGuild,
-  donateToGuild,confirmDonateGold,donateItemToGuild,confirmDonateItem,
-  giveVaultItem,confirmGiveItem,startGuildRaid,contributeToRaid,
-  promoteGuildMember,kickGuildMember,leaveGuild,confirmLeaveGuild,
-  claimQuest,doDeposit,doWithdraw,
-  buyProperty,setHome,unsetHome,sellProperty,confirmSellProperty,
-  lbTab,handleSignOut,equipAvatar,openAvatarCollection,
-  fleeCombat,healInCombat,resumeCombat,abandonCombat,
-  resolveChoice,salvageItem,confirmSalvage,upgradeItem,
-  updateHdr,
-  // dungeons
-  launchDungeon,abandonDungeonUI,confirmAbandonDungeon,claimDungeonUI,
-  // eggs
-  buyEgg,hatchEgg,openItemModalEgg,
-  // pets
-  setActivePet,openPetCollection,feedPetUI,releasePetUI,confirmReleasePet,
-}from"./ui.js";
-import{setCU,setP}from"./ui.js";
+import { auth, loadP, onAuthStateChanged } from "./firebase.js";
+import { unlockAudio } from "./engine.js";
 
-onAuthStateChanged(auth,async u=>{
-  setCU(u);
-  if(u){const data=await loadP(u.uid);setP(data);if(data)startGame();else showScreen("username-screen");}
-  else showScreen("auth-screen");
+import {
+  startGame,
+  showScreen,
+
+  switchAuthTab,
+  handleEmailAuth,
+  handleGoogleAuth,
+  handleSetUsername,
+
+  showTab,
+  hideWalk,
+  closeModal,
+
+  takeStep,
+  openAreaSelect,
+  selectArea,
+
+  openStatModal,
+  spendStat,
+  claimRent,
+
+  openItemModal,
+  equipItem,
+  unequipItem,
+  dropInventory,
+  dropEquipped,
+
+  renderMarket,
+  mTab,
+  promptSell,
+  confirmSell,
+  buyListing,
+  cancelListing,
+  buyShopItem,
+  buyConsumable,
+  sellToNpc,
+  openMysteryChest,
+
+  pvpTab,
+  attackPlayer,
+  openPostBounty,
+  confirmPostBounty,
+  cancelBounty,
+  claimBounty,
+
+  openCreateGuild,
+  confirmCreateGuild,
+  openJoinGuild,
+  joinGuild,
+  donateToGuild,
+  confirmDonateGold,
+  donateItemToGuild,
+  confirmDonateItem,
+  giveVaultItem,
+  confirmGiveItem,
+  startGuildRaid,
+  contributeToRaid,
+  promoteGuildMember,
+  kickGuildMember,
+  leaveGuild,
+  confirmLeaveGuild,
+
+  claimQuest,
+  doDeposit,
+  doWithdraw,
+
+  buyProperty,
+  setHome,
+  unsetHome,
+  sellProperty,
+  confirmSellProperty,
+
+  lbTab,
+  handleSignOut,
+  equipAvatar,
+  openAvatarCollection,
+
+  fleeCombat,
+  healInCombat,
+  resumeCombat,
+  abandonCombat,
+
+  resolveChoice,
+  salvageItem,
+  confirmSalvage,
+  upgradeItem,
+
+  setCU,
+  setP
+} from "./ui.js";
+
+onAuthStateChanged(auth, async user => {
+  setCU(user);
+
+  if (user) {
+    const data = await loadP(user.uid);
+    setP(data);
+
+    if (data) {
+      startGame();
+    } else {
+      showScreen("username-screen");
+    }
+  } else {
+    showScreen("auth-screen");
+  }
 });
 
-document.addEventListener("touchstart",unlockAudio,{once:true});
-document.addEventListener("click",unlockAudio,{once:true});
+document.addEventListener("touchstart", unlockAudio, { once: true });
+document.addEventListener("click", unlockAudio, { once: true });
 
-window.G={
-  switchAuthTab,handleEmailAuth,handleGoogleAuth,handleSetUsername,
-  showTab,hideWalk,closeModal,
-  takeStep,openAreaSelect,selectArea,
-  openStatModal,spendStat,claimRent,
-  openItemModal,equipItem,unequipItem,dropInventory,dropEquipped,
-  renderMarket,mTab,promptSell,confirmSell,buyListing,cancelListing,
-  buyShopItem,buyConsumable,sellToNpc,openMysteryChest,
-  pvpTab,attackPlayer,
-  openPostBounty,confirmPostBounty,cancelBounty,claimBounty,
-  openCreateGuild,confirmCreateGuild,openJoinGuild,joinGuild,
-  donateToGuild,confirmDonateGold,donateItemToGuild,confirmDonateItem,
-  giveVaultItem,confirmGiveItem,startGuildRaid,contributeToRaid,
-  promoteGuildMember,kickGuildMember,leaveGuild,confirmLeaveGuild,
-  claimQuest,doDeposit,doWithdraw,
-  buyProperty,setHome,unsetHome,sellProperty,confirmSellProperty,
-  lbTab,handleSignOut,equipAvatar,openAvatarCollection,
-  fleeCombat,healInCombat,resumeCombat,abandonCombat,
-  resolveChoice,salvageItem,confirmSalvage,upgradeItem,
-  // dungeons
-  launchDungeon,abandonDungeonUI,confirmAbandonDungeon,claimDungeonUI,
-  // eggs
-  buyEgg,hatchEgg,openItemModalEgg,
-  // pets
-  setActivePet,openPetCollection,feedPetUI,releasePetUI,confirmReleasePet,
+window.G = {
+  switchAuthTab,
+  handleEmailAuth,
+  handleGoogleAuth,
+  handleSetUsername,
+
+  showTab,
+  hideWalk,
+  closeModal,
+
+  takeStep,
+  openAreaSelect,
+  selectArea,
+
+  openStatModal,
+  spendStat,
+  claimRent,
+
+  openItemModal,
+  equipItem,
+  unequipItem,
+  dropInventory,
+  dropEquipped,
+
+  renderMarket,
+  mTab,
+  promptSell,
+  confirmSell,
+  buyListing,
+  cancelListing,
+  buyShopItem,
+  buyConsumable,
+  sellToNpc,
+  openMysteryChest,
+
+  pvpTab,
+  attackPlayer,
+  openPostBounty,
+  confirmPostBounty,
+  cancelBounty,
+  claimBounty,
+
+  openCreateGuild,
+  confirmCreateGuild,
+  openJoinGuild,
+  joinGuild,
+  donateToGuild,
+  confirmDonateGold,
+  donateItemToGuild,
+  confirmDonateItem,
+  giveVaultItem,
+  confirmGiveItem,
+  startGuildRaid,
+  contributeToRaid,
+  promoteGuildMember,
+  kickGuildMember,
+  leaveGuild,
+  confirmLeaveGuild,
+
+  claimQuest,
+  doDeposit,
+  doWithdraw,
+
+  buyProperty,
+  setHome,
+  unsetHome,
+  sellProperty,
+  confirmSellProperty,
+
+  lbTab,
+  handleSignOut,
+  equipAvatar,
+  openAvatarCollection,
+
+  fleeCombat,
+  healInCombat,
+  resumeCombat,
+  abandonCombat,
+
+  resolveChoice,
+  salvageItem,
+  confirmSalvage,
+  upgradeItem
 };
