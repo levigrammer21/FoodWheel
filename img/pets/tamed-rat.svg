@@ -1,24 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <defs>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-opacity="0.35"/>
-    </filter>
+    <radialGradient id="ratbody" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#a08878"/>
+      <stop offset="60%" stop-color="#6a5848"/>
+      <stop offset="100%" stop-color="#3a2820"/>
+    </radialGradient>
   </defs>
-  <defs></defs><g filter="url(#shadow)">
-  <ellipse cx="32" cy="40" rx="16" ry="14" fill="#bdbdbd"/>
-  <ellipse cx="32" cy="36" rx="12" ry="12" fill="#e0e0e0"/>
-  <ellipse cx="24" cy="28" rx="7" ry="9" fill="#bdbdbd"/>
-  <ellipse cx="23" cy="24" rx="5" ry="6" fill="#e0e0e0"/>
-  <circle cx="22" cy="24" r="3.5" fill="#f48fb1" opacity="0.8"/>
-  <ellipse cx="36" cy="28" rx="7" ry="9" fill="#bdbdbd"/>
-  <ellipse cx="37" cy="24" rx="5" ry="6" fill="#e0e0e0"/>
-  <circle cx="38" cy="24" r="3.5" fill="#f48fb1" opacity="0.8"/>
-  <ellipse cx="28" cy="30" rx="5" ry="4" fill="#f5f5f5"/>
-  <circle cx="27" cy="29" r="2" fill="#e53935"/><circle cx="33" cy="29" r="2" fill="#e53935"/>
-  <circle cx="27.5" cy="29" r="1" fill="#000"/><circle cx="33.5" cy="29" r="1" fill="#000"/>
-  <ellipse cx="26" cy="34" rx="2" ry="1" fill="#9e9e9e"/>
-  <path d="M48,42 Q54,36 56,44 Q54,48 48,46" fill="#bdbdbd"/>
-  <path d="M24,34 L20,35 M24,35 L20,36 M24,36 L20,37" stroke="#9e9e9e" stroke-width="0.8"/>
-  <path d="M40,34 L44,35 M40,35 L44,36 M40,36 L44,37" stroke="#9e9e9e" stroke-width="0.8"/>
-</g>
+  <!-- Long tail curled -->
+  <path d="M68,70 Q86,68 90,56 Q92,46 84,44 Q78,44 78,52 Q80,58 74,58" stroke="#8a6858" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M68,70 Q86,68 90,56 Q92,46 84,44" stroke="#c0a090" stroke-width="1.5" fill="none" opacity="0.3"/>
+  <!-- Tiny sword strapped to back! -->
+  <rect x="52" y="36" width="3" height="22" rx="1" fill="#8a9ba8" transform="rotate(15,53,47)"/>
+  <rect x="48" y="44" width="11" height="3" rx="1" fill="#7a8a94" transform="rotate(15,53,47)"/>
+  <rect x="52" y="58" width="3" height="4" rx="1" fill="#6b4020" transform="rotate(15,53,47)"/>
+  <!-- Sword glint -->
+  <line x1="56" y1="38" x2="58" y2="40" stroke="#ffffff" stroke-width="0.8" opacity="0.6" transform="rotate(15,57,39)"/>
+  <!-- Body -->
+  <ellipse cx="52" cy="66" rx="22" ry="16" fill="url(#ratbody)"/>
+  <!-- Belly lighter -->
+  <ellipse cx="52" cy="70" rx="13" ry="9" fill="#c0a090" opacity="0.4"/>
+  <!-- Legs -->
+  <ellipse cx="36" cy="78" rx="8" ry="6" fill="#6a5848" transform="rotate(-15,36,78)"/>
+  <ellipse cx="68" cy="78" rx="8" ry="6" fill="#6a5848" transform="rotate(15,68,78)"/>
+  <!-- Front paws -->
+  <ellipse cx="38" cy="70" rx="6" ry="5" fill="#7a6858"/>
+  <ellipse cx="66" cy="70" rx="6" ry="5" fill="#7a6858"/>
+  <!-- Neck -->
+  <ellipse cx="38" cy="58" rx="12" ry="10" fill="#6a5848"/>
+  <!-- Head -->
+  <ellipse cx="30" cy="48" rx="18" ry="16" fill="url(#ratbody)"/>
+  <!-- Ears - big round -->
+  <circle cx="16" cy="36" r="9" fill="#8a6858"/>
+  <circle cx="16" cy="36" r="6" fill="#c09080" opacity="0.7"/>
+  <circle cx="34" cy="32" r="8" fill="#8a6858"/>
+  <circle cx="34" cy="32" r="5" fill="#c09080" opacity="0.7"/>
+  <!-- Eyepatch on left eye! -->
+  <ellipse cx="22" cy="46" rx="7" ry="6" fill="#1a0a00"/>
+  <path d="M16,44 Q22,40 28,44" stroke="#1a0a00" stroke-width="2.5" fill="none"/>
+  <line x1="16" y1="44" x2="22" y2="40" stroke="#3a2010" stroke-width="1.5" opacity="0.8"/>
+  <!-- Eyepatch X -->
+  <line x1="19" y1="43" x2="25" y2="49" stroke="#4a2010" stroke-width="1" opacity="0.6"/>
+  <line x1="25" y1="43" x2="19" y2="49" stroke="#4a2010" stroke-width="1" opacity="0.6"/>
+  <!-- Good eye - fierce and knowing -->
+  <circle cx="38" cy="46" r="5" fill="#1a0a00"/>
+  <circle cx="38" cy="46" r="4" fill="#cc6600"/>
+  <circle cx="38" cy="46" r="2" fill="#1a0a00"/>
+  <circle cx="36" cy="44" r="1.2" fill="#ffffff" opacity="0.6"/>
+  <!-- Battle scar across snout -->
+  <path d="M26,54 Q30,52 28,56" stroke="#3a1a10" stroke-width="1.5" fill="none"/>
+  <!-- Snout / nose -->
+  <ellipse cx="18" cy="52" rx="7" ry="5" fill="#8a6858"/>
+  <ellipse cx="16" cy="51" rx="2.5" ry="2" fill="#4a2820"/>
+  <ellipse cx="20" cy="51" rx="2.5" ry="2" fill="#4a2820"/>
+  <!-- Whiskers - asymmetric tough guy -->
+  <line x1="14" y1="52" x2="2" y2="48" stroke="#6a5848" stroke-width="0.8" opacity="0.6"/>
+  <line x1="14" y1="54" x2="2" y2="54" stroke="#6a5848" stroke-width="0.8" opacity="0.6"/>
+  <!-- Only 2 whiskers on the other side (lost some in battle) -->
+  <line x1="26" y1="52" x2="36" y2="48" stroke="#6a5848" stroke-width="0.8" opacity="0.5"/>
+  <line x1="26" y1="55" x2="36" y2="58" stroke="#6a5848" stroke-width="0.8" opacity="0.5"/>
+  <!-- Determined mouth -->
+  <path d="M18,56 Q22,58 26,56" stroke="#3a2010" stroke-width="1.2" fill="none" stroke-linecap="round"/>
 </svg>

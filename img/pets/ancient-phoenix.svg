@@ -1,28 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <defs>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-opacity="0.35"/>
-    </filter>
+    <radialGradient id="phbody" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#ffee88"/>
+      <stop offset="40%" stop-color="#ff6600"/>
+      <stop offset="100%" stop-color="#aa1100"/>
+    </radialGradient>
+    <radialGradient id="pheye" cx="35%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#ffcc00"/>
+      <stop offset="100%" stop-color="#cc6600"/>
+    </radialGradient>
+    <filter id="phglow"><feGaussianBlur stdDeviation="2"/></filter>
   </defs>
-  <defs><filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="2.5" result="blur"/>
-      <feFlood flood-color="#ffd54f" flood-opacity="0.5" result="color"/>
-      <feComposite in="color" in2="blur" operator="in" result="glow"/>
-      <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  <radialGradient id="phoenix" cx="50%" cy="30%">
-    <stop offset="0%" stop-color="#ffffff"/><stop offset="30%" stop-color="#ffd54f"/>
-    <stop offset="70%" stop-color="#f44336"/><stop offset="100%" stop-color="#4e342e"/>
-  </radialGradient>
-</defs><g filter="url(#glow)">
-  <path d="M32,16 Q20,8 8,14 Q16,20 22,24 Q28,26 32,28 Q36,26 42,24 Q48,20 56,14 Q44,8 32,16" fill="url(#phoenix)"/>
-  <path d="M32,28 Q28,36 26,44 Q28,52 32,56 Q36,52 38,44 Q36,36 32,28" fill="#f44336" opacity="0.8"/>
-  <ellipse cx="32" cy="28" rx="9" ry="10" fill="url(#phoenix)"/>
-  <ellipse cx="32" cy="28" rx="7" ry="8" fill="#ffd54f" opacity="0.7"/>
-  <circle cx="29" cy="25" r="2.5" fill="#0d47a1"/><circle cx="35" cy="25" r="2.5" fill="#0d47a1"/>
-  <circle cx="29.5" cy="24.5" r="1" fill="white"/><circle cx="35.5" cy="24.5" r="1" fill="white"/>
-  <path d="M29,31 Q32,34 35,31" stroke="#e65100" stroke-width="1.5" fill="none"/>
-  <path d="M8,14 Q2,8 4,2 Q8,10 12,12" fill="#ffd54f" opacity="0.7"/>
-  <path d="M56,14 Q62,8 60,2 Q56,10 52,12" fill="#ffd54f" opacity="0.7"/>
-</g>
+  <!-- Ember trail particles -->
+  <circle cx="18" cy="70" r="1.5" fill="#ff8800" opacity="0.6"/>
+  <circle cx="12" cy="60" r="1" fill="#ffcc00" opacity="0.5"/>
+  <circle cx="82" cy="68" r="1.5" fill="#ff6600" opacity="0.6"/>
+  <circle cx="88" cy="58" r="1" fill="#ffaa00" opacity="0.5"/>
+  <circle cx="50" cy="92" r="2" fill="#ff4400" opacity="0.4"/>
+  <circle cx="60" cy="88" r="1.2" fill="#ff8800" opacity="0.5"/>
+  <circle cx="40" cy="90" r="1.2" fill="#ff6600" opacity="0.5"/>
+  <!-- Tail feathers streaming down -->
+  <path d="M42,72 Q36,84 32,96" stroke="#ff4400" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M50,74 Q50,86 48,98" stroke="#ff6600" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M58,72 Q64,84 68,96" stroke="#ff4400" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Tail feather tips glow -->
+  <circle cx="32" cy="96" r="2.5" fill="#ffcc00" opacity="0.7"/>
+  <circle cx="48" cy="98" r="2" fill="#ffee88" opacity="0.7"/>
+  <circle cx="68" cy="96" r="2.5" fill="#ffcc00" opacity="0.7"/>
+  <!-- Left wing - swept back, massive -->
+  <path d="M30,48 Q10,30 4,14 Q14,20 16,10 Q20,22 18,12 Q26,26 22,18 Q32,32 28,24 Q38,38 34,30 Q42,44 38,38 L30,48Z" fill="#ff6600"/>
+  <path d="M30,48 Q10,30 4,14" stroke="#ffaa00" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Right wing -->
+  <path d="M70,48 Q90,30 96,14 Q86,20 84,10 Q80,22 82,12 Q74,26 78,18 Q68,32 72,24 Q62,38 66,38 L70,48Z" fill="#ff6600"/>
+  <path d="M70,48 Q90,30 96,14" stroke="#ffaa00" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Wing glow aura -->
+  <path d="M30,48 Q10,30 4,14" stroke="#ffcc00" stroke-width="3" fill="none" opacity="0.2" filter="url(#phglow)"/>
+  <path d="M70,48 Q90,30 96,14" stroke="#ffcc00" stroke-width="3" fill="none" opacity="0.2" filter="url(#phglow)"/>
+  <!-- Body -->
+  <ellipse cx="50" cy="56" rx="20" ry="22" fill="url(#phbody)"/>
+  <!-- Chest bright feathers -->
+  <path d="M38,52 Q44,46 50,50 Q44,56 38,52Z" fill="#ffee88" opacity="0.7"/>
+  <path d="M50,50 Q56,46 62,52 Q56,56 50,50Z" fill="#ffcc00" opacity="0.7"/>
+  <path d="M36,60 Q42,54 48,58 Q42,64 36,60Z" fill="#ff8800" opacity="0.6"/>
+  <path d="M52,58 Q58,54 64,60 Q58,64 52,58Z" fill="#ff8800" opacity="0.6"/>
+  <!-- Head -->
+  <ellipse cx="50" cy="36" rx="14" ry="13" fill="#ff6600"/>
+  <!-- Crown crest feathers -->
+  <path d="M44,24 Q42,16 46,10 Q48,18 50,14 Q52,18 54,10 Q58,16 56,24" fill="#ffcc00" opacity="0.9"/>
+  <path d="M46,10 Q50,6 54,10" stroke="#ffffff" stroke-width="0.8" fill="none" opacity="0.5"/>
+  <!-- Eye - fierce golden -->
+  <circle cx="44" cy="36" r="6" fill="#1a0a00"/>
+  <circle cx="44" cy="36" r="5" fill="url(#pheye)"/>
+  <circle cx="44" cy="36" r="2.5" fill="#1a0a00"/>
+  <circle cx="42" cy="34" r="1.2" fill="#ffffff" opacity="0.6"/>
+  <!-- Beak - hooked raptor -->
+  <path d="M56,36 Q64,34 66,38 Q62,42 56,40Z" fill="#ffaa00"/>
+  <line x1="56" y1="38" x2="65" y2="38" stroke="#cc8800" stroke-width="0.8" opacity="0.6"/>
 </svg>
