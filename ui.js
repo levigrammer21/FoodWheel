@@ -595,10 +595,11 @@ export function renderGear(){
           <div class="inv-item-stat">${hatch.ok?"Ready to hatch":"Pet Egg"}</div></div>`;}
       const q=qualityLabel(item.val,item.base||item.val);const cur=P.equipped[item.type];
       const upg=item.upgrades?`<div style="position:absolute;bottom:3px;left:3px;font-size:0.55rem;font-family:'Cinzel',serif;color:var(--gold3);font-weight:700">+${item.upgrades}</div>`:"";
+      const lockBadge=item.locked?`<div style="position:absolute;top:3px;right:3px;font-size:0.7rem;line-height:1">🔒</div>`:"";
       const cmpColor=cur?(item.val>cur.val?"#4ade80":"#f87171"):"";
       const cmpDot=cur?`<div style="position:absolute;top:3px;left:3px;width:6px;height:6px;border-radius:50%;background:${cmpColor}"></div>`:"";
-      return`<div class="inv-item" onclick="G.openItemModal('inv',${i})">${cmpDot}
-        <span class="quality-badge" style="background:${q.color}22;color:${q.color}">${q.label}</span>${upg}
+      return`<div class="inv-item ${item.locked?"inv-item-locked":""}" onclick="G.openItemModal('inv',${i})">${cmpDot}
+        <span class="quality-badge" style="background:${q.color}22;color:${q.color}">${q.label}</span>${upg}${lockBadge}
         <div class="inv-icon">${gfx(item.image,item.emoji,40)}</div>
         <div class="inv-item-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}</div>
         <div class="inv-item-stat">+${item.val} ${item.stat==="str"?"STR":"DEF"}${item.itemLevel?" · Lv."+item.itemLevel:""}</div></div>`;}).join("");
@@ -610,7 +611,12 @@ export function renderGear(){
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.4rem;margin-top:0.6rem">
       <div class="section-hdr" style="margin:0">Inventory (${rawInv.length})</div></div>
     <div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.6rem">${sortBtns}</div>
-    <div class="inv-grid">${invHtml}</div>`;
+    <div class="inv-grid">${invHtml}</div>
+    ${rawInv.filter(i=>!i.isEgg&&!i.locked&&i.type!=="Pet").length>1?`
+    <div style="display:flex;gap:0.5rem;margin-top:0.75rem">
+      <button class="btn btn-purple btn-sm" style="flex:1" onclick="G.openMassSalvage()">🧩 Mass Salvage</button>
+      <button class="btn btn-gold btn-sm" style="flex:1" onclick="G.openMassSell()">🪙 Mass Sell</button>
+    </div>`:""}`;
 }
 export function setInvSort(s){INVENTORY_SORT=s;renderGear();}
 export async function openItemModal(source,idx){
@@ -647,15 +653,148 @@ export async function openItemModal(source,idx){
         :canEquip?`<button class="btn btn-gold" onclick="G.equipItem(${idx})">Equip</button>`
         :`<button class="btn btn-ghost" style="opacity:0.4" disabled>🔒 Need Lv.${item.itemLevel}</button>`}
       ${!isEquipped&&item.type!=="Pet"&&canUpgrade(item)?`<button class="btn btn-purple" onclick="G.upgradeItem(${idx})">⬆️ Upgrade (+${gainAmt} ${item.stat.toUpperCase()})</button>`:""}
-      ${!isEquipped?`<button class="btn btn-ghost" style="background:#6b728018" onclick="G.salvageItem(${idx})">🧩 Salvage (+${salvCount} shards)</button>`:""}
-      ${!isEquipped?`<button class="btn btn-purple" onclick="G.promptSell(${idx});G.closeModal()">List on Market</button>`:""}
-      ${!isEquipped?`<button class="btn btn-ghost" onclick="G.sellToNpc(${idx});G.closeModal()">Sell to NPC (🪙${npcVal})</button>`:""}
-      <button class="btn btn-danger" onclick="${isEquipped?`G.dropEquipped('${slot}')`:`G.dropInventory(${idx})`}">Drop Item</button>
+      ${!isEquipped?`<button class="btn ${item.locked?"btn-gold":"btn-ghost"}" onclick="G.toggleLock(${idx})">${item.locked?"🔒 Locked — tap to unlock":"🔓 Lock Item"}</button>`:""}
+      ${!isEquipped&&!item.locked?`<button class="btn btn-ghost" style="background:#6b728018" onclick="G.salvageItem(${idx})">🧩 Salvage (+${salvCount} shards)</button>`:""}
+      ${!isEquipped&&!item.locked?`<button class="btn btn-purple" onclick="G.promptSell(${idx});G.closeModal()">List on Market</button>`:""}
+      ${!isEquipped&&!item.locked?`<button class="btn btn-ghost" onclick="G.sellToNpc(${idx});G.closeModal()">Sell to NPC (🪙${npcVal})</button>`:""}
+      ${!item.locked?`<button class="btn btn-danger" onclick="${isEquipped?`G.dropEquipped('${slot}')`:`G.dropInventory(${idx})`}">Drop Item</button>`:""}
       <button class="btn btn-ghost" onclick="G.closeModal()">Close</button>
     </div>`);
 }
+export function toggleLock(idx){
+  const item=(P.inventory||[])[idx];if(!item||item.isEgg)return;
+  item.locked=!item.locked;
+  saveP();SFX.click();
+  toast(item.locked?"🔒 Item locked — safe from mass actions":"🔓 Item unlocked");
+  openItemModal("inv",idx);
+}
+
+// ── MASS SALVAGE ──────────────────────────────────────────────
+export function openMassSalvage(){
+  const inv=P.inventory||[];
+  const eligible=inv.map((item,i)=>({item,i})).filter(({item})=>!item.isEgg&&!item.locked&&item.type!=="Pet");
+  if(eligible.length===0){SFX.error();toast("No unlocked items to salvage!");return;}
+  const totalShards=eligible.reduce((s,{item})=>s+salvageShards(item),0);
+  const rarityGroups={};
+  eligible.forEach(({item})=>{rarityGroups[item.rarity]=(rarityGroups[item.rarity]||0)+1;});
+  const breakdown=Object.entries(rarityGroups).map(([r,c])=>`<div style="display:flex;justify-content:space-between;font-size:0.8rem;padding:0.2rem 0"><span style="color:${RARITY_COLOR[r]};font-weight:600;text-transform:capitalize">${r}</span><span>${c} item${c>1?"s":""}</span></div>`).join("");
+  showModal(`<div class="modal-title">🧩 Mass Salvage</div>
+    <div style="background:var(--bg3);border-radius:10px;padding:0.75rem;margin-bottom:0.75rem">
+      ${breakdown}
+      <div style="border-top:1px solid var(--border);margin-top:0.5rem;padding-top:0.5rem;display:flex;justify-content:space-between;font-family:'Cinzel',serif;font-size:0.85rem;font-weight:700">
+        <span>${eligible.length} items</span><span style="color:var(--purple2)">🧩 +${totalShards} shards</span>
+      </div>
+    </div>
+    <div style="font-size:0.78rem;color:var(--text3);margin-bottom:1rem;text-align:center">🔒 Locked items and eggs are excluded. This cannot be undone.</div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.75rem">
+      <button class="btn btn-ghost btn-sm" style="flex:1" onclick="G.openMassSalvageFilter('common')">Common only</button>
+      <button class="btn btn-ghost btn-sm" style="flex:1" onclick="G.openMassSalvageFilter('uncommon')">≤ Uncommon</button>
+      <button class="btn btn-ghost btn-sm" style="flex:1" onclick="G.openMassSalvageFilter('rare')">≤ Rare</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-purple" onclick="G.confirmMassSalvage(null)">🧩 Salvage All (${eligible.length})</button>
+      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>
+    </div>`);
+}
+export function openMassSalvageFilter(maxRarity){
+  const RO={"common":4,"uncommon":3,"rare":2,"epic":1,"legendary":0};
+  const maxRank=RO[maxRarity]??4;
+  const inv=P.inventory||[];
+  const eligible=inv.map((item,i)=>({item,i})).filter(({item})=>!item.isEgg&&!item.locked&&item.type!=="Pet"&&(RO[item.rarity]??0)>=maxRank);
+  if(eligible.length===0){SFX.error();toast("No items match that filter!");return;}
+  const totalShards=eligible.reduce((s,{item})=>s+salvageShards(item),0);
+  showModal(`<div class="modal-title">🧩 Salvage ≤ ${maxRarity}?</div>
+    <div style="text-align:center;padding:0.5rem;margin-bottom:0.75rem">
+      <div style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--purple2);font-weight:700">${eligible.length} items → 🧩${totalShards} shards</div>
+      <div style="font-size:0.78rem;color:var(--text3);margin-top:0.4rem">Locked items excluded. Cannot be undone.</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-purple" onclick="G.confirmMassSalvage('${maxRarity}')">Confirm</button>
+      <button class="btn btn-ghost" onclick="G.openMassSalvage()">Back</button>
+    </div>`);
+}
+export function confirmMassSalvage(maxRarity){
+  const RO={"common":4,"uncommon":3,"rare":2,"epic":1,"legendary":0};
+  const maxRank=maxRarity!=null?(RO[maxRarity]??4):99;
+  const inv=P.inventory||[];
+  let shardsGained=0,count=0;
+  const kept=inv.filter(item=>{
+    if(item.isEgg||item.locked||item.type==="Pet")return true;
+    if((RO[item.rarity]??0)<maxRank)return true; // keep higher rarity
+    shardsGained+=salvageShards(item);count++;return false;
+  });
+  P.inventory=kept;P.shards=(P.shards||0)+shardsGained;
+  saveP();closeModal();SFX.equip();
+  toast(`🧩 Salvaged ${count} items! +${shardsGained} shards (total: ${P.shards})`);
+  renderGear();
+}
+
+// ── MASS NPC SELL ─────────────────────────────────────────────
+export function openMassSell(){
+  const inv=P.inventory||[];
+  const eligible=inv.map((item,i)=>({item,i})).filter(({item})=>!item.isEgg&&!item.locked&&item.type!=="Pet");
+  if(eligible.length===0){SFX.error();toast("No unlocked items to sell!");return;}
+  const totalGold=eligible.reduce((s,{item})=>s+Math.max(5,Math.floor((item.shopPrice||item.base*item.val*2||50)*CFG.SHOP_SELL_RATE)),0);
+  const rarityGroups={};
+  eligible.forEach(({item})=>{rarityGroups[item.rarity]=(rarityGroups[item.rarity]||0)+1;});
+  const breakdown=Object.entries(rarityGroups).map(([r,c])=>`<div style="display:flex;justify-content:space-between;font-size:0.8rem;padding:0.2rem 0"><span style="color:${RARITY_COLOR[r]};font-weight:600;text-transform:capitalize">${r}</span><span>${c} item${c>1?"s":""}</span></div>`).join("");
+  showModal(`<div class="modal-title">🪙 Mass Sell to NPC</div>
+    <div style="background:var(--bg3);border-radius:10px;padding:0.75rem;margin-bottom:0.75rem">
+      ${breakdown}
+      <div style="border-top:1px solid var(--border);margin-top:0.5rem;padding-top:0.5rem;display:flex;justify-content:space-between;font-family:'Cinzel',serif;font-size:0.85rem;font-weight:700">
+        <span>${eligible.length} items</span><span style="color:var(--gold3)">🪙 +${fmt(totalGold)}</span>
+      </div>
+    </div>
+    <div style="font-size:0.78rem;color:var(--text3);margin-bottom:1rem;text-align:center">🔒 Locked items and eggs are excluded. This cannot be undone.</div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.75rem">
+      <button class="btn btn-ghost btn-sm" style="flex:1" onclick="G.openMassSellFilter('common')">Common only</button>
+      <button class="btn btn-ghost btn-sm" style="flex:1" onclick="G.openMassSellFilter('uncommon')">≤ Uncommon</button>
+      <button class="btn btn-ghost btn-sm" style="flex:1" onclick="G.openMassSellFilter('rare')">≤ Rare</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-gold" onclick="G.confirmMassSell(null)">🪙 Sell All (${eligible.length})</button>
+      <button class="btn btn-ghost" onclick="G.closeModal()">Cancel</button>
+    </div>`);
+}
+export function openMassSellFilter(maxRarity){
+  const RO={"common":4,"uncommon":3,"rare":2,"epic":1,"legendary":0};
+  const maxRank=RO[maxRarity]??4;
+  const inv=P.inventory||[];
+  const eligible=inv.map((item,i)=>({item,i})).filter(({item})=>!item.isEgg&&!item.locked&&item.type!=="Pet"&&(RO[item.rarity]??0)>=maxRank);
+  if(eligible.length===0){SFX.error();toast("No items match that filter!");return;}
+  const totalGold=eligible.reduce((s,{item})=>s+Math.max(5,Math.floor((item.shopPrice||item.base*item.val*2||50)*CFG.SHOP_SELL_RATE)),0);
+  showModal(`<div class="modal-title">🪙 Sell ≤ ${maxRarity}?</div>
+    <div style="text-align:center;padding:0.5rem;margin-bottom:0.75rem">
+      <div style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold3);font-weight:700">${eligible.length} items → 🪙${fmt(totalGold)}</div>
+      <div style="font-size:0.78rem;color:var(--text3);margin-top:0.4rem">Locked items excluded. Cannot be undone.</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-gold" onclick="G.confirmMassSell('${maxRarity}')">Confirm</button>
+      <button class="btn btn-ghost" onclick="G.openMassSell()">Back</button>
+    </div>`);
+}
+export function confirmMassSell(maxRarity){
+  const RO={"common":4,"uncommon":3,"rare":2,"epic":1,"legendary":0};
+  const maxRank=maxRarity!=null?(RO[maxRarity]??4):99;
+  const inv=P.inventory||[];
+  let goldGained=0,count=0;
+  const kept=inv.filter(item=>{
+    if(item.isEgg||item.locked||item.type==="Pet")return true;
+    if((RO[item.rarity]??0)<maxRank)return true;
+    goldGained+=Math.max(5,Math.floor((item.shopPrice||item.base*item.val*2||50)*CFG.SHOP_SELL_RATE));
+    count++;return false;
+  });
+  P.inventory=kept;P.gold=(P.gold||0)+goldGained;
+  saveP();closeModal();SFX.gold();
+  toast(`🪙 Sold ${count} items for ${fmt(goldGained)} gold!`);
+  updateHdr();renderGear();
+}
+
 export function salvageItem(idx){
-  const item=(P.inventory||[])[idx];if(!item)return;if(item.isEgg){SFX.error();toast("🥚 Eggs cannot be salvaged.");return;}const shards=salvageShards(item);
+  const item=(P.inventory||[])[idx];if(!item)return;
+  if(item.isEgg){SFX.error();toast("🥚 Eggs cannot be salvaged.");return;}
+  if(item.locked){SFX.error();toast("🔒 Unlock this item first!");return;}
+  const shards=salvageShards(item);
   showModal(`<div class="modal-title">🧩 Salvage Item?</div>
     <div style="text-align:center;font-size:2.5rem;margin:0.4rem 0">${item.emoji||"⚔️"}</div>
     <div style="text-align:center;color:var(--text3);font-size:0.88rem;margin-bottom:1rem">
@@ -692,7 +831,7 @@ export function unequipItem(slot){
   const{def:eDef}=equipStats(P.equipped);P.maxHp=maxHpCalc(P.level,(P.baseDef||5)+eDef,P.bonusHp||0);P.hp=clamp(P.hp,1,P.maxHp);
   saveP();closeModal();toast(`📦 Unequipped ${item.name}`);renderGear();
 }
-export function dropInventory(idx){const item=(P.inventory||[])[idx];if(!item)return;P.inventory=P.inventory.filter((_,i)=>i!==idx);saveP();closeModal();toast(`🗑️ Dropped ${item.name}`);renderGear();}
+export function dropInventory(idx){const item=(P.inventory||[])[idx];if(!item)return;if(item.locked){SFX.error();toast("🔒 Unlock this item first!");return;}P.inventory=P.inventory.filter((_,i)=>i!==idx);saveP();closeModal();toast(`🗑️ Dropped ${item.name}`);renderGear();}
 export function dropEquipped(slot){const item=P.equipped[slot];if(!item)return;delete P.equipped[slot];const{def:eDef}=equipStats(P.equipped);P.maxHp=maxHpCalc(P.level,(P.baseDef||5)+eDef,P.bonusHp||0);P.hp=clamp(P.hp,1,P.maxHp);saveP();closeModal();toast(`🗑️ Dropped ${item.name}`);renderGear();}
 
 // ── COMBAT ───────────────────────────────────────────────────
@@ -1000,6 +1139,7 @@ function renderMarketSell(){
 export function sellToNpc(idx){
   const item=(P.inventory||[])[idx];if(!item)return;
   if(item.isEgg){SFX.error();toast("🥚 Eggs can be listed or hatched, not sold to NPC.");return;}
+  if(item.locked){SFX.error();toast("🔒 Unlock this item first!");return;}
   const npcVal=Math.max(5,Math.floor((item.shopPrice||item.base*item.val*2||50)*CFG.SHOP_SELL_RATE));
   P.inventory=P.inventory.filter((_,i)=>i!==idx);P.gold=(P.gold||0)+npcVal;
   SFX.gold();saveP();toast(`🛒 Sold for 🪙${npcVal}`);
@@ -1091,6 +1231,7 @@ export async function buyListing(id,price){
 export async function cancelListing(id,item){await removeListing(id);P.inventory=[...(P.inventory||[]),item];saveP();toast("📦 Listing cancelled.");renderMarket();}
 export function promptSell(idx){
   const item=(P.inventory||[])[idx];if(!item)return;
+  if(item.locked){SFX.error();toast("🔒 Unlock this item first!");return;}
   const suggestedPrice=item.isEgg?(EGG_TYPES[item.eggType]?.marketPrice||100):(item.itemLevel?Math.round(item.base*(item.itemLevel||1)*item.val*0.5):item.base?(item.base*item.val*2):200);
   showModal(`<div class="modal-title">List on Market</div>
     <div class="modal-icon">${gfx(item.image,item.emoji,72)}</div>

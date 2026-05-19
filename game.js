@@ -38,8 +38,10 @@ import{
   // party
   renderParty,socialTab,createPartyUI,quickInvite,inviteToPartyUI,acceptParty,declineParty,
   leavePartyUI,kickPartyMember,disbandPartyUI,
-  // gear sort
-  setInvSort,
+  // gear sort + mass actions + lock
+  setInvSort,toggleLock,
+  openMassSalvage,openMassSalvageFilter,confirmMassSalvage,
+  openMassSell,openMassSellFilter,confirmMassSell,
 }from"./ui.js";
 import{setCU,setP}from"./ui.js";
 
@@ -80,6 +82,8 @@ window.G={
   // party
   renderParty,socialTab,createPartyUI,quickInvite,inviteToPartyUI,acceptParty,declineParty,
   leavePartyUI,kickPartyMember,disbandPartyUI,
-  // gear sort
-  setInvSort,
+  // gear sort + mass actions + lock
+  setInvSort,toggleLock,
+  openMassSalvage,openMassSalvageFilter,confirmMassSalvage,
+  openMassSell,openMassSellFilter,confirmMassSell,
 };
