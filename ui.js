@@ -13,11 +13,13 @@ import{rand,clamp,fmt,expLv,maxHpCalc,SFX,unlockAudio,
   gainPetExp,getPetMood,getPetPowerMult,drainPetHunger,feedPet,getActivePet as getActiveBattlePet,saveActivePet,petExpNeeded}from"./engine.js";
 import{db,auth,gp,saveP as fbSaveP,loadP,loadLeaderboard,getListings,addListing,removeListing,
   getBounties,getGuild,trackCirculation,getCirculation,
+  getParty,createParty,inviteToParty,acceptPartyInvite,leaveParty,kickFromParty,updatePartyMemberStats,disbandParty,
   onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,
   signInWithPopup,signOut,doc,getDoc,setDoc,deleteDoc,updateDoc,
   collection,getDocs,addDoc,arrayUnion,arrayRemove,increment}from"./firebase.js";
 
 export let CU=null,P=null,TAB="home",CURRENT_AREA=null;
+let INVENTORY_SORT="newest"; // newest|rarity|type|stat_str|stat_def
 export let feed=[],combatState=null;
 let combatInterval=null,energyInterval=null,walkRegenInterval=null;
 let currentWeather=null;
@@ -198,6 +200,8 @@ export function startGame(){
   if(P.activePetId===undefined)P.activePetId=null;
   if(P.activeDungeon===undefined)P.activeDungeon=null;
   if(P.shopChest===undefined)P.shopChest=null;
+  if(P.partyId===undefined)P.partyId=null;
+  if(P.pendingPartyInvite===undefined)P.pendingPartyInvite=null;
   migrateOldPets();
   // Always recalculate maxHp on load so formula changes take effect immediately
   const{def:eDef}=equipStats(P.equipped||{});
@@ -541,14 +545,28 @@ export function claimRent(){
   if(TAB==="properties")renderProperties();if(TAB==="home")renderHome();
 }
 export function renderGear(){
-  const inv=P.inventory||[],eq=P.equipped||{},slots=EQUIP_SLOTS.filter(s=>s!=="Pet");
+  const rawInv=P.inventory||[],eq=P.equipped||{},slots=EQUIP_SLOTS.filter(s=>s!=="Pet");
+  // ── SORT ──
+  const RO={"legendary":0,"epic":1,"rare":2,"uncommon":3,"common":4};
+  const sorted=[...rawInv.map((it,i)=>({...it,_origIdx:i}))];
+  if(INVENTORY_SORT==="rarity")sorted.sort((a,b)=>(RO[a.rarity]??5)-(RO[b.rarity]??5)||(b.val||0)-(a.val||0));
+  else if(INVENTORY_SORT==="type")sorted.sort((a,b)=>(a.type||"").localeCompare(b.type||"")||(b.val||0)-(a.val||0));
+  else if(INVENTORY_SORT==="stat_str")sorted.sort((a,b)=>{if(a.stat==="str"&&b.stat!=="str")return -1;if(b.stat==="str"&&a.stat!=="str")return 1;return(b.val||0)-(a.val||0);});
+  else if(INVENTORY_SORT==="stat_def")sorted.sort((a,b)=>{if(a.stat==="def"&&b.stat!=="def")return -1;if(b.stat==="def"&&a.stat!=="def")return 1;return(b.val||0)-(a.val||0);});
+  else if(INVENTORY_SORT==="power")sorted.sort((a,b)=>(b.val||0)-(a.val||0));
+  // newest = default, no sort needed
+  const inv=sorted;
   const slotsHtml=slots.map(slot=>{const item=eq[slot],iconHtml=item?gfx(item.image,item.emoji,26):SLOT_EMOJI[slot];
     return`<div class="equip-slot ${item?"filled":""}" ${item?`onclick="G.openItemModal('equipped','${slot}')"`:""}> 
       <div class="es-icon">${iconHtml}</div>
       <div class="es-info">${item?`<div class="es-name" style="color:${RARITY_COLOR[item.rarity]}">${item.name}${item.upgrades?` <span style="color:var(--gold3)">+${item.upgrades}</span>`:""}</div><div class="es-stat">+${item.val} ${item.stat==="str"?"STR":"DEF"}${item.itemLevel?" · Lv."+item.itemLevel:""}</div>`:`<div class="es-empty">Empty</div>`}
       </div><div class="es-type">${slot}</div></div>`;}).join("");
+  const sortBtns=["newest","rarity","type","power","stat_str","stat_def"].map(s=>{
+    const labels={newest:"🕐 New",rarity:"💎 Rarity",type:"📦 Type",power:"⚡ Power",stat_str:"⚔️ STR",stat_def:"🛡️ DEF"};
+    return`<button onclick="G.setInvSort('${s}')" style="padding:0.25rem 0.55rem;border:1.5px solid ${INVENTORY_SORT===s?"var(--steel)":"var(--border)"};border-radius:8px;background:${INVENTORY_SORT===s?"var(--steel)":"transparent"};color:${INVENTORY_SORT===s?"white":"var(--text3)"};font-size:0.62rem;cursor:pointer;font-family:'Cinzel',serif;white-space:nowrap">${labels[s]}</button>`;}).join("");
   const invHtml=inv.length===0?`<div class="inv-empty">No items yet — go explore!</div>`:
-    inv.map((item,i)=>{
+    inv.map((item)=>{
+      const i=item._origIdx;
       if(item.isEgg){const hatch=canHatchEgg(item);const color=RARITY_COLOR[item.rarity]||"#6b7280";
         return`<div class="inv-item" onclick="G.openItemModalEgg(${i})">
           <span class="quality-badge" style="background:${color}22;color:${color}">${hatch.ok?"Ready":"Egg"}</span>
@@ -569,9 +587,12 @@ export function renderGear(){
       <div class="section-hdr" style="margin:0">Equipped (${EQUIP_SLOTS.length} slots)</div>
       <div style="font-size:0.72rem;color:var(--text3)">🧩 ${P.shards||0} shards</div></div>
     <div class="equip-grid">${slotsHtml}</div>
-    <div class="section-hdr">Inventory (${inv.length} items)</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.4rem;margin-top:0.6rem">
+      <div class="section-hdr" style="margin:0">Inventory (${rawInv.length})</div></div>
+    <div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.6rem">${sortBtns}</div>
     <div class="inv-grid">${invHtml}</div>`;
 }
+export function setInvSort(s){INVENTORY_SORT=s;renderGear();}
 export async function openItemModal(source,idx){
   let item,isEquipped=false,slot=null;
   if(source==="equipped"){slot=idx;item=P.equipped[slot];isEquipped=true;}else item=(P.inventory||[])[idx];
@@ -655,10 +676,14 @@ export function dropInventory(idx){const item=(P.inventory||[])[idx];if(!item)re
 export function dropEquipped(slot){const item=P.equipped[slot];if(!item)return;delete P.equipped[slot];const{def:eDef}=equipStats(P.equipped);P.maxHp=maxHpCalc(P.level,(P.baseDef||5)+eDef,P.bonusHp||0);P.hp=clamp(P.hp,1,P.maxHp);saveP();closeModal();toast(`🗑️ Dropped ${item.name}`);renderGear();}
 
 // ── COMBAT ───────────────────────────────────────────────────
-export function openCombatModal(monster){
+export async function openCombatModal(monster){
   const{str:eStr,def:eDef}=equipStats(P.equipped);const pet=getActiveBattlePet(P)||null;
+  // Load party members for this combat session
+  let partyMembers=[];
+  if(P.partyId){try{const party=await getParty(P.partyId);partyMembers=(party?.members||[]).filter(m=>m.uid!==CU.uid);}catch(e){}}
   combatState={monster,playerHp:P.hp,playerMaxHp:P.maxHp,monsterHp:monster.hp,
-    pStr:(P.baseStr||10)+eStr,pDef:(P.baseDef||5)+eDef,pet,log:[],done:false,burnStacks:0,bleedStacks:0,stunned:false};
+    pStr:(P.baseStr||10)+eStr,pDef:(P.baseDef||5)+eDef,pet,partyMembers,log:[],done:false,burnStacks:0,bleedStacks:0,stunned:false};
+  if(partyMembers.length>0)combatState.log.push(`<span class="log-sys">⚔️ Party: ${partyMembers.map(m=>m.username).join(", ")} fighting with you!</span>`);
   P.activeCombat=serializeCombat(combatState);saveP();showModal("");renderCombatModal();
   combatInterval=setInterval(combatTick,700);updateWalkUI();
 }
@@ -763,6 +788,23 @@ function combatTick(){
       cs.log.push(`<span class="log-sys">🐾 ${cs.pet.name} is starving and cannot attack.</span>`);
     }
   }
+  // ── PARTY MEMBER ATTACKS (like pets, cached per combat) ──
+  if(cs.partyMembers&&cs.partyMembers.length>0&&cs.monsterHp>0){
+    const now=Date.now();
+    cs.partyMembers.forEach(m2=>{
+      if(Math.random()<0.40){// 40% proc chance per member per round
+        const isOnline=(now-(m2.lastSeen||m2.joinedAt||0))<120000;
+        const mult=isOnline?1.0:0.5;
+        const str=(m2.baseStr||10)+(m2.equipStr||0);
+        const defR=m.def/(m.def+150);
+        const pd=Math.max(1,Math.round((str*(1-defR)*0.35+rand(0,3))*mult));
+        cs.monsterHp=Math.max(0,cs.monsterHp-pd);
+        const pv=["strikes","assists","flanks","charges at","cuts into"][Math.floor(Math.random()*5)];
+        const tag=isOnline?"log-pet":"log-sys";
+        cs.log.push(`<span class="${tag}">⚔️ ${m2.username}${isOnline?"":" (offline)"} ${pv} ${m.name} for ${pd}!</span>`);
+      }
+    });
+  }
   if(cs.monsterHp<=0){
     cs.done=true;clearInterval(combatInterval);
     cs.log.push(`<span class="log-win">🏆 ${m.name} defeated! +${m.expReward} EXP · +${m.goldReward}🪙</span>`);
@@ -790,13 +832,30 @@ function combatTick(){
   }
   renderCombatModal();
 }
-function handleVictory(cs){
+async function handleVictory(cs){
   const m=cs.monster;SFX.victory();P.npcKills=(P.npcKills||0)+1;
   const comboMult=getComboMult(P.walkStreak||0);
   const goldGain=Math.round(m.goldReward*comboMult);
   P.gold=(P.gold||0)+goldGain;P.exp=(P.exp||0)+m.expReward;P.hp=cs.playerHp;
   questProgress("kills");checkLevelUp();
-  toast(`⚔️ Victory! +${m.expReward} EXP · +${goldGain}🪙${comboMult>1?" (x"+comboMult+")":""}`);
+  // ── PARTY LOOT SHARE ──
+  const partyMs=cs.partyMembers||[];
+  if(partyMs.length>0){
+    const partySize=partyMs.length+1; // +1 for self
+    const shareGold=Math.round(goldGain*0.4/partyMs.length); // each member gets 40% of winner gold / count
+    const shareExp=Math.round(m.expReward*0.4/partyMs.length);
+    for(const pm of partyMs){
+      try{
+        await updateDoc(doc(db,"players",pm.uid),{
+          gold:increment(shareGold),exp:increment(shareExp),
+          notifications:arrayUnion(`⚔️ Party victory vs ${m.name}! +🪙${shareGold} +${shareExp} EXP`)
+        });
+      }catch(e){}
+    }
+    toast(`⚔️ Victory! +${m.expReward} EXP +${goldGain}🪙 · Party shared 🪙${shareGold} each${comboMult>1?" (x"+comboMult+")":""}`);
+  }else{
+    toast(`⚔️ Victory! +${m.expReward} EXP · +${goldGain}🪙${comboMult>1?" (x"+comboMult+")":""}`);
+  }
   P.hp=clamp(P.hp,1,P.maxHp);combatState=null;P.activeCombat=null;saveP();updateHdr();updateWalkUI();
 }
 function handleDefeat(cs){
@@ -990,7 +1049,18 @@ function renderMyListings(listings){
 export async function buyListing(id,price){
   if((P.gold||0)<price){SFX.error();toast("💰 Not enough gold!");return;}
   const snap=await getDoc(doc(db,"market",id));if(!snap.exists()){toast("Listing gone.");renderMarket();return;}
-  const listing=snap.data();P.gold-=price;P.inventory=[...(P.inventory||[]),listing.item];
+  const listing=snap.data();
+  const fee=Math.floor(price*CFG.MARKET_FEE);
+  const sellerProfit=price-fee;
+  P.gold-=price;P.inventory=[...(P.inventory||[]),listing.item];
+  if(listing.sellerId&&listing.sellerId!==CU.uid){
+    try{
+      await updateDoc(doc(db,"players",listing.sellerId),{
+        gold:increment(sellerProfit),
+        notifications:arrayUnion(`🏪 Your ${listing.item.name} sold for 🪙${fmt(sellerProfit)} (after ${Math.round(CFG.MARKET_FEE*100)}% fee)!`)
+      });
+    }catch(e){console.warn("Could not deliver sale proceeds:",e);}
+  }
   await removeListing(id);saveP();SFX.gold();toast(`✅ Bought ${listing.item.name}!`);questProgress("items");renderMarket();
 }
 export async function cancelListing(id,item){await removeListing(id);P.inventory=[...(P.inventory||[]),item];saveP();toast("📦 Listing cancelled.");renderMarket();}
@@ -1029,7 +1099,20 @@ export async function renderSocial(){
   document.getElementById("content").innerHTML=`<div class="card"><div style="text-align:center;color:var(--text3);padding:1rem">Loading...</div></div>`;
   _lbCache=await loadLeaderboard();
   document.getElementById("content").innerHTML=`
-    <div class="tab-row" style="margin-bottom:0.75rem;flex-wrap:wrap;gap:3px" id="lb-tabs">
+    <div class="tab-row" style="margin-bottom:0.75rem;flex-wrap:wrap;gap:3px" id="social-tabs">
+      <button class="tab-btn active" id="stab-leaderboard" onclick="G.socialTab('leaderboard')">🏆 Rankings</button>
+      <button class="tab-btn" id="stab-party" onclick="G.socialTab('party')">⚔️ Party${P.partyId?` <span style="background:var(--green2);color:white;border-radius:6px;font-size:0.58rem;padding:1px 5px;margin-left:2px">In</span>`:""}
+      </button>
+    </div>
+    <div id="social-body"></div>`;
+  socialTab("leaderboard");
+}
+export function socialTab(t){
+  document.querySelectorAll("#social-tabs .tab-btn").forEach(b=>b.classList.remove("active"));
+  const active=document.getElementById("stab-"+t);if(active)active.classList.add("active");
+  const body=document.getElementById("social-body");if(!body)return;
+  if(t==="leaderboard"){
+    body.innerHTML=`<div class="tab-row" style="margin-bottom:0.75rem;flex-wrap:wrap;gap:3px" id="lb-tabs">
       <button class="tab-btn active" onclick="G.lbTab('level')">🏆 Level</button>
       <button class="tab-btn" onclick="G.lbTab('kills')">💀 Kills</button>
       <button class="tab-btn" onclick="G.lbTab('pvp')">⚔️ PvP</button>
@@ -1040,7 +1123,11 @@ export async function renderSocial(){
     <div class="card" style="margin-top:0.5rem"><div class="card-title">⚙️ Account</div>
       <button class="btn btn-ghost" onclick="G.showTab('you')">👤 My Profile</button>
       <button class="btn btn-ghost" onclick="G.handleSignOut()">Sign Out</button></div>`;
-  lbTab("level");
+    lbTab("level");
+  }else if(t==="party"){
+    body.innerHTML=`<div id="party-body"></div>`;
+    renderParty();
+  }
 }
 export function lbTab(type){
   document.querySelectorAll("#lb-tabs .tab-btn").forEach((b,i)=>{const types=["level","kills","pvp","steps","gold","items"];b.classList.toggle("active",types[i]===type);});
@@ -1565,6 +1652,186 @@ export function claimQuest(id){
   const q=P.quests.list.find(x=>x.id===id);if(!q||q.claimed||q.progress<q.target)return;
   q.claimed=true;P.exp=(P.exp||0)+q.reward.exp;P.gold=(P.gold||0)+q.reward.gold;
   checkLevelUp();saveP();SFX.gold();toast(`🎁 Claimed! +${q.reward.exp} EXP · +${q.reward.gold}🪙`);renderQuests();
+}
+
+
+// ── PARTY SYSTEM ─────────────────────────────────────────────
+// Party members contribute STR/DEF like pets — they proc attacks in combat.
+// Offline members contribute at 50% power. Max 4 members total.
+
+let _partyCache=null;
+
+function partyMemberStats(m){
+  const str=(m.baseStr||10)+(m.equipStr||0);
+  const def=(m.baseDef||5)+(m.equipDef||0);
+  return{str,def};
+}
+function myPartyStats(){
+  const{str:eStr,def:eDef}=equipStats(P.equipped||{});
+  return{baseStr:P.baseStr||10,baseDef:P.baseDef||5,equipStr:eStr,equipDef:eDef,level:P.level||1,username:P.username,avatarId:P.activeAvatar||null};
+}
+export async function renderParty(){
+  // Check for pending invites first
+  if(P.pendingPartyInvite&&!P.partyId){
+    const inv=P.pendingPartyInvite;
+    const party=await getParty(inv);
+    if(party&&(party.members||[]).length<4){
+      const leader=party.members?.find(m=>m.uid===party.leaderId);
+      showModal(`<div class="modal-title">⚔️ Party Invite!</div>
+        <div style="text-align:center;padding:0.5rem;color:var(--text3);font-size:0.9rem;margin-bottom:1rem">
+          <strong>${leader?.username||"Someone"}</strong> invited you to their party!</div>
+        <div style="text-align:center;font-size:0.75rem;color:var(--text3);margin-bottom:1rem">Members: ${(party.members||[]).map(m=>m.username).join(", ")}</div>
+        <div class="modal-actions">
+          <button class="btn btn-steel" onclick="G.acceptParty('${inv}')">⚔️ Join Party</button>
+          <button class="btn btn-ghost" onclick="G.declineParty('${inv}')">Decline</button>
+        </div>`);
+      return;
+    }else{
+      // Party full or gone — clear invite
+      await updateDoc(doc(db,"players",CU.uid),{pendingPartyInvite:null});
+      P.pendingPartyInvite=null;
+    }
+  }
+  if(!P.partyId){renderPartySearch();return;}
+  const party=await getParty(P.partyId);
+  if(!party){P.partyId=null;saveP();renderPartySearch();return;}
+  _partyCache=party;
+  // Refresh my stats in the party doc
+  await updatePartyMemberStats(P.partyId,CU.uid,myPartyStats()).catch(()=>{});
+  renderPartyView(party);
+}
+function renderPartySearch(){
+  const body=document.getElementById("party-body");if(!body)return;
+  body.innerHTML=`
+    <div style="text-align:center;padding:1.5rem 0.5rem">
+      <div style="font-size:3rem;margin-bottom:0.5rem">⚔️</div>
+      <div style="font-family:'Cinzel',serif;font-size:1rem;color:var(--text2);margin-bottom:0.4rem">No Party</div>
+      <div style="font-size:0.82rem;color:var(--text3);margin-bottom:1.2rem;line-height:1.5">Party up with other players! Members boost your combat — even when offline they fight alongside you at 50% power.</div>
+      <button class="btn btn-steel" onclick="G.createPartyUI()">⚔️ Create Party</button>
+    </div>
+    <div class="section-hdr">Invite a Player</div>
+    <div id="party-invite-list" style="text-align:center;color:var(--text3);padding:1rem;font-style:italic">Loading players...</div>`;
+  loadLeaderboard().then(all=>{
+    const others=(all||[]).filter(p=>p.id!==CU.uid&&p.username&&!p.partyId).slice(0,20);
+    const el=document.getElementById("party-invite-list");if(!el)return;
+    if(others.length===0){el.innerHTML=`<div style="font-style:italic;color:var(--text3)">No available players.</div>`;return;}
+    el.innerHTML=others.map(p=>`<div class="market-item">
+      <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${avatarGfxFor(p,34)}</div>
+      <div class="market-info"><div class="market-name">${p.username}</div>
+        <div class="market-stat">Lv.${p.level||1} · ⚔️${(p.baseStr||10)+(equipStats(p.equipped||{}).str)} 🛡️${(p.baseDef||5)+(equipStats(p.equipped||{}).def)}</div></div>
+      <button class="btn btn-steel btn-sm" onclick="G.quickInvite('${p.id}','${p.username}')">Invite</button>
+    </div>`).join("");
+  });
+}
+async function renderPartyView(party){
+  const body=document.getElementById("party-body");if(!body)return;
+  const isLeader=party.leaderId===CU.uid;
+  const members=party.members||[];
+  const now=Date.now();
+  const memberRows=members.map(m=>{
+    const isMe=m.uid===CU.uid;
+    const isOnline=(now-(m.lastSeen||m.joinedAt||0))<120000||isMe; // online if seen <2min ago
+    const {str,def}=partyMemberStats(m);
+    const powerMult=isOnline?1.0:0.5;
+    const contribution=Math.round((str*0.12+def*0.06)*powerMult);
+    return`<div style="border:1.5px solid ${isMe?"var(--gold2)":"var(--border)"};border-radius:12px;padding:0.75rem;margin-bottom:0.5rem;background:${isMe?"#fffbeb":"var(--surface)"}">
+      <div style="display:flex;align-items:center;gap:0.65rem">
+        <div style="font-size:1.6rem">${m.avatarId?AVATARS.find(a=>a.id===m.avatarId)?.emoji||"🧙":"🧙"}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Cinzel',serif;font-size:0.88rem;font-weight:700;color:${isMe?"var(--gold3)":"var(--text)"}">${m.username}${isMe?" (you)":""}${party.leaderId===m.uid?" 👑":""}</div>
+          <div style="font-size:0.7rem;color:var(--text3)">Lv.${m.level||1} · ⚔️${str} 🛡️${def}</div>
+          <div style="font-size:0.7rem;color:${isOnline?"var(--green2)":"var(--text3)"}">
+            ${isOnline?"🟢 Online":"⚫ Offline (50% power)"} · +${contribution} dmg/round
+          </div>
+        </div>
+        ${isLeader&&!isMe?`<button class="btn btn-danger btn-sm" style="font-size:0.62rem" onclick="G.kickPartyMember('${m.uid}')">Kick</button>`:""}
+        ${isMe&&!isLeader?`<button class="btn btn-ghost btn-sm" style="font-size:0.62rem" onclick="G.leavePartyUI()">Leave</button>`:""}
+      </div></div>`;}).join("");
+  const canInvite=isLeader&&members.length<4;
+  body.innerHTML=`
+    <div style="background:var(--surface);border:1.5px solid var(--border2);border-radius:14px;padding:0.9rem;margin-bottom:0.75rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem">
+        <div style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:700">⚔️ Party (${members.length}/4)</div>
+        ${isLeader?`<button class="btn btn-danger btn-sm" style="font-size:0.62rem" onclick="G.disbandPartyUI()">Disband</button>`:""}
+      </div>
+      <div style="font-size:0.75rem;color:var(--text3);margin-bottom:0.75rem">Members fight alongside you in combat — like pets but stronger!</div>
+      ${memberRows}
+    </div>
+    ${canInvite?`<div class="section-hdr">Invite Member</div>
+    <div id="party-invite-list" style="text-align:center;color:var(--text3);padding:0.5rem;font-style:italic">Loading...</div>`:""}`;
+  if(canInvite){
+    loadLeaderboard().then(all=>{
+      const el=document.getElementById("party-invite-list");if(!el)return;
+      const alreadyIn=new Set(members.map(m=>m.uid));
+      const others=(all||[]).filter(p=>p.id!==CU.uid&&p.username&&!alreadyIn.has(p.id)).slice(0,15);
+      if(others.length===0){el.innerHTML=`<div style="font-style:italic">No available players.</div>`;return;}
+      el.innerHTML=others.map(p=>`<div class="market-item">
+        <div style="width:36px;height:36px;display:flex;align-items:center;justify-content:center">${avatarGfxFor(p,34)}</div>
+        <div class="market-info"><div class="market-name">${p.username}</div>
+          <div class="market-stat">Lv.${p.level||1}</div></div>
+        <button class="btn btn-steel btn-sm" onclick="G.inviteToPartyUI('${p.id}','${p.username}')">Invite</button>
+      </div>`).join("");
+    });
+  }
+}
+export async function createPartyUI(){
+  SFX.click();
+  const partyId=await createParty(CU.uid,P.username,myPartyStats());
+  P.partyId=partyId;saveP();toast("⚔️ Party created! Invite friends.");
+  renderParty();
+}
+export async function quickInvite(targetId,targetName){
+  if(!P.partyId){
+    const partyId=await createParty(CU.uid,P.username,myPartyStats());
+    P.partyId=partyId;saveP();
+  }
+  await inviteToPartyUI(targetId,targetName);
+}
+export async function inviteToPartyUI(targetId,targetName){
+  SFX.click();
+  const party=await getParty(P.partyId);
+  if(!party){P.partyId=null;saveP();renderParty();return;}
+  if((party.members||[]).length>=4){SFX.error();toast("Party is full (max 4)!");return;}
+  const already=(party.invites||[]).some(i=>i.uid===targetId)||(party.members||[]).some(m=>m.uid===targetId);
+  if(already){toast("Already invited or in party!");return;}
+  await inviteToParty(P.partyId,targetId,targetName,P.username);
+  SFX.guild();toast(`📨 Invited ${targetName}!`);
+}
+export async function acceptParty(partyId){
+  const ok=await acceptPartyInvite(partyId,CU.uid,P.username,myPartyStats());
+  if(ok){P.partyId=partyId;P.pendingPartyInvite=null;saveP();SFX.guild();toast("⚔️ Joined the party!");closeModal();renderParty();}
+  else{SFX.error();toast("Party full or expired.");P.pendingPartyInvite=null;saveP();closeModal();}
+}
+export async function declineParty(partyId){
+  await updateDoc(doc(db,"players",CU.uid),{pendingPartyInvite:null});
+  P.pendingPartyInvite=null;saveP();closeModal();renderParty();
+}
+export async function leavePartyUI(){
+  if(!P.partyId)return;
+  const party=await getParty(P.partyId);
+  if(party){await leaveParty(P.partyId,CU.uid,party.members,party.leaderId);}
+  P.partyId=null;saveP();SFX.click();toast("Left the party.");renderParty();
+}
+export async function kickPartyMember(targetUid){
+  if(!P.partyId)return;const party=await getParty(P.partyId);if(!party)return;
+  if(party.leaderId!==CU.uid){SFX.error();toast("Only the leader can kick!");return;}
+  await kickFromParty(P.partyId,targetUid,party.members);
+  SFX.click();toast("Member kicked.");renderParty();
+}
+export async function disbandPartyUI(){
+  if(!P.partyId)return;const party=await getParty(P.partyId);
+  if(party){await disbandParty(P.partyId,party.members);}
+  P.partyId=null;saveP();SFX.click();toast("Party disbanded.");renderParty();
+}
+
+// ── PARTY COMBAT CONTRIBUTION ─────────────────────────────────
+// Called during combat tick — returns damage dealt by party members this round
+export async function getPartyMembers(){
+  if(!P.partyId)return[];
+  try{
+    const party=await getParty(P.partyId);if(!party)return[];
+    return(party.members||[]).filter(m=>m.uid!==CU.uid);
+  }catch(e){return[];}
 }
 
 // ── BANK ─────────────────────────────────────────────────────

@@ -35,6 +35,11 @@ import{
   buyEgg,hatchEgg,openItemModalEgg,
   // pets
   setActivePet,openPetCollection,feedPetUI,releasePetUI,confirmReleasePet,
+  // party
+  renderParty,socialTab,createPartyUI,quickInvite,inviteToPartyUI,acceptParty,declineParty,
+  leavePartyUI,kickPartyMember,disbandPartyUI,
+  // gear sort
+  setInvSort,
 }from"./ui.js";
 import{setCU,setP}from"./ui.js";
 
@@ -72,4 +77,9 @@ window.G={
   buyEgg,hatchEgg,openItemModalEgg,
   // pets
   setActivePet,openPetCollection,feedPetUI,releasePetUI,confirmReleasePet,
+  // party
+  renderParty,socialTab,createPartyUI,quickInvite,inviteToPartyUI,acceptParty,declineParty,
+  leavePartyUI,kickPartyMember,disbandPartyUI,
+  // gear sort
+  setInvSort,
 };

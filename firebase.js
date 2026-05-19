@@ -88,3 +88,55 @@ export async function getCirculation(itemName){
     return snap.exists()?snap.data().count:0;
   }catch(e){return 0;}
 }
+
+// ── PARTY ─────────────────────────────────────────────────────
+export async function getParty(partyId){
+  if(!partyId)return null;
+  const s=await getDoc(doc(db,"parties",partyId));
+  return s.exists()?{id:s.id,...s.data()}:null;
+}
+export async function createParty(leaderId,leaderName,leaderStats){
+  const ref=await addDoc(collection(db,"parties"),{
+    leaderId,members:[{uid:leaderId,username:leaderName,...leaderStats,online:true,joinedAt:Date.now()}],
+    invites:[],createdAt:Date.now()
+  });
+  await updateDoc(doc(db,"players",leaderId),{partyId:ref.id});
+  return ref.id;
+}
+export async function inviteToParty(partyId,targetUid,targetName,fromName){
+  await updateDoc(doc(db,"parties",partyId),{invites:arrayUnion({uid:targetUid,username:targetName,sentAt:Date.now()})});
+  await updateDoc(doc(db,"players",targetUid),{notifications:arrayUnion(`⚔️ ${fromName} invited you to their party! Check Social → Party tab.`),pendingPartyInvite:partyId});
+}
+export async function acceptPartyInvite(partyId,uid,username,stats){
+  const party=await getParty(partyId);if(!party)return false;
+  if((party.members||[]).length>=4)return false;
+  const newMember={uid,username,...stats,online:true,joinedAt:Date.now()};
+  await updateDoc(doc(db,"parties",partyId),{members:arrayUnion(newMember),invites:(party.invites||[]).filter(i=>i.uid!==uid)});
+  await updateDoc(doc(db,"players",uid),{partyId,pendingPartyInvite:null});
+  return true;
+}
+export async function leaveParty(partyId,uid,members,leaderId){
+  const remaining=(members||[]).filter(m=>m.uid!==uid);
+  if(remaining.length===0){await deleteDoc(doc(db,"parties",partyId));}
+  else{
+    const newLeaderId=remaining[0].uid;
+    await updateDoc(doc(db,"parties",partyId),{members:remaining,leaderId:remaining[0].uid===leaderId?leaderId:newLeaderId});
+  }
+  await updateDoc(doc(db,"players",uid),{partyId:null,pendingPartyInvite:null});
+}
+export async function kickFromParty(partyId,targetUid,members){
+  const remaining=(members||[]).filter(m=>m.uid!==targetUid);
+  await updateDoc(doc(db,"parties",partyId),{members:remaining});
+  await updateDoc(doc(db,"players",targetUid),{partyId:null,notifications:arrayUnion("You were kicked from the party.")});
+}
+export async function updatePartyMemberStats(partyId,uid,stats){
+  try{
+    const party=await getParty(partyId);if(!party)return;
+    const members=(party.members||[]).map(m=>m.uid===uid?{...m,...stats,online:true,lastSeen:Date.now()}:m);
+    await updateDoc(doc(db,"parties",partyId),{members});
+  }catch(e){}
+}
+export async function disbandParty(partyId,members){
+  for(const m of(members||[]))await updateDoc(doc(db,"players",m.uid),{partyId:null}).catch(()=>{});
+  await deleteDoc(doc(db,"parties",partyId));
+}
