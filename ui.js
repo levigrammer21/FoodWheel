@@ -21,7 +21,7 @@ import{db,auth,gp,saveP as fbSaveP,loadP,loadLeaderboard,getListings,addListing,
 export let CU=null,P=null,TAB="home",CURRENT_AREA=null;
 let INVENTORY_SORT="newest"; // newest|rarity|type|stat_str|stat_def
 export let feed=[],combatState=null;
-let combatInterval=null,energyInterval=null,walkRegenInterval=null;
+let combatInterval=null,energyInterval=null,walkRegenInterval=null,partyHeartbeatInterval=null;
 let currentWeather=null;
 export function setCU(u){CU=u;}
 export function setP(data){P=data;}
@@ -208,7 +208,7 @@ export function startGame(){
   P.maxHp=maxHpCalc(P.level,(P.baseDef||5)+eDef,P.bonusHp||0);
   P.hp=clamp(P.hp,1,P.maxHp);
   const _maxE=calcMaxEnergy(P);P.energy=clamp(P.energy,0,_maxE);
-  showScreen("game-screen");updateHdr();regenCheck();energyInterval=setInterval(regenCheck,15000);
+  showScreen("game-screen");updateHdr();regenCheck();energyInterval=setInterval(regenCheck,15000);startPartyHeartbeat();
   if(P.activeCombat&&!combatState)combatState={...P.activeCombat,done:false};
   if(P.notifications&&P.notifications.length>0){setTimeout(()=>{P.notifications.forEach(n=>toast(n,"#f59e0b"));P.notifications=[];saveP();},1500);}
   showTab("home");
@@ -217,6 +217,16 @@ function regenCheck(){
   if(!P)return;const maxE=calcMaxEnergy(P);if(P.energy>=maxE)return;
   const pts=Math.floor((Date.now()-(P.lastEnergyTime||Date.now()))/CFG.ENERGY_REGEN_MS);
   if(pts>0){P.energy=clamp(P.energy+pts,0,maxE);P.lastEnergyTime=Date.now();saveP();if(TAB==="home")renderHome();updateHdr();updateWalkUI();}
+}
+function startPartyHeartbeat(){
+  if(partyHeartbeatInterval)clearInterval(partyHeartbeatInterval);
+  // Ping every 30s so party members know you are online (lastSeen < 60s = online)
+  partyHeartbeatInterval=setInterval(()=>{
+    if(!P||!P.partyId)return;
+    updatePartyMemberStats(P.partyId,CU.uid,{...myPartyStats(),lastSeen:Date.now()}).catch(()=>{});
+  },30000);
+  // Also ping immediately on start
+  if(P?.partyId)updatePartyMemberStats(P.partyId,CU.uid,{...myPartyStats(),lastSeen:Date.now()}).catch(()=>{});
 }
 function renderWeatherBanner(){
   const w=currentWeather;if(!w||w.id==="clear")return"";
@@ -388,6 +398,16 @@ export function takeStep(){
   const totalMonsterChance=Math.min(CFG.MONSTER_CHANCE,0.22)*w.monsterMult; // capped so flavor text always has room
   const stepXp=Math.round((CFG.STEP_XP_BASE+P.level*CFG.STEP_XP_PER_LEVEL)*area.expMult*w.expMult*comboMult);
   P.exp=(P.exp||0)+stepXp;checkLevelUp();
+  // ── PARTY STEP XP — 28% share, batched every 10 steps to avoid spamming Firebase ──
+  if(P.partyId&&P.steps%10===0){
+    const partyStepXp=Math.max(1,Math.round(stepXp*0.28));
+    getParty(P.partyId).then(party=>{
+      if(!party)return;
+      (party.members||[]).filter(m=>m.uid!==CU.uid).forEach(m=>{
+        updateDoc(doc(db,"players",m.uid),{exp:increment(partyStepXp*10)}).catch(()=>{});
+      });
+    }).catch(()=>{});
+  }
   if(Math.random()<(CFG.WALK_EGG_CHANCE||0)){
     const egg=makeEgg(rollEggRarity());
     P.inventory=[...(P.inventory||[]),egg];P.itemsFound=(P.itemsFound||0)+1;
@@ -793,7 +813,7 @@ function combatTick(){
     const now=Date.now();
     cs.partyMembers.forEach(m2=>{
       if(Math.random()<0.40){// 40% proc chance per member per round
-        const isOnline=(now-(m2.lastSeen||m2.joinedAt||0))<120000;
+        const isOnline=(now-(m2.lastSeen||m2.joinedAt||0))<60000;
         const mult=isOnline?1.0:0.5;
         const str=(m2.baseStr||10)+(m2.equipStr||0);
         const defR=m.def/(m.def+150);
@@ -842,17 +862,22 @@ async function handleVictory(cs){
   const partyMs=cs.partyMembers||[];
   if(partyMs.length>0){
     const partySize=partyMs.length+1; // +1 for self
-    const shareGold=Math.round(goldGain*0.4/partyMs.length); // each member gets 40% of winner gold / count
-    const shareExp=Math.round(m.expReward*0.4/partyMs.length);
+    const now2=Date.now();
     for(const pm of partyMs){
       try{
+        const isOnline=(now2-(pm.lastSeen||pm.joinedAt||0))<60000;
+        const mult=isOnline?1.0:0.5;
+        const shareGold=Math.round(goldGain*0.4*mult);
+        const shareExp=Math.round(m.expReward*0.4*mult);
         await updateDoc(doc(db,"players",pm.uid),{
           gold:increment(shareGold),exp:increment(shareExp),
-          notifications:arrayUnion(`⚔️ Party victory vs ${m.name}! +🪙${shareGold} +${shareExp} EXP`)
+          notifications:arrayUnion(`⚔️ Party victory vs ${m.name}! +🪙${shareGold} +${shareExp} EXP${isOnline?"":" (offline 50%)"}`)
         });
       }catch(e){}
     }
-    toast(`⚔️ Victory! +${m.expReward} EXP +${goldGain}🪙 · Party shared 🪙${shareGold} each${comboMult>1?" (x"+comboMult+")":""}`);
+    const onlineCount=partyMs.filter(m=>( Date.now()-(m.lastSeen||m.joinedAt||0))<60000).length;
+    const offlineCount=partyMs.length-onlineCount;
+    toast(`⚔️ Victory! +${m.expReward} EXP +${goldGain}🪙 · Party: ${onlineCount} online (100%) ${offlineCount>0?offlineCount+" offline (50%)":""}${comboMult>1?" x"+comboMult:""}`);
   }else{
     toast(`⚔️ Victory! +${m.expReward} EXP · +${goldGain}🪙${comboMult>1?" (x"+comboMult+")":""}`);
   }
@@ -1628,7 +1653,7 @@ export function renderYou(){
       <button class="btn btn-ghost" onclick="G.handleSignOut()">Sign Out</button></div>
     <button class="btn btn-ghost" onclick="G.showTab('home')" style="margin-top:0.5rem">← Back</button>`;
 }
-export async function handleSignOut(){clearInterval(energyInterval);await signOut(auth);}
+export async function handleSignOut(){clearInterval(energyInterval);clearInterval(partyHeartbeatInterval);if(P?.partyId)await updatePartyMemberStats(P.partyId,CU.uid,{...myPartyStats(),online:false,lastSeen:Date.now()}).catch(()=>{});await signOut(auth);}
 
 // ── QUESTS ───────────────────────────────────────────────────
 export function renderQuests(){
@@ -1730,7 +1755,7 @@ async function renderPartyView(party){
   const now=Date.now();
   const memberRows=members.map(m=>{
     const isMe=m.uid===CU.uid;
-    const isOnline=(now-(m.lastSeen||m.joinedAt||0))<120000||isMe; // online if seen <2min ago
+    const isOnline=(now-(m.lastSeen||m.joinedAt||0))<60000||isMe; // online if heartbeat within 60s
     const {str,def}=partyMemberStats(m);
     const powerMult=isOnline?1.0:0.5;
     const contribution=Math.round((str*0.12+def*0.06)*powerMult);
