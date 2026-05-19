@@ -612,11 +612,9 @@ export function renderGear(){
       <div class="section-hdr" style="margin:0">Inventory (${rawInv.length})</div></div>
     <div style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.6rem">${sortBtns}</div>
     <div class="inv-grid">${invHtml}</div>
-    ${rawInv.filter(i=>!i.isEgg&&!i.locked&&i.type!=="Pet").length>1?`
-    <div style="display:flex;gap:0.5rem;margin-top:0.75rem">
-      <button class="btn btn-purple btn-sm" style="flex:1" onclick="G.openMassSalvage()">🧩 Mass Salvage</button>
-      <button class="btn btn-gold btn-sm" style="flex:1" onclick="G.openMassSell()">🪙 Mass Sell</button>
-    </div>`:""}`;
+    ${rawInv.filter(i=>!i.isEgg&&!i.locked&&i.type!=="Pet").length>1?
+      '<div style="display:flex;gap:0.5rem;margin-top:0.75rem"><button class="btn btn-purple btn-sm" style="flex:1" onclick="G.openMassSalvage()">\u{1f9e9} Mass Salvage</button><button class="btn btn-gold btn-sm" style="flex:1" onclick="G.openMassSell()">\u{1fa99} Mass Sell</button></div>'
+    :""}`;
 }
 export function setInvSort(s){INVENTORY_SORT=s;renderGear();}
 export async function openItemModal(source,idx){
@@ -1267,8 +1265,7 @@ export async function renderSocial(){
   document.getElementById("content").innerHTML=`
     <div class="tab-row" style="margin-bottom:0.75rem;flex-wrap:wrap;gap:3px" id="social-tabs">
       <button class="tab-btn active" id="stab-leaderboard" onclick="G.socialTab('leaderboard')">🏆 Rankings</button>
-      <button class="tab-btn" id="stab-party" onclick="G.socialTab('party')">⚔️ Party${P.partyId?` <span style="background:var(--green2);color:white;border-radius:6px;font-size:0.58rem;padding:1px 5px;margin-left:2px">In</span>`:""}
-      </button>
+      <button class="tab-btn" id="stab-party" onclick="G.socialTab('party')">⚔️ Party${P.partyId?' ✓':""}</button>
     </div>
     <div id="social-body"></div>`;
   socialTab("leaderboard");
